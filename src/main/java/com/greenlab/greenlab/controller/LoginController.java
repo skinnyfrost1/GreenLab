@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LoginController {
 
-    @GetMapping("/login")
+    @GetMapping(value="/login")
     public String getLogin(ModelMap model, HttpServletRequest request) {
 
         return "login";
 
     }
 
-    @PostMapping("/login")
+    @PostMapping(value="/login")
     public String postLogin(@RequestParam(value = "email", required = false) String username,
             @RequestParam(value = "password", required = false) String password, ModelMap model,
             HttpServletRequest request) {
@@ -25,7 +25,7 @@ public class LoginController {
     }
 
 
-    @PostMapping("/logout")
+    @PostMapping(value="/logout")
     public String postLogout(ModelMap model, HttpServletRequest request){
 
         return "login";
