@@ -1,0 +1,127 @@
+.vertical-menu {
+    width: 5em; /* Set a width if you like */
+    /* height: 7em; */
+}
+
+.vertical-menu a {
+    background-color: #326471; /* Grey background color */
+    color: black; /* Black text color */
+    display: block; /* Make the links appear below each other */
+    text-align: center;
+    text-decoration: none; /* Remove underline from links */
+    height: 5em;
+
+}
+
+.vertical-menu div {
+    background-color: #326471; /* Grey background color */
+    color: black; /* Black text color */
+    display: block; /* Make the links appear below each other */
+    text-align: center;
+    text-decoration: none; /* Remove underline from links */
+    height: 5em;
+    /* width: 5em; */
+
+}
+.vertical-menu a:hover {
+    background-color: #6fb3b8; /* Dark grey background on mouse-over */
+    cursor: pointer;
+}
+
+.equipmentContainer {
+  width: 4em;
+  padding: 0.5em 0.5em;
+  margin: 0;
+  border-radius:1em;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 4em;
+}
+
+.vertical-menu-Icon {
+    font-size: 2em;
+    padding: 0.5em 0.5em;
+    margin: 0;
+    color: #eee;
+}
+
+.vertical-menu-Icon:hover {
+    color: #218787;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.middlePaneContainer {
+  margin: 0em 0.5em 5em 0.5em;
+  padding: 1em;
+  width: 100%;
+  height:35em;
+  display:inline-table;
+  background-color: white;
+  border-radius: 5px;
+  border-color: #d1d1d1;
+  border-width: 1px;
+  border-style: solid;
+  box-shadow: 5px 5px 5px rgb(0,0,0,0.3);
+}
+
+.rightPaneContainer {
+  margin: 3em 0em 0em 6em;
+  /* padding: 1em; */
+  width: 80%;
+  height:50em;
+  display:inline-table;
+  background-color: #eee;
+  /* border-radius: 5px; */
+  /* border-color: black;
+  border-width: 1px;
+  border-style: solid; */
+  box-shadow: -5px 0px 10px rgb(0,0,0,0.1);
+}
+
+.createLabTextfield {
+    /*align: center;*/
+    width: 80%;
+    font-size: 1em;
+    letter-spacing: 1px;
+    padding: 5px 2%;
+    /* margin-bottom: 10px; */
+    margin:0.5em 5%;
+}
+
+.createLabButton {
+  color: white;
+  background: #6fb3b8;
+  /*background: #269b9b;*/
+  border: none;
+  width:85%;
+  margin: 0.5em 0em 0.5em 5%;
+  /*letter-spacing: 1.5px;*/
+  font-size: 1em;
+  font-weight: 500;
+  border-radius: 3px;
+  padding: 10px 0;
+}
+
+.createLabButton:hover {
+    background: #269b9b;
+    text-decoration: none;
+    /*font-weight: bold;*/
+    cursor: pointer;
+}
+
+.processStatusLabel {
+  color: white;
+  background: #76d691;
+  /*background: #269b9b;*/
+  border: none;
+  width:85%;
+  margin: 1em 0em 0.5em 5%;
+  text-align: center;
+  /*letter-spacing: 1.5px;*/
+  font-size: 1em;
+  font-weight: 500;
+  border-radius: 3px;
+  padding: 10px 0;
+}

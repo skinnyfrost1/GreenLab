@@ -1,0 +1,25 @@
+.viewEquipContainer {
+  margin: 0em 5em 5em 5em;
+  width: 10em;
+  height:10em;
+  display:inline-table;
+  background-color: white;
+  border-radius: 5px;
+  border-color: #eee;
+  border-width: 1px;
+  border-style: solid;
+  box-shadow: 5px 5px 5px rgb(0,0,0,0.3);
+}
+
+
+
+.imageContainer {
+  width: 4em;
+  padding: 2em 0.5em;
+  margin: 0;
+  border-radius:1em;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 4em;
+}

@@ -1,0 +1,29 @@
+
+
+.webfont {
+    font-family: "Avenir","Hiragino Sans", "Avenir Next", Helvetica, "Times New Roman";
+}
+
+.semibold {
+    font-weight: 250;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.title{
+    font-size: 2em;
+    font-weight: 500;
+    /* background-color: black;
+    margin: 1em 10%; */
+    padding: 0em 0em 0.6em 10%;
+}
+
+.loginTitle {
+  font-size: 2em;
+  font-weight: 500;
+  /* background-color: black;
+  margin: 1em 10%; */
+
+}
