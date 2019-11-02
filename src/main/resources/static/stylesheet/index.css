@@ -1,0 +1,43 @@
+/* login form container */
+.loginContainer {
+  margin: 0em 32.5% 0em 32.5%;
+  padding: 1em;
+  background-color: white;
+  border-radius: 5px;
+  border-color: #eee;
+  border-width: 1px;
+  border-style: solid;
+  box-shadow: 5px 5px 5px rgb(0,0,0,0.3);
+}
+
+/* login text field: username and password*/
+.loginTextfield {
+    /*align: center;*/
+    width: 96%;
+    font-size: 1em;
+    letter-spacing: 1px;
+    padding: 5px 2%;
+    margin-bottom: 15px;
+}
+
+
+.login-button {
+    color: white;
+    background: #6fb3b8;
+    /*background: #269b9b;*/
+    border: none;
+    width: 100%;
+    /*margin-left: 100px;*/
+    /*letter-spacing: 1.5px;*/
+    font-size: 1em;
+    font-weight: 500;
+    border-radius: 3px;
+    padding: 10px 0;
+}
+
+.login-button:hover {
+    background: #269b9b;
+    text-decoration: none;
+    /*font-weight: bold;*/
+    cursor: pointer;
+}

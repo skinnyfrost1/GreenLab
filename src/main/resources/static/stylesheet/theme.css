@@ -1,0 +1,146 @@
+@charset "UTF-8";
+
+body {
+    background-color: #f3f3f3;
+    background-image: url("../image/dot-grid.png");
+    margin: 0;
+    min-width: 1000px;
+}
+
+textarea {
+  border-color: #c7c7c7;
+}
+
+a {
+    color:#326471;
+}
+.logo {
+    width: 2.4em;
+    padding: 0;
+    margin: 0;
+    border-radius: 100%;
+    background-image: url("../image/puppy.jpeg");
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 2.4em;
+}
+
+.header {
+    background-color: #326471;
+    width: 100%;
+    height: 2.5em;
+    padding: 0;
+    margin: 0;
+    text-align: justify-all;
+    font-size: 1.15em;
+    position: fixed;
+}
+
+.headerIcon {
+    font-size: 1.3em;
+}
+
+.intextIcon {
+  color: #218787;
+  text-decoration: none;
+  /* cursor: auto; */
+  opacity: 1.0;
+  font-size: 1.3em;
+}
+
+.intextIcon:hover {
+  color: #326471;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.headerSelected:link, .headerSelected:visited {
+    color: #eeeeee;
+    text-decoration: none;
+    cursor: auto;
+    opacity: 1.0;
+}
+
+.headerSelected:hover {
+    color: #218787;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.headerUnselected:link, .headerUnselected:visited {
+    color: #eeeeee;
+    text-decoration: none;
+    cursor: auto;
+    opacity: 1.0;
+}
+
+.headerUnselected:hover {
+    color: #218787;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.headerCellPadding {
+    padding: 0 0.5em;
+    margin: 0;
+}
+
+/* Container for view courses */
+.bigContainer {
+    margin: 0em 10% 3em 10%;
+    padding: 1em;
+    background-color: white;
+    border-radius: 5px;
+    border-color: #eee;
+    border-width: 1px;
+    border-style: solid;
+    box-shadow: 5px 5px 5px rgb(0,0,0,0.3);
+}
+
+/* Container for each course */
+.notVeryBigContainer {
+  margin: 1em 0em;
+  padding: 0.5em 0;
+}
+
+.notVeryBigContainer:hover {
+  background-color: #badfe7;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* View Course*/
+.courseContainer {
+  width: 100%;
+  height: 2.5em;
+  padding: 0;
+  /* margin: 1em 0em; */
+  text-align: justify-all;
+  font-size: 1.15em;
+}
+
+.courseCellPadding {
+    padding: 0em 1em;
+}
+
+.big-button {
+    color: white;
+    background: #6fb3b8;
+    /*background: #269b9b;*/
+    border: none;
+    width: 100%;
+    /*margin-left: 100px;*/
+    /*letter-spacing: 1.5px;*/
+    font-size: 1em;
+    font-weight: 500;
+    border-radius: 3px;
+    padding: 10px 0;
+}
+
+.big-button:hover {
+    background: #269b9b;
+    text-decoration: none;
+    /*font-weight: bold;*/
+    cursor: pointer;
+}

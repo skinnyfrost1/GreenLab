@@ -1,0 +1,44 @@
+.form-login{
+    display: block;
+    position: absolute;
+    left: 64%;
+    top: 31.5%;
+    /* margin-left: -200px;
+    margin-top: -200px; */
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 15px;
+    padding-bottom: 30px;
+    background-color: white;
+    min-width: 300px;
+    min-height: 300px;
+    width: 300px;
+    max-width: 300px;
+    border-radius: 6px;
+}
+.form-label{
+    margin-bottom: 0;
+}
+
+.form-title{
+    text-align: center;
+    font-weight: 500;
+    font-size: 1.6em;
+}
+
+.form-signup{
+    display: block;
+    position: absolute;
+    left: 35%;
+    top: 20.5%;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 15px;
+    padding-bottom: 30px;
+    background-color: white;
+    min-width: 300px;
+    min-height: 300px;
+    width: 400px;
+    max-width: 400px;
+    border-radius: 6px;
+}
