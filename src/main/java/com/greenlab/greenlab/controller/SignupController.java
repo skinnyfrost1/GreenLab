@@ -28,14 +28,18 @@ public class SignupController {
     public String postLogin(@RequestParam(value = "uid", required = false) String uid,
             @RequestParam(value = "email", required = false) String email,
             @RequestParam(value = "password", required = false) String password,
-            @RequestParam(value = "firstName", required = false) String firstName,
-            @RequestParam(value = "lastName", required = false) String lastName,
+            @RequestParam(value = "firstname", required = false) String firstname,
+            @RequestParam(value = "lastname", required = false) String lastname,
             @RequestParam(value = "role", required = false) String role, ModelMap model, HttpServletRequest request) {
 
-        User user = new User(uid, email, password, firstName, lastName, role);
+        System.out.println("[post/login]" + "uid=" + uid + "email=" + email + " password=" + password + " firstname="
+                + firstname + " lastname=" + lastname + " role= " + role);
+        User user = new User(uid, email, password, firstname, lastname, role);
         userRepository.save(user);
 
-        return "login";
+        return "ddd";
     }
+
+
 
 }

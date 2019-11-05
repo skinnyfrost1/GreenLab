@@ -12,23 +12,24 @@ public class User {
     private String uid;
     private String email;
     private String password;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private String role; // it should be student or professor or both.
 
     public User() {
 
     }
 
-    public User(String uid, String email, String password, String firstName, String lastName, String role) {
+    public User(String uid, String email, String password, String firstname, String lastname, String role) {
         this.uid = uid;
         this.email = email;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.role = role;
     }
 
+    
     /**
      * @return the email
      */
@@ -36,10 +37,10 @@ public class User {
         return email;
     }
     /**
-     * @return the firstName
+     * @return the firstname
      */
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
     /**
      * @return the id
@@ -48,10 +49,10 @@ public class User {
         return id;
     }
     /**
-     * @return the lastName
+     * @return the lastname
      */
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
     /**
      * @return the password
@@ -78,10 +79,10 @@ public class User {
         this.email = email;
     }
     /**
-     * @param firstName the firstName to set
+     * @param firstname the firstname to set
      */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
     /**
      * @param id the id to set
@@ -90,10 +91,10 @@ public class User {
         this.id = id;
     }
     /**
-     * @param lastName the lastName to set
+     * @param lastname the lastname to set
      */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
     /**
      * @param password the password to set
