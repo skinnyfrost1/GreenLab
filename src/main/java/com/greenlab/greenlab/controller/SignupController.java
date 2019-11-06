@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.greenlab.greenlab.model.User;
 import com.greenlab.greenlab.repository.UserRepository;
+import com.greenlab.greenlab.miscellaneous.PasswordChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class SignupController {
+    
     @Autowired
     private UserRepository userRepository;
 
@@ -34,6 +36,7 @@ public class SignupController {
 
         System.out.println("[post/login]" + "uid=" + uid + "email=" + email + " password=" + password + " firstname="
                 + firstname + " lastname=" + lastname + " role= " + role);
+        password = PasswordChecker.encryptSHA512(password);
         User user = new User(uid, email, password, firstname, lastname, role);
         userRepository.save(user);
 
