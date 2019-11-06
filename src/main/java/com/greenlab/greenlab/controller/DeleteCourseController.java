@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class DeleteCourseController {
 
-    @PostMapping(value = "/deletecourse")
+    @PostMapping(value = "/courses/delete")
     public String postMethodName(@RequestParam(value = "email", required = false) String username,
             @RequestParam(value = "password", required = false) String password, ModelMap model,
             HttpServletRequest request) {

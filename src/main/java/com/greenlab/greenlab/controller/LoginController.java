@@ -41,14 +41,17 @@ public class LoginController {
         User user = userRepository.findByEmail(email);
 
         if (user != null) {
-            //check password
+            // check password
             String encryptedPassword = PasswordChecker.encryptSHA512(password);
-            if((user.getPassword()).equals(encryptedPassword))
-            {
-                System.out.println("password incorrect");
+            if ((user.getPassword()).equals(encryptedPassword)) {
+                System.out.println("password correct");
                 System.out.println(encryptedPassword);
+                // Todo: Check the role of the user. if stu, return stuviewcourse. if prof,
+                // return profViewCourse
+
+            } else {
+                System.out.print("password incorrect");
             }
-            else System.out.print("password correct");
         } else {
             System.out.println("user = null");
         }

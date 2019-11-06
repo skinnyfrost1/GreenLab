@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ViewCoursesController {
 
-    @GetMapping(value="/viewcourses")
+    @GetMapping(value="/courses")
     public String getLogin(ModelMap model, HttpServletRequest request) {
 
         return "return";
