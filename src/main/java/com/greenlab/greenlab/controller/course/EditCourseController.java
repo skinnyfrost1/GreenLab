@@ -1,4 +1,4 @@
-package com.greenlab.greenlab.controller;
+package com.greenlab.greenlab.controller.course;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;

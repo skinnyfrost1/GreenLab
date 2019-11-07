@@ -11,7 +11,10 @@ public class Course{
     private String courseName;
     private String courseDescription;
     private List<User> students;
+    //creator
     // private List<Lab> labs;
+
+
 
     public Course(){
 

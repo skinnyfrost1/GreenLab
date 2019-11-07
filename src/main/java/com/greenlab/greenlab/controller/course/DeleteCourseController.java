@@ -1,4 +1,4 @@
-package com.greenlab.greenlab.controller;
+package com.greenlab.greenlab.controller.course;
 
 import javax.servlet.http.HttpServletRequest;
 
