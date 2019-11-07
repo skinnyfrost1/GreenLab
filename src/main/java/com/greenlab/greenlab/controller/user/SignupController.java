@@ -22,7 +22,7 @@ public class SignupController {
     @GetMapping(value = "/signup")
     public String getLogin(ModelMap model, HttpServletRequest request) {
 
-        return "signup";
+        return "signUp";
 
     }
 
