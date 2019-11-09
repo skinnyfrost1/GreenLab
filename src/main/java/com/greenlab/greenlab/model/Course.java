@@ -5,75 +5,86 @@ import java.util.List;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-
-public class Course{
+public class Course {
     private String courseId;
     private String courseName;
+    private String semester;
     private String courseDescription;
+    private String createDate;
     private List<User> students;
-    //creator
+    // creator
     // private List<Lab> labs;
 
-
-
-    public Course(){
+    public Course() {
 
     }
 
-    public Course(String courseId, String courseName, String courseDescription, List<User> students){
-        this.courseId=courseId;
-        this.courseName=courseName;
-        this.courseDescription=courseDescription;
-        this.students = students;
-    }
-
-
-    /**
-     * @param courseDescription the courseDescription to set
-     */
-    public void setCourseDescription(String courseDescription) {
-        this.courseDescription = courseDescription;
-    }
-    /**
-     * @param courseId the courseId to set
-     */
-    public void setCourseId(String courseId) {
+    public Course(String courseId, String courseName, String semester, String courseDescription, String createDate,
+            List<User> students) {
         this.courseId = courseId;
-    }
-    /**
-     * @param courseName the courseName to set
-     */
-    public void setCourseName(String courseName) {
         this.courseName = courseName;
-    }
-    /**
-     * @param students the students to set
-     */
-    public void setStudents(List<User> students) {
+        this.semester=semester;
+        this.courseDescription = courseDescription;
+        this.createDate = createDate;
         this.students = students;
     }
-    /**
-     * @return the courseDescription
-     */
-    public String getCourseDescription() {
-        return courseDescription;
-    }
-    /**
-     * @return the courseId
-     */
+
     public String getCourseId() {
         return courseId;
     }
-    /**
-     * @return the courseName
-     */
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
     public String getCourseName() {
         return courseName;
     }
-    /**
-     * @return the students
-     */
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    public String getCourseDescription() {
+        return courseDescription;
+    }
+
+    public void setCourseDescription(String courseDescription) {
+        this.courseDescription = courseDescription;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
     public List<User> getStudents() {
         return students;
     }
+
+    public void setStudents(List<User> students) {
+        this.students = students;
+    }
+
+    public String toString(){
+        String str = "courseID="+getCourseId()+
+                    "\ncourseName="+getCourseName()+
+                    "\nsemester="+getSemester()+
+                    "\ncourseDescription="+getCourseDescription()+
+                    "\ncreateDate="+getCreateDate();
+
+        return str;
+    }
+
 }

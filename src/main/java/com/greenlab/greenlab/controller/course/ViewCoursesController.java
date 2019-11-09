@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ViewCoursesController {
 
     @GetMapping(value="/courses")
-    public String getLogin(ModelMap model, HttpServletRequest request) {
+    public String getCourses(ModelMap model, HttpServletRequest request) {
 
         return "return";
 

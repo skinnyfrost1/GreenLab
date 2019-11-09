@@ -84,46 +84,49 @@
 <div style="padding: 4em;"></div>
 <!-- Title -->
 <!-- List of Courses-->
-<form th:action="@{/signup}" method = "post">
+<!-- <form th:action="@{/signup}" method = "post"> -->
+<form>
     <div class="loginContainer webfont">
         <div class="loginTitle webfont" style="text-align:center;">Sign Up</div>
         <div class="webfont" style="display:inline-block;font-size: 1.15em;margin:1em 0;">Email</div>
-        <input type="email" name="email" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        <input id="email" type="email" name="email" value="" maxlength="24" class="loginTextfield webfont" required><br>
         <div>
             <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">Password </span>
             </span>
         </div>
-        <input type="password" name="password" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        <input id="password" type="password" name="password" value="" maxlength="24" class="loginTextfield webfont" required><br>
         <div>
             <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">Comfirm Password</span>
             </span>
         </div>
-        <input type="password" name="password" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        <input id="confirmPassword" type="password" name="confirmPassword" value="" maxlength="24" class="loginTextfield webfont" required><br>
         
         <div>
             <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">UID </span>
                 </span>
         </div>
-        <input type="text" name="uid" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        <input id="uid" type="text" name="uid" value="" maxlength="24" class="loginTextfield webfont" required><br>
         
         <div>
             <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">First Name </span>
                 </span>
             </div>
-        <input type="text" name="firstname" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        <input id="firstname" type="text" name="firstname" value="" maxlength="24" class="loginTextfield webfont" required><br>
         <div>
             <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">Last Name</span>
             </span>
         </div>
-        <input type="text" name="lastname" value="" maxlength="24" class="loginTextfield webfont" required><br>
-        
-        <br>
-        <input type="radio" name="role" value="professor"> I'm a professor<br/>
-        <input type="radio" name="role" value="student" checked="checked"> I'm a student<br/>
+        <input id="lastname" type="text" name="lastname" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        <input id="professor" type="radio" name="role" value="professor"> I'm a professor<br/>
+        <input id="student" type="radio" name="role" value="student" checked="checked"> I'm a student<br/>
     
-        <input type="submit" value="Sign Up" class="login-button webfont" style="cursor: pointer;">
-
+        </br>
+        <div class="ErrorMessage" id="errorMessage"></div>
+        <!-- <input type="submit" value="Sign Up" class="login-button webfont" style="cursor: pointer;"> -->
+        <button type="submit" onclick="checkConfirmPassword()" class="login-button webfont" style="cursor: pointer;">Summit</button>
     </div>
 </form>
+
+<script type="text/javascript" th:src="@{/js/signup.js}"></script>
 </body>
 </html>
