@@ -1,19 +1,26 @@
 package com.greenlab.greenlab.controller.user;
 
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import com.greenlab.greenlab.model.User;
 import com.greenlab.greenlab.repository.UserRepository;
+import com.greenlab.greenlab.dto.CheckEmailRequestBody;
+import com.greenlab.greenlab.dto.CheckEmailResponseBody;
 import com.greenlab.greenlab.miscellaneous.PasswordChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.greenlab.greenlab.controller.course.ViewCoursesController;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class SignupController {
@@ -49,6 +56,30 @@ public class SignupController {
         return "ddd";
     }
 
+    @PostMapping(value = "/checkemail")
+    public ResponseEntity<?> postCheckEmail(@Valid @RequestBody CheckEmailRequestBody checkEmail, Errors errors) {
+        CheckEmailResponseBody result = new CheckEmailResponseBody();
 
+        if (errors.hasErrors()) {
+
+            result.setMessage(
+                    errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
+
+            return ResponseEntity.badRequest().body(result);
+
+        }
+
+        User user = userRepository.findByEmail(checkEmail.getEmail());
+
+        if (user == null) {
+            result.setMessage("email not found");
+            result.setExist(false);
+        } else {
+            result.setMessage("email is exist");
+            result.setExist(true);
+        }
+        return ResponseEntity.ok(result);
+
+    }
 
 }
