@@ -85,8 +85,8 @@
 <div style="padding: 4em;"></div>
 <!-- Title -->
 <!-- List of Courses-->
-<!-- <form th:action="@{/signup}" method = "post"> -->
-<form>
+<form th:action="@{/signup}" method = "post">
+<!-- <form> -->
     <div class="loginContainer webfont">
         <div class="loginTitle webfont" style="text-align:center;">Sign Up</div>
         <div class="webfont" style="display:inline-block;font-size: 1.15em;margin:1em 0;">Email</div>
@@ -122,6 +122,7 @@
         <input id="student" type="radio" name="role" value="student" checked="checked"> I'm a student<br/>
     
         </br>
+        <div class="ErrorMessage" id="emailExist"></div>
         <div class="ErrorMessage" id="errorMessage"></div>
         <input id="submit" type="submit" value="Submit" class="login-button webfont" style="cursor: pointer;">
         <!-- <button id="submit" type="submit" onclick="checkConfirmPassword()" class="login-button webfont" style="cursor: pointer;">Submit</button> -->

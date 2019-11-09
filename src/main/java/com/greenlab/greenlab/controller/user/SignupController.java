@@ -66,9 +66,7 @@ public class SignupController {
                     errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
 
             return ResponseEntity.badRequest().body(result);
-
         }
-
         User user = userRepository.findByEmail(checkEmail.getEmail());
 
         if (user == null) {
@@ -79,7 +77,6 @@ public class SignupController {
             result.setExist(true);
         }
         return ResponseEntity.ok(result);
-
     }
 
 }
