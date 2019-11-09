@@ -1,11 +1,23 @@
 package com.greenlab.greenlab.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+public class CheckEmailResponseBody {
 
-public class CheckEmailResponseBody{
-
-    @Getter
-    @Setter
     private String message;
+    private boolean isExist;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isExist() {
+        return isExist;
+    }
+
+    public void setExist(boolean isExist) {
+        this.isExist = isExist;
+    }
 }

@@ -9,6 +9,7 @@
     <link th:href="@{/stylesheet/toggleButton.css}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>profViewCourse</title>
 </head>
 <body>
@@ -96,7 +97,7 @@
         </div>
         <input id="password" type="password" name="password" value="" maxlength="24" class="loginTextfield webfont" required><br>
         <div>
-            <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">Comfirm Password</span>
+            <span id="confirmPasswordLabel" class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">Comfirm Password</span>
             </span>
         </div>
         <input id="confirmPassword" type="password" name="confirmPassword" value="" maxlength="24" class="loginTextfield webfont" required><br>
@@ -122,8 +123,8 @@
     
         </br>
         <div class="ErrorMessage" id="errorMessage"></div>
-        <!-- <input type="submit" value="Sign Up" class="login-button webfont" style="cursor: pointer;"> -->
-        <button type="submit" onclick="checkConfirmPassword()" class="login-button webfont" style="cursor: pointer;">Summit</button>
+        <input id="submit" type="submit" value="Submit" class="login-button webfont" style="cursor: pointer;">
+        <!-- <button id="submit" type="submit" onclick="checkConfirmPassword()" class="login-button webfont" style="cursor: pointer;">Submit</button> -->
     </div>
 </form>
 
