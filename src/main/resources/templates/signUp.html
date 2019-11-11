@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href="../static/stylesheet/theme.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/font.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/dropdown_menu.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/index.css" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/index.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/toggleButton.css}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>profViewCourse</title>
 </head>
 <body>
@@ -83,23 +85,50 @@
 <div style="padding: 4em;"></div>
 <!-- Title -->
 <!-- List of Courses-->
-<div class="loginContainer webfont">
-  <div class="loginTitle webfont" style="text-align:center;">Sign Up</div>
-  <div class="webfont" style="display:inline-block;font-size: 1.15em;margin:1em 0;">Email</div>
-  <input type="text" name="username" value="" maxlength="24" class="loginTextfield webfont" required><br>
-  <div>
-      <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">Password </span>
-      </span>
-  </div>
-  <input type="text" name="password" value="" maxlength="24" class="loginTextfield webfont" required><br>
-  <div>
-      <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">Comfirm Password</span>
-      </span>
-  </div>
-  <input type="text" name="password" value="" maxlength="24" class="loginTextfield webfont" required><br>
-  <br>
-  <input type="submit" value="Sign Up" class="login-button webfont" style="cursor: pointer;">
+<form th:action="@{/signup}" method = "post">
+<!-- <form> -->
+    <div class="loginContainer webfont">
+        <div class="loginTitle webfont" style="text-align:center;">Sign Up</div>
+        <div class="webfont" style="display:inline-block;font-size: 1.15em;margin:1em 0;">Email</div>
+        <input id="email" type="email" name="email" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        <div>
+            <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">Password </span>
+            </span>
+        </div>
+        <input id="password" type="password" name="password" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        <div>
+            <span id="confirmPasswordLabel" class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">Comfirm Password</span>
+            </span>
+        </div>
+        <input id="confirmPassword" type="password" name="confirmPassword" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        
+        <div>
+            <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">UID </span>
+                </span>
+        </div>
+        <input id="uid" type="text" name="uid" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        
+        <div>
+            <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">First Name </span>
+                </span>
+            </div>
+        <input id="firstname" type="text" name="firstname" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        <div>
+            <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">Last Name</span>
+            </span>
+        </div>
+        <input id="lastname" type="text" name="lastname" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        <input id="professor" type="radio" name="role" value="professor"> I'm a professor<br/>
+        <input id="student" type="radio" name="role" value="student" checked="checked"> I'm a student<br/>
+    
+        </br>
+        <div class="ErrorMessage" id="emailExist"></div>
+        <div class="ErrorMessage" id="errorMessage"></div>
+        <input id="submit" type="submit" value="Submit" class="login-button webfont" style="cursor: pointer;">
+        <!-- <button id="submit" type="submit" onclick="checkConfirmPassword()" class="login-button webfont" style="cursor: pointer;">Submit</button> -->
+    </div>
+</form>
 
-</div>
+<script type="text/javascript" th:src="@{/js/signup.js}"></script>
 </body>
 </html>
