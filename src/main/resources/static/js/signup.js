@@ -28,9 +28,11 @@ $(document).ready(function(){
             var isExist = data['exist'];
             if (isExist==true){
                 $('#emailExist').html(data['message']);
+                $('#submit').attr("disabled",true);
             
             } else{
                 $('#emailExist').html('');
+                $('#submit').attr("disabled",false);
             }
             console.log("SUCCESS : ", data);
         },
