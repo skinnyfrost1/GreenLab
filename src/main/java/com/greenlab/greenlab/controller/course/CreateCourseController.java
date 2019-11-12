@@ -37,7 +37,8 @@ public class CreateCourseController {
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date date = new Date();
         String createDate = dateFormat.format(date);
-        Course course = new Course(courseId, courseName, semester, courseDescription,createDate,null);
+        String creator = (String) request.getSession().getAttribute("email");
+        Course course = new Course(courseId, courseName, semester, courseDescription,createDate,creator,null);
         System.out.println(course.toString());
         courseRepository.save(course); 
         return "ddd";

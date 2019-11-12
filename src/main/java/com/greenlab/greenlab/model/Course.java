@@ -10,6 +10,7 @@ public class Course {
     private String courseName;
     private String semester;
     private String courseDescription;
+    private String creator;
     private String createDate;
     private List<User> students;
     // creator
@@ -19,12 +20,13 @@ public class Course {
 
     }
 
-    public Course(String courseId, String courseName, String semester, String courseDescription, String createDate,
+    public Course(String courseId, String courseName, String semester, String courseDescription, String createDate, String creator,
             List<User> students) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.semester=semester;
         this.courseDescription = courseDescription;
+        this.creator = creator;
         this.createDate = createDate;
         this.students = students;
     }
@@ -85,6 +87,14 @@ public class Course {
                     "\ncreateDate="+getCreateDate();
 
         return str;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
 }
