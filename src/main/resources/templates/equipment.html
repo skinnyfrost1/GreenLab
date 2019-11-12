@@ -1,0 +1,1097 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="googlebot" content="noindex">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="icon" href="https://ml4141715.github.io/water/cdn/image/leaf.png">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery.cookie.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/sockjs.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/stomp.min.js"></script>
+    <title>Green Lab</title>
+</head>
+
+<body onresize="onResize()">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0">
+    <div class="container">
+        <a href="/" class="navbar-brand font-italic text-capitalize">
+            <i class='fas fa-leaf'></i>
+            Green Lab</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown mr-3">
+                <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" th:text="${email}">
+                    <i class="fas fa-user"></i> Welcome Green User
+                </a>
+                <div class="dropdown-menu">
+<!--                    <a href="editProfile.html" class="dropdown-item">         th:text="${email}"-->
+<!--                        <i class="fas fa-user-circle"></i> Profile-->
+<!--                    </a>-->
+                    <a href="/equipment" class="dropdown-item">
+                        <i class="fas fa-cog"></i> lab
+                    </a>
+<!--                    <a href="login.html" class="dropdown-item">-->
+<!--                        <i class="fas fa-user-times"></i> Logout-->
+<!--                    </a>-->
+                </div>
+
+            </li>
+            <!--            <li class="nav-item">-->
+            <!--                -->
+            <!--            </li>-->
+        </ul>
+    </div>
+</nav>
+<nav class="navbar navbar-expand-sm navbar-dark bg-success text-white p-0">
+    <div class="container">
+        <a href="" class="navbar-brand font-italic text-capitalize">
+            <i class='fa fa-flask'></i>
+
+            equipment</a>
+
+<!--        <div class="navbar-nav ml-auto">-->
+
+<!--            <div><i class="fas fa-paw"></i> drag board mode</div>-->
+<!--            <div><i class="fa fa-flask"></i> hide equipment panel</div>-->
+<!--            <div><i class="fas fa-window-restore"></i> hide control panel</div>-->
+
+<!--        </div>-->
+
+
+
+        <ul class="navbar-nav ml-auto">
+            <div class="mt-2 mr-3" style="" id="centerBoardId">
+                <i class="far fa-dot-circle"></i>
+            </div>
+
+            <div class="mt-2 mr-3" style="" id="dragBoardId">
+<!--                <span ><i class="fas fa-paw"></i></span>-->
+                <i class="fas fa-mouse-pointer"></i>
+            </div>
+            <div class="mt-2 mr-3" style="" >
+                <i class="fas fa-sync-alt" id="syncId"></i>
+            </div>
+            <li class="nav-item dropdown mr-3">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                    <i class="fas fa-folder-open"></i> window setting
+                </a>
+                <div class="dropdown-menu">
+<!--                    <a href="" class="dropdown-item">-->
+<!--                        <i class="fas fa-paw"></i><span id="dragBoardId" > drag board mode</span>-->
+<!--                    </a>-->
+                    <a href="" class="dropdown-item">
+                        <i class="fa fa-flask"></i><span id="equipmentFolderHideId" > hide equipment panel</span>
+                    </a>
+                    <a href="" class="dropdown-item text-capitalize">
+                        <i class="fas fa-window-restore"></i><span id="controlPaneHideId" > hide control panel</span>
+                    </a>
+                </div>
+            </li>
+            <!--            <li class="nav-item">-->
+            <!--                <a href="login.html" class="nav-link">-->
+            <!--                    <i class="fas fa-window-restore"></i> my course-->
+            <!--            <i class="fas fa-eye"></i>    </a>-->
+            <!--            </li>-->
+        </ul>
+    </div>
+</nav>
+
+<!--<div id="666test">-->
+<!--    666-->
+<!--</div>-->
+
+<div id="equipmentBody">
+
+
+    <div id="operationList">
+        <!--        <button class="btn btn-outline-primary" type="button">Primary Outline</button>-->
+        <!--        <h1 style="writing-mode: vertical-lr;"> 7797</h1>-->
+
+        <div class="btn btn-warning mb-1 w-100  operationListButton">
+            <i class="fas fa-search fa-rotate-90"></i>&nbsp;&nbsp;Find
+        </div>
+
+        <div class="btn btn-success mb-1 w-100  operationListButton">
+            <i class="fas fa-plus-square fa-rotate-90"></i>&nbsp;&nbsp;Create New
+        </div>
+
+        <div class="btn btn-primary mb-1 w-100  operationListButton">
+            <i class="fas fa-share-alt-square fa-rotate-90"></i>&nbsp;&nbsp;Share
+        </div>
+
+        <div class="btn btn-info  mb-1 w-100  operationListButton">
+            <i class="fas fa-concierge-bell fa-rotate-90"></i>&nbsp;&nbsp;Tutorial
+        </div>
+
+
+    </div>
+
+    <div id="equipmentList">
+
+
+        <nav class="navbar navbar-dark bg-dark p-0 sticky-top">
+
+            <!--                <a href="/" class="navbar-brand font-italic text-capitalize" > chemistry lab simulator <span id="year"></span></a>-->
+
+
+<!--            <div class="btn btn-primary w-100 ">My Equipments &nbsp;<i class="fa fa-caret-down"></i></div>-->
+
+            <div class="btn-group d-block w-100 ">
+
+                <button class="btn btn-primary dropdown-toggle w-100" type="button" data-toggle="dropdown">
+                    <span>My Equipments &nbsp;</span>
+
+                </button>
+                <div class="dropdown-menu w-100">
+                    <div class="dropdown-item"><p class="d-inline">Folder 2</div>
+                    <a class="dropdown-item" href="#">Folder 3</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><i class="fas fa-folder"></i>&nbsp;&nbsp;Mangae Folders</a>
+                </div>
+            </div>
+
+        </nav>
+
+
+<!--        <div class="card-rows ">-->
+<!--            <div class="card mb-1">-->
+<!--                <img class="card-img-top img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="" draggable="false">-->
+<!--                <div class="card-body">-->
+<!--                    <p class="card-title h4 small font-weight-bold">Holder</p>-->
+<!--                    <p class="card-text h5 small">Author: Homelander </p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="card mb-1">-->
+<!--                <img class="card-img-top img-fluid" src="https://ml4141715.github.io/water/cdn/image/Measure.png" alt="" draggable="false">-->
+<!--                <div class="card-body">-->
+<!--                    <p class="card-title h4 small font-weight-bold">Measure</p>-->
+<!--                    <p class="card-text h5 small">Author: Tony Stark </p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="card mb-1">-->
+<!--                <img class="card-img-top img-fluid" src="https://ml4141715.github.io/water/cdn/image/Seperator.png" alt="" draggable="false">-->
+<!--                <div class="card-body">-->
+<!--                    <p class="card-title h4 small font-weight-bold">Seperator</p>-->
+<!--                    <p class="card-text h5 small">Author: Spider Man </p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="card mb-1">-->
+<!--                <img class="card-img-top img-fluid" src="https://ml4141715.github.io/water/cdn/image/Timer.png" alt="" draggable="false">-->
+<!--                <div class="card-body">-->
+<!--                    <p class="card-title h4 small font-weight-bold">Timer</p>-->
+<!--                    <p class="card-text h5 small">Author: Bat Man</p>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+
+        <div class="card-rows" id="sortable">
+            <div class="card mb-1">
+                <img class="card-img-top img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="" draggable="false">
+                <div class="card-body">
+                    <p class="card-title h4 small font-weight-bold">Holder</p>
+                    <p class="card-text h5 small">Author: Homelander </p>
+                </div>
+            </div>
+            <div class="card mb-1">
+                <img class="card-img-top img-fluid" src="https://ml4141715.github.io/water/cdn/image/Measure.png" alt="" draggable="false">
+                <div class="card-body">
+                    <p class="card-title h4 small font-weight-bold">Measure</p>
+                    <p class="card-text h5 small">Author: Tony Stark </p>
+                </div>
+            </div>
+            <div class="card mb-1">
+                <img class="card-img-top img-fluid" src="https://ml4141715.github.io/water/cdn/image/Seperator.png" alt="" draggable="false">
+                <div class="card-body">
+                    <p class="card-title h4 small font-weight-bold">Seperator</p>
+                    <p class="card-text h5 small">Author: Spider Man </p>
+                </div>
+            </div>
+            <div class="card mb-1">
+                <img class="card-img-top img-fluid" src="https://ml4141715.github.io/water/cdn/image/Timer.png" alt="" draggable="false">
+                <div class="card-body">
+                    <p class="card-title h4 small font-weight-bold">Timer</p>
+                    <p class="card-text h5 small">Author: Bat Man</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div id="equipmentPanel">
+    <iframe  style="width: 100%;height:100%; border: 1px solid mediumseagreen; " src="/equipmentPane2.html"></iframe>
+<!--    <div id="SVGBoard" style="position: fixed; width: 100%; height: 100%; border: 1px solid mediumseagreen;">-->
+<!--    onload="makeDraggable(evt)"-->
+<!--        <svg id="SVGBoard" style="border: 1px solid mediumseagreen;" >-->
+<!--            <polygon  points="300,10 250,290 160,210" style="z-index: 9; fill:#ffffff;stroke:purple;stroke-width:1" />-->
+<!--            <polygon points="400,10 250,310 160,210"  style="fill:#5eff8f;stroke:purple;stroke-width:1" />-->
+<!--            <image id="imageA"  href="https://ml4141715.github.io/water/cdn/image/leaf.png" x="-10" y="0" height="50px" width="50px"/>-->
+<!--        </svg>-->
+    </div>
+</div>
+<div id="equipmentOperationSection">
+
+    <!--   so here we add some operation buttons   border-right-0 border-left-0  -->
+    <div class="card h-100 border-bottom-0 ">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item ">
+                    <a class="nav-link text-muted" id="operationImageSection" href="#"><i class='fas fa-file-image'> Image</i></a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-muted active" id="operationEditSection"  href="#"><i class='fas fa-cut'></i> Edit</a>
+
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link text-muted " id="operationAreaSection" href="#"><i class='fas fa-draw-polygon'></i> Area</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-muted" id="operationAddSection" href="#"><i class='far fa-object-group'></i> Add</a>
+                </li>
+            </ul>
+        </div>
+<!--        <div class="card-body d-none">-->
+<!--            <h4 class="card-title">Card Title</h4>-->
+<!--            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, perspiciatis.</p>-->
+<!--            <a class="btn btn-primary" href="#">Read More</a>-->
+<!--        </div>-->
+
+        <div class="card-body d-none" id="ImageSection">
+            <h4 class="card-title">Upload Image</h4>
+            <!--                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, perspiciatis.</p>-->
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Name</span>
+                </div>
+                <input class="form-control" type="text" placeholder="Enter Equipment Name" id="equipmentNameInput">
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="">Description</label>
+                <textarea class="form-control" rows="3" id="equipmentDescription"></textarea>
+            </div>
+<!--       id="equipmentNameInput"  id="equipmentAngle" id="equipmentSize"   id="equipmentDescription"-->
+
+
+            <div class="custom-file mb-3">
+                <input type="file" id="myfile" class="custom-file-input" >
+                <label class="custom-file-label" for="myfile"><i class="fas fa-upload"></i> Choose file</label>
+            </div>
+            <!--                <div class="custom-file mb-2">-->
+            <!--                    <input type="file" id="myfile" class="custom-file-input">-->
+            <!--                    <label class="custom-file-label" for="myfile">Choose file</label>-->
+            <!--            the thing below sholud be a list of images    </div>-->
+<!--           -->
+            <ul  id="sortable2" class="list-group mb-5 " >
+                <li class="list-group-item bg-success " id="image1_test">Image 1</li>
+                <li class="list-group-item bg-primary">Image 2</li>
+                <li class="list-group-item bg-warning">Image 3</li>
+                <li class="list-group-item ">Item 4</li>
+            </ul>
+
+
+            <a class="btn btn-primary" href="#">Next Step</a>
+        </div>
+
+        <div class="card-body" id="EditSection">
+
+            <div class="btn-group d-block ">
+                <button class="btn btn-primary mr-1" type="button"><i class="far fa-image"></i>&nbsp;Current: Image1</button>
+                <button class="btn btn-secondary dropdown-toggle " type="button" data-toggle="dropdown">
+                    <span><i class="far fa-images"></i> Status Images </span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Image 1</a>
+                    <a class="dropdown-item" href="#">Image 2</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Add More</a>
+                </div>
+            </div>
+            <br>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Status</span>
+                </div>
+                <input  class="form-control" type="text" placeholder="Enter Status Name">
+            </div>
+
+            <br>
+
+            <div class="form-group">
+                <label for="">Size</label>
+                <input id="equipmentSize" class="custom-range" min="1" max="5" step="1" value="3" type="range">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="">Angle</label>
+                <input  id="equipmentAngle" class="custom-range" min="1" max="5" step="1" value="1" type="range" >
+            </div>
+
+            <br>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">X Position</span>
+                </div>
+                <input class="form-control" type="text" placeholder="12">
+            </div>
+
+            <br>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Y Position</span>
+                </div>
+                <input class="form-control" type="text" placeholder="15">
+            </div>
+
+        </div>
+
+        <div class="card-body" id="AreaSection"></div>
+
+        <div class="card-body" id="AddSection"></div>
+
+    </div>
+
+</div>
+</div>
+
+
+<style>
+
+
+    /*#feedback { font-size: 1.4em; }*/
+    /*#selectable .ui-selecting { background: #FECA40; }*/
+    /*#selectable .ui-selected { background: #F39814; color: white; }*/
+    /*#selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }*/
+    /*#selectable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }*/
+
+    .operationListButton{
+        writing-mode: vertical-lr;
+        font-size: 20px;
+        color: #fefefe;
+        display: inline-block;
+        height: 170px   ;
+
+    }
+
+    #operationList{
+        position: fixed;
+        /*position: absolute;*/
+        display: block;
+        left: 0px;
+        width: 50px;
+        height: 100%;
+        /*border: 3px solid #b31e2d;*/
+        /*padding: 0px;*/
+        margin: 0px;
+        float: left;
+        overflow: auto;
+        padding: 5px;
+    }
+
+    #equipmentList {
+        /*position: absolute;*/
+        display: block;
+        position: fixed;
+        left: 50px;
+        width: 130px;
+        height: 100%;
+        /*border: 3px solid mediumseagreen;*/
+        float: left;
+        overflow: auto;
+        padding: 5px;
+    }
+
+    #equipmentPanel{
+        /*overflow: auto;*/
+        /*display: block;*/
+        position: fixed;
+        /*padding-left: 180px;*/
+        /*padding-right: 200px;*/
+        /*margin-left: 180px;*/
+        /*margin-right: 200px;*/
+        /*margin-right: 200px;*/
+        /*width: 100%;*/
+        /*width:100%;*/
+        /*height: 100%;*/
+        /*left: 180px;*/
+        /*right:340px;*/
+        /*width: 80%;*/
+        /*border: none;*/
+        /*padding-right: 340px;*/
+        /*margin-right: 340px;*/
+        /*background-color: #f44336;*/
+        /*border: 3px solid #2e28b3;*/
+        padding: 5px;
+        float: left;
+    }
+
+
+    #equipmentOperationSection{
+        position: fixed;
+        /*position: absolute;*/
+        display: block;
+        right: 0px;
+        width: 340px;
+        height: 100%;
+        /*border: 3px solid mediumseagreen;*/
+        float: left;
+        padding: 5px;
+        overflow: auto;
+    }
+
+    textarea {
+        height:150px;
+    }
+
+
+</style>
+<!-- the js file will be separate to several different part in the same page  -->
+<!-- the js file below we be use to handle window size problem -->
+<script>
+    //equipmentFolderHideId
+
+    //controlPaneHideId
+
+
+
+    class Box{
+
+        constructor( elementId ){
+            this.elementId = elementId;
+            this.width = 0;
+            this.height = 0;
+        }
+
+        setWidth( width ){
+            this.width = width;
+            document.getElementById(this.elementId).style.width = this.width+"px";
+        }
+
+        setHeight( height ){
+            this.height = height;
+            document.getElementById(this.elementId).style.height = this.height+"px";
+        }
+
+        setLeft( left ){
+            document.getElementById(this.elementId).style.left = left+"px";
+        }
+
+        setRight( right ){
+            document.getElementById(this.elementId).style.right=right+"px";
+        }
+
+        getWidth(){
+            return this.width;
+        }
+
+        getHeight(){
+            return this.height;
+        }
+
+    }
+
+    class TheWindow{
+
+        constructor(){
+            this.navbarHeight = 81;
+
+            this.operationListWidth = 50;
+            this.equipmentListWidth = 200;
+            this.equipmentOperationSectionWidth = 380;
+
+            this.operationList = new Box( "operationList" );
+            this.operationList.setWidth( this.operationListWidth );
+
+            this.equipmentList = new Box( "equipmentList" );
+            this.equipmentList.setWidth(this.equipmentListWidth);
+            this.equipmentList.setLeft(this.operationListWidth);
+
+            this.equipmentPanel = new Box( "equipmentPanel" );
+            this.equipmentPanel.setLeft(this.operationListWidth+ this.equipmentListWidth );
+
+            this.equipmentOperationSection = new Box( "equipmentOperationSection" );
+            this.equipmentOperationSection.setWidth(this.equipmentOperationSectionWidth);
+            this.equipmentOperationSection.setRight( 0 );
+
+            this.update();
+
+            //operationList
+            //equipmentList
+            //equipmentPanel
+            //equipmentOperationSection
+        }
+
+        collectBox(){
+            return [
+                this.operationList,
+                this.equipmentList,
+                this.equipmentPanel,
+                this.equipmentOperationSection
+            ];
+        }
+
+        update(){
+            this.setAllHeight();
+            this.setEquipmentPanelWidth();
+
+        }
+
+        setAllHeight(){
+
+            for( var i = 0 ;  i< this.collectBox().length ; i++ ){
+
+                this.collectBox()[i].setHeight( this.getRestHeight() );
+
+            }
+
+            // here we set svg board
+            //document.getElementById("SVGBoard").style.height = (this.getRestHeight()-10)+"px";
+
+        }
+
+        setEquipmentPanelWidth(){
+
+            this.equipmentPanel.setWidth( this.getRestWidth() );
+            //document.getElementById("SVGBoard").style.width = (this.getRestWidth()-10)+"px";
+        }
+
+        getWindowWidth(){
+            return window.innerWidth;
+        }
+
+        getWindowHeight(){
+            return window.innerHeight;
+        }
+
+        getRestHeight(){
+            return this.getWindowHeight()-this.navbarHeight;
+        }
+
+        getRestWidth(){
+            return this.getWindowWidth()-(this.operationListWidth+ this.equipmentListWidth+this.equipmentOperationSectionWidth);
+        }
+
+    }
+    //____________________________________________________________________________________________
+    // so there are several problem I need solve here
+
+
+    var theWindow = new TheWindow();
+
+    function onResize() {
+
+        theWindow.update();
+
+
+    }
+
+    // document.getElementsByTagName("body")[0].addEventListener("mousedown", function (evt) {
+    //
+    //     console.log(evt.clientX+" 666 "+evt.clientY);
+    //
+    // });
+    // so we need calculate the 4 section height and width
+    //
+    onResize();
+
+
+</script>
+<!-- this js file handle right side operation panel -->
+<script>
+
+    class EquipmentOperationSection{
+
+        constructor(){
+            this.imageId = "operationImageSection";
+            this.editId = "operationEditSection";
+            this.areaId = "operationAreaSection";
+            this.addId = "operationAddSection";
+
+
+
+        }
+
+
+
+        setActive( Id ){
+            document.getElementById(Id).className="nav-link text-muted active";
+
+            //console.log( Id.slice(9) );
+
+            // we also need active the body content
+            document.getElementById(Id.slice(9)).className = "card-body";
+        }
+
+        setInactive( Id ){
+            document.getElementById(Id).className="nav-link text-muted";
+
+            //console.log( Id.slice(9) );
+
+            document.getElementById(Id.slice(9)).className = "card-body d-none";
+        }
+
+        getIds(){
+            return [this.imageId, this.editId, this.areaId,  this.addId ];
+        }
+
+        clearActive(){
+            for( var i = 0 ; i< this.getIds().length ; i++ ){
+                this.setInactive(  this.getIds()[i] );
+            }
+        }
+
+        setIndexActive( index ){
+            this.clearActive();
+            this.setActive( this.getIds()[index] );
+        }
+
+    }
+
+    var eOSection = new EquipmentOperationSection();
+
+    eOSection.setIndexActive(0);
+
+    document.getElementById( eOSection.imageId ).onclick=function () {
+        eOSection.clearActive();
+        eOSection.setActive( eOSection.imageId );
+    };
+
+    document.getElementById( eOSection.addId ).onclick=function () {
+        eOSection.clearActive();
+        eOSection.setActive( eOSection.addId );
+    };
+
+    document.getElementById( eOSection.areaId ).onclick=function () {
+        eOSection.clearActive();
+        eOSection.setActive( eOSection.areaId );
+    };
+
+    document.getElementById( eOSection.editId ).onclick=function () {
+        eOSection.clearActive();
+        eOSection.setActive( eOSection.editId );
+    };
+
+
+
+
+
+
+    // $('[data-toggle="tooltip"]').tooltip();
+
+    // function showTooltip() {
+    //     $('#findId').tooltip('show');
+    // }
+    // $( function() {
+    //     $( "#sortable" ).sortable();
+    //     $( "#sortable" ).disableSelection();
+    // } );
+    //
+
+    $( function() {
+        $( "#sortable2" ).sortable();
+        $( "#sortable2" ).disableSelection();
+    } );
+
+    // console.log("have fun");
+
+</script>
+
+<!-- this js will handle hide left and hide right side -->
+<script>
+    // before hide
+    // we need add
+    //equipmentFolderHideId
+    //controlPaneHideId
+    // this.operationListWidth = 50;
+    // this.equipmentListWidth = 200;
+    // this.equipmentOperationSectionWidth = 380;
+    // <p class="grab">grab</p>
+    //<p class="grabbing">grabbing</p>
+
+    class EquipmentNav{
+
+        constructor(){
+            this.folder = "equipmentFolderHideId";
+            this.controlPane = "controlPaneHideId";
+            this.centerBoard = "centerBoardId";
+            this.dragClickBoard = "dragBoardId";
+            this.sync = "syncId";
+
+            this.isFolderShowing = true;
+            this.isControlPaneShowing = true;
+            this.isClickMode = true;
+
+        }
+
+        setDragClickBoardToDrag(){
+            document.getElementById( this.dragClickBoard ).innerHTML = "<span ><i class=\"fas fa-paw\"></i></span>";
+        }
+        setDragClickBoardToClick(){
+            document.getElementById( this.dragClickBoard ).innerHTML = "<i class=\"fas fa-mouse-pointer\"></i>";
+        }
+
+        // fa-rotate-90
+        //<i class="fas fa-sync-alt"></i>
+
+        setSynOneCircle(){
+
+            //setTimeout(this.setSynOneCircleOne, 500);
+            var pos=0;
+            var id = setInterval(frame, 5);
+            function frame() {
+                if (pos == 360) {
+                    clearInterval(id);
+                } else {
+                    pos++;
+                    // elem.style.top = pos + "px";
+                    // elem.style.left = pos + "px";
+                    //this.setSyncByAngle( pos*6 );
+                    //console.log("66");
+                    document.getElementById( "syncId" ).style.transform = "rotate("+pos+"deg)";
+                    //document.getElementById( "syncId" ).innerHTML = "<i class=\"fas fa-sync-alt fa-rotate-"+ pos*6+"\"></i>";
+                }
+            }
+
+
+        }
+
+        // setSynOneCircleOne( f ){
+        //
+        //     //this.setSyncByAngle( this.syncCount*30 );
+        //     console.log("what");
+        //
+        //     this.syncCount = this.syncCount+1;
+        //
+        //     if(this.sync < 12) {
+        //
+        //         setTimeout(f  , 500);
+        //     }
+        // }
+
+        //<i class="fas fa-eye-slash"></i>
+        //<i class="far fa-eye"></i>
+
+
+
+
+    }
+
+    function sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds){
+                break;
+            }
+        }
+    }
+
+    var equipmentNav = new EquipmentNav();
+
+
+
+
+    document.getElementById(equipmentNav.sync).onclick= function () {
+        equipmentNav.setSynOneCircle();
+
+        //console.log("678");
+    }
+
+    document.getElementById( equipmentNav.dragClickBoard ).onclick = function () {
+
+        if( equipmentNav.isClickMode ==true ){
+
+            equipmentNav.setDragClickBoardToDrag();
+            equipmentNav.isClickMode = false;
+
+        }else{
+
+            equipmentNav.setDragClickBoardToClick();
+            equipmentNav.isClickMode =true;
+
+
+        }
+    }
+
+
+
+
+
+</script>
+
+
+<!-- this handle the image section -->
+<script>
+
+    // this part will focus on svg development
+    //var booleanA = true;
+        //do stuff
+        // if(booleanA==true){
+        //     document.getElementById("SVGBoard").innerHTML="<polygon points=\"400,10 250,310 160,210\"  style=\"fill:#5eff8f;stroke:purple;stroke-width:1\" />"
+        //
+        //     booleanA=false;
+        // }else{
+        //
+        //     document.getElementById("SVGBoard").innerHTML="<polygon points=\"300,10 250,290 160,210\" style=\"z-index: 9; fill:#ffffff;stroke:purple;stroke-width:1\" />";
+        //     booleanA= true;
+        // }
+        //console.log("print something frist");
+    // var myVar = setInterval(myTimer, 100);
+    //
+    // function myTimer() {
+    //     //     var d = new Date();
+    //     //     document.getElementById("demo").innerHTML = d.toLocaleTimeString();
+    //     // }
+    //     // console.log("print something frist");
+    //
+    //     //do stuff
+    //     if(booleanA==true){
+    //         document.getElementById("SVGBoard").innerHTML="<polygon points=\"400,10 250,310 160,210\"  style=\"fill:#5eff8f;stroke:purple;stroke-width:1\" />"
+    //
+    //         booleanA=false;
+    //     }else{
+    //
+    //         document.getElementById("SVGBoard").innerHTML="<polygon points=\"300,10 250,290 160,210\" style=\"z-index: 9; fill:#ffffff;stroke:purple;stroke-width:1\" />";
+    //         booleanA= true;
+    //     }
+    //
+    // }
+    // document.getElementById("imageA").style.x="20";
+    // // document.getElementById("imageA").style.display="none";
+    // document.getElementById("imageA").onclick=function () {
+    //     console.log("889");
+    // }
+    // function makeDraggable(evt) {
+    //     var svg = evt.target;
+    //     svg.addEventListener('mousedown', startDrag);
+    //     svg.addEventListener('mousemove', drag);
+    //     svg.addEventListener('mouseup', endDrag);
+    //     svg.addEventListener('mouseleave', endDrag);
+    //     function startDrag(evt) {
+    //
+    //         console.log("666");
+    //
+    //     }
+    //     function drag(evt) {
+    //     }
+    //     function endDrag(evt) {
+    //
+    //
+    //
+    //         console.log("X:"+evt.clientX);
+    //     }
+    // }
+    //console.log(document.getElementById("SVGBoard"))
+
+    // now we need try
+        // upload images
+    // document.getElementById("image1_test").onclick=function () {
+    //     var b = document.getElementById("myfile").files[0];
+    //     console.log(b);
+    //
+    // }
+
+    // now I build websocket connection here
+    function connect() {
+        socket = new SockJS('/landon-stomp-chat');
+        stompClient = Stomp.over(socket);
+        stompClient.debug = null;
+        stompClient.connect({}, function (frame) {
+
+            //setConnected(true);
+            //console.log('Connected: ' + frame);
+            // var url = stompClient.ws._transport.url;
+            // console.log(url);
+            // url = url.replace(
+            //     "ws://localhost:8080/landon-stomp-chat/",  "");
+            // url = url.replace("/websocket", "");
+            // url = url.replace(/^[0-9]+\//, "");
+            //
+            //
+            //
+            //
+            // console.log("the id is _______________________________________>")
+            // console.log(url);
+            // console.log("the id is _______________________________________<")
+            // stompClient.subscribe("/topic/greetings", function (greeting) {
+            //     console.log(greeting);
+            // });
+
+            stompClient.subscribe("/topic/equipment/pad/"+$.cookie('passport')+"/"+"flask_0", function (message) {
+                receiveMessage( message.body );
+            } );
+
+        },function (message) {
+
+            // check message for disconnect
+            // we need reconnect page
+            // console.log("connection is broken");
+
+
+
+        });
+
+
+
+    }
+
+    connect();
+
+
+    function sendMessage( message ) {
+        stompClient.send("/app/equipment/pad/"+$.cookie('passport')+"/"+"flask_0", {}, message );
+    }
+
+    function receiveMessage( message ){
+        console.log(message);
+
+        //var data= JSON.parse(message);
+
+
+    }
+
+    var file ;
+
+    // <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA
+    // AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+    // 9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+
+    document.getElementById("myfile").onchange= async function (evt) {
+
+        file = evt.target.files[0];
+        // we need upload the file through websocket
+        //var reader = new FileReader();
+        //console.log(reader.readAsBinaryString(file));
+        //console.log(file);
+
+
+
+        //document.getElementById("666test").innerHTML="<img src='"+(await toBase64(file))+"'/>";
+
+        //console.log(await toBase64(file));
+    };
+
+
+
+    // object id well be equipment id
+                    //   image id
+                    //   polygon id   // this could be dot group,  line , polygon line, polygon itself
+
+    function messagePrepare(  objectId ,  type, value ){
+        var data = {};
+        data["objectId"] = objectId;
+        data["type"] = type;
+        data["value"] = value;
+        return JSON.stringify( data );
+    }
+
+    // we need define the send information and handle the
+    //  fileSelectedHandler
+
+    // the new problem is what is image doesnot exist
+        // so should request new image
+            // the object Id is equipment Id
+
+            // so the id will also be image id
+
+            // the polygon id object id
+
+            // so the dot group
+
+            // so the line
+
+            //
+
+    // we need list all the possible operations
+
+        //
+
+
+    document.getElementById("equipmentNameInput").oninput = function () {
+
+        var equipmentName =  document.getElementById("equipmentNameInput").value;
+        var data = {};
+        data.type = "equipmentName";
+        data.value = equipmentName;
+        sendMessage( JSON.stringify(data) );
+
+    };
+    //equipmentDescription
+    document.getElementById("equipmentDescription").oninput = function () {
+
+
+
+
+    };
+
+    //equipmentSize equipmentAngle
+
+    document.getElementById("equipmentSize").oninput = function () {
+
+        var equipmentSize = document.getElementById("equipmentSize").value;
+
+        var data = {};
+        data.type = "equipmentSize";
+        data.value = equipmentSize;
+
+        sendMessage( JSON.stringify(data) );
+
+    };
+
+    document.getElementById("equipmentAngle").oninput = function () {
+
+        var equipmentAngle = document.getElementById("equipmentAngle").value;
+
+        var data = {};
+        data.type = "equipmentAngle";
+        data.value = equipmentAngle;
+
+        sendMessage( JSON.stringify(data) );
+
+    };
+
+
+
+    // now we need
+
+
+
+</script>
+
+
+</body>
+
+</html>
