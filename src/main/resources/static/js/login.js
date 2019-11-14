@@ -20,6 +20,7 @@
                 window.location.replace("/courses");
               } else{
                 $('#errorMessage').html(result['message']);
+                $('#errorMessage').css("color","red");
               }
           },
           error: function (e) {

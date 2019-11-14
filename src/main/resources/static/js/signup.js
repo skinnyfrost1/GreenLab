@@ -28,6 +28,7 @@ $(document).ready(function(){
             var isExist = data['exist'];
             if (isExist==true){
                 $('#emailExist').html(data['message']);
+                $('#emailExist').css("color","red");
                 $('#submit').attr("disabled",true);
             
             } else{
