@@ -31,7 +31,7 @@
 
                               <div class="dropdown-content" ><a th:href="@{/courses}">View Courses</a></div>
                               <div class="dropdown-content" th:if="${role == 'professor'} "><a th:href="@{/course/create}">Create Course</a></div>
-                              <div class="dropdown-content" th:if="${role == 'student'}"><a href="studentSearchCourse.html">Search Course</a></div>
+                              <div class="dropdown-content" th:if="${role == 'student'}"><a th:href="@{/course/search}">Search Course</a></div>
                             </div>
                         </div>
                     </td>
@@ -91,7 +91,7 @@
   <!-- one course -->
   <!-- loop -->
   <div th:each="course: ${courses}" class="notVeryBigContainer" >
-    <table class="courseContainer" onclick="window.location.href = 'profViewLabsUnderCourse.html';">
+    <table class="courseContainer" th:onclick="'window.location.href = \'' + @{/course/edit} + '\''">
       <col width="15%"/>
       <col width="25%"/>
       <col width="60%"/>

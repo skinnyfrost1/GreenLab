@@ -35,6 +35,7 @@ public class LoginController {
     }
 
     @PostMapping(value = "/index")
+<<<<<<< HEAD
     public ResponseEntity<?> postLogin(@Valid @RequestBody LoginRequestBody login, Errors errors, ModelMap model, HttpServletRequest request){
         BooleanResponseBody result = new BooleanResponseBody();
         if (errors.hasErrors()) {
@@ -44,9 +45,16 @@ public class LoginController {
         }        
         String email = login.getEmail();
         String password =login.getPassword();
+=======
+    public String postLogin(@RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "password", required = false) String password,
+             ModelMap model, HttpServletRequest request) {
+
+>>>>>>> origin/ann
         System.out.println("[post/login]email=" + email + " password=" + password);
         
         User user = userRepository.findByEmail(email);
+<<<<<<< HEAD
         if (user != null) {
             String encryptedPassword = PasswordChecker.encryptSHA512(password);
             if ((user.getPassword()).equals(encryptedPassword)) {
@@ -63,6 +71,30 @@ public class LoginController {
         result.setBool(false);
         System.out.println("Email and password not match.");
         return ResponseEntity.ok(result);
+=======
+        request.getSession().setAttribute("role",user.getRole());
+
+        if (user != null) {
+            // check passwor d
+            String encryptedPassword = PasswordChecker.encryptSHA512(password);
+            if ((user.getPassword()).equals(encryptedPassword)) {
+                System.out.println("password correct");
+                System.out.println(encryptedPassword);
+
+//                request.getSession().setAttribute("role",role);
+                request.getSession().setAttribute("email",email);
+
+                // Todo: Check the role of the user. if stu, return stuviewcourse. if prof,
+                // return profViewCourse
+                return "redirect:/courses";
+            } else {
+                System.out.print("password incorrect");
+            }
+        } else {
+            System.out.println("user = null");
+        }
+        return "index";
+>>>>>>> origin/ann
     }
 // public String postLogin(@RequestParam(value = "email", required = false) String email,
     //         @RequestParam(value = "password", required = false) String password,
