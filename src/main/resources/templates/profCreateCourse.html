@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <title>profCreateCourse</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!--    <script type="text/javascript" src="../static/js/coursePageButtons.js"></script>-->
 </head>
 <body>
 <!-- Header Banner -->
@@ -84,7 +86,7 @@
 <!-- Title -->
 <div class="title webfont">Create a course</div>
 <!-- Two containers -->
-<form th:action="@{/course/create}" method = "post">
+<!--<form th:action="@{/course/create}" method = "post">-->
 <div style="text-align: center;">
   <!-- Left container -->
   <div class="createCourseContainer webfont">
@@ -112,59 +114,25 @@
   <div class="createCourseContainer webfont">
       <div class=" webfont" style="text-align:left;margin: 0.5em 0;">Labs
         <span>
-          <a href="" class="" style="margin:0em 1em 0em 20em;"><i class='fas fa-plus-square intextIcon'></i></a>
+            <button type="button" class="show save-button" id="addLabBtn" style="margin:0em 1em 0em 20em;">Add</button>
+            <button type="button" class="show save-button" id="confirmAddCourseBtn" style="margin:0em 1em 0em 20em;">Confirm</button>
+            <script>
+                $("#confirmAddCourseBtn").hide().removeClass("show");
+            </script>
         </span>
       </div>
+      <div id="labMenu" class="show" style="display: block">
         <!-- one lab -->
         <!-- loop -->
-        <div class="bigLabContainer" >
-          <table class="labContainer" >
-            <col width="30%"/>
-            <col width="40%"/>
-            <col width="30%"/>
-            <!-- <col width="20%"/> -->
-            <!-- <tbody style="padding: 0; margin: 0;"> -->
-              <tr>
-                <td class="courseCellPadding">
-                    <div>CHE 133</div>
-                </td>
-                <td class="courseCellPadding">
-                  <div class="webfont">[ Spring 2019 ]</div>
-                </td>
-                <td class="courseCellPadding">
-                  <div class="webfont">Lab 01</div>
-                </td>
-
-              </tr>
-            </table>
-
-          </div>
-          <!-- one lab -->
-          <div class="bigLabContainer" >
-            <table class="labContainer" >
-              <col width="30%"/>
-              <col width="40%"/>
-              <col width="30%"/>
-                <tr>
-                  <td class="courseCellPadding">
-                      <div>CHE 133</div>
-                  </td>
-                  <td class="courseCellPadding">
-                    <div class="webfont">[ Spring 2019 ]</div>
-                  </td>
-                  <td class="courseCellPadding">
-                    <div class="webfont">Lab 02</div>
-                  </td>
-
-                </tr>
-              </table>
-            </div>
-            <!-- one lab -->
+        <div class="allLabContainer">
             <div class="bigLabContainer" >
               <table class="labContainer" >
-                <col width="30%"/>
-                <col width="40%"/>
-                <col width="30%"/>
+                <col width="25%"/>
+                <col width="25%"/>
+                <col width="25%"/>
+                <col width="25%"/>
+                <!-- <col width="20%"/> -->
+                <!-- <tbody style="padding: 0; margin: 0;"> -->
                   <tr>
                     <td class="courseCellPadding">
                         <div>CHE 133</div>
@@ -173,13 +141,70 @@
                       <div class="webfont">[ Spring 2019 ]</div>
                     </td>
                     <td class="courseCellPadding">
-                      <div class="webfont">Lab 03</div>
+                      <div class="webfont">Lab 01</div>
                     </td>
-
+                    <td>
+                        <input type="checkbox" name="select1" value="lab01">
+                    </td>
                   </tr>
                 </table>
-              </div>
 
+              </div>
+              <!-- one lab -->
+              <div class="bigLabContainer" >
+                <table class="labContainer" >
+                    <col width="25%"/>
+                    <col width="25%"/>
+                    <col width="25%"/>
+                    <col width="25%"/>
+                    <tr>
+                      <td class="courseCellPadding">
+                          <div>CHE 133</div>
+                      </td>
+                      <td class="courseCellPadding">
+                        <div class="webfont">[ Spring 2019 ]</div>
+                      </td>
+                      <td class="courseCellPadding">
+                        <div class="webfont">Lab 02</div>
+                      </td>
+                        <td>
+                            <input type="checkbox" name="select1" value="lab02">
+                        </td>
+                    </tr>
+                  </table>
+                </div>
+                <!-- one lab -->
+                <div class="bigLabContainer" >
+                  <table class="labContainer" >
+                      <col width="25%"/>
+                      <col width="25%"/>
+                      <col width="25%"/>
+                      <col width="25%"/>
+                      <tr>
+                        <td class="courseCellPadding">
+                            <div>CHE 133</div>
+                        </td>
+                        <td class="courseCellPadding">
+                          <div class="webfont">[ Spring 2019 ]</div>
+                        </td>
+                        <td class="courseCellPadding">
+                          <div class="webfont">Lab 03</div>
+                        </td>
+                        <td>
+                          <input type="checkbox" name="select1" value="lab03">
+                        </td>
+
+                      </tr>
+                    </table>
+                </div>
+
+        </div>
+      </div>
+      <!-- add lab page -->
+      <div id="addLabPage" class="" style="display: none;">
+<!--          <div class="webfont" style="text-align:left; margin: 0.5em 0;">hello world!</div>-->
+<!--          <button type="button" id="confirmAddCourse" style="margin:0em 1em 0em 20em;"><i class='fas fa-plus-square intextIcon'></i></button>-->
+      </div>
     </div>
     <!-- End of right container -->
 </div>
@@ -188,6 +213,153 @@
 <div style="text-align:right;">
   <input type="submit" value="Save" class="save-button webfont" style="cursor: pointer;margin:1em 7% 3em 0em">
 </div>
-</form>
+<!--</form>-->
+<!--<script type="text/javascript">-->
+<!--    var flag = 1;-->
+<!--    function show(){-->
+<!--        console.log("1111111111111111111111111111")-->
+<!--        var odiv1=document.getElementById("labMenu");-->
+<!--        var odiv2=document.getElementById("addLabPage");-->
+<!--        if(flag==0){-->
+<!--            odiv1.style.display="block";-->
+<!--            odiv2.style.display="none";-->
+<!--            flag = 1;-->
+<!--        }-->
+<!--        else{-->
+<!--            odiv1.style.display="none";-->
+<!--            odiv2.style.display="block";-->
+<!--            flag = 0;-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+
+<script>
+    var labs={
+        "course1":{
+            "courseName": "niubi",
+            "courseTerm": "fall 1111",
+            "labName": "lab001",
+        },
+        "course2":{
+            "courseName": "wudi",
+            "courseTerm": "fall 2222",
+            "labName": "lab002",
+        },
+        "course3":{
+            "courseName": "shuai",
+            "courseTerm": "fall 3333",
+            "labName": "lab003",
+        }
+
+    };
+
+    //labs[course1][courseName]
+
+    $(document).ready(function(e) {
+        $("#addLabBtn").click(function(e) {
+            if( $("#labMenu").hasClass("show") ){
+                // 执行隐藏
+                $("#labMenu").hide().removeClass("show");
+                $("#addLabBtn").hide().removeClass("show");
+
+                $("#addLabPage").empty();
+                var str = '';
+                $.each(labs, function (value) {
+                    console.log(value)
+                    str+=   '            <div class="bigLabContainer" >\n' +
+                        '              <table class="labContainer" >\n' +
+                        '                <col width="30%"/>\n' +
+                        '                <col width="40%"/>\n' +
+                        '                <col width="30%"/>\n' +
+                        '                  <tr>\n' +
+                        '                    <td class="courseCellPadding">\n' +
+                        '                        <div>'+value.courseName+'</div>\n' +
+                        '                    </td>\n' +
+                        '                    <td class="courseCellPadding">\n' +
+                        '                      <div class="webfont">[ '+value.courseTerm+' ]</div>\n' +
+                        '                    </td>\n' +
+                        '                    <td class="courseCellPadding">\n' +
+                        '                      <div class="webfont">'+value.labName+'</div>\n' +
+                        '                    </td>\n' +
+                        '\n' +
+                        '                  </tr>\n' +
+                        '                </table>\n' +
+                        '              </div>\n'
+                })
+                str+='<div class="webfont" style="text-align:left; margin: 0.5em 0;">hello world!!!!!</div>\n';
+                $("#addLabPage").append(str);
+
+                $("#addLabPage").show().addClass("show");
+                $("#addLabBtn").hide().removeClass("show");
+                $("#confirmAddCourseBtn").show().addClass("show");
+            }
+            // else{
+            //     // 显示
+            //     $("#labMenu").show().addClass("show");
+            //     $("#addLabBtn").show().addClass("show");
+            //     $("#addLabPage").hide().removeClass("show");
+            // }
+
+            // $("#labMenu").toggle();
+            // $("#addLabBtn").toggle();
+            // var str = '';
+            // $("#addLabPage").empty();
+            // $.each(labs, function (value) {
+            //     console.log(value.courseName)
+            //     str+=   '            <div class="bigLabContainer" >\n' +
+            //             '              <table class="labContainer" >\n' +
+            //             '                <col width="30%"/>\n' +
+            //             '                <col width="40%"/>\n' +
+            //             '                <col width="30%"/>\n' +
+            //             '                  <tr>\n' +
+            //             '                    <td class="courseCellPadding">\n' +
+            //             '                        <div>'+value.courseName+'</div>\n' +
+            //             '                    </td>\n' +
+            //             '                    <td class="courseCellPadding">\n' +
+            //             '                      <div class="webfont">[ '+value.courseTerm+' ]</div>\n' +
+            //             '                    </td>\n' +
+            //             '                    <td class="courseCellPadding">\n' +
+            //             '                      <div class="webfont">'+value.labName+'</div>\n' +
+            //             '                    </td>\n' +
+            //             '\n' +
+            //             '                  </tr>\n' +
+            //             '                </table>\n' +
+            //             '              </div>\n'
+            // })
+            // str+='<div class="webfont" style="text-align:left; margin: 0.5em 0;">hello world!!!!!</div>\n' +
+            //      '<button type="button" id="confirmAddCourse" style="margin:0em 1em 0em 20em;"><i class=\'fas fa-plus-square intextIcon\'></i></button>'
+            // $("#addLabPage").append(str);
+            // $("#addLabPage").toggle();
+
+
+            // $.ajax({
+            //     type: "POST",
+            //     contentType: "application/json",
+            //     url: "/requestLabMenu",
+            //     data: JSON.stringify("requestLabMenu"),
+            //     dataType: 'json',
+            //     cache: false,
+            //     timeout: 600000,
+            //     success: function (data) {
+            //         var isExist = data['exist'];
+            //     },
+            // });
+        });
+        $("#confirmAddCourseBtn").click(function(e) {
+            $("#confirmAddCourseBtn").hide().removeClass("show");
+            $("#labMenu").show().addClass("show");
+            $("#addLabBtn").show().addClass("show");
+            $("#addLabPage").hide().removeClass("show");
+
+        });
+        // $("#confirmAddCourse").click(function (e) {
+        //     console.log("asdasdasdasd")
+        //     $("#addLabPage").html('');
+        //     $("#addLabPage").toggle();
+        //     $("#labMenu").toggle();
+        //     $("#addLabBtn").toggle();
+        // })
+    });
+</script>
 </body>
 </html>
