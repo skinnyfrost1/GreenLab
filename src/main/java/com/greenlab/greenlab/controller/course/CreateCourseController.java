@@ -41,7 +41,7 @@ public class CreateCourseController {
         Course course = new Course(courseId, courseName, semester, courseDescription,createDate,creator,null);
         System.out.println(course.toString());
         courseRepository.save(course); 
-        return "ddd";
+        return "redirect:/courses";
 
     }
 

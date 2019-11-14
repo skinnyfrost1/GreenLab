@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
@@ -23,13 +24,14 @@
                         <div class="logo"></div>
                     </td>
                     <td class="headerCellPadding">
-<!--                        <a href="/index" class="headerSelected">Courses</a>-->
+                        <!--                        <a href="/index" class="headerSelected">Courses</a>-->
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Courses</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a th:href="@{/courses}">View Courses</a></div>
-                              <div class="dropdown-content"><a th:href="@{/course/create}">Create Course</a></div>
-                              <div class="dropdown-content"><a href="studentSearchCourse.html">Search Course</a></div>
+
+                                <div class="dropdown-content" ><a th:href="@{/courses}">View Courses</a></div>
+                                <div class="dropdown-content" th:if="${role == 'professor'} "><a th:href="@{/course/create}">Create Course</a></div>
+                                <div class="dropdown-content" th:if="${role == 'student'}"><a th:href="@{/course/search}">Search Course</a></div>
                             </div>
                         </div>
                     </td>
@@ -38,10 +40,10 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
-                              <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>
-                              <div class="dropdown-content"><a href="studentDoLab.html">Do Lab</a></div>
-                              <div class="dropdown-content"><a href="studentViewLabScore.html">My Lab Score</a></div>
+                                <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
+                                <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>
+                                <div class="dropdown-content"><a href="studentDoLab.html">Do Lab</a></div>
+                                <div class="dropdown-content"><a href="studentViewLabScore.html">My Lab Score</a></div>
                             </div>
                         </div>
                     </td>
@@ -50,9 +52,9 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Equipments</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
-                              <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
-                              <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
+                                <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
+                                <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
+                                <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
                             </div>
                         </div>
                     </td>
@@ -78,29 +80,35 @@
     </tr>
     </tbody>
 </table>
- <!--  End of tool bar -->
-
+<!--  End of tool bar -->
 <div style="padding: 4em;"></div>
 <!-- Title -->
-<!-- List of Courses-->
-<form th:action="@{/index}" method = "post">
-    <div class="loginContainer webfont">
-      <div class="loginTitle webfont" style="text-align:center;">Log In</div>
-      <div class="webfont" style="display:inline-block;font-size: 1.15em;margin:1em 0;">Email</div>
-      <input type="text" name="email" value="" maxlength="50" class="loginTextfield webfont" required><br>
-      <div>
-          <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">Password </span>
-          <span class="webfont" style="font-size: 0.8em; display: inline-block; text-align:right; width: 50%;">
-            <a href="forgotPassword.html">Forget password? </a>
-          </span>
-      </div>
-      <input type="text" name="password" value="" maxlength="24" class="loginTextfield webfont" required><br>
+<div class="title webfont">Your Courses</div>
 
-      <br>
-      <input type="submit" value="Login" class="login-button webfont" style="cursor: pointer;">
-    <div class="webfont" style="font-size: 0.8em;text-align:center;margin:2em 0;"><a th:href="@{/signup}">New to GreenLab? Click to register! </a></div>
+<!-- List of Courses-->
+<div class="bigContainer webfont">
+
+    <!-- one course -->
+    <!-- loop -->
+    <div th:each="course: ${courses}" class="notVeryBigContainer" >
+        <table class="courseContainer" th:onclick="'window.location.href = \'' + @{/course/edit} + '\''">
+            <col width="15%"/>
+            <col width="25%"/>
+            <col width="60%"/>
+            <!-- <col width="20%"/> -->
+            <!-- <tbody style="padding: 0; margin: 0;"> -->
+            <tr >
+                <td class="courseCellPadding">
+                    <div class="webfont" th:text="${course.courseId}"></div>
+                </td>
+                <td class="courseCellPadding" th:text="${'[ ' + course.semester + ' ]'}" />
+                <td class="courseCellPadding" th:text="${course.courseName}" />
+            </tr>
+
+        </table>
     </div>
-    </div>
-</form>
+    <!-- Loop ends here -->
+
+</div>
 </body>
 </html>
