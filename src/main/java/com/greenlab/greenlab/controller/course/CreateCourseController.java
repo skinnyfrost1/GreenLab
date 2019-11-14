@@ -38,8 +38,8 @@ public class CreateCourseController {
         Date date = new Date();
         String createDate = dateFormat.format(date);
         String creator = (String) request.getSession().getAttribute("email");
-        String id = createDate + courseId;
-        Course course = new Course(id, courseName, semester, courseDescription,createDate,creator,null);
+        String id = createDate+courseId;
+        Course course = new Course(courseId, courseName, semester, courseDescription,createDate,creator,null);
         System.out.println(course.toString());
         courseRepository.save(course); 
         return "redirect:/courses";
