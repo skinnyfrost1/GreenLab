@@ -89,26 +89,33 @@
 <!--<form th:action="@{/course/create}" method = "post">-->
 <div style="text-align: center;">
   <!-- Left container -->
-  <div class="createCourseContainer webfont">
-      <div class=" webfont" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
-      <input id="courseId" type="text" name="courseId" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="CHE 133" required><br>
-      <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Title</div>
-      <input id="courseTitle"type="text" name="courseName" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="General Chemistry Lab 1" required><br>
-      <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Semester</div>
-      <input id="semester"type="text" name="semester" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="Spring 2019" required><br>
-      <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Description</div>
-      <textarea id="courseDescription" type="text" name="courseDescription" value="" maxlength="50" class="createCourseTextArea webfont" placeholder= "..." required></textarea><br>
-      <div>
-        <div class="webfont" style=" text-align: left; ">Student Roster
-          <span>
+    <div id="inputInfoPage" class="show">
+        <div class="createCourseContainer webfont">
+            <div class=" webfont" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
+            <input id="courseId" type="text" name="courseId" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="CHE 133" required><br>
+            <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Title</div>
+            <input id="courseTitle"type="text" name="courseName" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="General Chemistry Lab 1" required><br>
+            <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Semester</div>
+            <input id="semester"type="text" name="semester" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="Spring 2019" required><br>
+            <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Description</div>
+            <textarea id="courseDescription" type="text" name="courseDescription" value="" maxlength="50" class="createCourseTextArea webfont" placeholder= "..." required></textarea><br>
+            <div>
+                <div class="webfont" style=" text-align: left; ">Student Roster
+                    <span>
             <a href="" style = "margin:0em 1em;"> UploadRoster </a>
           </span>
+                </div>
+            </div>
+            <div>
+                <button type="button" class="show save-button" id="nextBtn" style="margin:0em 1em 0em 20em;">NEXT</button>
+            </div>
+
         </div>
-      </div>
+    </div>
 
-
-  </div>
   <!-- End of left Container -->
+
+
 
   <!-- Right container-->
   <div class="createCourseContainer webfont">
@@ -281,7 +288,9 @@
                         '                    <td class="courseCellPadding">\n' +
                         '                      <div class="webfont">'+value.labName+'</div>\n' +
                         '                    </td>\n' +
-                        '\n' +
+                        '                    <td>\n' +
+                        '                      <input type="checkbox" name="select1" value="lab03">'  +
+                        '                    </td>' +
                         '                  </tr>\n' +
                         '                </table>\n' +
                         '              </div>\n'
@@ -332,18 +341,18 @@
             // $("#addLabPage").toggle();
 
 
-            // $.ajax({
-            //     type: "POST",
-            //     contentType: "application/json",
-            //     url: "/requestLabMenu",
-            //     data: JSON.stringify("requestLabMenu"),
-            //     dataType: 'json',
-            //     cache: false,
-            //     timeout: 600000,
-            //     success: function (data) {
-            //         var isExist = data['exist'];
-            //     },
-            // });
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/requestLabMenu",
+                data: JSON.stringify("CHE 133"),
+                dataType: 'json',
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    var isExist = data['exist'];
+                },
+            });
         });
         $("#confirmAddCourseBtn").click(function(e) {
             $("#confirmAddCourseBtn").hide().removeClass("show");
@@ -352,6 +361,11 @@
             $("#addLabPage").hide().removeClass("show");
 
         });
+        $("#nextBtn").click(function (e) {
+            $("#inputInfoPage").hide().removeClass("show");
+
+
+        })
         // $("#confirmAddCourse").click(function (e) {
         //     console.log("asdasdasdasd")
         //     $("#addLabPage").html('');
