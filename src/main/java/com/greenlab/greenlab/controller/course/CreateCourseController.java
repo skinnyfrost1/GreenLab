@@ -21,10 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CreateCourseController {
     @Autowired
     private CourseRepository courseRepository;
+
     @GetMapping(value = "/course/create")
     public String getCreateCourse(ModelMap model, HttpServletRequest request) {
-//        if (request.getSession().getAttribute("email") == null)
-//            return "redirect:/login";
         return "profCreateCourse";
     }
 
