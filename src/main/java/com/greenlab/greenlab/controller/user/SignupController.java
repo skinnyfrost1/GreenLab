@@ -60,16 +60,12 @@ public class SignupController {
     @PostMapping(value = "/checkemail")
     public ResponseEntity<?> postCheckEmail(@Valid @RequestBody CheckEmailRequestBody checkEmail, Errors errors) {
         CheckEmailResponseBody result = new CheckEmailResponseBody();
-
         if (errors.hasErrors()) {
-
             result.setMessage(
                     errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
-
             return ResponseEntity.badRequest().body(result);
         }
         User user = userRepository.findByEmail(checkEmail.getEmail());
-
         if (user == null) {
             result.setMessage("email not found");
             result.setExist(false);

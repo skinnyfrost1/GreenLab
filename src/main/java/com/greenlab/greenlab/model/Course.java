@@ -12,7 +12,7 @@ public class Course {
     private String courseDescription;
     private String creator;
     private String createDate;
-    private List<User> students;
+    private List<String> students;
     // creator
     // private List<Lab> labs;
 
@@ -21,7 +21,7 @@ public class Course {
     }
 
     public Course(String courseId, String courseName, String semester, String courseDescription, String createDate, String creator,
-            List<User> students) {
+            List<String> students) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.semester=semester;
@@ -71,11 +71,11 @@ public class Course {
         this.createDate = createDate;
     }
 
-    public List<User> getStudents() {
+    public List<String> getStudents() {
         return students;
     }
 
-    public void setStudents(List<User> students) {
+    public void setStudents(List<String> students) {
         this.students = students;
     }
 

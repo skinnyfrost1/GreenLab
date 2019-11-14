@@ -8,6 +8,7 @@
     <link th:href="@{/stylesheet/index.css}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>profViewCourse</title>
 </head>
 <body>
@@ -83,25 +84,30 @@
 <div style="padding: 4em;"></div>
 <!-- Title -->
 <!-- List of Courses-->
-<form th:action="@{/index}" method = "post">
+<!-- <form th:action="@{/index}" method = "post"> -->
+<!-- <form> -->
     <div class="loginContainer webfont">
       <div class="loginTitle webfont" style="text-align:center;">Log In</div>
       <div class="webfont" style="display:inline-block;font-size: 1.15em;margin:1em 0;">Email</div>
-      <input type="text" name="email" value="" maxlength="50" class="loginTextfield webfont" required><br>
+      <input id="email" type="text" name="email" value="" maxlength="50" class="loginTextfield webfont" required><br>
       <div>
           <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">Password </span>
           <span class="webfont" style="font-size: 0.8em; display: inline-block; text-align:right; width: 50%;">
             <a href="forgotPassword.html">Forget password? </a>
           </span>
       </div>
-      <input type="text" name="password" value="" maxlength="24" class="loginTextfield webfont" required><br>
-        <input id="professor" type="radio" name="role" value="professor"> I'm a professor<br/>
-        <input id="student" type="radio" name="role" value="student" checked="checked"> I'm a student<br/>
-      <br>
-      <input type="submit" value="Login" class="login-button webfont" style="cursor: pointer;">
+      <input id="password" type="text" name="password" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        <!-- <input id="professor" type="radio" name="role" value="professor"> I'm a professor<br/> -->
+        <!-- <input id="student" type="radio" name="role" value="student" checked="checked"> I'm a student<br/> -->
+      </br>
+      <div id="errorMessage" name="errorMessage" sytle="color:red;"></div>
+      </br>
+      <button id="submitButton" name="submitButton" class="login-button webfont" style="cursor: pointer;" >Submit</button>
+      <!-- <input type="submit" value="Login" class="login-button webfont" style="cursor: pointer;"> -->
     <div class="webfont" style="font-size: 0.8em;text-align:center;margin:2em 0;"><a th:href="@{/signup}">New to GreenLab? Click to register! </a></div>
     </div>
     </div>
-</form>
+<!-- </form> -->
+<script type="text/javascript" th:src="@{/js/login.js}"></script>
 </body>
 </html>
