@@ -114,8 +114,8 @@
   <div class="createCourseContainer webfont">
       <div class=" webfont" style="text-align:left;margin: 0.5em 0;">Labs
         <span>
-            <button type="button" class="show" id="addLabBtn" style="margin:0em 1em 0em 20em;"><i class='fas fa-plus-square intextIcon'></i></button>
-            <button type="button" class="show" id="confirmAddCourseBtn" style="margin:0em 1em 0em 20em;"></button>
+            <button type="button" class="show save-button" id="addLabBtn" style="margin:0em 1em 0em 20em;">Add</button>
+            <button type="button" class="show save-button" id="confirmAddCourseBtn" style="margin:0em 1em 0em 20em;">Confirm</button>
             <script>
                 $("#confirmAddCourseBtn").hide().removeClass("show");
             </script>
@@ -124,54 +124,15 @@
       <div id="labMenu" class="show" style="display: block">
         <!-- one lab -->
         <!-- loop -->
-        <div class="bigLabContainer" >
-          <table class="labContainer" >
-            <col width="30%"/>
-            <col width="40%"/>
-            <col width="30%"/>
-            <!-- <col width="20%"/> -->
-            <!-- <tbody style="padding: 0; margin: 0;"> -->
-              <tr>
-                <td class="courseCellPadding">
-                    <div>CHE 133</div>
-                </td>
-                <td class="courseCellPadding">
-                  <div class="webfont">[ Spring 2019 ]</div>
-                </td>
-                <td class="courseCellPadding">
-                  <div class="webfont">Lab 01</div>
-                </td>
-
-              </tr>
-            </table>
-
-          </div>
-          <!-- one lab -->
-          <div class="bigLabContainer" >
-            <table class="labContainer" >
-              <col width="30%"/>
-              <col width="40%"/>
-              <col width="30%"/>
-                <tr>
-                  <td class="courseCellPadding">
-                      <div>CHE 133</div>
-                  </td>
-                  <td class="courseCellPadding">
-                    <div class="webfont">[ Spring 2019 ]</div>
-                  </td>
-                  <td class="courseCellPadding">
-                    <div class="webfont">Lab 02</div>
-                  </td>
-
-                </tr>
-              </table>
-            </div>
-            <!-- one lab -->
+        <div class="allLabContainer">
             <div class="bigLabContainer" >
               <table class="labContainer" >
-                <col width="30%"/>
-                <col width="40%"/>
-                <col width="30%"/>
+                <col width="25%"/>
+                <col width="25%"/>
+                <col width="25%"/>
+                <col width="25%"/>
+                <!-- <col width="20%"/> -->
+                <!-- <tbody style="padding: 0; margin: 0;"> -->
                   <tr>
                     <td class="courseCellPadding">
                         <div>CHE 133</div>
@@ -180,12 +141,64 @@
                       <div class="webfont">[ Spring 2019 ]</div>
                     </td>
                     <td class="courseCellPadding">
-                      <div class="webfont">Lab 03</div>
+                      <div class="webfont">Lab 01</div>
                     </td>
-
+                    <td>
+                        <input type="checkbox" name="select1" value="lab01">
+                    </td>
                   </tr>
                 </table>
+
               </div>
+              <!-- one lab -->
+              <div class="bigLabContainer" >
+                <table class="labContainer" >
+                    <col width="25%"/>
+                    <col width="25%"/>
+                    <col width="25%"/>
+                    <col width="25%"/>
+                    <tr>
+                      <td class="courseCellPadding">
+                          <div>CHE 133</div>
+                      </td>
+                      <td class="courseCellPadding">
+                        <div class="webfont">[ Spring 2019 ]</div>
+                      </td>
+                      <td class="courseCellPadding">
+                        <div class="webfont">Lab 02</div>
+                      </td>
+                        <td>
+                            <input type="checkbox" name="select1" value="lab02">
+                        </td>
+                    </tr>
+                  </table>
+                </div>
+                <!-- one lab -->
+                <div class="bigLabContainer" >
+                  <table class="labContainer" >
+                      <col width="25%"/>
+                      <col width="25%"/>
+                      <col width="25%"/>
+                      <col width="25%"/>
+                      <tr>
+                        <td class="courseCellPadding">
+                            <div>CHE 133</div>
+                        </td>
+                        <td class="courseCellPadding">
+                          <div class="webfont">[ Spring 2019 ]</div>
+                        </td>
+                        <td class="courseCellPadding">
+                          <div class="webfont">Lab 03</div>
+                        </td>
+                        <td>
+                          <input type="checkbox" name="select1" value="lab03">
+                        </td>
+
+                      </tr>
+                    </table>
+                </div>
+
+        </div>
       </div>
       <!-- add lab page -->
       <div id="addLabPage" class="" style="display: none;">
