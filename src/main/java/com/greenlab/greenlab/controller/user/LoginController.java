@@ -18,44 +18,49 @@ public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping(value = "/login")
+    @GetMapping(value = "/index")
     public String getLogin(ModelMap model, HttpServletRequest request) {
         if (request.getSession().getAttribute("email") != null) {
             String role = (String) request.getSession().getAttribute("role");
             if (role.equals("student")) {
-                return "stuViewCourse";
+                return "profViewCourse";
             } else {
                 return "profViewCourse";
             }
         } else
-            return "login";
+            return "index";
 
     }
 
-    @PostMapping(value = "/login")
+    @PostMapping(value = "/index")
     public String postLogin(@RequestParam(value = "email", required = false) String email,
             @RequestParam(value = "password", required = false) String password,
             @RequestParam(value = "role", required = false) String role, ModelMap model, HttpServletRequest request) {
 
         System.out.println("[post/login]email=" + email + " password=" + password);
         User user = userRepository.findByEmail(email);
-
-        if (user != null) {
-            // check password
-            String encryptedPassword = PasswordChecker.encryptSHA512(password);
-            if ((user.getPassword()).equals(encryptedPassword)) {
-                System.out.println("password correct");
-                System.out.println(encryptedPassword);
-                // Todo: Check the role of the user. if stu, return stuviewcourse. if prof,
-                // return profViewCourse
-
-            } else {
-                System.out.print("password incorrect");
-            }
-        } else {
-            System.out.println("user = null");
-        }
-        return "home";
+        request.getSession().setAttribute("role",role);
+        return "redirect:/courses";
+//        if (user != null) {
+//            // check passwor d
+//            String encryptedPassword = PasswordChecker.encryptSHA512(password);
+//            if ((user.getPassword()).equals(encryptedPassword)) {
+//                System.out.println("password correct");
+//                System.out.println(encryptedPassword);
+//
+////                request.getSession().setAttribute("role",role);
+//                request.getSession().setAttribute("email",email);
+//
+//                // Todo: Check the role of the user. if stu, return stuviewcourse. if prof,
+//                // return profViewCourse
+//                return "profViewCourse";
+//            } else {
+//                System.out.print("password incorrect");
+//            }
+//        } else {
+//            System.out.println("user = null");
+//        }
+//        return "home";
     }
 
     @PostMapping(value = "/logout")

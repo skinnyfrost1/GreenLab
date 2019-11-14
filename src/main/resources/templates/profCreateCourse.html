@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href="../static/stylesheet/theme.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/font.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/dropdown_menu.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/index.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/profCreateCourse.css" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/index.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/profCreateCourse.css}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <title>profCreateCourse</title>
@@ -28,8 +28,8 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Courses</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewCourse.html">View Courses</a></div>
-                              <div class="dropdown-content"><a href="profCreateCourse.html">Create Course</a></div>
+                              <div class="dropdown-content"><a th:href="@{/courses}">View Courses</a></div>
+                              <div class="dropdown-content"><a th:href="@{/course/create}">Create Course</a></div>
                               <div class="dropdown-content"><a href="studentSearchCourse.html">Search Course</a></div>
                             </div>
                         </div>
@@ -95,7 +95,7 @@
       <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Semester</div>
       <input id="semester"type="text" name="courseSemester" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="Spring 2019" required><br>
       <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Description</div>
-      <textarea id="courseDescription" type="text" name="courseDescription" value="" maxlength="24" class="createCourseTextArea webfont" placeholder= "..." required></textarea><br>
+      <textarea id="courseDescription" type="text" name="courseDescription" value="" maxlength="50" class="createCourseTextArea webfont" placeholder= "..." required></textarea><br>
       <div>
         <div class="webfont" style=" text-align: left; ">Student Roster
           <span>

@@ -23,8 +23,8 @@ public class CreateCourseController {
     private CourseRepository courseRepository;
     @GetMapping(value = "/course/create")
     public String getCreateCourse(ModelMap model, HttpServletRequest request) {
-        if (request.getSession().getAttribute("email") == null)
-            return "redirect:/login";
+//        if (request.getSession().getAttribute("email") == null)
+//            return "redirect:/login";
         return "profCreateCourse";
     }
 

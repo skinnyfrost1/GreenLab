@@ -29,8 +29,8 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Courses</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewCourse.html">View Courses</a></div>
-                              <div class="dropdown-content"><a href="profCreateCourse.html">Create Course</a></div>
+                              <div class="dropdown-content"><a th:href="@{/courses}">View Courses</a></div>
+                              <div class="dropdown-content"><a th:href="@{/course/create}">Create Course</a></div>
                               <div class="dropdown-content"><a href="studentSearchCourse.html">Search Course</a></div>
                             </div>
                         </div>
@@ -82,15 +82,15 @@
 </table>
  <!--  End of tool bar -->
 
-<div style="padding: 4em;"></div>
+<div style="padding: 3em;"></div>
 <!-- Title -->
 <!-- List of Courses-->
 <form th:action="@{/signup}" method = "post">
 <!-- <form> -->
     <div class="loginContainer webfont">
         <div class="loginTitle webfont" style="text-align:center;">Sign Up</div>
-        <div class="webfont" style="display:inline-block;font-size: 1.15em;margin:1em 0;">Email</div>
-        <input id="email" type="email" name="email" value="" maxlength="24" class="loginTextfield webfont" required><br>
+        <div class="webfont" style="display:inline-block;font-size: 1.15em;">Email</div>
+        <input id="email" type="email" name="email" value="" maxlength="50" class="loginTextfield webfont" required><br>
         <div>
             <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">Password </span>
             </span>
@@ -101,13 +101,13 @@
             </span>
         </div>
         <input id="confirmPassword" type="password" name="confirmPassword" value="" maxlength="24" class="loginTextfield webfont" required><br>
-        
+
         <div>
             <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">UID </span>
                 </span>
         </div>
         <input id="uid" type="text" name="uid" value="" maxlength="24" class="loginTextfield webfont" required><br>
-        
+
         <div>
             <span class="webfont" style="font-size: 1.15em; display: inline-block; width: 47.5%;">First Name </span>
                 </span>
@@ -120,7 +120,7 @@
         <input id="lastname" type="text" name="lastname" value="" maxlength="24" class="loginTextfield webfont" required><br>
         <input id="professor" type="radio" name="role" value="professor"> I'm a professor<br/>
         <input id="student" type="radio" name="role" value="student" checked="checked"> I'm a student<br/>
-    
+
         </br>
         <div class="ErrorMessage" id="emailExist"></div>
         <div class="ErrorMessage" id="errorMessage"></div>

@@ -30,9 +30,9 @@ public class SignupController {
 
     @GetMapping(value = "/signup")
     public String getLogin(ModelMap model, HttpServletRequest request) {
-        if (request.getSession().getAttribute("email") != null)
-            return "redirect:/courses";
-        else
+        // if (request.getSession().getAttribute("email") != null)
+        //     return "redirect:/courses";
+//        else
             return "signUp";
 
     }
@@ -45,9 +45,10 @@ public class SignupController {
             @RequestParam(value = "lastname", required = false) String lastname,
             @RequestParam(value = "role", required = false) String role, ModelMap model, HttpServletRequest request) {
 
-        if (request.getSession().getAttribute("email") != null)
+        if (request.getSession().getAttribute("email") != null) {
+            request.getSession().setAttribute("role", role);
             return "redirect:/courses";
-
+        }
         System.out.println("[post/login]" + "uid=" + uid + "email=" + email + " password=" + password + " firstname="
                 + firstname + " lastname=" + lastname + " role= " + role);
         password = PasswordChecker.encryptSHA512(password);
