@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/index.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/profCreateCourse.css}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <title>profViewCourse</title>
+    <title>profCreateCourse</title>
 </head>
 <body>
 <!-- Header Banner -->
@@ -28,10 +28,8 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Courses</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-
-                                <div class="dropdown-content" ><a th:href="@{/courses}">View Courses</a></div>
-                                <div class="dropdown-content" th:if="${role == 'professor'} "><a th:href="@{/course/create}">Create Course</a></div>
-                                <div class="dropdown-content" th:if="${role == 'student'}"><a th:href="@{/course/search}">Search Course</a></div>
+                                <div class="dropdown-content"><a th:href="@{/courses}">View Courses</a></div>
+                                <div class="dropdown-content"><a th:href="@{/course/create}">Create Course</a></div>
                             </div>
                         </div>
                     </td>
@@ -83,32 +81,112 @@
 <!--  End of tool bar -->
 <div style="padding: 4em;"></div>
 <!-- Title -->
-<div class="title webfont">Your Courses</div>
+<div class="title webfont">Create a course</div>
+<!-- Two containers -->
+<form th:action="@{/course/edit}" method = "post">
+    <div style="text-align: center;">
+        <!-- Left container -->
+        <div class="createCourseContainer webfont">
+            <div class=" webfont" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
+            <input id="courseId" type="text" name="courseId" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="CHE 133" required><br>
+            <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Title</div>
+            <input id="courseTitle"type="text" name="courseName" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="General Chemistry Lab 1" required><br>
+            <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Semester</div>
+            <input id="semester"type="text" name="semester" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="Spring 2019" required><br>
+            <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Description</div>
+            <textarea id="courseDescription" type="text" name="courseDescription" value="" maxlength="50" class="createCourseTextArea webfont" placeholder= "..." required></textarea><br>
+            <div>
+                <div class="webfont" style=" text-align: left; ">Student Roster
+                    <span>
+            <a href="" style = "margin:0em 1em;"> UploadRoster </a>
+          </span>
+                </div>
+            </div>
 
-<!-- List of Courses-->
-<div class="bigContainer webfont">
 
-    <!-- one course -->
-    <!-- loop -->
-    <div th:each="course: ${courses}" class="notVeryBigContainer" >
-        <table class="courseContainer" th:onclick="'window.location.href = \'' + @{/course/edit} + '\''">
-            <col width="15%"/>
-            <col width="25%"/>
-            <col width="60%"/>
-            <!-- <col width="20%"/> -->
-            <!-- <tbody style="padding: 0; margin: 0;"> -->
-            <tr >
-                <td class="courseCellPadding">
-                    <div class="webfont" th:text="${course.courseId}"></div>
-                </td>
-                <td class="courseCellPadding" th:text="${'[ ' + course.semester + ' ]'}" />
-                <td class="courseCellPadding" th:text="${course.courseName}" />
-            </tr>
+        </div>
+        <!-- End of left Container -->
 
-        </table>
+        <!-- Right container-->
+        <div class="createCourseContainer webfont">
+            <div class=" webfont" style="text-align:left;margin: 0.5em 0;">Labs
+                <span>
+          <a href="" class="" style="margin:0em 1em 0em 20em;"><i class='fas fa-plus-square intextIcon'></i></a>
+        </span>
+            </div>
+            <!-- one lab -->
+            <!-- loop -->
+            <div class="bigLabContainer" >
+                <table class="labContainer" >
+                    <col width="30%"/>
+                    <col width="40%"/>
+                    <col width="30%"/>
+                    <!-- <col width="20%"/> -->
+                    <!-- <tbody style="padding: 0; margin: 0;"> -->
+                    <tr>
+                        <td class="courseCellPadding">
+                            <div>CHE 133</div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont">[ Spring 2019 ]</div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont">Lab 01</div>
+                        </td>
+
+                    </tr>
+                </table>
+
+            </div>
+            <!-- one lab -->
+            <div class="bigLabContainer" >
+                <table class="labContainer" >
+                    <col width="30%"/>
+                    <col width="40%"/>
+                    <col width="30%"/>
+                    <tr>
+                        <td class="courseCellPadding">
+                            <div>CHE 133</div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont">[ Spring 2019 ]</div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont">Lab 02</div>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            <!-- one lab -->
+            <div class="bigLabContainer" >
+                <table class="labContainer" >
+                    <col width="30%"/>
+                    <col width="40%"/>
+                    <col width="30%"/>
+                    <tr>
+                        <td class="courseCellPadding">
+                            <div>CHE 133</div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont">[ Spring 2019 ]</div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont">Lab 03</div>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        <!-- End of right container -->
     </div>
-    <!-- Loop ends here -->
+    <!-- End of two containers-->
 
-</div>
+    <div style="text-align:right;">
+        <input type="submit" value="Save" class="save-button webfont" style="cursor: pointer;margin:1em 7% 3em 0em">
+    </div>
+</form>
 </body>
 </html>

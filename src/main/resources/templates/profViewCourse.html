@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -91,21 +91,23 @@
   <!-- one course -->
   <!-- loop -->
   <div th:each="course: ${courses}" class="notVeryBigContainer" >
-    <table class="courseContainer" th:onclick="'window.location.href = \'' + @{/course/edit} + '\''">
-      <col width="15%"/>
-      <col width="25%"/>
-      <col width="60%"/>
-      <!-- <col width="20%"/> -->
-      <!-- <tbody style="padding: 0; margin: 0;"> -->
-      <tr >
-            <td class="courseCellPadding">
-              <div class="webfont" th:text="${course.courseId}"></div>
-            </td>
-            <td class="courseCellPadding" th:text="${'[ ' + course.semester + ' ]'}" />
-            <td class="courseCellPadding" th:text="${course.courseName}" />
-      </tr>
+      <a th:href="'/profEditCourse?id=' +${course.courseId}">
+        <table class="courseContainer" >
+          <col width="15%"/>
+          <col width="25%"/>
+          <col width="60%"/>
+          <!-- <col width="20%"/> -->
+          <!-- <tbody style="padding: 0; margin: 0;"> -->
+          <tr >
+                <td class="courseCellPadding">
+                  <div class="webfont" th:text="${course.courseId}"></div>
+                </td>
+                <td class="courseCellPadding" th:text="${'[ ' + course.semester + ' ]'}" />
+                <td class="courseCellPadding" th:text="${course.courseName}" />
+          </tr>
 
-    </table>
+        </table>
+      </a>
   </div>
   <!-- Loop ends here -->
 
