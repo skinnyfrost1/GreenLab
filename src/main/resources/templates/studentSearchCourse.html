@@ -1,4 +1,4 @@
-.css}<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -28,9 +28,8 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Courses</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewCourse.html">View Courses</a></div>
-                              <div class="dropdown-content"><a href="profCreateCourse.html">Create Course</a></div>
-                              <div class="dropdown-content"><a href="studentSearchCourse.html">Search Course</a></div>
+                                <div class="dropdown-content"><a th:href="@{/courses}">View Courses</a></div>
+                                <div class="dropdown-content" ><a th:href="@{/course/search}">Search Course</a></div>
                             </div>
                         </div>
                     </td>
@@ -40,7 +39,6 @@
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
                               <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
-                              <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>
                               <div class="dropdown-content"><a href="studentDoLab.html">Do Lab</a></div>
                               <div class="dropdown-content"><a href="studentViewLabScore.html">My Lab Score</a></div>
                             </div>

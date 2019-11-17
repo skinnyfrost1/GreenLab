@@ -13,7 +13,5 @@ public class CheckEmailRequestBody {
     @NotBlank(message = "email can't empty!")
     private String email;
 
-    public String getEmail() {
-        return email;
-    }
+
 }

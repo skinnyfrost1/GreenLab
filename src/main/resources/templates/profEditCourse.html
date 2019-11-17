@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
@@ -40,8 +40,6 @@
                             <div class="dropdown_container" style="padding-top: 0.8em;">
                                 <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
                                 <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>
-                                <div class="dropdown-content"><a href="studentDoLab.html">Do Lab</a></div>
-                                <div class="dropdown-content"><a href="studentViewLabScore.html">My Lab Score</a></div>
                             </div>
                         </div>
                     </td>
@@ -81,20 +79,20 @@
 <!--  End of tool bar -->
 <div style="padding: 4em;"></div>
 <!-- Title -->
-<div class="title webfont">Create a course</div>
+<div class="title webfont" th:text="${course.courseId}"></div>
 <!-- Two containers -->
 <form th:action="@{/course/edit}" method = "post">
     <div style="text-align: center;">
         <!-- Left container -->
         <div class="createCourseContainer webfont">
             <div class=" webfont" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
-            <input id="courseId" type="text" name="courseId" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="CHE 133" required><br>
+            <input id="courseId" type="text" name="courseId" th:value="${course.courseId}" maxlength="24" class="createCourseTextfield webfont"  required><br>
             <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Title</div>
-            <input id="courseTitle"type="text" name="courseName" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="General Chemistry Lab 1" required><br>
+            <input id="courseTitle"type="text" name="courseName" th:value="${course.courseName}" maxlength="50" class="createCourseTextfield webfont" required><br>
             <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Semester</div>
-            <input id="semester"type="text" name="semester" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="Spring 2019" required><br>
+            <input id="semester"type="text" name="semester" th:value="${course.semester}" maxlength="24" class="createCourseTextfield webfont" required><br>
             <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Description</div>
-            <textarea id="courseDescription" type="text" name="courseDescription" value="" maxlength="50" class="createCourseTextArea webfont" placeholder= "..." required></textarea><br>
+            <textarea id="courseDescription" type="text" name="courseDescription" th:text="${course.courseDescription}" maxlength="250" class="createCourseTextArea webfont" required></textarea><br>
             <div>
                 <div class="webfont" style=" text-align: left; ">Student Roster
                     <span>
@@ -111,7 +109,7 @@
         <div class="createCourseContainer webfont">
             <div class=" webfont" style="text-align:left;margin: 0.5em 0;">Labs
                 <span>
-          <a href="" class="" style="margin:0em 1em 0em 20em;"><i class='fas fa-plus-square intextIcon'></i></a>
+          <a href="" class="" style="margin:0em 1em 0em 20em;"></i></a>
         </span>
             </div>
             <!-- one lab -->
