@@ -32,9 +32,9 @@ public class SignupController {
     @GetMapping(value = "/signup")
     public String getLogin(ModelMap model, HttpServletRequest request) {
         // if (request.getSession().getAttribute("email") != null)
-        //     return "redirect:/courses";
-//        else
-            return "signUp";
+        // return "redirect:/courses";
+        // else
+        return "signUp";
 
     }
 
@@ -45,14 +45,25 @@ public class SignupController {
             @RequestParam(value = "firstname", required = false) String firstname,
             @RequestParam(value = "lastname", required = false) String lastname,
             @RequestParam(value = "role", required = false) String role, ModelMap model, HttpServletRequest request) {
+            System.out.println("[POST signup]");
             if (request.getSession().getAttribute("email") != null) {
                 request.getSession().setAttribute("role", role);
                 return "redirect:/courses";
             }
         System.out.println("[post/login]" + "uid=" + uid + "email=" + email + " password=" + password + " firstname="
                 + firstname + " lastname=" + lastname + " role= " + role);
+        User user = userRepository.findByEmail(email);
+        if (user != null){
+            model.addAttribute("emailError","Email is exist.");
+            return "signup";
+        }
+        user = userRepository.findByUid(uid);
+        if (user != null){
+            model.addAttribute("uidError","UID is exist.");
+            return "signup";
+        }
         password = PasswordChecker.encryptSHA512(password);
-        User user = new User(uid, email, password, firstname, lastname, role);
+        user = new User(uid, email, password, firstname, lastname, role);
         userRepository.save(user);
         return "redirect:/courses";
     }
@@ -77,7 +88,7 @@ public class SignupController {
     }
 
     @PostMapping(value = "/checkuid")
-    public ResponseEntity<?> postCheckUid (@Valid @RequestBody SingleStringRequestBody checkUid, Errors errors){
+    public ResponseEntity<?> postCheckUid(@Valid @RequestBody SingleStringRequestBody checkUid, Errors errors) {
         BooleanResponseBody result = new BooleanResponseBody();
         if (errors.hasErrors()) {
             result.setMessage(
@@ -86,7 +97,7 @@ public class SignupController {
         }
         User user = userRepository.findByUid(checkUid.getStr());
         if (user == null) {
-            // if  can't found the user
+            // if can't found the user
             result.setMessage("Uid not found");
             result.setBool(false);
             System.out.println("[checkuid] user = null");
@@ -95,7 +106,7 @@ public class SignupController {
             // if found the user
             result.setMessage("Uid is exist");
             result.setBool(true);
-            System.out.println("[checkuid] user = "+user.getEmail());
+            System.out.println("[checkuid] user = " + user.getEmail());
             return ResponseEntity.ok(result);
         }
     }
