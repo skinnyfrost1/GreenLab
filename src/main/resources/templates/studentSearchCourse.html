@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
@@ -80,21 +80,23 @@
  <!--  End of tool bar -->
 <div style="padding: 4em;"></div>
 <!-- Title -->
-<!-- Two containers -->
-<div style="text-align: center;">
-  <div class="createCourseContainer webfont">
-      <div class="title webfont" style="text-align: margin: 1em 0;">Search</div>
-      <div class=" webfont" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
-      <input type="text" name="courseName" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="CHE 133" required><br>
-      <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Title</div>
-      <input type="text" name="courseTitle" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="General Chemistry Lab 1" required><br>
-      <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Semester</div>
-      <input type="text" name="courseSemester" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="Spring 2019" required><br>
-      <input type="submit" value="Search" class="big-button webfont" style="cursor: pointer;">
-  </div>
-  <!-- <div style="display: inline-block; width: 2em;"></div> -->
-</div>
-
+<form th:action="@{/course/search}" method = "post">
+    <div style="text-align: center;">
+      <div class="createCourseContainer webfont">
+          <div class=" webfont" style="text-align:center;margin:1em 0;font-size: 2em;font-weight: 500;">Search</div>
+          <div class=" webfont" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
+          <input type="text" name="courseName" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="CHE133" required><br>
+    <!--      <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Professor Name</div>-->
+    <!--      <input type="text" name="courseTitle" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="General Chemistry Lab 1" required><br>-->
+          <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Semester</div>
+          <input type="text" name="semester" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="Spring2019" required><br>
+          <br>
+          <br>
+          <input type="submit" value="Search" class="big-button webfont" style="cursor: pointer;">
+      </div>
+      <!-- <div style="display: inline-block; width: 2em;"></div> -->
+    </div>
+</form>
 
 </body>
 </html>

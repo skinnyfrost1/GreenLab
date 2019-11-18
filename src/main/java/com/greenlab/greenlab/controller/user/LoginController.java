@@ -44,9 +44,9 @@ public class LoginController {
         String email = login.getEmail();
         String password =login.getPassword();
         System.out.println("[post/login]email=" + email + " password=" + password);
-        
-        User user = userRepository.findByEmail(email);
-        if (user != null) {
+
+        if (userRepository.findByEmail(email) != null) {
+            User user = userRepository.findByEmail(email);
             String encryptedPassword = PasswordChecker.encryptSHA512(password);
             if ((user.getPassword()).equals(encryptedPassword)) {
                 System.out.println("password correct");     //debug
