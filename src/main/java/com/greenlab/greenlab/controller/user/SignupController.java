@@ -7,8 +7,10 @@ import javax.validation.Valid;
 
 import com.greenlab.greenlab.model.User;
 import com.greenlab.greenlab.repository.UserRepository;
+import com.greenlab.greenlab.dto.BooleanResponseBody;
 import com.greenlab.greenlab.dto.CheckEmailRequestBody;
 import com.greenlab.greenlab.dto.CheckEmailResponseBody;
+import com.greenlab.greenlab.dto.SingleStringRequestBody;
 import com.greenlab.greenlab.miscellaneous.PasswordChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +74,30 @@ public class SignupController {
             result.setExist(true);
         }
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping(value = "/checkuid")
+    public ResponseEntity<?> postCheckUid (@Valid @RequestBody SingleStringRequestBody checkUid, Errors errors){
+        BooleanResponseBody result = new BooleanResponseBody();
+        if (errors.hasErrors()) {
+            result.setMessage(
+                    errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
+            return ResponseEntity.badRequest().body(result);
+        }
+        User user = userRepository.findByUid(checkUid.getStr());
+        if (user == null) {
+            // if  can't found the user
+            result.setMessage("Uid not found");
+            result.setBool(false);
+            System.out.println("[checkuid] user = null");
+            return ResponseEntity.ok(result);
+        } else {
+            // if found the user
+            result.setMessage("Uid is exist");
+            result.setBool(true);
+            System.out.println("[checkuid] user = "+user.getEmail());
+            return ResponseEntity.ok(result);
+        }
     }
 
 }
