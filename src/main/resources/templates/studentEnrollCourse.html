@@ -9,7 +9,7 @@
     <link th:href="@{/stylesheet/profCreateCourse.css}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <title>profViewCourse</title>
+    <title>studentAddCourse</title>
 </head>
 <body>
 <!-- Header Banner -->
@@ -24,7 +24,7 @@
                         <div class="logo"></div>
                     </td>
                     <td class="headerCellPadding">
-<!--                        <a href="/index" class="headerSelected">Courses</a>-->
+                        <!--                        <a href="/index" class="headerSelected">Courses</a>-->
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Courses</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
@@ -38,9 +38,9 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
-                              <div class="dropdown-content"><a href="studentDoLab.html">Do Lab</a></div>
-                              <div class="dropdown-content"><a href="studentViewLabScore.html">My Lab Score</a></div>
+                                <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
+                                <div class="dropdown-content"><a href="studentDoLab.html">Do Lab</a></div>
+                                <div class="dropdown-content"><a href="studentViewLabScore.html">My Lab Score</a></div>
                             </div>
                         </div>
                     </td>
@@ -49,9 +49,9 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Equipments</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
-                              <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
-                              <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
+                                <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
+                                <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
+                                <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
                             </div>
                         </div>
                     </td>
@@ -77,24 +77,42 @@
     </tr>
     </tbody>
 </table>
- <!--  End of tool bar -->
+<!--  End of tool bar -->
 <div style="padding: 4em;"></div>
 <!-- Title -->
-<form th:action="@{/course/search}" method = "post">
+<!-- Two containers -->
+<form th:action="@{/course/enroll}" method = "post">
     <div style="text-align: center;">
-      <div class="createCourseContainer webfont">
-          <div class=" webfont" style="text-align:center;margin:1em 0;font-size: 2em;font-weight: 500;">Search</div>
-          <div class=" webfont" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
-          <input type="text" name="courseName" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="CHE133" required><br>
-    <!--      <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Professor Name</div>-->
-    <!--      <input type="text" name="courseTitle" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="General Chemistry Lab 1" required><br>-->
-<!--          <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Semester</div>-->
-<!--          <input type="text" name="semester" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="Spring2019" required><br>-->
-          <br>
-          <br>
-          <input type="submit" value="Search" class="big-button webfont" style="cursor: pointer;">
-      </div>
-      <!-- <div style="display: inline-block; width: 2em;"></div> -->
+        <div class="createCourseContainer webfont">
+            <div class=" webfont" style="text-align:center;margin:1em 0;font-size: 2em;font-weight: 500;">Course Search Results</div>
+            <div th:each="course:${courses}" class="bigLabContainer" >
+                    <table class="labContainer" >
+                        <col width="15%"/>
+                        <col width="25%"/>
+                        <col width="45%"/>
+                        <col width="15%"/>
+                        <!-- <col width="20%"/> -->
+                        <!-- <tbody style="padding: 0; margin: 0;"> -->
+                        <tr>
+                            <td class="courseCellPadding">
+                                <div th:text="${course.courseId}"></div>
+                            </td>
+                            <td class="courseCellPadding">
+                                <div th:text="${course.semester}"></div>
+                            </td>
+                            <td class="courseCellPadding">
+                                <div th:text="${course.creator}"></div>
+                            </td>
+                            <td>
+                                <input type="radio" name="courseSelected" th:value="${course._id}" required>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            <input type="submit" value="Enroll" class="big-button webfont" style="cursor: pointer;">
+        </div>
+        <!-- <div style="display: inline-block; width: 2em;"></div> -->
     </div>
 </form>
 

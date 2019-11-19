@@ -89,7 +89,7 @@
   <!-- one course -->
   <!-- loop -->
   <div th:each="course: ${courses}" class="notVeryBigContainer" >
-      <a th:href="'/course/edit?id=' +${course.courseId}">
+      <a th:href="'/course/edit?id=' +${course.get_id()}">
         <table class="courseContainer" >
           <col width="15%"/>
           <col width="25%"/>
