@@ -76,6 +76,9 @@ public class CreateCourseController {
                         String stuID = columns[2];
                         if(userRepository.findByUid(stuID)!=null){
                             User student = userRepository.findByUid(stuID);
+                            if(stuCourseRepository.findByCourseIdAndStudentEmail(courseId,student.getEmail()) != null){
+                                continue;
+                            }
                             StuCourse stuCourse = new StuCourse(course.get_id(),student.getEmail(),course.getCourseId());
                             stuCourse.set_id(course.get_id()+student.getEmail());
                             System.out.println(stuCourse.toString());

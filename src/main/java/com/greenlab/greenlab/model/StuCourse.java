@@ -8,9 +8,9 @@ public class StuCourse {
     @Id
     private String _id; // course object id + email
 
-    private String courseObjectId;
+    private String courseObjectId; //5deeksdjhvkdhvks
     private String studentEmail;
-    private String courseId;
+    private String courseId; // CHE 133
 
     public StuCourse(String courseObjectId, String studentEmail, String courseId) {
         this.courseObjectId = courseObjectId;

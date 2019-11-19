@@ -354,13 +354,13 @@
     </div>
     <!-- End of two containers-->
     <span>
-        <input type="submit" value="Delete" class="delete-button webfont" style="float:left;margin:0.5em 8% 2em 8%;">
+        <input form="deleteForm" name="courseObjectId" th:value="${course._id}" hidden/>
+        <input form="deleteForm" type="submit" value="Delete" class="delete-button webfont" style="float:left;margin:0.5em 8% 2em 8%;">
         <input type="submit" value="Save" class="save-button webfont" style="float:right;margin:0.5em 8% 2em 8%;">
     </span>
 <!--    <div style="text-align:right;">-->
 <!--    </div>-->
-
-
 </form>
+<form id='deleteForm' th:action="@{/course/delete}" method = "post"></form>
 </body>
 </html>
