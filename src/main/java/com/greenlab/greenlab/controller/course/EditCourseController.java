@@ -28,39 +28,32 @@ public class EditCourseController{
 //        if (request.getSession().getAttribute("email") == null)
 //            return "redirect:/login";
 //        Course course
-        Course course = courseRepository.findByCourseId(id);
+        Course course = courseRepository.findBy_id(id);
         model.addAttribute("course",course);
-        System.out.println(id);
+//        System.out.println(id);
 
         return "profEditCourse";
     }
 
-    @GetMapping("/profEditCourse")
-    public String profEditCourse(@RequestParam(value = "id") String id,
-                                 ModelMap model,
-                                 HttpServletRequest request) {
-//        if (request.getSession().getAttribute("email") == null)
-//            return "redirect:/login";
-        Course course = courseRepository.findByCourseId(id);
-        model.addAttribute("course",course);
-        System.out.println(id);
-
-        return "profEditCourse";
-    }
 
     @PostMapping(value = "/course/edit")
-    public String postEditCourse(@RequestParam(value = "courseId", required = false) String courseId,
+    public String postEditCourse(@RequestParam(value = "_id", required = false) String _id,
+                                    @RequestParam(value = "courseId", required = false) String courseId,
                                    @RequestParam(value = "courseName", required = false) String courseName,
                                    @RequestParam(value = "semester", required = false) String semester,
                                    @RequestParam(value = "courseDescription", required = false) String courseDescription, ModelMap model,
                                    HttpServletRequest request) {
 
 //        String creator = (String) request.getSession().getAttribute("email");
-        Course course = courseRepository.findByCourseId(courseId);
+        Course course = courseRepository.findBy_id(_id);
+        System.out.println(course.get_id());
+        courseId = courseId.replaceAll(" ","");
+        courseId = courseId.toUpperCase();
+        course.setCourseId(courseId);
         course.setCourseName(courseName);
         course.setSemester(semester);
         course.setCourseDescription(courseDescription);
-        System.out.println(course.get_id());
+//        System.out.println(course.get_id());
         courseRepository.save(course);
         return "redirect:/courses";
     }

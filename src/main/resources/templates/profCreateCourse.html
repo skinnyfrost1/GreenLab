@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
@@ -70,7 +70,7 @@
                         <a href="" class="headerUnselected"><i class='fas fa-cog headerIcon'></i></a>
                     </td>
                     <td class="headerCellPadding">
-                        <a href="index.html" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>
+                        <a th:href="@{/logout}" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>
                     </td>
                 </tr>
             </table>
@@ -83,7 +83,7 @@
 <!-- Title -->
 <div class="title webfont">Create a course</div>
 <!-- Two containers -->
-<form th:action="@{/course/create}" method = "post">
+<form th:action="@{/course/create}" method = "post" enctype="multipart/form-data">
 <div style="text-align: center;">
   <!-- Left container -->
     <div id="inputInfoPage" class="show">
@@ -96,18 +96,20 @@
             <input id="semester"type="text" name="semester" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="Spring 2019" required><br>
             <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Description</div>
             <textarea id="courseDescription" type="text" name="courseDescription" value="" maxlength="50" class="createCourseTextArea webfont" placeholder= "..." required></textarea><br>
-            <div>
-                <div class="webfont" style=" text-align: left; ">Student Roster
+                <div>
                     <span>
-            <a href="" style = "margin:0em 1em;"> UploadRoster </a>
-          </span>
+                    <div>
+                    <label for="file" style="margin:0em 5em 0em 0em;">Student Roster</label>
+                    <input type="file" id="file" name="file" value="" accept=".csv" >
+                    </div>
+                        <!--            <a href="" style = "margin:0em 1em;"> UploadRoster </a>-->
+                    </span>
                 </div>
-            </div>
-            <div>
-                <button type="button" class="show save-button" id="nextBtn" style="margin:0em 1em 0em 20em;">NEXT</button>
-            </div>
-
         </div>
+        <div>
+            <button type="button" class="show save-button" id="nextBtn" style="margin:0em 10% 0em 0em;float:right;">NEXT</button>
+        </div>
+
     </div>
 
   <!-- End of left Container -->
@@ -224,10 +226,10 @@
 
     <span>
         <div id="saveBtnContainer" class="show">
-            <input type="submit" value="Save" class="save-button webfont" style="cursor: pointer;margin:1em 7% 3em 0em">
+            <input type="submit" value="Save" class="save-button webfont" style="cursor: pointer;margin:1em 10% 3em 0em; float:right;">
         </div>
         <div id="previousBtnContainer" class="show">
-            <button type="button" class="show save-button" id="previousBtn" style="margin:0em 1em 0em 20em;">Previous</button>
+            <button type="button" class="show save-button" id="previousBtn" style="margin:1em 0em 3em 10%;float:left;">Previous</button>
         </div>
     </span>
 
