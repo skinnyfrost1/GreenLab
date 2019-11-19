@@ -36,6 +36,7 @@ public class ForgotPasswordController {
 
     @PostMapping("/forgotpassword")
     public ResponseEntity<?> postForgotPassword(@Valid @RequestBody ForgotPasswordRequestBody forgotPassword, Errors errors, ModelMap model, HttpServletRequest request){
+        System.out.println("[POST forgotpassword]");
         BooleanResponseBody result = new BooleanResponseBody();
         User user = userRepository.findByEmail(forgotPassword.getEmail());
         if (user==null){
