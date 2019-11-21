@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link href="../static/stylesheet/theme.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/font.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/dropdown_menu.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/index.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/profCreateCourse.css" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/index.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/profCreateCourse.css}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <title>profViewCourse</title>
@@ -28,9 +28,8 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Courses</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewCourse.html">View Courses</a></div>
-                              <div class="dropdown-content"><a href="profCreateCourse.html">Create Course</a></div>
-                              <div class="dropdown-content"><a href="studentSearchCourse.html">Search Course</a></div>
+                                <div class="dropdown-content"><a th:href="@{/courses}">View Courses</a></div>
+                                <div class="dropdown-content" ><a th:href="@{/course/search}">Search Course</a></div>
                             </div>
                         </div>
                     </td>
@@ -40,7 +39,6 @@
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
                               <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
-                              <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>
                               <div class="dropdown-content"><a href="studentDoLab.html">Do Lab</a></div>
                               <div class="dropdown-content"><a href="studentViewLabScore.html">My Lab Score</a></div>
                             </div>
@@ -82,21 +80,23 @@
  <!--  End of tool bar -->
 <div style="padding: 4em;"></div>
 <!-- Title -->
-<!-- Two containers -->
-<div style="text-align: center;">
-  <div class="createCourseContainer webfont">
-      <div class="title webfont" style="text-align: margin: 1em 0;">Search</div>
-      <div class=" webfont" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
-      <input type="text" name="courseName" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="CHE 133" required><br>
-      <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Title</div>
-      <input type="text" name="courseTitle" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="General Chemistry Lab 1" required><br>
-      <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Semester</div>
-      <input type="text" name="courseSemester" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="Spring 2019" required><br>
-      <input type="submit" value="Search" class="big-button webfont" style="cursor: pointer;">
-  </div>
-  <!-- <div style="display: inline-block; width: 2em;"></div> -->
-</div>
-
+<form th:action="@{/course/search}" method = "post">
+    <div style="text-align: center;">
+      <div class="createCourseContainer webfont">
+          <div class=" webfont" style="text-align:center;margin:1em 0;font-size: 2em;font-weight: 500;">Search</div>
+          <div class=" webfont" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
+          <input type="text" name="courseName" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="CHE133" required><br>
+    <!--      <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Professor Name</div>-->
+    <!--      <input type="text" name="courseTitle" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="General Chemistry Lab 1" required><br>-->
+<!--          <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Semester</div>-->
+<!--          <input type="text" name="semester" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="Spring2019" required><br>-->
+          <br>
+          <br>
+          <input type="submit" value="Search" class="big-button webfont" style="cursor: pointer;">
+      </div>
+      <!-- <div style="display: inline-block; width: 2em;"></div> -->
+    </div>
+</form>
 
 </body>
 </html>

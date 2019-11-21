@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href="../static/stylesheet/theme.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/font.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/dropdown_menu.css" type="text/css" rel="stylesheet">
-    <link href="../static/stylesheet/index.css" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/index.css}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <title>profViewCourse</title>
@@ -27,9 +27,8 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Courses</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewCourse.html">View Courses</a></div>
-                              <div class="dropdown-content"><a href="profCreateCourse.html">Create Course</a></div>
-                              <div class="dropdown-content"><a href="studentSearchCourse.html">Search Course</a></div>
+                                <div class="dropdown-content"><a th:href="@{/courses}">View Courses</a></div>
+                                <div class="dropdown-content" ><a th:href="@{/course/search}">Search Course</a></div>
                             </div>
                         </div>
                     </td>
@@ -39,7 +38,6 @@
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
                               <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
-                              <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>
                               <div class="dropdown-content"><a href="studentDoLab.html">Do Lab</a></div>
                               <div class="dropdown-content"><a href="studentViewLabScore.html">My Lab Score</a></div>
                             </div>

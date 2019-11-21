@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/index.css}" type="text/css" rel="stylesheet">
-    <link th:href="@{/stylesheet/profViewEquip.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/profCreateCourse.css}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <title>profViewCourse</title>
+    <title>studentAddCourse</title>
 </head>
 <body>
 <!-- Header Banner -->
@@ -24,12 +24,12 @@
                         <div class="logo"></div>
                     </td>
                     <td class="headerCellPadding">
-<!--                        <a href="/index" class="headerSelected">Courses</a>-->
+                        <!--                        <a href="/index" class="headerSelected">Courses</a>-->
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Courses</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
                                 <div class="dropdown-content"><a th:href="@{/courses}">View Courses</a></div>
-                                <div class="dropdown-content"><a th:href="@{/course/create}">Create Course</a></div>
+                                <div class="dropdown-content" ><a th:href="@{/course/search}">Search Course</a></div>
                             </div>
                         </div>
                     </td>
@@ -38,8 +38,9 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
-                              <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>
+                                <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
+                                <div class="dropdown-content"><a href="studentDoLab.html">Do Lab</a></div>
+                                <div class="dropdown-content"><a href="studentViewLabScore.html">My Lab Score</a></div>
                             </div>
                         </div>
                     </td>
@@ -48,9 +49,9 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Equipments</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
-                              <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
-                              <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
+                                <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
+                                <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
+                                <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
                             </div>
                         </div>
                     </td>
@@ -76,58 +77,44 @@
     </tr>
     </tbody>
 </table>
- <!--  End of tool bar -->
+<!--  End of tool bar -->
 <div style="padding: 4em;"></div>
 <!-- Title -->
-<div class="title webfont">Your Equipments
-    <a href="" class="headerUnselected" style="margin:0em 5em 0em 20em;"><i class='fas fa-trash-alt headerIcon'></i></a>
-</div>
-  <!-- <table style="width:100%">
-    <col width="33.4%"/>
-    <col width="33.3%"/>
-    <col width="33.3%"/>
-    <tr>
-      <td>
-        <div class="viewEquipContainer"></div>
-      </td>
-      <td>
-        <div class="viewEquipContainer"></div>
-      </td>
-      <td>
-        <div class="viewEquipContainer"></div>
-      </td>
-    </tr>
-  </table> -->
-  <div style="text-align:center;">
-    <div class="viewEquipContainer" ><img class="imageContainer" src="../static/image/Container.png">
-      <br>
-      50 ml beaker
-    </div>
-    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Heater.png">
-      <br>
-      Small alcohol lamp
-    </div>
-    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Timer.png">
-      <br>
-      Timer
-    </div>
-  </div>
+<!-- Two containers -->
+<form th:action="@{/course/enroll}" method = "post">
+    <div style="text-align: center;">
+        <div class="createCourseContainer webfont">
+            <div class=" webfont" style="text-align:center;margin:1em 0;font-size: 2em;font-weight: 500;">Course Search Results</div>
+            <div th:each="course:${courses}" class="bigLabContainer" >
+                    <table class="labContainer" >
+                        <col width="15%"/>
+                        <col width="25%"/>
+                        <col width="45%"/>
+                        <col width="15%"/>
+                        <!-- <col width="20%"/> -->
+                        <!-- <tbody style="padding: 0; margin: 0;"> -->
+                        <tr>
+                            <td class="courseCellPadding">
+                                <div th:text="${course.courseId}"></div>
+                            </td>
+                            <td class="courseCellPadding">
+                                <div th:text="${course.semester}"></div>
+                            </td>
+                            <td class="courseCellPadding">
+                                <div th:text="${course.creator}"></div>
+                            </td>
+                            <td>
+                                <input type="radio" name="courseSelected" th:value="${course._id}" required>
+                            </td>
+                        </tr>
+                    </table>
 
-  <div style="text-align:center;">
-    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Holder.png">
-      <br>
-      Holder
+                </div>
+            <input type="submit" value="Enroll" class="big-button webfont" style="cursor: pointer;">
+        </div>
+        <!-- <div style="display: inline-block; width: 2em;"></div> -->
     </div>
-    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Measure.png">
-      <br>
-      Measure
-    </div>
-    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Seperator.png">
-      <br>
-      Seperator
-    </div>
-  </div>
-
+</form>
 
 </body>
 </html>
