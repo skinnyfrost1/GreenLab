@@ -20,9 +20,19 @@ public class Lab{
     private String labId;
     private String labDescription;
     private String stepObjectId;
-    private List<Material> materials = new ArrayList<Material>();
-    private List<Container> containers = new ArrayList<Container>();
-    private List<Holder> holders = new ArrayList<Holder>();
+    private List<Material> materials;
+    private List<Container> containers;
+    private List<Holder> holders;
+    // private List<Steps> steps;
+
+    public Lab(){
+        materials = new ArrayList<Material>();
+        containers = new ArrayList<Container>();
+        holders = new ArrayList<Holder>();
+        // steps = new ArrayList<Steps>();
+    }
+
+    
 
 
     

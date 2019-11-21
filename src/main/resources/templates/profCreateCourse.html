@@ -117,10 +117,10 @@
 
 
   <!-- Right container-->
-    <div id="addLabBigContainer" class="show">
-        <script>
+    <div id="addLabBigContainer" onload="addLabBigContainer()" class="show">
+        <!-- <script>
             $("#addLabBigContainer").hide().removeClass("show");
-        </script>
+        </script> -->
         <div class="createCourseContainer webfont">
             <div class=" webfont" style="text-align:left;margin: 0.5em 0;">Labs
                 <span>
@@ -234,13 +234,13 @@
     </span>
 
 
-    <script>
+    <!-- <script>
         $("#saveBtnContainer").hide().removeClass("show");
         $("#previousBtnContainer").hide().removeClass("show");
-    </script>
+    </script> -->
 </div>
 </form>
-<script>
+<!-- <script>
     var labs={
         "course1":{
             "courseName": "niubi",
@@ -376,6 +376,7 @@
         //     $("#addLabBtn").toggle();
         // })
     });
-</script>
+</script> -->
+<script type="text/javascript" th:src="@{/js/CreateCourse.js}"></script>
 </body>
 </html>

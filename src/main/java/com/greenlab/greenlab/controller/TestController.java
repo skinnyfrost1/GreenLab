@@ -2,6 +2,7 @@ package com.greenlab.greenlab.controller;
 
 import com.greenlab.greenlab.miscellaneous.PasswordChecker;
 import com.greenlab.greenlab.model.User;
+import com.greenlab.greenlab.repository.ContainerRepository;
 import com.greenlab.greenlab.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class TestController{
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ContainerRepository containerRepository;
+
     @GetMapping(value="/test/add5stu")
     public String getAdd5Stu() {
         String password = "123";
@@ -27,7 +31,7 @@ public class TestController{
             String email = "stu" + Integer.toString(i) +"@greenlab.edu";
             String firstname = "First"+Integer.toString(i);
             String lastname = "Last"+Integer.toString(i);
-            user = new User(uid,uid,email,password,firstname,lastname,role);
+            user = new User(uid,email,password,firstname,lastname,role);
             User temp_user = userRepository.findByEmail(email);
             if (temp_user!=null)
                 return "<div>You already added five student.</div>";
@@ -43,12 +47,12 @@ public class TestController{
         String role = "Professor";
         User user;
         for (int i = 0; i<5; i++){
-            int temp = 800000000+i;
+            int temp = 880000000+i;
             String uid = Integer.toString(temp);
             String email = "prof" + Integer.toString(i) +"@greenlab.edu";
             String firstname = "First"+Integer.toString(i);
             String lastname = "Last"+Integer.toString(i);
-            user = new User(uid,uid,email,password,firstname,lastname,role);
+            user = new User(uid,email,password,firstname,lastname,role);
             User temp_user = userRepository.findByEmail(email);
             if (temp_user!=null)
                 return "<div>You already added five prof.</div>";
@@ -56,5 +60,4 @@ public class TestController{
         }
         return "successfully add 5 prof.";
     }
-    
 }
