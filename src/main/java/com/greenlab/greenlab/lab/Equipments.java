@@ -11,5 +11,4 @@ public class Equipments{
     private String equipmentId;
     private String equipmentType;
     
-
 }
