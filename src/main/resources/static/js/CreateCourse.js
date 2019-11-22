@@ -133,6 +133,23 @@ $(document).ready(function(e) {
         course3.labName = "lab003";
         labs1["course3"] = course3;
 
+
+        var courseNameInput = $("input[name=courseId]").val();
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/course/create/requestlabmenu",
+            data: JSON.stringify(courseNameInput),
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+                // var isExist = data['exist'];
+                console.log(data)
+            },
+        });
+
+
         for( var i  = 0 ; i< Object.keys(labs1).length ; i++ ){
 
             var item1 =  labs1[Object.keys(labs1)[i]];
