@@ -122,6 +122,7 @@ public class CreateCourseController {
 
     @PostMapping(value = "/course/create/requestlabmenu")
     public ResponseEntity<?> postRequestLabMenu(@Valid @RequestBody SingleStringRequestBody reqBody, Errors errors, HttpServletRequest request){
+        System.out.println(reqBody.getStr());
         RequestLabMenuResponseBody result = new RequestLabMenuResponseBody();
         if (errors.hasErrors()) {
             result.setMessage(

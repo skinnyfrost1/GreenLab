@@ -93,97 +93,77 @@ $(document).ready(function(e) {
         $("#previousBtnContainer").show().addClass("show");
         $("#inputInfoPage").hide().removeClass("show");
         $("#addLabPage").empty();
-        var str='';
+        var htmlStr='';
 
 
-
-        // var labs={
-        //     "course1":{
-        //         "courseName": "niubi",
-        //         "courseTerm": "fall 1111",
-        //         "labName": "lab001",
-        //     },
-        //     "course2":{
-        //         "courseName": "wudi",
-        //         "courseTerm": "fall 2222",
-        //         "labName": "lab002",
-        //     },
-        //     "course3":{
-        //         "courseName": "shuai",
-        //         "courseTerm": "fall 3333",
-        //         "labName": "lab003",
-        //     }
-        //
-        // };
-
-        var labs1 = {};
-        var course1 = {};
-        course1.courseName = "niubi";
-        course1.courseTerm = "fall 111";
-        course1.labName = "lab001";
-        labs1["course1"] = course1;
-        var course2 = {};
-        course2.courseName = "2222";
-        course2.courseTerm = "fall 2222";
-        course2.labName = "lab002";
-        labs1["course2"] = course2;
-        var course3 = {};
-        course3.courseName = "3333";
-        course3.courseTerm = "fall 3333";
-        course3.labName = "lab003";
-        labs1["course3"] = course3;
+        // var labs1 = {};
+        // var course1 = {};
+        // course1.courseName = "niubi";
+        // course1.courseTerm = "fall 111";
+        // course1.labName = "lab001";
+        // labs1["course1"] = course1;
+        // var course2 = {};
+        // course2.courseName = "2222";
+        // course2.courseTerm = "fall 2222";
+        // course2.labName = "lab002";
+        // labs1["course2"] = course2;
+        // var course3 = {};
+        // course3.courseName = "3333";
+        // course3.courseTerm = "fall 3333";
+        // course3.labName = "lab003";
+        // labs1["course3"] = course3;
 
 
-        var courseNameInput = $("input[name=courseId]").val();
+        var str={};
+        str['str']=$("input[name=courseId]").val();;
+        // console.log("lab name is "+str);
         $.ajax({
             type: "POST",
             contentType: "application/json",
             url: "/course/create/requestlabmenu",
-            data: JSON.stringify(courseNameInput),
+            data: JSON.stringify(str),
             dataType: 'json',
             cache: false,
             timeout: 600000,
             success: function (data) {
-                // var isExist = data['exist'];
-                console.log(data)
+                console.log("data is "+data)
+                labNameList = data['labNameList']
+                console.log("lab name list is "+labNameList)
+                console.log("its size is "+labNameList.length)
+                for(var i=0;i<labNameList.length;i++){
+
+                    htmlStr+=   '            <div class="bigLabContainer" >\n' +
+                                '              <table class="labContainer" >\n' +
+                                '                <col width="30%"/>\n' +
+                                '                <col width="40%"/>\n' +
+                                '                <col width="30%"/>\n' +
+                                '                  <tr>\n' +
+                                '                    <td class="courseCellPadding">\n' +
+                                '                        <div>'+labNameList[i]+'</div>\n' +
+                                '                    </td>\n' +
+                                '                    <td>\n' +
+                                '                      <input type="checkbox" name="select1" value="lab03">'  +
+                                '                    </td>' +
+                                '                  </tr>\n' +
+                                '                </table>\n' +
+                                '              </div>\n'
+
+                }
+
+                $("#addLabPage").append(htmlStr);
+                $("#addLabPage").show().addClass("show");
+                $("#addLabBigContainer").show().addClass("show");
             },
         });
 
-
-        for( var i  = 0 ; i< Object.keys(labs1).length ; i++ ){
-
-            var item1 =  labs1[Object.keys(labs1)[i]];
-            var itemKeyArr = Object.keys(item1);
-
-
-            console.log(  labs1[Object.keys(labs1)[i]] );
-            str+=   '            <div class="bigLabContainer" >\n' +
-                '              <table class="labContainer" >\n' +
-                '                <col width="30%"/>\n' +
-                '                <col width="40%"/>\n' +
-                '                <col width="30%"/>\n' +
-                '                  <tr>\n' +
-                '                    <td class="courseCellPadding">\n' +
-                '                        <div>'+item1[itemKeyArr[0]]+'</div>\n' +
-                '                    </td>\n' +
-                '                    <td class="courseCellPadding">\n' +
-                '                      <div class="webfont">[ '+item1[itemKeyArr[1]]+' ]</div>\n' +
-                '                    </td>\n' +
-                '                    <td class="courseCellPadding">\n' +
-                '                      <div class="webfont">'+item1[itemKeyArr[2]]+'</div>\n' +
-                '                    </td>\n' +
-                '                    <td>\n' +
-                '                      <input type="checkbox" name="select1" value="lab03">'  +
-                '                    </td>' +
-                '                  </tr>\n' +
-                '                </table>\n' +
-                '              </div>\n'
-        }
-
-        // console.log(labs1)
-        // var b = JSON.parse(JSON.stringify(labs));
-        // $.each(labs1, function (value) {
-        //     console.log(value)
+        //
+        // for( var i  = 0 ; i< Object.keys(labs1).length ; i++ ){
+        //
+        //     var item1 =  labs1[Object.keys(labs1)[i]];
+        //     var itemKeyArr = Object.keys(item1);
+        //
+        //
+        //     // console.log(  labs1[Object.keys(labs1)[i]] );
         //     str+=   '            <div class="bigLabContainer" >\n' +
         //         '              <table class="labContainer" >\n' +
         //         '                <col width="30%"/>\n' +
@@ -191,13 +171,13 @@ $(document).ready(function(e) {
         //         '                <col width="30%"/>\n' +
         //         '                  <tr>\n' +
         //         '                    <td class="courseCellPadding">\n' +
-        //         '                        <div>'+value[0]+'</div>\n' +
+        //         '                        <div>'+item1[itemKeyArr[0]]+'</div>\n' +
         //         '                    </td>\n' +
         //         '                    <td class="courseCellPadding">\n' +
-        //         '                      <div class="webfont">[ '+value.courseTerm+' ]</div>\n' +
+        //         '                      <div class="webfont">[ '+item1[itemKeyArr[1]]+' ]</div>\n' +
         //         '                    </td>\n' +
         //         '                    <td class="courseCellPadding">\n' +
-        //         '                      <div class="webfont">'+value.labName+'</div>\n' +
+        //         '                      <div class="webfont">'+item1[itemKeyArr[2]]+'</div>\n' +
         //         '                    </td>\n' +
         //         '                    <td>\n' +
         //         '                      <input type="checkbox" name="select1" value="lab03">'  +
@@ -205,11 +185,9 @@ $(document).ready(function(e) {
         //         '                  </tr>\n' +
         //         '                </table>\n' +
         //         '              </div>\n'
-        // })
-        // str+='<div class="webfont" style="text-align:left; margin: 0.5em 0;">hello world!!!!!</div>\n';
-        $("#addLabPage").append(str);
-        $("#addLabPage").show().addClass("show");
-        $("#addLabBigContainer").show().addClass("show");
+        // }
+
+
 
 
     })
