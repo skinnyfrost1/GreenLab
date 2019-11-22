@@ -9,22 +9,30 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
+import com.greenlab.greenlab.dto.RequestLabMenuResponseBody;
+import com.greenlab.greenlab.dto.SingleStringRequestBody;
 import com.greenlab.greenlab.model.Course;
+import com.greenlab.greenlab.model.Lab;
 import com.greenlab.greenlab.model.StuCourse;
 import com.greenlab.greenlab.model.User;
 import com.greenlab.greenlab.repository.CourseRepository;
-
+import com.greenlab.greenlab.repository.LabRepository;
 import com.greenlab.greenlab.repository.StuCourseRepository;
 import com.greenlab.greenlab.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +45,8 @@ public class CreateCourseController {
     private StuCourseRepository stuCourseRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private LabRepository labRepository;
 
     @GetMapping(value = "/course/create")
     public String getCreateCourse(ModelMap model, HttpServletRequest request) {
@@ -110,5 +120,31 @@ public class CreateCourseController {
 
     }
 
-
+    @PostMapping(value = "/course/create/requestlabmenu")
+    public ResponseEntity<?> postRequestLabMenu(@Valid @RequestBody SingleStringRequestBody reqBody, Errors errors, HttpServletRequest request){
+        RequestLabMenuResponseBody result = new RequestLabMenuResponseBody();
+        if (errors.hasErrors()) {
+            result.setMessage(
+                    errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
+            return ResponseEntity.badRequest().body(result);
+        }
+        String email = (String) request.getSession().getAttribute("email");
+        List<String> labNameList = new ArrayList<>();
+        String courseId = reqBody.getStr();
+        List<Lab> labs = labRepository.findByCourseId(courseId);
+        for (Lab l : labs){
+            if (l.getCreator().equals(email)){
+                labNameList.add(l.getLabName());
+            }
+            else{
+                labs.remove(l);
+            }
+        }
+        request.getSession().setAttribute("labs", labs);
+        result.setLabNameList(labNameList);
+        result.setMessage("Success!");
+        
+        return ResponseEntity.ok(result);
+        
+    }
 }
