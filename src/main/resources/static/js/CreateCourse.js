@@ -142,7 +142,7 @@ $(document).ready(function(e) {
                                 '                        <div>'+labNameList[i]+'</div>\n' +
                                 '                    </td>\n' +
                                 '                    <td>\n' +
-                                '                      <input type="checkbox" name="select1" value="lab03">'  +
+                                '                      <input type="checkbox" name="select'+i+'" value="lab03">'  +
                                 '                    </td>' +
                                 '                  </tr>\n' +
                                 '                </table>\n' +
