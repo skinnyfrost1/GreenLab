@@ -17,14 +17,24 @@ public class Course {
     private String courseDescription;
     private String creator;
     private String createDate;
-    
-    @DBRef
     private List<User> students;
-    // creator
-    // private List<Lab> labs;
+    @DBRef
+    private List<Lab> labs;
 
     public Course() {
 
+    }
+
+    public Course(String courseId, String courseName, String semester, String courseDescription, String createDate, String creator,
+            List<User> students, List<Lab> labs) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.semester=semester;
+        this.courseDescription = courseDescription;
+        this.creator = creator;
+        this.createDate = createDate;
+        this.students = students;
+        this.labs = labs;
     }
 
     public Course(String courseId, String courseName, String semester, String courseDescription, String createDate, String creator,

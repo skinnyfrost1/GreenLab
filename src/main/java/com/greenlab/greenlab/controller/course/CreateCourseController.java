@@ -58,8 +58,20 @@ public class CreateCourseController {
                                    @RequestParam(value = "courseName", required = false) String courseName,
                                    @RequestParam(value = "semester", required = false) String semester,
                                    @RequestParam(value = "courseDescription", required = false) String courseDescription,
+                                   @RequestParam(value = "select", required = false) List<String> labNameList,
                                    @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model,
                                    HttpServletRequest request) {
+        List<Lab> labs = new ArrayList<>();
+        List<Lab> tempLab = (List<Lab>) request.getSession().getAttribute("labs");
+        for(Lab l : tempLab){
+            for(String name : labNameList){
+                if (l.getLabName().equals(name)){
+                    labs.add(l);
+                }
+            }
+        }
+
+
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date date = new Date();
         String createDate = dateFormat.format(date);
@@ -68,7 +80,7 @@ public class CreateCourseController {
         courseId = courseId.toUpperCase();
 //        String id = createDate+courseId;
         List<User> students = new ArrayList<>();
-        Course course = new Course(courseId, courseName, semester, courseDescription,createDate,creator,students);
+        Course course = new Course(courseId, courseName, semester, courseDescription,createDate,creator,students,labs);
         System.out.println(course.toString());
         courseRepository.save(course);
         if (!file.isEmpty()) {
