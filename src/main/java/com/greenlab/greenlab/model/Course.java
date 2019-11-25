@@ -3,6 +3,7 @@ package com.greenlab.greenlab.model;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -17,11 +18,23 @@ public class Course {
     private String creator;
     private String createDate;
     private List<User> students;
-    // creator
-    // private List<Lab> labs;
+    @DBRef
+    private List<Lab> labs;
 
     public Course() {
 
+    }
+
+    public Course(String courseId, String courseName, String semester, String courseDescription, String createDate, String creator,
+            List<User> students, List<Lab> labs) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.semester=semester;
+        this.courseDescription = courseDescription;
+        this.creator = creator;
+        this.createDate = createDate;
+        this.students = students;
+        this.labs = labs;
     }
 
     public Course(String courseId, String courseName, String semester, String courseDescription, String createDate, String creator,
