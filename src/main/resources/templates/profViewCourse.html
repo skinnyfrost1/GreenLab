@@ -40,8 +40,8 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
-                              <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>
+                                <div class="dropdown-content"><a th:href="@{/labs}">View Labs</a></div>
+                                <div class="dropdown-content"><a th:href="@{/lab/create}">Create Lab</a></div>
                             </div>
                         </div>
                     </td>
@@ -89,7 +89,7 @@
   <!-- one course -->
   <!-- loop -->
   <div th:each="course: ${courses}" class="notVeryBigContainer" >
-      <a th:href="'/course/edit?id=' +${course.get_id()}">
+      <div th:if="${role=='professor'}"><a th:href="'/course/edit?id=' +${course.get_id()}">
         <table class="courseContainer" >
           <col width="15%"/>
           <col width="25%"/>
@@ -105,7 +105,25 @@
           </tr>
 
         </table>
-      </a>
+      </a></div>
+
+      <div th:if="${role=='student'}"><a th:href="'/course/details?id=' +${course.get_id()}">
+          <table class="courseContainer" >
+              <col width="15%"/>
+              <col width="25%"/>
+              <col width="60%"/>
+              <!-- <col width="20%"/> -->
+              <!-- <tbody style="padding: 0; margin: 0;"> -->
+              <tr >
+                  <td class="courseCellPadding">
+                      <div class="webfont" th:text="${course.courseId}"></div>
+                  </td>
+                  <td class="courseCellPadding" th:text="${'[ ' + course.semester + ' ]'}" />
+                  <td class="courseCellPadding" th:text="${course.courseName}" />
+              </tr>
+
+          </table>
+      </a></div>
   </div>
   <!-- Loop ends here -->
 

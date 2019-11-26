@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link hth:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/index.css}" type="text/css" rel="stylesheet">
@@ -38,8 +38,8 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
-                              <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>
+                                <div class="dropdown-content"><a th:href="@{/labs}">View Labs</a></div>
+                                <div class="dropdown-content"><a th:href="@{/lab/create}">Create Lab</a></div>
                             </div>
                         </div>
                     </td>
@@ -68,7 +68,7 @@
                         <a href="" class="headerUnselected"><i class='fas fa-cog headerIcon'></i></a>
                     </td>
                     <td class="headerCellPadding">
-                        <a href="index.html" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>
+                        <a th:href="@{/logout}" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>
                     </td>
                 </tr>
             </table>
@@ -89,16 +89,16 @@
     <!-- Vertial menu -->
     <td>
       <div class="vertical-menu webfont" style="margin: 3.2em 0 -0.2em -0.2em;">
-        <a ><img class="equipmentContainer" src="../static/image/Container.png"></a>
-        <a ><img class="equipmentContainer" src="../static/image/Heater.png"></a>
-        <a ><img class="equipmentContainer" src="../static/image/Timer.png"></a>
-        <a ><img class="equipmentContainer" src="../static/image/Measure.png"></a>
-        <a ><img class="equipmentContainer" src="../static/image/Holder.png"></a>
-        <a ><img class="equipmentContainer" src="../static/image/Seperator.png"></a>
+        <a ><img class="equipmentContainer" th:src="@{/image/Container.png}"></a>
+        <a ><img class="equipmentContainer" th:src="@{/image/Heater.png}"></a>
+        <a ><img class="equipmentContainer" th:src="@{/image/Timer.png}"></a>
+        <a ><img class="equipmentContainer" th:src="@{/image/Measure.png}"></a>
+        <a ><img class="equipmentContainer" th:src="@{/image/Holder.png}"></a>
+        <a ><img class="equipmentContainer" th:src="@{/image/Seperator.png}"></a>
         <div></div>
-        <div><i class='fas fa-plus  vertical-menu-Icon'></i></div>
-        <div><i class='fas fa-trash-alt  vertical-menu-Icon'></i></div>
-        <div><i class='fas fa-cog  vertical-menu-Icon'></i></div>
+          <div><a class="vertical-menu-Icon"><i class='fas fa-plus'></i></a></div>
+          <div><a class="vertical-menu-Icon"><i class='fas fa-trash-alt'></i></a></div>
+          <div><a class="vertical-menu-Icon"><i class='fas fa-cog'></i></a></div>
       </div>
     </td>
     <!-- End of vertical menu -->
@@ -131,7 +131,7 @@
 
         <div class="processStatusLabel">Success!</div>
         <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;color:#d1d1d1;">__________________________________</div>
-        <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;""> </div>
+        <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;"> </div>
         <input type="submit" name="finish" value="Finish" class="createLabButton" style="background-color:#326471">
 
       </div>
