@@ -26,8 +26,11 @@ public class EditCourseController{
 //        if (request.getSession().getAttribute("email") == null)
 //            return "redirect:/login";
 //        Course course
+        String role =(String) request.getSession().getAttribute("role");
+    System.out.println(role);
         Course course = courseRepository.findBy_id(id);
         model.addAttribute("course",course);
+        model.addAttribute("role",role);
 //        System.out.println(id);
 
         return "profEditCourse";
