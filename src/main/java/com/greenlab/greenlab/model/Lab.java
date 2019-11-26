@@ -35,6 +35,13 @@ public class Lab {
         // steps = new ArrayList<Steps>();
     }
 
+    public Lab(String _id,String courseId, String labName, String labDescription, String creator){
+        this._id = _id;
+        this.courseId = courseId;
+        this.labName = labName;
+        this.labDescription = labDescription;
+        this.creator = creator;
+    }
     public Lab(String _id, String courseId, String labName, String labDescription, String creator,
             List<Material> materials, List<Container> containers, List<Holder> holders) {
         this._id = _id;

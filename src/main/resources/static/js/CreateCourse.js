@@ -5,24 +5,24 @@ $("#saveBtnContainer").hide().removeClass("show");
 console.log("2");
 $("#previousBtnContainer").hide().removeClass("show");  
 console.log("3");
-var labs={
-    "course1":{
-        "courseName": "niubi",
-        "courseTerm": "fall 1111",
-        "labName": "lab001",
-    },
-    "course2":{
-        "courseName": "wudi",
-        "courseTerm": "fall 2222",
-        "labName": "lab002",
-    },
-    "course3":{
-        "courseName": "shuai",
-        "courseTerm": "fall 3333",
-        "labName": "lab003",
-    }
-
-};
+// var labs={
+//     "course1":{
+//         "courseName": "niubi",
+//         "courseTerm": "fall 1111",
+//         "labName": "lab001",
+//     },
+//     "course2":{
+//         "courseName": "wudi",
+//         "courseTerm": "fall 2222",
+//         "labName": "lab002",
+//     },
+//     "course3":{
+//         "courseName": "shuai",
+//         "courseTerm": "fall 3333",
+//         "labName": "lab003",
+//     }
+//
+// };
 
 $(document).ready(function(e) {
     // $("#addLabBtn").click(function(e) {
@@ -131,7 +131,7 @@ $(document).ready(function(e) {
                 console.log("lab name list is "+labNameList)
                 console.log("its size is "+labNameList.length)
                 for(var i=0;i<labNameList.length;i++){
-
+                    console.log("success")
                     htmlStr+=   '            <div class="bigLabContainer" >\n' +
                                 '              <table class="labContainer" >\n' +
                                 '                <col width="30%"/>\n' +

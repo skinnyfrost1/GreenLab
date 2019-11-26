@@ -95,7 +95,9 @@ a {
     border-color: #eee;
     border-width: 1px;
     border-style: solid;
-    box-shadow: 5px 5px 5px rgb(0,0,0,0.3);
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+    max-height: 30em;
+    overflow: auto;
 }
 
 /* Container for each course */
