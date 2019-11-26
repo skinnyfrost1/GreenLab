@@ -70,6 +70,7 @@ public class CreateCourseController {
                 }
             }
         }
+        request.getSession().removeAttribute("labs");
 
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
