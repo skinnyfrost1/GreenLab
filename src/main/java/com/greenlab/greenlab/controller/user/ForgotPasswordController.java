@@ -38,7 +38,8 @@ public class ForgotPasswordController {
     public ResponseEntity<?> postForgotPassword(@Valid @RequestBody ForgotPasswordRequestBody forgotPassword, Errors errors, ModelMap model, HttpServletRequest request){
         System.out.println("[POST forgotpassword]");
         BooleanResponseBody result = new BooleanResponseBody();
-        User user = userRepository.findByEmail(forgotPassword.getEmail());
+        String email = forgotPassword.getEmail().toLowerCase();
+        User user = userRepository.findByEmail(email);
         if (user==null){
             System.out.println("can't find user");
             result.setMessage("Your infomation doesn't match.");

@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 // import org.springframework.web.bind.annotation.PostMapping;
 // import org.springframework.web.bind.annotation.RequestBody;
 
@@ -34,8 +36,14 @@ public class EditCourseController{
         if (request.getSession().getAttribute("email") == null)
             return "redirect:/login";
 //        Course course
-        String email = (String)request.getSession().getAttribute("email");
+
+        String role =(String) request.getSession().getAttribute("role");
+    System.out.println(role);
         Course course = courseRepository.findBy_id(id);
+        model.addAttribute("course",course);
+        model.addAttribute("role",role);
+//        System.out.println(id);
+
 
         List<Lab> labs = labRepository.findByCourseIdAndCreator(course.getCourseId(),email);
 //        System.out.println(id);

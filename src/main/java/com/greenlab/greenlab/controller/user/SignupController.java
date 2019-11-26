@@ -50,6 +50,7 @@ public class SignupController {
                 request.getSession().setAttribute("role", role);
                 return "redirect:/courses";
             }
+        email = email.toLowerCase();
         System.out.println("[post/login]" + "uid=" + uid + "email=" + email + " password=" + password + " firstname="
                 + firstname + " lastname=" + lastname + " role= " + role);
         User user = userRepository.findByEmail(email);
@@ -76,7 +77,8 @@ public class SignupController {
                     errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
             return ResponseEntity.badRequest().body(result);
         }
-        User user = userRepository.findByEmail(checkEmail.getEmail());
+        String email = checkEmail.getEmail().toLowerCase();
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             result.setMessage("email not found");
             result.setExist(false);

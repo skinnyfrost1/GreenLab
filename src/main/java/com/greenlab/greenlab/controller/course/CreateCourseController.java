@@ -50,6 +50,13 @@ public class CreateCourseController {
 
     @GetMapping(value = "/course/create")
     public String getCreateCourse(ModelMap model, HttpServletRequest request) {
+        String role = (String) request.getSession().getAttribute("role");
+        if (role == null)
+            return "redirect:/index";
+        if (!role.equals("professor")){
+            model.addAttribute("errormsg", "Only professors can create new courses");
+            return "error";
+        }
         return "profCreateCourse";
     }
 
@@ -61,6 +68,14 @@ public class CreateCourseController {
                                    @RequestParam(value = "select", required = false) List<String> labNameList,
                                    @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model,
                                    HttpServletRequest request) {
+        String role = (String) request.getSession().getAttribute("role");
+        if (role == null)
+            return "redirect:/index";
+        if (!role.equals("professor")){
+            model.addAttribute("errormsg", "Only professors can create new courses");
+            return "error";
+        }
+
         List<Lab> labs = new ArrayList<>();
         List<Lab> tempLab = (List<Lab>) request.getSession().getAttribute("labs");
         for(Lab l : tempLab){
@@ -70,6 +85,7 @@ public class CreateCourseController {
                 }
             }
         }
+        request.getSession().removeAttribute("labs");
 
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
