@@ -38,13 +38,15 @@ public class EditCourseController{
 //        Course course
 
         String role =(String) request.getSession().getAttribute("role");
-    System.out.println(role);
+        System.out.println(role);
         Course course = courseRepository.findBy_id(id);
         model.addAttribute("course",course);
         model.addAttribute("role",role);
 //        System.out.println(id);
 
-        
+
+        String email = (String) request.getSession().getAttribute("email");           
+
         List<Lab> labs = labRepository.findByCourseIdAndCreator(course.getCourseId(),email);
 //        System.out.println(id);
         model.addAttribute("course",course);

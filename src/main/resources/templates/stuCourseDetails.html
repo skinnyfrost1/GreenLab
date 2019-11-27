@@ -82,18 +82,18 @@
 <div class="title webfont" th:text="${course.courseId}"></div>
 <!-- Two containers -->
 <!-- <form th:action="@{/course/edit}" method = "post"> -->
-    <div style="text-align: center;">
+    <div style="text-align: left;">
         <!-- Left container -->
         <div class="createCourseContainer webfont">
             <div class=" webfont" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
-            <input id="_id" type="text" name="_id" th:text="${course._id}" style="visibility: hidden;"><br>
-            <div id="courseId" name="courseId" th:text="${course.courseId}" maxlength="24" class="createCourseTextfield webfont"><br>
+            <!-- <input id="_id" type="text" name="_id" th:text="${course._id}" style="visibility: hidden;"><br> -->
+            <div id="courseId" name="courseId" th:text="${course.courseId}" maxlength="24" class="createCourseTextfield webfont"></div><br>
             <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Title</div>
-            <div id="courseName"  th:text="${course.courseName}" class="createCourseTextfield webfont"><br>
+            <div id="courseName"  th:text="${course.courseName}" class="createCourseTextfield webfont"></div><br>
             <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Semester</div>
-            <div id="semester" th:text="${course.semester}" class="createCourseTextfield webfont"><br>
+            <div id="semester" th:text="${course.semester}" class="createCourseTextfield webfont"></div><br>
             <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Description</div>
-            <div id="courseDescription"  th:text="${course.courseDescription}" class="createCourseTextArea webfont"></textarea><br>
+            <div id="courseDescription"  th:text="${course.courseDescription}" class="createCourseTextArea webfont"></div><br>
 
         </div>
         <!-- End of left Container -->
@@ -217,11 +217,11 @@
     <span>
         <input form="deleteForm" name="courseObjectId" th:value="${course._id}" hidden/>
         <input form="deleteForm" type="submit" value="Delete" class="delete-button webfont" style="float:left;margin:0.5em 8% 2em 8%;">
-        <input type="submit" value="Save" class="save-button webfont" style="float:right;margin:0.5em 8% 2em 8%;">
+        <!-- <input type="submit" value="Save" class="save-button webfont" style="float:right;margin:0.5em 8% 2em 8%;"> -->
     </span>
 <!--    <div style="text-align:right;">-->
 <!--    </div>-->
 <!-- </form> -->
-<form id='deleteForm' th:action="@{/course/delete}" method = "post"></form>
+<form id='deleteForm' th:action="@{/courses/drop}" method = "post"></form>
 </body>
 </html>

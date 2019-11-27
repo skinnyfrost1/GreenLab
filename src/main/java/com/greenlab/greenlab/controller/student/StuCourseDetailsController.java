@@ -16,7 +16,7 @@ public class StuCourseDetailsController {
     @Autowired
     private CourseRepository courseRepository;
 
-    @GetMapping("/courses/details")
+    @GetMapping("/course/details")
     public String getCoursesDetails(ModelMap model, @RequestParam(value = "id") String id, HttpServletRequest request) {
         Course course = courseRepository.findBy_id(id);
         String role = (String) request.getSession().getAttribute("role");
