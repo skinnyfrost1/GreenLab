@@ -7,8 +7,13 @@ package com.greenlab.greenlab.labEquip.equipment;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.json.JsonMapper;
+
+import com.greenlab.greenlab.labEquip.equipment.equipmentData.ImageData.ImageData;
+import com.greenlab.greenlab.labEquip.equipment.equipmentData.ImageData.ImageDataRepository;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.equipmentData.EquipmentData;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.equipmentData.EquipmentDataRepository;
+import com.greenlab.greenlab.labEquip.equipment.equipmentData.polygonData.Position;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.UserEquipment;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.UserEquipmentFolder;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.UserEquipmentFolderRepository;
@@ -19,10 +24,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,9 +40,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-
-import static java.awt.Color.green;
 
 @Controller
 public class EquipmentController {
@@ -55,6 +64,62 @@ public class EquipmentController {
     @Autowired
     private ImageBlobRepository imageBlobRepository;
 
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+
+    @RequestMapping( value="/equipment/{equipmentId}", method = RequestMethod.GET )
+    public String getEquipmentPage(Model model, @PathVariable("equipmentId") String equipmentId, HttpServletRequest request ){
+
+        //model.addAttribute("jumpType", new JumpType());
+//        if( request.getSession().getAttribute("email")!=null){
+//
+//            model.addAttribute( "isLogin", "false" );
+//            model.addAttribute( "email", request.getSession().getAttribute("email") );
+//        }else{
+//
+//
+//            model.addAttribute( "isLogin", "true" );
+//        }
+
+        EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
+
+        if( equipmentData == null ){
+            return "";
+        }else{
+
+            UserEquipmentFolder userEquipmentFolder = userEquipmentFolderRepository.findByOwnerAndType( "weixin.tang@stonybrook.edu" , "recent" );
+
+            LinkedList<String> linkedList =  userEquipmentFolder.getItemIdsInFolder();
+
+            if( linkedList.contains( equipmentData.getId() ) == true ){
+                linkedList.remove( equipmentData.getId() );
+            }
+
+            linkedList.add( 0, equipmentData.getId() );
+            userEquipmentFolder.setItemIdsInFolder( linkedList );
+            userEquipmentFolderRepository.save( userEquipmentFolder );
+            model.addAttribute( "email", "weixin.tang@stonybrook.edu" );
+            model.addAttribute( "iframeAdress", "/equipmentBoard/"+equipmentId );
+            return "lab/equip";
+
+        }
+
+    }
+
+    @RequestMapping( value = "/equipmentBoard/{equipmentId}", method = RequestMethod.GET )
+    public String getEquipmentBoard(Model model, @PathVariable("equipmentId") String equipmentId, HttpServletRequest request  ){
+
+        EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
+
+        if( equipmentData == null ){
+            return "welcome";
+        }else{
+            return "lab/equipboard";
+        }
+
+    }
+
 
 
     @RequestMapping(value="/ajax/requestId" , method = RequestMethod.POST)
@@ -72,28 +137,25 @@ public class EquipmentController {
 
     @RequestMapping(value="/ajax/requestNewEquipment" , method = RequestMethod.POST)
     @ResponseBody
-    public Object requestNewEquipment(HttpServletRequest request) throws JSONException {
+    public Object requestNewEquipment(HttpServletRequest request) throws JSONException, JsonProcessingException {
         String dataStr = request.getParameter("data");
         System.out.println( dataStr );
-        // so we can get the user Id from session
-        // then we create a new
 
-        UserEquipment userEquipment = userEquipmentRepository.findByUserId("weixin.tang@stonybrook.edu");
+        EquipmentData equipmentData = new EquipmentData();
+        equipmentData.setOwnerId( "weixin.tang@stonybrook.edu" );
+        String equipmentId =  equipmentDataRepository.save(equipmentData).getId();
+        Query query = new Query();
+        query.addCriteria(Criteria.where("type").is("all").andOperator( Criteria.where("owner").is("weixin.tang@stonybrook.edu") ));
 
-        LinkedList<String> folderIds = userEquipment.getFolderIds();
+        UserEquipmentFolder userEquipmentFolder =  mongoTemplate.findOne( query , UserEquipmentFolder.class );
+        userEquipmentFolder.getItemIdsInFolder().add(0,equipmentId);
+        userEquipmentFolderRepository.save( userEquipmentFolder );
 
-        // now we need find  the type is all
-
-        for( int i = 0 ; i< folderIds.size() ; i++ ){
-
-
-
-        }
-
+        sendEquipFolder( "weixin.tang@stonybrook.edu" ,   prepareUpdateAll() );
 
         Map<String,Object> sendData = new HashMap<>();
         sendData.put("success",true);
-        sendData.put("data", "http://www.google.com" );
+        sendData.put("data", equipmentId );
         return sendData;
     }
 
@@ -112,24 +174,544 @@ public class EquipmentController {
 
 
 
+
     @MessageMapping("/equipment/front/{userId}/{sessionId}")
-    public void handleEquipmentFront(@DestinationVariable String userId , @DestinationVariable String sessionId , String message) throws JSONException {
+    public void handleEquipmentFront(@DestinationVariable String userId , @DestinationVariable String sessionId , String message) throws JSONException, JsonProcessingException {
+
+
+
+
 
         JSONObject jsonObject = new JSONObject(message);
-        if( jsonObject.get("type").toString().equals("connectSuccess")  ){
-            messagingTemplate.convertAndSend("/topic/image/" + userId + "/" + sessionId, jsonObject.toString() );
+
+        try {
+            String __equipmentId__ = jsonObject.get("itemId").toString();
+
+            if( __equipmentId__ != null ){
+
+                EquipmentData equipmentData =  equipmentDataRepository.getById( __equipmentId__ );
+                if( equipmentData ==  null){
+
+                    // if should
+
+                    return;
+                }
+
+            }
+
+        }catch (Exception e){
+
+
         }
 
+
+
+
+
+        if( jsonObject.get("type").toString().equals("connectSuccess")  ){
+            messagingTemplate.convertAndSend("/topic/image/" + userId + "/" + sessionId, jsonObject.toString() );
+        }else if( jsonObject.get("type").toString().equals("loadFolder") ){
+
+            jsonObject.put("data", prepareAllFolder( "weixin.tang@stonybrook.edu" ) );
+
+            //websocket.sendEquipFolder( userId , jsonObject.toString() );
+            sendUnique( userId , sessionId , jsonObject.toString() );
+            //messagingTemplate.convertAndSend("/topic/equipment/folder/" + userId , jsonObject.toString() );
+        }else if( jsonObject.get("type").toString().equals("loadEquipment") ){
+
+            //String equipmentId = jsonObject.get("itemId").toString();
+            //UpdateTheEquipment( equipmentId ,  userId );
+
+            String equipmentId = jsonObject.get("itemId").toString();
+            jsonObject.put("data", prepareAllEquipment( equipmentId ) );
+            //jsonObject.put("data",  );
+            //System.out.println(jsonObject.toString());
+            //messagingTemplate.convertAndSend("/topic/equipment/pad/" + equipmentId , jsonObject.toString() );
+            //messagingTemplate.convertAndSend("/topic/image/" + userId + "/" + sessionId, jsonObject.toString() );
+            sendUnique( userId , sessionId , jsonObject.toString() );
+        }else if( jsonObject.get("type").toString().equals("updateNameBoth") ){
+            String name =  jsonObject.get("data").toString();
+            String equipmentId = jsonObject.get("itemId").toString();
+            EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
+            equipmentData.setName(name);
+            equipmentDataRepository.save(equipmentData);
+
+            //messagingTemplate.convertAndSend("/topic/image/" + userId + "/" + sessionId, prepareUpdateAll() );
+
+            sendEquipFolder( userId , prepareUpdateAll() );
+            //messagingTemplate.convertAndSend("/topic/equipment/folder/" + userId , prepareUpdateAll() );
+        }else if( jsonObject.get("type").toString().equals("updateDescriptionBoth") ){
+            String description =  jsonObject.get("data").toString();
+            String equipmentId = jsonObject.get("itemId").toString();
+            EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
+            equipmentData.setDescription(description );
+            equipmentDataRepository.save(equipmentData);
+            //messagingTemplate.convertAndSend("/topic/equipment/folder/" + userId , prepareUpdateAll() );
+            sendEquipFolder( userId , prepareUpdateAll() );
+            //messagingTemplate.convertAndSend("/topic/image/" + userId + "/" + sessionId, prepareUpdateAll() );
+        }else if( jsonObject.get("type").toString().equals("uploadCoverImageBoth") ){
+            String imageDataStr =  jsonObject.get("data").toString();
+            String equipmentId = jsonObject.get("itemId").toString();
+            EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
+            ImageBlob imageBlob = new ImageBlob();
+            imageBlob.setBlob(imageDataStr);
+            imageBlob.setCounter(1);
+            String imageBlobId =  imageBlobRepository.save(imageBlob).getId();
+            if( equipmentData.getCoverBlobId().equals("")  ){
+            }else{
+                ImageBlob imageBlob1 = imageBlobRepository.getById( equipmentData.getCoverBlobId() );
+                int counter = imageBlob1.getCounter() -1;
+                if( counter <= 0 ){
+                    imageBlobRepository.deleteById( equipmentData.getCoverBlobId() );
+                }else{
+                    imageBlob1.setCounter( counter );
+                    imageBlobRepository.save( imageBlob1 );
+                }
+            }
+            equipmentData.setCoverBlobId(imageBlobId);
+            equipmentDataRepository.save(equipmentData);
+            //messagingTemplate.convertAndSend("/topic/equipment/folder/" + userId , prepareUpdateAll() );
+            //messagingTemplate.convertAndSend("/topic/image/" + userId + "/" + sessionId, prepareUpdateAll() );
+            sendEquipFolder( userId , prepareUpdateAll() );
+
+        }else if( jsonObject.get("type").toString().equals("loadImage") ){
+//            String imageDataStr =  jsonObject.get("data").toString();
+//
+//            JSONObject jsonObject1 = new JSONObject(imageDataStr);
+
+            JSONObject jsonObject1 = (JSONObject) jsonObject.get("data");
+            JSONArray jsonArray = jsonObject1.getJSONArray("imageIdArr");
+            String refreshType = jsonObject1.get("refreshType").toString();
+
+            JSONArray imageBlobArr =  prepareAllImages(  jsonArray  );
+            jsonObject1.put("data", imageBlobArr );
+
+            jsonObject.put( "data", jsonObject1 );
+            //System.out.println(imageDataStr);
+            //{"imageIdArr":["5dd813916e04ab4b078b9d73",""],"refreshType":"displayFolder"}
+
+            //messagingTemplate.convertAndSend("/topic/image/" + userId + "/" + sessionId, jsonObject.toString() );
+            sendUnique( userId, sessionId , jsonObject.toString()  );
+        }else if( jsonObject.get("type").toString().equals("uploadStatusImageImage") ){
+
+
+            JSONObject jsonObject1 = (JSONObject) jsonObject.get("data");
+            String imageDataStr =  jsonObject1.get("imageData").toString();
+            String width = jsonObject1.get("width").toString();
+            String height = jsonObject1.get("height").toString();
+            ImageBlob imageBlob = new ImageBlob();
+            imageBlob.setBlob(imageDataStr);
+            imageBlob.setOriginalHeight( Integer.parseInt(height) );
+            imageBlob.setOriginalWidth( Integer.parseInt(width) );
+            imageBlob.setCounter(1);
+            String imageBlobId =  imageBlobRepository.save(imageBlob).getId();
+            ImageData imageData = new ImageData();
+            imageData.setBlobId( imageBlobId );
+            String imageDataId =  imageDataRepository.save( imageData ).getId();
+            String equipmentId = jsonObject.get("itemId").toString();
+            EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
+            equipmentData.getImageIds().add(imageDataId);
+            equipmentDataRepository.save( equipmentData );
+
+            UpdateTheEquipment(  equipmentId ,  userId );
+
+            //updateEquipmentBoard(  equipmentId );
+
+        }else if( jsonObject.get("type").toString().equals("updateStatusNameImage") ){
+
+            //System.out.println( message );
+
+            JSONObject jsonObject1 = (JSONObject) jsonObject.get("data");
+            //System.out.println( jsonObject1.toString() );
+            String imageDataId = jsonObject1.get("imageDataId").toString();
+            String statusName = jsonObject1.get("statusName").toString();
+
+            ImageData imageData = imageDataRepository.getById( imageDataId );
+            imageData.setName( statusName );
+            imageDataRepository.save( imageData );
+            String equipmentId = jsonObject.get("itemId").toString();
+            UpdateTheEquipment(  equipmentId ,  userId );
+
+
+        }else if( jsonObject.get("type").toString().equals("updateSizeImage") ){
+
+            JSONObject jsonObject1 = (JSONObject) jsonObject.get("data");
+            //System.out.println( jsonObject1.toString() );
+            String imageDataId = jsonObject1.get("imageDataId").toString();
+            String sizeValue = jsonObject1.get("sizeValue").toString();
+
+            ImageData imageData = imageDataRepository.getById( imageDataId );
+            imageData.setSize(Integer.parseInt(sizeValue));
+            imageDataRepository.save( imageData );
+            String equipmentId = jsonObject.get("itemId").toString();
+            UpdateTheEquipment(  equipmentId ,  userId );
+
+            updateEquipmentBoard(  equipmentId );
+            //websocket.sendLabBoard();
+
+
+        }else if( jsonObject.get("type").toString().equals("updateAngleImage") ){
+
+            JSONObject jsonObject1 = (JSONObject) jsonObject.get("data");
+            //System.out.println( jsonObject1.toString() );
+            String imageDataId = jsonObject1.get("imageDataId").toString();
+            String sizeAngle = jsonObject1.get("sizeAngle").toString();
+
+            ImageData imageData = imageDataRepository.getById( imageDataId );
+            imageData.setAngle(Integer.parseInt(sizeAngle));
+            imageDataRepository.save( imageData );
+            String equipmentId = jsonObject.get("itemId").toString();
+            UpdateTheEquipment(  equipmentId ,  userId );
+
+            updateEquipmentBoard(  equipmentId );
+            //websocket.sendLabBoard();
+
+        }else if( jsonObject.get("type").toString().equals("updateXposImage") ){
+
+            JSONObject jsonObject1 = (JSONObject) jsonObject.get("data");
+            //System.out.println( jsonObject1.toString() );
+            String imageDataId = jsonObject1.get("imageDataId").toString();
+            String Xpos = jsonObject1.get("Xpos").toString();
+            ImageData imageData = imageDataRepository.getById( imageDataId );
+            Position position = imageData.getPosition();
+            position.setX(Integer.parseInt(Xpos));
+            imageData.setPosition( position );
+            imageDataRepository.save( imageData );
+            String equipmentId = jsonObject.get("itemId").toString();
+            UpdateTheEquipment(  equipmentId ,  userId );
+
+            updateEquipmentBoard(  equipmentId );
+            //websocket.sendLabBoard();
+
+        }else if( jsonObject.get("type").toString().equals("updateYposImage") ){
+
+            JSONObject jsonObject1 = (JSONObject) jsonObject.get("data");
+            //System.out.println( jsonObject1.toString() );
+            String imageDataId = jsonObject1.get("imageDataId").toString();
+            String Ypos = jsonObject1.get("Ypos").toString();
+            ImageData imageData = imageDataRepository.getById( imageDataId );
+            Position position = imageData.getPosition();
+            position.setY(Integer.parseInt(Ypos));
+            imageData.setPosition( position );
+            imageDataRepository.save( imageData );
+            String equipmentId = jsonObject.get("itemId").toString();
+            UpdateTheEquipment(  equipmentId ,  userId );
+
+            updateEquipmentBoard(  equipmentId );
+            //websocket.sendLabBoard();
+
+        }else if( jsonObject.get("type").toString().equals("selectImageData") ){
+
+            String equipmentId = jsonObject.get("itemId").toString();
+            String selectImageDataId = jsonObject.get("data").toString();
+            EquipmentData equipmentData = equipmentDataRepository.getById( equipmentId );
+            equipmentData.setCurrentImageIds( selectImageDataId );
+            equipmentDataRepository.save(equipmentData);
+            UpdateTheEquipment(  equipmentId ,  userId );
+
+            updateEquipmentBoard(  equipmentId );
+
+            //websocket.sendLabBoard();
+
+        }else if( jsonObject.get("type").toString().equals("ImageDataDelete") ){
+
+            String equipmentId = jsonObject.get("itemId").toString();
+            String selectImageDataId = jsonObject.get("data").toString();
+            EquipmentData equipmentData = equipmentDataRepository.getById( equipmentId );
+            if( equipmentData.getCurrentImageIds().equals( selectImageDataId ) ){
+                equipmentData.setCurrentImageIds("");
+
+                //websocket.sendLabBoard();
+
+                //websocket.
+
+            }
+            LinkedList<String> linkedList =  equipmentData.getImageIds();
+            linkedList.remove( selectImageDataId );
+            equipmentData.setImageIds( linkedList );
+            equipmentDataRepository.save( equipmentData );
+
+            ImageData imageData = imageDataRepository.getById( selectImageDataId );
+            String imageBlobId = imageData.getBlobId();
+            decreamentImageBlobCount(  imageBlobId  );
+            imageDataRepository.deleteById(selectImageDataId);
+            UpdateTheEquipment(  equipmentId ,  userId );
+
+            updateEquipmentBoard(  equipmentId );
+
+        }else if( jsonObject.get("type").toString().equals("likeEquipment") ){
+
+            //System.out.println(  (Boolean)jsonObject.get("data") );
+
+            String equipmentId = jsonObject.get("itemId").toString();
+            Boolean like = (Boolean)jsonObject.get("data");
+            EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
+            equipmentData.setFavourite(like);
+            equipmentDataRepository.save( equipmentData );
+            UserEquipmentFolder userEquipmentFolder = userEquipmentFolderRepository.findByOwnerAndType( userId , "favourite" );
+            LinkedList<String> linkedList =  userEquipmentFolder.getItemIdsInFolder();
+
+            if( like == true ){ // like it
+                // so we will insert
+                if( linkedList.contains( equipmentId ) == false ){
+                    linkedList.add(0, equipmentId );
+                }
+            }else{
+                if( linkedList.contains(equipmentId) == true ){
+                    linkedList.remove( equipmentId );
+                }
+            }
+            userEquipmentFolder.setItemIdsInFolder(linkedList);
+            userEquipmentFolderRepository.save(userEquipmentFolder);
+            sendEquipPad( equipmentId , prepareUpdateAll() );
+
+        }else if( jsonObject.get("type").toString().equals("shareEquipment") ){
+
+            //System.out.println(  (Boolean)jsonObject.get("data") );
+
+            String equipmentId = jsonObject.get("itemId").toString();
+            Boolean share = (Boolean)jsonObject.get("data");
+            EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
+            equipmentData.setShared(share );
+            equipmentDataRepository.save( equipmentData );
+            UserEquipmentFolder userEquipmentFolder = userEquipmentFolderRepository.findByOwnerAndType( userId , "share" );
+            LinkedList<String> linkedList =  userEquipmentFolder.getItemIdsInFolder();
+            if( share == true ){ // like it
+                // so we will insert
+                if( linkedList.contains( equipmentId ) == false ){
+                    linkedList.add(0, equipmentId );
+                }
+            }else{
+                if( linkedList.contains(equipmentId) == true ){
+                    linkedList.remove( equipmentId );
+                }
+            }
+            userEquipmentFolder.setItemIdsInFolder(linkedList);
+            userEquipmentFolderRepository.save(userEquipmentFolder);
+            sendEquipPad( equipmentId , prepareUpdateAll() );
+
+        }else if( jsonObject.get("type").toString().equals("deleteEquipment") ){
+
+
+            String equipmentId = jsonObject.get("itemId").toString();
+
+            // we will look at all the folders
+            // if it contain the equipment
+                // just delete it
+
+            List<UserEquipmentFolder> userEquipmentFolders = userEquipmentFolderRepository.findAllByOwner( userId );
+
+            for( int i = 0 ; i < userEquipmentFolders.size() ; i++ ){
+
+                UserEquipmentFolder userEquipmentFolder = userEquipmentFolders.get(i);
+
+                LinkedList<String> linkedList = userEquipmentFolder.getItemIdsInFolder();
+                if( linkedList.contains(equipmentId) == true ){
+                    linkedList.remove( equipmentId );
+                    userEquipmentFolder.setItemIdsInFolder( linkedList );
+                    userEquipmentFolderRepository.save( userEquipmentFolder );
+                }
+            }
+
+            EquipmentData equipmentData = equipmentDataRepository.getById( equipmentId );
+
+
+
+            LinkedList<String> linkedList = equipmentData.getImageIds();
+
+            if( linkedList != null ){
+
+                for( int i = 0 ; i< linkedList.size() ;i++ ){
+
+                    String imageDataId = linkedList.get(i);
+                    ImageData imageData = imageDataRepository.getById(imageDataId);
+
+                    if( imageData != null ){
+
+                        String imageBlobId = imageData.getBlobId();
+                        decreamentImageBlobCount(  imageBlobId  );
+                        imageDataRepository.deleteById(imageDataId);
+                    }
+
+                }
+            }
+
+            equipmentDataRepository.deleteById( equipmentId );
+
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put( "type", "deleteEquipment" );
+            jsonObject.put( "data", equipmentId );
+
+            sendEquipFolder(  userId , jsonObject1.toString()   );
+
+
+            //sendEquipPad( equipmentId , prepareUpdateAll() );
+
+        }else if( jsonObject.get("type").toString().equals("duplicateEquipment") ){
+            String equipmentId = jsonObject.get("itemId").toString();
+
+            //System.out.println( "print something to start 1124" );
+            UserEquipmentFolder userEquipmentFolder = userEquipmentFolderRepository.findByOwnerAndType( userId , "all" );
+
+            String newEquipmentId =   duplicateEquipment( equipmentId );
+
+            LinkedList<String> linkedList = userEquipmentFolder.getItemIdsInFolder();
+            linkedList.add( 0, newEquipmentId );
+            userEquipmentFolder.setItemIdsInFolder(  linkedList );
+
+            userEquipmentFolderRepository.save( userEquipmentFolder );
+
+            sendEquipPad( equipmentId , prepareUpdateAll() );
+
+        }
+
+    //ImageDataDelete
+        //updateNameBoth
         //System.out.println( message+"__"+ userId +"__"+ sessionId);
 
 
     }
 
+    public void updateEquipmentBoard(  String equipmentId ) throws JSONException, JsonProcessingException {
+
+        JSONObject jsonObject2 = new JSONObject();
+        jsonObject2.put("type", "updateBoard" );
+
+        // here collect all the equiment information send to back side?
+            // I think only need send the currect Image Data
+
+        EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
+        String currentImageId =  equipmentData.getCurrentImageIds();
+
+        if( currentImageId.equals("")==false ){
+
+            ObjectMapper jsonMapper = new ObjectMapper();
+            ImageData imageData = imageDataRepository.getById( currentImageId );
+            String imageDataStr =  jsonMapper.writeValueAsString( imageData );
+            //JSONObject jsonObject = new JSONObject();
+            //jsonObject.put( "ImageData", imageDataStr );
+            jsonObject2.put( "data", imageDataStr );
+            sendEquipBoard( equipmentId , jsonObject2.toString() );
+
+        }else{
+            sendEquipBoard( equipmentId , jsonObject2.toString() );
+        }
+
+
+    }
+
+    public String duplicateEquipment( String equipmentId ){
+
+        EquipmentData equipmentData = equipmentDataRepository.getById( equipmentId );
+        equipmentData.setId(null);
+        //equipmentData.setCurrentImageIds(null);
+        LinkedList<String>  linkedList = equipmentData.getImageIds();
+        LinkedList<String>  putlinkedList = new LinkedList<>();
+        for( int i = 0 ; i< linkedList.size() ;i++ ){
+
+            ImageData imageData = imageDataRepository.getById( linkedList.get(i) );
+            String imageBlobId = imageData.getBlobId();
+            incrementImageBlobCount( imageBlobId );
+            imageData.setId(null);
+            String newImageDataId = imageDataRepository.save( imageData ).getId();
+            putlinkedList.add( newImageDataId );
+
+        }
+        equipmentData.setImageIds( putlinkedList );
+        String newEquipmentDataIs =  equipmentDataRepository.save(equipmentData).getId();
+        return newEquipmentDataIs;
+
+    }
+
+    public void incrementImageBlobCount( String imageBlobId ){
+        ImageBlob imageBlob =  imageBlobRepository.getById(imageBlobId);
+        imageBlob.setCounter( imageBlob.getCounter()+1 );
+        imageBlobRepository.save(imageBlob);
+    }
+
+    public void decreamentImageBlobCount(  String imageBlobId  ){
+
+        ImageBlob imageBlob =  imageBlobRepository.getById(imageBlobId);
+        int counter = imageBlob.getCounter() -1;
+        if( counter <= 0 ){
+            imageBlobRepository.deleteById(imageBlobId);
+        }else{
+            imageBlob.setCounter(counter);
+            imageBlobRepository.save(imageBlob);
+        }
+
+    }
+
+    public void UpdateTheEquipment( String equipmentId , String userId ) throws JSONException, JsonProcessingException {
+
+        JSONObject jsonObject2 = new JSONObject();
+        jsonObject2.put("type", "loadEquipment");
+        jsonObject2.put( "itemId" , equipmentId );
+        jsonObject2.put("data", prepareAllEquipment( equipmentId ) );
+        //messagingTemplate.convertAndSend("/topic/equipment/pad/" + equipmentId, jsonObject2.toString() );
+        sendEquipPad( equipmentId , jsonObject2.toString() );
+    }
+
+    //System.out.println( imageBlobId );
+//            System.out.println( imageBlob.getCounter() );
+//            System.out.println( imageBlob.getOriginalHeight() );
+//            System.out.println( imageBlob.getOriginalWidth() );
+//            System.out.println( imageBlob.getBlob() );
+
+//            String equipmentId = jsonObject.get("itemId").toString();
+//            EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
+
+    //System.out.println(imageBlobId);
+
+
+    // System.out.println(equipmentData.getId());
+
+//            equipmentData.getImageIds().add(imageDataId);
+//            equipmentDataRepository.save( equipmentData );
+//
+
+    //
 
     @MessageMapping("/equipment/back/{userId}/{sessionId}")
-    public void handleEquipmentBack(@DestinationVariable String userId , @DestinationVariable String sessionId , String message) throws JSONException {
+    public void handleEquipmentBack(@DestinationVariable String userId , @DestinationVariable String sessionId , String message) throws JSONException, JsonProcessingException {
 
 
+        // start working on back side right now
+
+//        System.out.println(message);
+
+        JSONObject jsonObject = new JSONObject(message);
+        String type = jsonObject.get("type").toString();
+        if( type.equals("connectSuccess") ){
+            //messagingTemplate.convertAndSend("/topic/image/" + userId + "/" + sessionId, jsonObject.toString() );
+            sendUnique( userId , sessionId , jsonObject.toString() );
+            return;
+        }
+
+
+        String equipmentId = jsonObject.get("itemId").toString();
+        //JSONObject dataObject = (JSONObject) jsonObject.get("data");
+
+        if( type.equals("mousemove") ){
+
+
+
+            sendEquipBoard(equipmentId , message );
+            //messagingTemplate.convertAndSend("/topic/equipment/board/" + equipmentId, message );
+
+        }else if( type.equals("mouseleave") ){
+
+
+            sendEquipBoard(equipmentId , message );
+            //messagingTemplate.convertAndSend("/topic/equipment/board/" + equipmentId, message );
+        }else if( type.equals("requestImage") ){
+            String imageBlobId =  jsonObject.get("data").toString();
+            ObjectMapper jsonMapper = new ObjectMapper();
+            ImageBlob imageBlob = imageBlobRepository.getById( imageBlobId );
+            String imageBlobStr =  jsonMapper.writeValueAsString( imageBlob );
+            jsonObject.put( "data", imageBlobStr );
+            sendUnique( userId , sessionId , jsonObject.toString() );
+        }
 
 
 
@@ -154,9 +736,51 @@ public class EquipmentController {
 
     }
 
+    @Autowired
+    private ImageDataRepository imageDataRepository;
 
 
 
+    public String prepareUpdateAll() throws JSONException, JsonProcessingException {
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", "loadAll");
+
+        return jsonObject.toString();
+    }
+
+    public JSONArray prepareAllEquipment( String equipmentId ) throws JSONException, JsonProcessingException {
+        JSONArray jsonArray = new JSONArray();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        EquipmentData equipmentData = equipmentDataRepository.getById( equipmentId );
+
+        if( equipmentData == null ){
+            return jsonArray;
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put( "EquipmentData" , objectMapper.writeValueAsString(equipmentData) );
+        jsonArray.put( jsonObject );
+
+        LinkedList<String> linkedList = equipmentData.getImageIds();
+
+        if( linkedList != null ){
+
+            for( int i = 0 ; i < linkedList.size() ; i++ ){
+                ImageData imageData = imageDataRepository.getById( linkedList.get(i) );
+                jsonObject = new JSONObject();
+                jsonObject.put( "ImageData" , objectMapper.writeValueAsString( imageData ) );
+                jsonArray.put(jsonObject);
+            }
+
+
+        }
+
+
+
+        return jsonArray;
+    }
 
 
     public JSONArray prepareAllFolder( String userId ) throws JSONException, JsonProcessingException {
@@ -168,22 +792,68 @@ public class EquipmentController {
         jsonObject.put("type", "UserEquipment");
         jsonObject.put("data", objectMapper.writeValueAsString(userEquipment));
         jsonArray.put( jsonObject );
-        for( int  i = 0 ; i < userEquipment.getFolderIds().size() ; i++ ){
-            UserEquipmentFolder userEquipmentFolder = userEquipmentFolderRepository.findByUserFolderId( userEquipment.getFolderIds().get(i) );
+
+        List<UserEquipmentFolder> userEquipmentFolders = userEquipmentFolderRepository.findAllByOwner(userId);
+
+        for( int  i = 0 ; i < userEquipmentFolders.size() ; i++ ){
             jsonObject = new JSONObject();
             jsonObject.put("type", "UserEquipmentFolder");
-            jsonObject.put( "data", objectMapper.writeValueAsString( userEquipmentFolder ) );
+            jsonObject.put( "data", objectMapper.writeValueAsString( userEquipmentFolders.get(i) ) );
             jsonArray.put( jsonObject );
-            for( int y = 0 ; y< userEquipmentFolder.getItemIdsInFolder().size() ; y++  ){
-                EquipmentData equipmentData = equipmentDataRepository.getById( userEquipmentFolder.getItemIdsInFolder().get(y) );
-                jsonObject = new JSONObject();
-                jsonObject.put("type", "EquipmentData");
-                jsonObject.put( "data", objectMapper.writeValueAsString( equipmentData ) );
-                jsonArray.put( jsonObject );
-            }
         }
+        // here we will create all share and favourite
+
+        List<EquipmentData> equipmentDatas = equipmentDataRepository.findAllByOwnerId( userId );
+
+        for( int i = 0 ; i < equipmentDatas.size() ; i++ ){
+            jsonObject = new JSONObject();
+            jsonObject.put("type", "EquipmentData");
+            jsonObject.put( "data", objectMapper.writeValueAsString( equipmentDatas.get(i) ) );
+            jsonArray.put( jsonObject );
+        }
+
         return jsonArray;
     }
+
+
+    public void sendUnique(String userId , String sessionId , String message ){
+        messagingTemplate.convertAndSend("/topic/image/" + userId + "/" + sessionId, message );
+    }
+
+    public void sendEquipFolder( String userId , String message ){
+        messagingTemplate.convertAndSend("/topic/equipment/folder/" + userId , message );
+    }
+
+    public void sendEquipPad( String itemId ,  String message ){
+        messagingTemplate.convertAndSend("/topic/equipment/pad/" + itemId , message );
+    }
+
+    public void sendEquipBoard( String itemId ,  String message ){
+        messagingTemplate.convertAndSend("/topic/equipment/board/" + itemId , message );
+    }
+
+    public void sendEquipFind( String message ){
+        messagingTemplate.convertAndSend("/topic/equipment/find"  , message );
+    }
+
+    public void sendLabFolder( String userId , String message ){
+
+        messagingTemplate.convertAndSend("/topic/lab/folder/" + userId , message );
+    }
+
+    public void sendLabPad( String itemId ,  String message ){
+        messagingTemplate.convertAndSend("/topic/lab/pad/" + itemId , message );
+    }
+
+    public void sendLabBoard( String itemId ,  String message ){
+        messagingTemplate.convertAndSend("/topic/lab/board/" + itemId , message );
+    }
+
+    public void sendLabFind( String message ){
+        messagingTemplate.convertAndSend("/topic/lab/find"  , message );
+    }
+
+
 }
 
 

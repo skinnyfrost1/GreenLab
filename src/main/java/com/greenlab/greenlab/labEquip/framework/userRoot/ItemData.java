@@ -8,15 +8,28 @@ public abstract class ItemData {
     @Id
     private String id;
 
-    private String name = "";
+    private String name ="";
 
-    private String coverBlobId;
+    private String coverBlobId = "";
 
-    private String description = "";
+    private String description  ="";
 
     private Boolean shared = false;
 
     private Boolean favourite = false;
+
+    private String ownerId;  // when a person directly open this
+                                    // which means when we create a equipment
+                                        // we don't need all folder
+                                            // we only need
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
 
     public void setName(String name) {
         this.name = name;

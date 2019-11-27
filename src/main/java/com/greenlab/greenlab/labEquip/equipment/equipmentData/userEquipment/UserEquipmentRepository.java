@@ -6,6 +6,8 @@ public interface UserEquipmentRepository extends MongoRepository<UserEquipment, 
 
     public UserEquipment findByUserId(String userId);
 
+
+
     public void deleteByUserId(String userId);
 
 }

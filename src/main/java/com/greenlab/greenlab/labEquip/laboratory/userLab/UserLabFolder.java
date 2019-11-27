@@ -1,7 +1,7 @@
 package com.greenlab.greenlab.labEquip.laboratory.userLab;
 
-import com.greenlab.greenlab.labEquip.framework.userRoot.UserRoot;
 
+import com.greenlab.greenlab.labEquip.framework.userRoot.UserRoot;
 
 public class UserLabFolder extends UserRoot {
 

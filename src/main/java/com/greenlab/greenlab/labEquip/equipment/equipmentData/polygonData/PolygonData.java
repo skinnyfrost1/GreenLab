@@ -1,10 +1,14 @@
 package com.greenlab.greenlab.labEquip.equipment.equipmentData.polygonData;
 
+import org.springframework.data.annotation.Id;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PolygonData {
 
+    @Id
+    private String id;
 
     private List<Dot> dots; //
 
@@ -27,6 +31,14 @@ public class PolygonData {
 
         return this.dots.size();
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getType() {

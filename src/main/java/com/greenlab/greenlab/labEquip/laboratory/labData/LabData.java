@@ -1,7 +1,7 @@
 package com.greenlab.greenlab.labEquip.laboratory.labData;
 
-import com.greenlab.greenlab.labEquip.framework.userRoot.ItemData;
 
+import com.greenlab.greenlab.labEquip.framework.userRoot.ItemData;
 
 public class LabData extends ItemData {
 

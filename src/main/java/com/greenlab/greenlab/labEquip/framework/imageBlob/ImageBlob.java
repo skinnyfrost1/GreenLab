@@ -15,7 +15,7 @@ public class ImageBlob {
 
     private int OriginalHeight;
 
-    private int counter;   // this counter is use to determine   whether we need to delete this photo
+    private int counter = 0;   // this counter is use to determine   whether we need to delete this photo
 
                 // when we need to increment the counter
                     //
