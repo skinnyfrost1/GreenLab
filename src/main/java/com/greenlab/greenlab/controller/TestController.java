@@ -110,7 +110,7 @@ public class TestController{
 
     @GetMapping(value="/test/add10labs")
     public String getAdd10Labs(){
-        String courseId = "CHE 10";
+        String courseId = "TES111";
         String labDescription = "this is lab description";
         String creator = "prof1@greenlab.edu";
         
