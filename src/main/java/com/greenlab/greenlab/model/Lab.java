@@ -54,4 +54,14 @@ public class Lab {
         this.holders = holders;
     }
 
+
+    public String testString() {
+        return "Lab{" +
+                "_id='" + _id + '\'' +
+                ", courseId='" + courseId + '\'' +
+                ", labName='" + labName + '\'' +
+                ", creator='" + creator + '\'' +
+                '}';
+    }
+
 }
