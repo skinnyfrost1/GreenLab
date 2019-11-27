@@ -38,8 +38,8 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                                <div class="dropdown-content"><a th:href="@{/labs}">View Labs</a></div>
-                                <div class="dropdown-content"><a th:href="@{/lab/create}">Create Lab</a></div>
+                                <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
+                                <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>
                             </div>
                         </div>
                     </td>
@@ -81,27 +81,19 @@
 <!-- Title -->
 <div class="title webfont" th:text="${course.courseId}"></div>
 <!-- Two containers -->
-<form th:action="@{/course/edit}" method = "post">
+<!-- <form th:action="@{/course/edit}" method = "post"> -->
     <div style="text-align: center;">
         <!-- Left container -->
         <div class="createCourseContainer webfont">
             <div class=" webfont" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
-<!--            <div id="" type="text" name="_id" th:value="${course._id}"   style="visibility: hidden;"></div><br>-->
-            <input id="_id" type="text" name="_id" th:value="${course._id}" style="visibility: hidden;"><br>
-            <input id="courseId" type="text" name="courseId" th:value="${course.courseId}" maxlength="24" class="createCourseTextfield webfont" required><br>
+            <input id="_id" type="text" name="_id" th:text="${course._id}" style="visibility: hidden;"><br>
+            <div id="courseId" name="courseId" th:text="${course.courseId}" maxlength="24" class="createCourseTextfield webfont"><br>
             <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Title</div>
-            <input id="courseName"type="text" name="courseName" th:value="${course.courseName}" maxlength="50" class="createCourseTextfield webfont" required><br>
+            <div id="courseName"  th:text="${course.courseName}" class="createCourseTextfield webfont"><br>
             <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Semester</div>
-            <input id="semester"type="text" name="semester" th:value="${course.semester}" maxlength="24" class="createCourseTextfield webfont" required><br>
+            <div id="semester" th:text="${course.semester}" class="createCourseTextfield webfont"><br>
             <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Description</div>
-            <textarea id="courseDescription" type="text" name="courseDescription" th:text="${course.courseDescription}" maxlength="250" class="createCourseTextArea webfont" required></textarea><br>
-            <div>
-                <div class="webfont" style=" text-align: left; ">Student Roster
-                    <span>
-                    <a href="" style = "margin:0em 1em;"> UploadRoster </a>
-                    </span>
-                </div>
-            </div>
+            <div id="courseDescription"  th:text="${course.courseDescription}" class="createCourseTextArea webfont"></textarea><br>
 
         </div>
         <!-- End of left Container -->
@@ -115,8 +107,7 @@
             </div>
             <!-- one lab -->
             <!-- loop -->
-            <div th:each="lab: ${labs}"class="bigLabContainer">
-                <a th:href="'/course/edit?id=' +${course.get_id()}"></a>
+            <div class="bigLabContainer" >
                 <table class="labContainer" >
                     <col width="30%"/>
                     <col width="40%"/>
@@ -131,12 +122,92 @@
                             <div class="webfont" th:text="'[ ' + ${course.semester} + ' ]'"></div>
                         </td>
                         <td class="courseCellPadding">
-                            <div class="webfont" th:text="${lab.labName}"></div>
+                            <div class="webfont">Lab 01</div>
                         </td>
 
                     </tr>
                 </table>
 
+            </div>
+            <!-- one lab -->
+            <div class="bigLabContainer" >
+                <table class="labContainer" >
+                    <col width="30%"/>
+                    <col width="40%"/>
+                    <col width="30%"/>
+                    <tr>
+                        <td class="courseCellPadding">
+                            <div th:text="${course.courseId}"></div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont" th:text="'[ ' + ${course.semester} + ' ]'"></div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont">Lab 02</div>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            <!-- one lab -->
+            <div class="bigLabContainer" >
+                <table class="labContainer" >
+                    <col width="30%"/>
+                    <col width="40%"/>
+                    <col width="30%"/>
+                    <tr>
+                        <td class="courseCellPadding">
+                            <div th:text="${course.courseId}"></div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont" th:text="'[ ' + ${course.semester} + ' ]'"></div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont">Lab 03</div>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            <!-- one lab -->
+            <div class="bigLabContainer" >
+                <table class="labContainer" >
+                    <col width="30%"/>
+                    <col width="40%"/>
+                    <col width="30%"/>
+                    <tr>
+                        <td class="courseCellPadding">
+                            <div th:text="${course.courseId}"></div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont" th:text="'[ ' + ${course.semester} + ' ]'"></div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont">Lab 04</div>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            <!-- one lab -->
+            <div class="bigLabContainer" >
+                <table class="labContainer" >
+                    <col width="30%"/>
+                    <col width="40%"/>
+                    <col width="30%"/>
+                    <tr>
+                        <td class="courseCellPadding">
+                            <div th:text="${course.courseId}"></div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont" th:text="'[ ' + ${course.semester} + ' ]'"></div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="webfont">Lab 05</div>
+                        </td>
+
+                    </tr>
+                </table>
             </div>
 
         </div>
@@ -150,7 +221,7 @@
     </span>
 <!--    <div style="text-align:right;">-->
 <!--    </div>-->
-</form>
+<!-- </form> -->
 <form id='deleteForm' th:action="@{/course/delete}" method = "post"></form>
 </body>
 </html>

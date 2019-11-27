@@ -45,6 +45,7 @@ public class ViewCoursesController {
             }
             model.addAttribute("courses", courses);
             model.addAttribute("role", role);
+            System.out.println("role = "+role);
 
         }
 //         String creator = (String) request.getSession().getAttribute("email");

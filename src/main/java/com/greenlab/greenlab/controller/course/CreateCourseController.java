@@ -9,22 +9,30 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
+import com.greenlab.greenlab.dto.RequestLabMenuResponseBody;
+import com.greenlab.greenlab.dto.SingleStringRequestBody;
 import com.greenlab.greenlab.model.Course;
+import com.greenlab.greenlab.model.Lab;
 import com.greenlab.greenlab.model.StuCourse;
 import com.greenlab.greenlab.model.User;
 import com.greenlab.greenlab.repository.CourseRepository;
-
+import com.greenlab.greenlab.repository.LabRepository;
 import com.greenlab.greenlab.repository.StuCourseRepository;
 import com.greenlab.greenlab.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,9 +45,18 @@ public class CreateCourseController {
     private StuCourseRepository stuCourseRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private LabRepository labRepository;
 
     @GetMapping(value = "/course/create")
     public String getCreateCourse(ModelMap model, HttpServletRequest request) {
+        String role = (String) request.getSession().getAttribute("role");
+        if (role == null)
+            return "redirect:/index";
+        if (!role.equals("professor")){
+            model.addAttribute("errormsg", "Only professors can create new courses");
+            return "error";
+        }
         return "profCreateCourse";
     }
 
@@ -48,8 +65,29 @@ public class CreateCourseController {
                                    @RequestParam(value = "courseName", required = false) String courseName,
                                    @RequestParam(value = "semester", required = false) String semester,
                                    @RequestParam(value = "courseDescription", required = false) String courseDescription,
+                                   @RequestParam(value = "select", required = false) List<String> labNameList,
                                    @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model,
                                    HttpServletRequest request) {
+        String role = (String) request.getSession().getAttribute("role");
+        if (role == null)
+            return "redirect:/index";
+        if (!role.equals("professor")){
+            model.addAttribute("errormsg", "Only professors can create new courses");
+            return "error";
+        }
+
+        List<Lab> labs = new ArrayList<>();
+        List<Lab> tempLab = (List<Lab>) request.getSession().getAttribute("labs");
+        for(Lab l : tempLab){
+            for(String name : labNameList){
+                if (l.getLabName().equals(name)){
+                    labs.add(l);
+                }
+            }
+        }
+        request.getSession().removeAttribute("labs");
+
+
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date date = new Date();
         String createDate = dateFormat.format(date);
@@ -58,7 +96,7 @@ public class CreateCourseController {
         courseId = courseId.toUpperCase();
 //        String id = createDate+courseId;
         List<User> students = new ArrayList<>();
-        Course course = new Course(courseId, courseName, semester, courseDescription,createDate,creator,students);
+        Course course = new Course(courseId, courseName, semester, courseDescription,createDate,creator,students,labs);
         System.out.println(course.toString());
         courseRepository.save(course);
         if (!file.isEmpty()) {
@@ -110,5 +148,32 @@ public class CreateCourseController {
 
     }
 
-
+    @PostMapping(value = "/course/create/requestlabmenu")
+    public ResponseEntity<?> postRequestLabMenu(@Valid @RequestBody SingleStringRequestBody reqBody, Errors errors, HttpServletRequest request){
+        System.out.println(reqBody.getStr());
+        RequestLabMenuResponseBody result = new RequestLabMenuResponseBody();
+        if (errors.hasErrors()) {
+            result.setMessage(
+                    errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
+            return ResponseEntity.badRequest().body(result);
+        }
+        String email = (String) request.getSession().getAttribute("email");
+        List<String> labNameList = new ArrayList<>();
+        String courseId = reqBody.getStr();
+        List<Lab> labs = labRepository.findByCourseId(courseId);
+        for (Lab l : labs){
+            if (l.getCreator().equals(email)){
+                labNameList.add(l.getLabName());
+            }
+            else{
+                labs.remove(l);
+            }
+        }
+        request.getSession().setAttribute("labs", labs);
+        result.setLabNameList(labNameList);
+        result.setMessage("Success!");
+        
+        return ResponseEntity.ok(result);
+        
+    }
 }

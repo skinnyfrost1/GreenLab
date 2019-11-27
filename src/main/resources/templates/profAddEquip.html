@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{/stylesheet/theme.css}}" type="text/css" rel="stylesheet">
-    <link th:href="@{/stylesheet/font.css}}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/index.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/toggleButton.css}" type="text/css" rel="stylesheet">
@@ -41,8 +41,8 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
-                              <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>
+                              <<div class="dropdown-content"><a th:href="@{/labs}">View Labs</a></div>
+                                <div class="dropdown-content"><a th:href="@{/lab/create}">Create Lab</a></div>
                             </div>
                         </div>
                     </td>
