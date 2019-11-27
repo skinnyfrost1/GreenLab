@@ -197,6 +197,33 @@ class Websocket{
     }
 
 
+    //_______________________________________
+    subscribeMyLab(){
+        var websocket = this.self;
+        websocket.__subscribeLabFolder();
+        websocket.__subscribeUnique();
+    }
+
+    subscribeCreateLab(){
+        var websocket = this.self;
+        websocket.__subscribeLabFolder();
+        websocket.__subscribeLabPad();
+        websocket.__subscribeUnique();
+    }
+
+    subscribeFindLab(){
+        var websocket = this.self;
+        websocket.__subscribeLabFind();
+        websocket.__subscribeUnique();
+        websocket.__subscribeLabFolder();
+    }
+
+    subscribeBoardLab(){
+        var websocket = this.self;
+        websocket.__subscribeLabBoard();
+        websocket.__subscribeUnique();
+    }
+    //_______________________________________
 
     __sendEquipmentFrontMessage( message ){
         var websocket = this.self;

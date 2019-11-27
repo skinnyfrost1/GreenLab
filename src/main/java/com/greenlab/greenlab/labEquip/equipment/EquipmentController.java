@@ -335,36 +335,36 @@ public class EquipmentController {
 
         }else if( jsonObject.get("type").toString().equals("updateSizeImage") ){
 
-            JSONObject jsonObject1 = (JSONObject) jsonObject.get("data");
-            //System.out.println( jsonObject1.toString() );
-            String imageDataId = jsonObject1.get("imageDataId").toString();
-            String sizeValue = jsonObject1.get("sizeValue").toString();
-
-            ImageData imageData = imageDataRepository.getById( imageDataId );
-            imageData.setSize(Integer.parseInt(sizeValue));
-            imageDataRepository.save( imageData );
-            String equipmentId = jsonObject.get("itemId").toString();
-            UpdateTheEquipment(  equipmentId ,  userId );
-
-            updateEquipmentBoard(  equipmentId );
-            //websocket.sendLabBoard();
+//            JSONObject jsonObject1 = (JSONObject) jsonObject.get("data");
+//            //System.out.println( jsonObject1.toString() );
+//            String imageDataId = jsonObject1.get("imageDataId").toString();
+//            String sizeValue = jsonObject1.get("sizeValue").toString();
+//
+//            ImageData imageData = imageDataRepository.getById( imageDataId );
+//            imageData.setSize(Integer.parseInt(sizeValue));
+//            imageDataRepository.save( imageData );
+//            String equipmentId = jsonObject.get("itemId").toString();
+//            UpdateTheEquipment(  equipmentId ,  userId );
+//
+//            updateEquipmentBoard(  equipmentId );
+//            //websocket.sendLabBoard();
 
 
         }else if( jsonObject.get("type").toString().equals("updateAngleImage") ){
 
-            JSONObject jsonObject1 = (JSONObject) jsonObject.get("data");
-            //System.out.println( jsonObject1.toString() );
-            String imageDataId = jsonObject1.get("imageDataId").toString();
-            String sizeAngle = jsonObject1.get("sizeAngle").toString();
-
-            ImageData imageData = imageDataRepository.getById( imageDataId );
-            imageData.setAngle(Integer.parseInt(sizeAngle));
-            imageDataRepository.save( imageData );
-            String equipmentId = jsonObject.get("itemId").toString();
-            UpdateTheEquipment(  equipmentId ,  userId );
-
-            updateEquipmentBoard(  equipmentId );
-            //websocket.sendLabBoard();
+//            JSONObject jsonObject1 = (JSONObject) jsonObject.get("data");
+//            //System.out.println( jsonObject1.toString() );
+//            String imageDataId = jsonObject1.get("imageDataId").toString();
+//            String sizeAngle = jsonObject1.get("sizeAngle").toString();
+//
+//            ImageData imageData = imageDataRepository.getById( imageDataId );
+//            imageData.setAngle(Integer.parseInt(sizeAngle));
+//            imageDataRepository.save( imageData );
+//            String equipmentId = jsonObject.get("itemId").toString();
+//            UpdateTheEquipment(  equipmentId ,  userId );
+//
+//            updateEquipmentBoard(  equipmentId );
+//            //websocket.sendLabBoard();
 
         }else if( jsonObject.get("type").toString().equals("updateXposImage") ){
 

@@ -44,7 +44,7 @@ public class EditCourseController{
         model.addAttribute("role",role);
 //        System.out.println(id);
 
-
+        String email = "";
         List<Lab> labs = labRepository.findByCourseIdAndCreator(course.getCourseId(),email);
 //        System.out.println(id);
         model.addAttribute("course",course);
