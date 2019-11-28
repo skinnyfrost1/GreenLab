@@ -75,7 +75,7 @@ public class TestController{
     @GetMapping(value="/test/add30courses")
     public String getAdd30Courses() {
         for (int i=0;i<30;i++){
-            String courseId = "CHE 1"+Integer.toString(i);
+            String courseId = "CHE1"+Integer.toString(i);
             String courseName = "Course name "+Integer.toString(i);
             String semester = "Spring "+Integer.toString(i);
             String courseDescription = "no bb";

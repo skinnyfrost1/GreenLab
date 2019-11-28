@@ -10,8 +10,7 @@ import com.greenlab.greenlab.model.Course;
 import com.greenlab.greenlab.model.Lab;
 import com.greenlab.greenlab.repository.CourseRepository;
 import com.greenlab.greenlab.repository.LabRepository;
-import com.greenlab.greenlab.dto.MultiStringRequestBody;
-import com.greenlab.greenlab.dto.BooleanResponseBody;
+import com.greenlab.greenlab.dto.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -76,9 +75,70 @@ public class EditCourseController{
         return "redirect:/courses";
     }
     
+
+
+    //this method is use to delete labs from a course. 
+    //input: courseObjectId, labObjectIds 
     @PostMapping(value = "/course/edit/dellabs")
-    public ResponseEntity<?> postCourseEditLabs(@Valid @RequestBody MultiStringRequestBody reqBody, Errors errors, HttpServletRequest request){
+    public ResponseEntity<?> postCourseEditDelLabs(@Valid @RequestBody MultiStringRequestBody reqBody, Errors errors, HttpServletRequest request){
         BooleanResponseBody result = new BooleanResponseBody();
+        String message = "Success!\nRemove:\n";
+        if (errors.hasErrors()) {
+            result.setMessage(
+                    errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
+            return ResponseEntity.badRequest().body(result);
+        }
+        String courseObjectId = reqBody.getCourseObjectId();
+        List<String> labObjIds = reqBody.getStrs();
+
+        Course course = courseRepository.findBy_id(courseObjectId);
+        List<Lab> labs = course.getLabs();
+
+        for (String s : labObjIds){
+            for (Lab l :labs){
+                if(l.get_id().equals(s)){
+                    message=message+l.getLabName()+"\n";
+                    labs.remove(l);
+                }
+            }
+        }
+        result.setMessage(message);
+        result.setBool(true);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping(value = "/course/edit/addlabs")
+    public ResponseEntity<?> postCourseEditAddLabs(@Valid @RequestBody MultiStringRequestBody reqBody, Errors errors, HttpServletRequest request){
+        BooleanResponseBody result = new BooleanResponseBody();
+        String message = "Success!\nRemove:\n";
+        if (errors.hasErrors()) {
+            result.setMessage(
+                    errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
+            return ResponseEntity.badRequest().body(result);
+        }
+        String courseObjectId = reqBody.getCourseObjectId();
+        List<String> labObjIds = reqBody.getStrs();
+
+        Course course = courseRepository.findBy_id(courseObjectId);
+        List<Lab> labs = course.getLabs();
+
+        for (String s : labObjIds){
+            for (Lab l :labs){
+                if(l.get_id().equals(s)){
+                    message=message+l.getLabName()+"\n";
+                    labs.remove(l);
+                }
+            }
+        }
+        result.setMessage(message);
+        result.setBool(true);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping(value="/course/edit/requestlabmenu")
+    public ResponseEntity<?> postCourseEditRequestLabMenu(@Valid @RequestBody SingleStringRequestBody reqBody, Errors errors, HttpServletRequest request){
+        BooleanResponseBody result = new BooleanResponseBody();
+        String message = "Success!\nRemove:\n";
         if (errors.hasErrors()) {
             result.setMessage(
                     errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
@@ -87,7 +147,6 @@ public class EditCourseController{
 
         return null;
     }
-
 
 
 

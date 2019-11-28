@@ -172,8 +172,6 @@ public class CreateCourseController {
         request.getSession().setAttribute("labs", labs);
         result.setLabNameList(labNameList);
         result.setMessage("Success!");
-        
         return ResponseEntity.ok(result);
-        
     }
 }

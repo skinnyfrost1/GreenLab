@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MultiStringRequestBody{
+    String courseObjectId;
     List<String> strs;
     
 }
