@@ -1,5 +1,6 @@
 package com.greenlab.greenlab.controller.course;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -143,16 +144,26 @@ public class EditCourseController{
                     errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
             return ResponseEntity.badRequest().body(result);
         }
-
         String courseObjectId = reqBody.getStr();
         Course course = courseRepository.findBy_id(courseObjectId);
         List<Lab> labs = course.getLabs();
 
-
-
+        String courseId = course.getCourseId();
         String creator = (String) request.getSession().getAttribute("email");
-        List<Lab> labs = labRepository.findByCourseIdAndCreator(courseId, creator);
+        List<Lab> labmenu = labRepository.findByCourseIdAndCreator(courseId, creator);
+        
+        for (Lab l : labs){
+            if (labmenu.contains(l)){
+                labmenu.remove(l);
+            }
+        }
 
+        List<String> labNameList = new ArrayList<>();
+        for(Lab l :labmenu){
+            labNameList.add("[\""+l.getLabName()+"\", \""+l.get_id()+"\"]");
+        }
+
+        
 
         return null;
     }
