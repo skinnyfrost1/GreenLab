@@ -1,3 +1,5 @@
+
+<!--header value 786013  exceeds configured buffer size limit 65536-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
@@ -24,6 +26,7 @@
     <script src="https://ml4141715.github.io/water/cdn/api/jquery-ui.js"></script>
     <script src="https://ml4141715.github.io/water/cdn/api/jquery-3.3.1.min.js"></script>
     <script src="https://ml4141715.github.io/water/cdn/api/popper.min.js"></script>
+    <!--    <script src="https://ml4141715.github.io/water/cdn/api/bootstrap.min.js"></script>-->
     <script src="https://ml4141715.github.io/water/cdn/api/jquery.cookie.js"></script>
     <script src="https://ml4141715.github.io/water/cdn/api/sockjs.min.js"></script>
     <script src="https://ml4141715.github.io/water/cdn/api/stomp.min.js"></script>
@@ -36,14 +39,1725 @@
     <script src="https://ml4141715.github.io/water/cdn/api/babel.min.js"></script>
     <script src="https://ml4141715.github.io/water/cdn/api/dropzone.js"></script>
 
+
+    <!--    TheWindow-->
+    <script >
+
+        class Box{
+            constructor( elementId ){
+                this.elementId = elementId;
+                this.width = 0;
+                this.height = 0;
+            }
+            setWidth( width ){
+                this.width = width;
+                document.getElementById(this.elementId).style.width = this.width+"px";
+            }
+            setHeight( height ){
+                this.height = height;
+                document.getElementById(this.elementId).style.height = this.height+"px";
+            }
+            setLeft( left ){
+                document.getElementById(this.elementId).style.left = left+"px";
+            }
+            setRight( right ){
+                document.getElementById(this.elementId).style.right=right+"px";
+            }
+            getWidth(){
+                return this.width;
+            }
+            getHeight(){
+                return this.height;
+            }
+        }
+
+
+
+    </script>
+    <!--    websocket connection-->
+    <script>
+
+       class Websocket{
+
+           constructor(){
+
+               this.userId = null;      // need set from outside
+               this.itemId = null; // need set from outside
+
+               this.websocketId = null; // ok
+
+               this.receiveMessage = null;  // need set from outside
+               this.socket = null;
+               this.stompClient = null;
+
+               this.sendMessage = null;
+
+               this.subscribeType = null
+
+               this.connectBroken = null; // this is function handle connection broken
+               //this.websocket = new Websocket();
+               this.self = null;
+
+               this.loadBoolean = false;
+           }
+
+
+           setWebsocketId( ){
+               var websocket = this.self;
+               var url = websocket.stompClient.ws._transport.url;
+               var urlArr = url.split("/");
+               var webSessionId =  urlArr[urlArr.length-2 ];
+               websocket.websocketId = webSessionId;
+           }
+
+
+           __subscribeUnique(){
+
+               // this is combination of userid and websocketid
+
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/image/"
+                   +websocket.userId
+                   +"/"
+                   +websocket.websocketId , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeEquipmentFolder(){
+
+               // this is userId only
+
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/equipment/folder/"
+                   +websocket.userId
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeEquipmentPad(){  // the item here is equipment id
+
+               // this is equipmentId only
+               // once it broadcast
+               // other user who work on this equipment can do operation on it
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/equipment/pad/"
+                   +websocket.itemId
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeEquipmentBoard(){  // the item here is equipment id
+
+               // this is equipmentId only
+               // once it broadcast
+               // other user who work on this equipment can do operation on it
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/equipment/board/"
+                   +websocket.itemId
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeEquipFind(){  // the item here is lab id
+
+               // this is equipmentId only
+               // once it broadcast
+               // other user who work on this equipment can do operation on it
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/equipment/find"
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeLabFolder(){
+
+               // this is userId only
+
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/lab/folder/"
+                   +websocket.userId
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeLabPad(){  // the item here is lab id
+
+               // this is equipmentId only
+               // once it broadcast
+               // other user who work on this equipment can do operation on it
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/lab/pad/"
+                   +websocket.itemId
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeLabBoard(){  // the item here is lab id
+
+               // this is equipmentId only
+               // once it broadcast
+               // other user who work on this equipment can do operation on it
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/lab/board/"
+                   +websocket.itemId
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeLabFind(){  // the item here is lab id
+
+               // this is equipmentId only
+               // once it broadcast
+               // other user who work on this equipment can do operation on it
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/lab/find"
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           subscribeCreateEquipment(){
+
+               var websocket = this.self;
+               websocket.__subscribeEquipmentFolder();
+               websocket.__subscribeEquipmentPad();
+               websocket.__subscribeUnique();
+
+           }
+
+           subscribeShareEquipment(){
+
+               var websocket = this.self;
+               websocket.__subscribeEquipmentFolder();
+               websocket.__subscribeUnique();
+
+           }
+
+           subscribeFindEquipment(){
+
+               var websocket = this.self;
+               websocket.__subscribeEquipFind();
+               websocket.__subscribeUnique();
+               websocket.__subscribeEquipmentFolder();
+
+           }
+
+           subscribeBoardEquipment(){
+               var websocket = this.self;
+               websocket.__subscribeEquipmentBoard();
+               websocket.__subscribeUnique();
+           }
+
+
+           //_______________________________________
+           subscribeMyLab(){
+               var websocket = this.self;
+               websocket.__subscribeLabFolder();
+               websocket.__subscribeUnique();
+           }
+
+           subscribeCreateLab(){
+               var websocket = this.self;
+               websocket.__subscribeLabFolder();
+               websocket.__subscribeLabPad();
+               websocket.__subscribeUnique();
+           }
+
+           subscribeFindLab(){
+               var websocket = this.self;
+               websocket.__subscribeLabFind();
+               websocket.__subscribeUnique();
+               websocket.__subscribeLabFolder();
+           }
+
+           subscribeBoardLab(){
+               var websocket = this.self;
+               websocket.__subscribeLabBoard();
+               websocket.__subscribeUnique();
+           }
+           //_______________________________________
+
+           __sendEquipmentFrontMessage( message ){
+               var websocket = this.self;
+               websocket.stompClient.send( "/app/equipment/front/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+           }
+
+           __sendEquipmentBackMessage( message ){
+               var websocket = this.self;
+               websocket.stompClient.send( "/app/equipment/back/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+           }
+
+           __sendLabFrontMessage( message ){
+               var websocket = this.self;
+               websocket.stompClient.send( "/app/lab/front/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+           }
+
+           __sendLabBackMessage( message ){
+               var websocket = this.self;
+               websocket.stompClient.send( "/app/lab/back/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+           }
+
+           // sendMessage( message ){
+           //
+           //     var websocket = this.self;
+           //     websocket.sendMessage( message );
+           //
+           // }
+
+           connect(  ){
+               //var websocket = new Websocket();
+               //websocket.
+               var websocket = this.self;
+               websocket.socket = new SockJS('/landon-stomp-chat');
+               websocket.stompClient = Stomp.over(websocket.socket);
+               websocket.stompClient.debug = null;
+               websocket.stompClient.connect({}, function (frame) {
+                   websocket.setWebsocketId();
+                   websocket.subscribeType();
+                   var sendData = {"type":"connectSuccess"}
+                   websocket.sendMessage(JSON.stringify(sendData));
+               }, function (message) {
+                   websocket.connectBroken();
+               } );
+
+           }
+
+
+       }
+
+       function quickPrepare( type, data ) {
+           var sendData = {};
+           sendData["type"] = type;
+           if( itemId != null ){
+               sendData["itemId"] = itemId;
+           }
+           if(data!=null){
+               sendData["data"] = data;
+           }
+           return  JSON.stringify(sendData);
+       }
+
+       //var BooleanVar = false;
+       //_______________________ the code below teach you how to use the api ______________
+       //when you send information don't forget include itemId inside the message
+       //
+
+       // websocket = new Websocket();
+       // websocket.userId = "666";
+       // websocket.itemId=  "777";
+       // websocket.receiveMessage = function (message){
+       //     console.log(message);
+       // } ;
+       // websocket.connectBroken = function ( ){
+       //
+       //     console.log("connection broken");
+       //
+       // };
+       // websocket.self = websocket;
+       // websocket.subscribeType = websocket.subscribeCreateEquipment; // you need set the subscribe type
+       // websocket.sendMessage = websocket.__sendEquipmentFrontMessage;
+       // websocket.connect();
+
+       // @MessageMapping("/equipment/front/{userId}/{sessionId}")
+       // public void handleEquipmentFront( @DestinationVariable String userId ,  @DestinationVariable String sessionId , String message) throws JSONException {
+       //
+       //
+       //     System.out.println( message+"__"+ userId +"__"+ sessionId);
+       //
+       //
+       // }
+
+       // @Configuration
+       // @EnableWebSocketMessageBroker
+       // public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+       //
+       //     @Override
+       //     public void registerStompEndpoints(StompEndpointRegistry registry) {
+       //     registry.addEndpoint("/landon-stomp-chat").withSockJS();
+       // }
+       //
+       // @Override
+       // public void configureMessageBroker(MessageBrokerRegistry config) {
+       //     config.enableSimpleBroker("/topic","/user", "/queue");
+       //     //config.enableSimpleBroker("/user/queue/specific-user");
+       //     config.setApplicationDestinationPrefixes("/app");
+       //     config.setUserDestinationPrefix("/user/");
+       //     //config.enableSimpleBroker("/queue");
+       //     //config.enableSimpleBroker("/queue","/topic");
+       // }
+       //
+       // }
+
+
+       class Ajax{
+
+           constructor(){
+
+               this.sendAddress = null;
+               this.handle = null;
+               this.self = null;
+           }
+
+           sendAjax( message ){
+               var ajax = this.self;
+               $.post(
+                   ajax.sendAddress,
+                   {"data": message },
+                   function(response){
+                       if(response.success){
+                           ajax.handle( response.data );
+                       }
+                   },
+                   "json"
+               );
+           }
+       }
+       //ajax/requestId
+       //_______________________    ajax use tutorial      ____________________
+
+
+       // var ajax = new Ajax();
+       // ajax.sendAddress ="ajax/requestId";
+       // ajax.handle = function ( message ) {
+       //     console.log( message );
+       // }
+       // ajax.self = ajax;
+       // ajax.sendAjax("666");
+
+
+
+       // @RequestMapping(value="/ajax/requestId" , method = RequestMethod.POST)
+       // @ResponseBody
+       // public Object SignupSumbit(HttpServletRequest request) throws JSONException {
+       //
+       //     String dataStr = request.getParameter("data");
+       //
+       //     System.out.println( dataStr );
+       //
+       //     Map<String,Object> sendData = new HashMap<>();
+       //     sendData.put("success",true);
+       //     sendData.put("data", "weixin.tang@stonybrook.edu" );
+       //     return sendData;
+       // }
+
+
+   </script>
+    <!--  lab operation section  -->
+    <script >
+
+
+        class EquipmentOperationSection{
+            constructor(){
+                this.imageId = "operationImageSection";
+                this.editId = "operationEditSection";
+                this.areaId = "operationAreaSection";
+                this.addId = "operationAddSection";
+                // this.self = null;
+            }
+            setActive( Id ){
+                document.getElementById(Id).className="nav-link text-muted active";
+                //console.log( Id.slice(9) );
+                // we also need active the body content
+                document.getElementById(Id.slice(9)).className = "card-body";
+            }
+            setInactive( Id ){
+                document.getElementById(Id).className="nav-link text-muted";
+                //console.log( Id.slice(9) );
+                document.getElementById(Id.slice(9)).className = "card-body d-none";
+            }
+            getIds(){
+                return [this.imageId, this.editId, this.areaId,  this.addId ];
+            }
+            clearActive(){
+                for( var i = 0 ; i< this.getIds().length ; i++ ){
+                    this.setInactive(  this.getIds()[i] );
+                }
+            }
+            setIndexActive( index ){
+                this.clearActive();
+                this.setActive( this.getIds()[index] );
+            }
+            // ativeAllButton(){
+            //
+            //     document.getElementById(this.imageId).onclick =
+            //
+            // }
+            getActiveFunctions(){
+                return [ this.activeImage ,this.activeEdit , this.activeArea, this.activeAdd ]
+            }
+            activeImage(){
+                this.clearActive();
+                this.setActive( this.imageId );
+            }
+            activeAdd(){
+                this.clearActive();
+                this.setActive( this.addId );
+            }
+            activeArea(){
+                this.clearActive();
+                this.setActive( this.areaId );
+            }
+            activeEdit(){
+                this.clearActive();
+                this.setActive( this.editId );
+            }
+            activeAllButton( self ){
+                //self = new EquipmentOperationSection();
+                document.getElementById( self.imageId ).onclick = function () {
+                    self.activeImage();
+                };
+                document.getElementById( self.editId ).onclick = function () {
+                    self.activeEdit();
+                };
+                document.getElementById(self.areaId).onclick = function () {
+                    self.activeArea();
+                };
+                document.getElementById(self.addId).onclick = function () {
+                    self.activeAdd();
+                };
+            }
+        }
+
+
+
+        class ImageOp{
+            constructor(){
+                this.equipmentNameInputId = "equipmentNameInput";
+                this.equipmentDescriptionId = "equipmentDescription";
+                this.coverImageId = "coverImageId";
+                this.coverImageUploadId = "myfile";
+                this.self = null;
+
+
+            }
+            getNameValue(){
+                return document.getElementById(this.equipmentNameInputId).value;
+            }
+            setNameValue( value ){
+                document.getElementById(this.equipmentNameInputId).value = value;
+            }
+            getTextArea(){
+                return document.getElementById(this.equipmentDescriptionId).value;
+            }
+            setTextArea( value ){
+                document.getElementById( this.equipmentDescriptionId ).value = value;
+            }
+
+            setCoverImage( value ){
+
+                //<img src='' class='grid-photo-center' style='background-color: aquamarine' alt=''>
+                // <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA
+                // AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+                // 9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
+
+                document.getElementById( this.coverImageId ).innerHTML = "<img src='"+value+"' class='grid-photo-center' style='background-color: aquamarine' alt=''>";
+
+            }
+
+            handleNameInput( name ){
+                sendProtocal["labName"](name);
+            }
+
+            handleTextAreaInput( description ){
+                sendProtocal["labDescription"](description);
+            }
+
+            handleImageInput( ImageData ){
+                sendProtocal["uploadLabCoverImage"]( ImageData );
+
+            }
+
+            activeAll(){
+                var imageOp = this.self;
+                document.getElementById(imageOp.equipmentNameInputId).oninput = function () {
+
+                    imageOp.handleNameInput( imageOp.getNameValue() );
+                };
+
+                document.getElementById(imageOp.equipmentDescriptionId).oninput = function () {
+                    imageOp.handleTextAreaInput( imageOp.getTextArea() );
+                };
+
+                document.getElementById(imageOp.coverImageUploadId).oninput = async function (evt) {
+                    var file = evt.target.files[0];
+                    var ImageData = (await toBase64(file));
+                    imageOp.handleImageInput( ImageData );
+                }
+            }
+
+
+        }
+
+
+
+
+
+
+        class SetOp{
+
+            constructor(){
+
+                // actually we don't have do right now
+
+                // we need get id here
+
+                // so work on chemistry then back to here
+
+                this.likeEquipment = "likeEquipment";
+                this.shareEquipment = "shareEquipment";
+                this.createDuplicate = "createDuplicate";
+                this.deleteEquipment = "deleteEquipment";
+
+                this.self = null;
+            }
+
+
+            setLikeBaseBoolean( booleanValue ){
+                if( booleanValue == true ){
+                    this.setDisLike();
+                }else{
+                    this.setLike();
+                }
+            }
+
+            setShareBaseBoolean( booleanValue ){
+                if( booleanValue == true ){
+                    this.setNoShare();
+                }else{
+                    this.setShare();
+                }
+            }
+
+            setLike(){
+                //document.getElementById(this.likeEquipment).innerHTML = "<i class='fas fa-heart'></i> Like Equip";
+                document.getElementById(this.likeEquipment).className = "btn btn-lg h2 d-block btn-outline-danger text-capitalize";
+
+            }
+
+            setDisLike(){
+                //document.getElementById(this.likeEquipment).innerHTML = "<i class='fas fa-heart'></i> DisLike Equip";
+                document.getElementById(this.likeEquipment).className = "btn btn-lg h2 d-block btn-danger text-capitalize";
+            }
+
+            setShare(){
+                document.getElementById(this.shareEquipment).className =   "btn btn-lg h2 d-block btn-outline-success text-capitalize";
+            }
+
+            setNoShare(){
+                document.getElementById(this.shareEquipment).className =   "btn btn-lg h2 d-block btn-success text-capitalize";
+            }
+
+            isLike(){
+                if( document.getElementById(this.likeEquipment).className == "btn btn-lg h2 d-block btn-outline-danger text-capitalize" ){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+
+            // true means have not share and want to share
+            isShare(){
+                if( document.getElementById(this.shareEquipment).className == "btn btn-lg h2 d-block btn-outline-success text-capitalize" ){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+
+            handleLike( boolean ){
+
+                //
+                //console.log(boolean);
+                //equipmentData.currentEquipmentData.currentImageIds
+                //var currentImageId = equipmentData.currentEquipmentData.currentImageIds;
+
+                sendProtocal["likeLab"](   boolean );
+
+            }
+
+            handleShare( boolean ){
+
+                //var currentImageId = equipmentData.currentEquipmentData.currentImageIds;
+                //console.log(boolean);
+                sendProtocal["shareLab"](   boolean);
+            }
+
+            handleDelete(){
+
+                //var currentImageId = equipmentData.currentEquipmentData.currentImageIds;
+
+                sendProtocal["deleteLab"]( );
+
+            }
+
+            handleDuplicate(){
+
+                //var currentImageId = equipmentData.currentEquipmentData.currentImageIds;
+
+                sendProtocal["duplicateLab"](  );
+
+            }
+
+            activeAll(){
+
+                var setOp = this.self;
+                document.getElementById( setOp.likeEquipment ).onclick = function () {
+                    setOp.handleLike( setOp.isLike() );
+                };
+
+                document.getElementById( setOp.shareEquipment ).onclick = function () {
+                    setOp.handleShare( setOp.isShare() );
+                };
+
+                document.getElementById( setOp.createDuplicate ).onclick =function () {
+                    setOp.handleDuplicate();
+                };
+
+                document.getElementById( setOp.deleteEquipment ).onclick =function () {
+                    setOp.handleDelete();
+                };
+
+            }
+
+
+
+
+        }
+
+        class AddOp{
+
+            constructor(){
+
+
+
+            }
+
+
+
+
+        }
+
+
+
+    </script>
+
+
+<!--    labJS/FolderMin.js-->
+    <script >
+
+
+
+        class FolderMin{
+            constructor(){
+                // we don't need save value here
+                this.folderMin = "minFolder";
+                //this.manageFolderJumpAddress = "#123";
+                this.folderNames = ["1", "2", "3"];
+                this.folderIds = ["id1","id2", "id3"];
+                this.self = null;
+            }
+            // we need create a folder by name
+            // we need
+            //sortable3
+            setFolderNames( folderNames , folderIds ){
+                this.folderNames = folderNames;
+                this.folderIds = folderIds;
+                this.__refresh();
+            }
+            setSelf( self ){
+                this.self = self;
+            }
+            // those three function we need change the herf
+            // so it can jump to some where
+            // __getDivideLine(){
+            //     //<div class='dropdown-divider'></div>
+            //     //<div class="dropdown-divider"></div>
+            //     return "<div class=\"dropdown-divider\"></div>";
+            // }
+            //
+            // __getMangaeFolder(){
+            //     //<a class="dropdown-item" href="#"><i class="fas fa-folder"></i>&nbsp;&nbsp;Mangae Folders</a>
+            //     //<a class='dropdown-item' href='#'><i class='fas fa-folder'></i>&nbsp;&nbsp;Mangae Folders</a>
+            //     return "<a class=\"dropdown-item\" href=\""+this.manageFolderJumpAddress+"\"><i class=\"fas fa-folder\"></i>&nbsp;&nbsp;Mangae Folders</a>";
+            // }
+            //
+            //
+            //
+            // __getButtomHTML(){
+            //     return this.getDivideLine()+this.getMangaeFolder();
+            // }
+            // getDynamicItem(){
+            //     // <div class='input-group bg-light dropdown-item' style='border: 0px'>
+            //     //         <input type='text' style='border: 0px' class='form-control bg-light text-dark text-truncate font-weight-normal' value='folder 1'>
+            //     //         <div class='input-group-append bg-light' style='border: 0px'>
+            //     //         <span class='input-group-text bg-light' style='border: 0px'><i class='fas fa-minus'></i></span>
+            //     //     </div>
+            //     //     </div>
+            //
+            //
+            //     var ReturnData = " <div class='input-group bg-light dropdown-item' style='border: 0px'>\n" +
+            //         "                <input type='text' style='border: 0px' class='form-control bg-light text-dark text-truncate font-weight-normal' value='folder 1'>\n" +
+            //         "                <div class='input-group-append bg-light' style='border: 0px'>\n" +
+            //         "                <span class='input-group-text bg-light' style='border: 0px'><i class='fas fa-minus'></i></span>\n" +
+            //         "            </div>\n" +
+            //         "            </div>";
+            //
+            //
+            //
+            //     return
+            // }
+            // we need register on click function
+            // so this just call the same function
+            __getStaticItem( folderName , folderId ){
+                //<div class="dropdown-item"><p class="d-inline">Folder 2</div>
+                //<div class='dropdown-item'><p class='d-inline'>Folder 2</div>
+                var ClassName = "dropdown-item text-truncate";
+                // var OnClick = "function () {   }"
+                return "<div class='"+ClassName+"' id='"+folderId+"' >"+folderName+"</div>";
+            }
+            __getAllHTML(  ){
+                var total = "";
+                for( var i = 0 ; i < this.folderNames.length ; i++ ){
+                    //folderNames[i]
+                    total = total+this.__getStaticItem( this.folderNames[i] , this.folderIds[i] );
+                }
+                //total = total + this.getButtomHTML();
+                return total;
+            }
+            __setHTML(){
+                document.getElementById(this.folderMin).innerHTML = this.__getAllHTML();
+            }
+            __activeButton(){
+                var self = this.self;
+                document.getElementById(this.folderMin).onchange = function () {
+                    //console.log("print something first");
+                    // good it dose work
+                    //
+                    // the function don't change it self
+                    // instead it read all the data and send to back side
+                    // document.getElementById(folderMin.folderMin).childNodes.forEach(
+                    //
+                    //     function(item){
+                    //
+                    //         //console.log(item);
+                    //
+                    //         console.log(item);
+                    //
+                    //
+                    //     }
+                    //
+                    //
+                    // )
+                    //console.log(  document.getElementById(folderMin.folderMin).children[0].id );
+                    //console.log( document.getElementById(folderMin.folderMin).childNodes[0] );
+                    // so we need writ  a function get the id
+                    // so it will start the id with id=" or id='
+                    var folderNode =  document.getElementById(folderMin.folderMin).children;
+                    var folderIds = [];
+                    for( var i = 0 ; i < folderNode.length ; i++ ){
+                        folderIds.push( folderNode[i].id );
+                    }
+                    // we will send to message prepare
+                    console.log(folderIds);
+                }
+                for( var i = 0 ; i < this.folderIds.length ; i ++ ){
+                    document.getElementById(this.folderIds[i]).onclick = function () {
+                        console.log("666");
+                        //console.log(self.getDivideLine());
+                    }
+                }
+                //document.getElementById(this.folderMin).
+            }
+            __refresh(){
+                this.__setHTML();
+                this.__activeButton()
+            }
+        }
+
+        //___________________________________________
+
+        // the description below is how to use
+        // this javascript class
+
+        /*
+
+                    folderMin = new FolderMin();
+                    folderMin.__refresh();
+
+                    there is a problem
+                        // it lack of icon
+                        // so we could now the icon
+                     we don't focus on this
+                        this time
+
+                    // so we will do this later
+
+         */
+
+
+
+    </script>
+    <!--  folderContent  -->
+    <script >
+
+
+
+
+        class Card{
+            constructor(){
+                this.imageData = null;
+                this.imageTitle = null;
+                this.imageContent = null;
+                this.imageId = null;
+            }
+            __ceateFakeData(){
+                this.imageData = "https://ml4141715.github.io/water/cdn/image/Holder.png";
+                this.imageTitle = "666imageTitle";
+                this.imageContent = "7789imageContent";
+                this.imageId = "675imageId";
+            }
+            // we will add some button here
+            // so what we will add
+            // favorite
+            // duplicate
+            // delete
+            // <div class="card mb-1 grid-square">
+            //         <img class="card-img-top img-fluid grid-photo" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="" draggable="false">
+            //         <div class="card-body">
+            //         <p class="card-title h4 small font-weight-bold">Holder</p>
+            //         <p class="card-text h5 small">Author: Homelander </p>
+            // </div>
+            // </div>
+            __cardHTML(){
+                var ReturnData = "<div class=\"card mb-1 grid-square\"  id=\""+this.imageId+"\" >\n" +
+                    "                <img class=\"card-img-top img-fluid grid-photo\" src=\""+this.imageData+"\" alt=\"\" draggable=\"false\">\n" +
+                    "                <div class=\"card-body\">\n" +
+
+                    "                    <p class=\"card-title h4 small font-weight-bold\">"+this.imageTitle+"</p>\n" +
+                    "                    <p class=\"card-text h5 small\">"+this.imageContent+"</p>\n" +
+                    "                </div>\n" +
+                    "            </div>";
+                return ReturnData;
+
+                // var ReturnData = "<div class='btn btn-muted' id='"+this.imageId+"'><img class></div>"
+                //
+                // return ReturnData;
+            }
+            getHTML(){
+                return this.__cardHTML();
+            }
+        }
+        // <div id="btn btn-group" >
+        //     <div class="btn btn-primary " ><i class="fas fa-eraser"></i></div>
+        // <div class="btn btn-success " ><i class="fas fa-clone "></i></div>
+        // <div class="btn btn-danger " ><i class="fas fa-heart "></i></div>
+        // </div>
+
+        //var changContent = "";
+
+        //onmouseleave=\"threeButton("+this.imageId+")\"
+        //onmouseenter=\"threeButton("+this.imageId+")\"
+
+        //     function threeButton( evt ) {
+        //
+        //
+        // //evt.innerHTML
+        // //evt.id
+        //
+        //         console.log( evt.id  );
+        //
+        //
+        //     }
+
+        class Cards{
+            constructor(){
+                this.cards = [];
+                this.folderContentId = "folderContent";// 1721
+            }
+            addCard( imageData , imageTitle , imageContent , imageId ){
+                var card = new Card();
+                card.imageContent = imageContent;
+                card.imageTitle = imageTitle;
+                card.imageData = imageData;
+                card.imageId = imageId;
+
+                this.cards.push(card);
+            }
+            clearCards(  ){
+                this.cards = [];
+            }
+            __creatFakeData(){
+
+
+                this.addCard( "https://ml4141715.github.io/water/cdn/image/Holder.png" , "imageTitle1" , "imageContent1" , "imageId1" );
+                // this.addCard( "https://ml4141715.github.io/water/cdn/image/Holder.png" , "imageTitle1" , "imageContent1" , "imageId1" );
+                // this.addCard( "https://ml4141715.github.io/water/cdn/image/Holder.png" , "imageTitle1" , "imageContent1" , "imageId1" );
+                // this.addCard( "https://ml4141715.github.io/water/cdn/image/Holder.png" , "imageTitle1" , "imageContent1" , "imageId1" );
+                // //console.log(this.cards[0].getHTML());
+            }
+            __cardsHTML(){
+                var total = "";
+                for( var i = 0 ; i< this.cards.length ; i ++ ){
+                    total = total+ this.cards[i].getHTML();
+                    //console.log(this.cards[i].getHTML());
+                }
+                //console.log(total);
+                return total;
+            }
+            setHTML(){
+                // console.log( "this.__cardsHTML()" );
+                // console.log( this.__cardsHTML() );
+                //console.log( "this.__cardsHTML()" );
+
+                document.getElementById(this.folderContentId).innerHTML = this.__cardsHTML();
+
+                for( var i = 0 ; i< this.cards.length ; i++ ){
+
+                    var cardId = this.cards[i].imageId;
+
+                    document.getElementById(cardId).onclick = function (evt) {
+
+                        var cardId = evt.path[1].id;
+
+                        window.open("/equipment/"+cardId , "_blank");
+
+                        //console.log(cardId+"is card Id");
+                        //console.log(evt);
+                    }
+
+                    //console.log( cardId );
+
+
+                }
+                //console.log( "this.__cardsHTML()" );
+
+            }
+        }
+
+
+        // var cards = new Cards();
+        // cards.__creatFakeData();
+        // cards.setHTML();
+
+        //________________________ the description below is how to use this js class_______________________
+
+        //var cards = new Cards();
+        // cards.__creatFakeData();
+        // cards.__creatFakeData();
+        // cards.__creatFakeData();
+        // cards.setHTML();
+
+
+
+    </script>
+    <!--Configuration-->
+    <script>
+
+        class Configuration{
+
+            constructor(){
+
+                this.introductionSection();
+                this.loadSuccess();
+                this.settingSection();
+
+
+            }
+
+            loadSuccess(){
+
+                receiveProtocal["connectSuccess"] = function (message) {
+                    //console.log("receive connectSuccess");
+                    //sendProtocal["loadAll"]();
+                };
+
+
+            }
+
+            introductionSection(){
+
+                sendProtocal["labName"] = function (name) {
+
+                    //console.log(name);
+                    // quick prepare contain lab id
+                    websocket.sendMessage( quickPrepare( "labName" , name  ) );
+                };
+
+                sendProtocal["labDescription"] = function (description) {
+
+                    websocket.sendMessage( quickPrepare( "labDescription" , description ) );
+
+                };
+
+                sendProtocal["uploadLabCoverImage"] = function (imageData) {
+
+                    // here will using ajax
+                    // using ajax to send to server side
+
+                    
+                    var sendData = {};
+                    sendData["labId"] = itemId;
+                    sendData["coverImageData"] = imageData;
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/ajax/ImageData",
+                        data: JSON.stringify(sendData),
+                        dataType: 'json',
+                        cache: false,
+                        timeout: 600000,
+                        success: function (data) {
+
+                           console.log(data);
+
+                        },
+                        error: function (e) {
+
+
+
+                        }
+                    });
+
+
+                };
+
+                receiveProtocal["downLoadImages"] = function () {
+
+                    // server side send through websocket
+                        // here to request using ajax
+                            // ok
+                    // tell everyone to doanload the images
+
+
+                };
+
+            }
+
+            settingSection(){
+
+
+                sendProtocal["shareLab"] = function (   boolean ) {
+
+
+                    //console.log( boolean );
+                    websocket.sendMessage( quickPrepare( "shareLab" , boolean ) );
+
+                };
+
+                sendProtocal["likeLab"] = function (   boolean ) {
+
+                    websocket.sendMessage( quickPrepare( "likeLab" , boolean ) );
+
+                };
+
+                sendProtocal["deleteLab"] = function (   ) {
+
+                    websocket.sendMessage( quickPrepare( "deleteLab" ) );
+
+                };
+
+                sendProtocal["duplicateLab"] = function (  ) {
+
+                    websocket.sendMessage( quickPrepare( "duplicateLab" ) );
+
+                };
+
+                receiveProtocal["deleteLab"] = function ( equipmentId ) {
+
+                    //console.log("delete it A");
+
+                    window.location.href = "/lab/"+itemId;
+
+                };
+
+
+            }
+
+
+
+        }
+
+    </script>
+    <!--  lab Data  -->
+    <script>
+
+        class LabData{
+
+            constructor(){
+
+                // so we need added equipment to the lab
+                // so also need lab name
+                // lab into
+                // lab blob id
+
+                // we need step
+                    //
+
+            }
+
+
+        }
+
+    </script>
+
+
+    <title>Green Lab</title>
+
+
+
+    <!--    onLoad-->
+    <script>
+
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        function onResize() {
+
+            middleBox.setWidth( window.innerWidth - 630 );
+            middleBox.setHeight(  window.innerHeight - 81 )
+        }
+
+
+        function connect(){
+
+            var ajax = new Ajax();
+            ajax.sendAddress ="/ajax/requestId";
+            ajax.handle = function ( message ) {
+                //console.log( message );
+                websocket = new Websocket();
+                websocket.userId = message;
+                websocket.itemId=  itemId;
+                websocket.receiveMessage = function (message){
+                    var obj = JSON.parse(message);
+                    receiveProtocal[obj.type]( obj.data );
+                } ;
+                websocket.connectBroken = function ( ){
+
+                    //console.log("connection broken");
+                    setTimeout( connect , 1000 );
+                };
+                websocket.self = websocket;
+                websocket.subscribeType = websocket.subscribeCreateLab; // you need set the subscribe type
+                websocket.sendMessage = websocket.__sendLabFrontMessage;
+                websocket.connect();
+
+            };
+            ajax.self = ajax;
+            ajax.sendAjax(itemId);
+
+        }
+
+        var websocket;
+        var itemId ;   // this is lab id
+
+        var middleBox;
+        var labOpSections;
+        var sendProtocal = {};
+        var receiveProtocal = {};
+        var introductionOp;
+        var settingOp;
+
+        var configuration;
+
+        function onLoad() {
+
+            var pathName = window.location.pathname;
+            var Arr = pathName.split("/");
+            itemId = Arr[2];
+
+            middleBox = new Box( "equipmentPanel" );
+            onResize();
+
+            configuration = new Configuration();
+
+            labOpSections = new EquipmentOperationSection();
+            labOpSections.activeAllButton(labOpSections);
+            labOpSections.setIndexActive(0);
+
+            introductionOp = new ImageOp();
+            introductionOp.self = introductionOp;
+            introductionOp.activeAll();
+
+            settingOp = new SetOp();
+            settingOp.self = settingOp;
+            settingOp.activeAll();
+
+
+            connect();
+
+
+            //所以现在
+                // 先把sendProtocal
+
+                    // 上个equipment的拉过来
+                        //
+
+
+        }
+
+
+
+    </script>
+
+
+
 </head>
 
-<body>
+<body onload="onLoad()" onresize="onResize()" >
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0">
+    <div class="container">
+        <a href="/" class="navbar-brand font-italic text-capitalize">
+            <i class='fas fa-leaf'></i>
+            Green Lab</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown mr-3">
+                <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" th:text="${email}">
+                    <i class="fas fa-user"></i> Welcome Green User
+                </a>
+                <div class="dropdown-menu">
+
+                    <a href="/equipment" class="dropdown-item">
+                        <i class="fas fa-cog"></i> lab
+                    </a>
+
+                </div>
+
+            </li>
+
+        </ul>
+    </div>
+</nav>
+<nav class="navbar navbar-expand-sm navbar-dark bg-info  text-white p-0">
+    <div class="container">
+        <a href="" class="navbar-brand font-italic text-capitalize">
+            <i class='fa fa-flask'></i>
+
+            lab
+        </a>
+
+
+        </ul>
+    </div>
+</nav>
+
+
+<div id="equipmentBody">
+
+
+    <div id="operationList">
+        <!--        <button class="btn btn-outline-primary" type="button">Primary Outline</button>-->
+        <!--        <h1 style="writing-mode: vertical-lr;"> 7797</h1>-->
+
+        <div class="btn btn-warning mb-1 w-100  operationListButton">
+            <i class="fas fa-search fa-rotate-90"></i>&nbsp;&nbsp;Find
+        </div>
+
+        <div class="btn btn-success mb-1 w-100  operationListButton" id="createNew" >
+            <i class="fas fa-plus-square fa-rotate-90"></i>&nbsp;&nbsp;Create New
+        </div>
+
+        <div class="btn btn-primary mb-1 w-100  operationListButton">
+            <i class="fas fa-share-alt-square fa-rotate-90"></i>&nbsp;&nbsp;Share
+        </div>
+
+        <div class="btn btn-info  mb-1 w-100  operationListButton">
+            <i class="fas fa-concierge-bell fa-rotate-90"></i>&nbsp;&nbsp;Tutorial
+        </div>
+
+
+    </div>
+
+    <div id="equipmentList" style="width:200px;">
+
+
+        <nav class="navbar navbar-dark bg-dark p-0 sticky-top">
+
+            <!--                <a href="/" class="navbar-brand font-italic text-capitalize" > chemistry lab simulator <span id="year"></span></a>-->
+
+
+            <!--            <div class="btn btn-primary w-100 ">My Equipments &nbsp;<i class="fa fa-caret-down"></i></div>-->
+
+            <div class="btn-group d-block w-100 ">
+
+                <button class="btn btn-primary w-100" type="button" >
+                    <span>Equipment For this lab </span>
+                </button>
+
+            </div>
+
+        </nav>
+
+        <div class="card-rows" id="folderContent">
+
+
+            <div class="card mb-1 grid-square"  >
+
+                <img class="card-img-top grid-photo img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="">
+
+                <div class="card-body">
+                    <!--                    <div id="btn btn-group" >-->
+                    <!--                        <div class="btn btn-primary " ><i class="fas fa-eraser"></i></div>-->
+                    <!--                        <div class="btn btn-success " ><i class="fas fa-clone "></i></div>-->
+                    <!--                        <div class="btn btn-danger " ><i class="fas fa-heart "></i></div>-->
+                    <!--                    </div>-->
+
+                    <p class="card-title h4 pr-1 small font-weight-bold d-inline-block w-75">Holder</p>
+                    <p class="card-text h5 small">Author: Homelander </p>
+                </div>
+            </div>
+            <div class="card mb-1 grid-square">
+                <img class="card-img-top img-fluid grid-photo" src="https://ml4141715.github.io/water/cdn/image/Measure.png" alt="" draggable="false">
+                <div class="card-body" >
+                    <p class="card-title h4 small font-weight-bold">Measure</p>
+                    <p class="card-text h5 small">Author: Tony Stark </p>
+                </div>
+            </div>
+            <div class="card mb-1">
+                <img class="card-img-top img-fluid" src="https://ml4141715.github.io/water/cdn/image/Seperator.png" alt="" draggable="false">
+                <div class="card-body">
+                    <p class="card-title h4 small font-weight-bold">Seperator</p>
+                    <p class="card-text h5 small">Author: Spider Man </p>
+                </div>
+            </div>
+            <div class="card mb-1">
+                <img class="card-img-top img-fluid" src="https://ml4141715.github.io/water/cdn/image/Timer.png" alt="" draggable="false">
+                <div class="card-body">
+                    <p class="card-title h4 small font-weight-bold">Timer</p>
+                    <p class="card-text h5 small">Author: Bat Man</p>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+</div>
+
+<div id="equipmentPanel" >
+
+
+
+        <div class="w-100 h-100 border border-primary rounded-top" id="middleBoard">
+
+            <div class="card mb-1 grid-square"  >
+
+                <img class="card-img-top grid-photo img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="">
+
+                <div class="card-body">
+
+                    <p class="card-title h4 pr-1 small font-weight-bold d-inline-block w-75">Holder</p>
+                    <p class="card-text h5 small">Author: Homelander </p>
+
+                </div>
+
+            </div>
+
+            <div class="card mb-1 grid-square"  >
+
+                <img class="card-img-top grid-photo img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="">
+
+                <div class="card-body">
+
+                    <p class="card-title h4 pr-1 small font-weight-bold d-inline-block w-75">Holder</p>
+                    <p class="card-text h5 small">Author: Homelander </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+<!--    <iframe  style="width: 100%;height:100%; border: 1px solid mediumseagreen; " th:src="${iframeAdress}" ></iframe>-->
 
 
 
 
 
+</div>
+
+<div id="equipmentOperationSection" style="width: 380px;">
+
+
+    <div class="card h-100 border-bottom-0 ">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" >
+                <li class="nav-item ">
+                    <a class="nav-link text-muted" id="operationImageSection" ><i class='fas fa-file-image'> Introduction</i></a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-muted active" id="operationEditSection"  ><i class="fas fa-shoe-prints"></i> Steps</a>
+
+                </li>
+
+
+                <li class="nav-item d-none">
+                    <a class="nav-link text-muted " id="operationAreaSection" ><i class="fas fa-puzzle-piece"></i> Add</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-muted" id="operationAddSection" ><i class="fas fa-cog"></i> Setting</a>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="card-body d-none" id="ImageSection">
+            <h4 class="card-title">Upload Image</h4>
+            <!--                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, perspiciatis.</p>-->
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Name</span>
+                </div>
+                <input class="form-control" type="text" placeholder="Enter Lab Name" id="equipmentNameInput">
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="">Description</label>
+                <textarea class="form-control" id="equipmentDescription"></textarea>
+            </div>
+            <!--       id="equipmentNameInput"  id="equipmentAngle" id="equipmentSize"   id="equipmentDescription"-->
+
+            <div id="coverImageId" >
+                <img src="" class="grid-photo-center" style="background-color: aquamarine" alt="">
+            </div>
+
+            <br>
+
+            <!--            <div ><form action="/upload" class="dropzone needsclick" id="demo-upload">-->
+
+
+            <!--            <input type="file" class="my-pond" name="filepond"/>-->
+
+
+
+            <div class="custom-file mb-3">
+                <input type="file" id="myfile" class="custom-file-input" >
+                <label class="custom-file-label" for="myfile"><i class="fas fa-upload"></i> Choose Your Cover Image</label>
+            </div>
+            <!--                <div class="custom-file mb-2">-->
+            <!--                    <input type="file" id="myfile" class="custom-file-input">-->
+            <!--                    <label class="custom-file-label" for="myfile">Choose file</label>-->
+            <!--            the thing below sholud be a list of images    </div>-->
+            <!--           -->
+
+            <!--            <ul  id="sortable2" class="list-group col mb-5 " >-->
+            <!--                <li class="list-group-item bg-success " id="image1_test">Image 1</li>-->
+            <!--                <li class="list-group-item bg-primary">Image 2</li>-->
+            <!--                <li class="list-group-item bg-warning">Image 3</li>-->
+            <!--                <li class="list-group-item ">Item 4</li>-->
+            <!--            </ul>-->
+
+
+            <a class="btn btn-primary d-none" >Next Step</a>
+        </div>
+
+        <div class="card-body" id="EditSection">
+
+
+
+
+        </div>
+
+        <div class="card-body d-none" id="AreaSection">
+
+        </div>
+
+        <div class="card-body" id="AddSection">
+
+            <div id="likeEquipment" class="btn btn-lg h2 d-block btn-outline-danger text-capitalize" ><i class='fas fa-heart'></i> Like Lab</div>
+
+            <br>
+
+            <div id="shareEquipment" class="btn btn-lg h2 d-block btn-outline-success text-capitalize" ><i class="fas fa-share-alt"></i> Share Lab</div>
+
+            <br>
+            <div id="createDuplicate" class="btn btn-lg text-white h2 d-block btn-warning text-capitalize" ><i class="fas fa-copy"></i> Create Duplicate Lab </div>
+
+            <br>
+
+            <div id="deleteEquipment" class="btn btn-lg text-white h2 d-block btn-info text-capitalize" ><i class='far fa-trash-alt'></i> Delete Lab </div>
+
+            <br>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<style>
+
+    .overlay2 {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: #008CBA;
+    }
+
+    .grid-square {
+        width: 190px;
+        height: 250px;
+        display: inline-block;
+        background-color: #fff;
+    }
+
+
+
+    .grid-photo-center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        /*width: 50%;*/
+        width: 247px;
+        height: 221px;
+        position: relative;
+        display: block;
+        clip: rect(0px,190px,170px,0px);
+    }
+    .grid-photo {
+        width: 190px;
+        height: 170px;
+        position: relative;
+        display: block;
+        clip: rect(0px,190px,170px,0px);
+    }
+    /*#feedback { font-size: 1.4em; }*/
+    /*#selectable .ui-selecting { background: #FECA40; }*/
+    /*#selectable .ui-selected { background: #F39814; color: white; }*/
+    /*#selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }*/
+    /*#selectable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }*/
+    .operationListButton{
+        writing-mode: vertical-lr;
+        font-size: 20px;
+        color: #fefefe;
+        display: inline-block;
+        height: 170px   ;
+    }
+    #operationList{
+        position: fixed;
+        /*position: absolute;*/
+        display: block;
+        left: 0px;
+        width: 50px;
+        height: 100%;
+        /*border: 3px solid #b31e2d;*/
+        /*padding: 0px;*/
+        margin: 0px;
+        float: left;
+        overflow: auto;
+        padding: 5px;
+    }
+    #equipmentList {
+        /*position: absolute;*/
+        display: block;
+        position: fixed;
+        left: 50px;
+        width: 130px;
+        height: 100%;
+        /*border: 3px solid mediumseagreen;*/
+        float: left;
+        overflow: auto;
+        padding: 5px;
+    }
+    #equipmentPanel{
+        /*overflow: auto;*/
+        display: block;
+        /*position: fixed;*/
+        /*padding-left: 380px;*/
+        /*padding-right: 200px;*/
+        /*margin-left: 380px;*/
+        margin-left: 250px;
+        /*margin-right: 200px;*/
+        /*margin-right: 200px;*/
+        /*width: 100%;*/
+        /*width:100%;*/
+        /*height: 100%;*/
+        /*left: 250px;*/
+        /*right:340px;*/
+        /*width: 80%;*/
+        /*border: none;*/
+        /*padding-right: 340px;*/
+        /*margin-right: 340px;*/
+        /*background-color: #f44336;*/
+        /*border: 3px solid #2e28b3;*/
+        padding: 5px;
+        float: left;
+    }
+    #equipmentOperationSection{
+        position: fixed;
+        /*position: absolute;*/
+        display: block;
+        right: 0px;
+        width: 340px;
+        height: 100%;
+        /*border: 3px solid mediumseagreen;*/
+        float: left;
+        padding: 5px;
+        overflow: auto;
+    }
+    textarea {
+        height:150px;
+    }
+</style>
+
+<script>
+
+    new Sortable( document.getElementById("folderContent") , {
+        animation: 150,
+        ghostClass: 'blue-background-class'
+    });
+
+
+
+
+
+</script>
 
 
 </body>

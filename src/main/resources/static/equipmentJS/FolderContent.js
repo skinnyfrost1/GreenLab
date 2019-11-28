@@ -37,6 +37,10 @@ class Card{
             "                </div>\n" +
             "            </div>";
         return ReturnData;
+
+        // var ReturnData = "<div class='btn btn-muted' id='"+this.imageId+"'><img class></div>"
+        //
+        // return ReturnData;
     }
     getHTML(){
         return this.__cardHTML();

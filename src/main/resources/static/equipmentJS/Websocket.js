@@ -360,6 +360,41 @@ class Ajax{
         );
     }
 }
+// @RequestMapping(value="/ajax/ImageData" , method = RequestMethod.POST)
+// @ResponseBody
+// public Object UploadImage(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException {
+//
+//     // String dataStr = request.getParameter("data");
+//
+//     System.out.println( reqBody );
+//
+//     Map<String,Object> sendData = new HashMap<>();
+//     sendData.put("success",true);
+//     sendData.put("data", "weixin.tang@stonybrook.edu" );
+//     return sendData;
+// }
+
+
+// $.ajax({
+//     type: "POST",
+//     contentType: "application/json",
+//     url: "/ajax/ImageData",
+//     data: JSON.stringify(sendData),
+//     dataType: 'json',
+//     cache: false,
+//     timeout: 600000,
+//     success: function (data) {
+//
+//         console.log(data);
+//
+//     },
+//     error: function (e) {
+//
+//
+//
+//     }
+// });
+
 //ajax/requestId
 //_______________________    ajax use tutorial      ____________________
 

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.fasterxml.jackson.databind.json.JsonMapper;
 
+import com.greenlab.greenlab.dto.SingleStringRequestBody;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.ImageData.ImageData;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.ImageData.ImageDataRepository;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.equipmentData.EquipmentData;
@@ -32,12 +33,11 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.websocket.Session;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,6 +66,7 @@ public class EquipmentController {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
 
 
     @RequestMapping( value="/equipment/{equipmentId}", method = RequestMethod.GET )
@@ -120,26 +121,22 @@ public class EquipmentController {
 
     }
 
-
-
     @RequestMapping(value="/ajax/requestId" , method = RequestMethod.POST)
     @ResponseBody
     public Object requestId(HttpServletRequest request) throws JSONException {
         String dataStr = request.getParameter("data");
-        System.out.println( dataStr );
+        //System.out.println( dataStr );
         Map<String,Object> sendData = new HashMap<>();
         sendData.put("success",true);
         sendData.put("data", "weixin.tang@stonybrook.edu" );
         return sendData;
     }
 
-    //ajax/requestNewEquipment
-
     @RequestMapping(value="/ajax/requestNewEquipment" , method = RequestMethod.POST)
     @ResponseBody
     public Object requestNewEquipment(HttpServletRequest request) throws JSONException, JsonProcessingException {
         String dataStr = request.getParameter("data");
-        System.out.println( dataStr );
+        //System.out.println( dataStr );
 
         EquipmentData equipmentData = new EquipmentData();
         equipmentData.setOwnerId( "weixin.tang@stonybrook.edu" );
@@ -159,9 +156,6 @@ public class EquipmentController {
         return sendData;
     }
 
-
-    //imageBlobRepository
-
     public JSONArray prepareAllImages(JSONArray str ) throws JSONException, JsonProcessingException {
             ObjectMapper objectMapper = new ObjectMapper();
             JSONArray jsonArray = new JSONArray();
@@ -171,9 +165,6 @@ public class EquipmentController {
             }
             return jsonArray;
     }
-
-
-
 
     @MessageMapping("/equipment/front/{userId}/{sessionId}")
     public void handleEquipmentFront(@DestinationVariable String userId , @DestinationVariable String sessionId , String message) throws JSONException, JsonProcessingException {
@@ -684,6 +675,7 @@ public class EquipmentController {
         jsonObject2.put("data", prepareAllEquipment( equipmentId ) );
         //messagingTemplate.convertAndSend("/topic/equipment/pad/" + equipmentId, jsonObject2.toString() );
         sendEquipPad( equipmentId , jsonObject2.toString() );
+
     }
 
     //System.out.println( imageBlobId );
@@ -763,14 +755,14 @@ public class EquipmentController {
 
              updateEquipmentBoard(   equipmentId );
 
-            if( jsonObject1 == null ){
-
-                System.out.println("this is null");
-
-            }else{
-                System.out.println(jsonObject1.toString());
-
-            }
+//            if( jsonObject1 == null ){
+//
+//                System.out.println("this is null");
+//
+//            }else{
+//                System.out.println(jsonObject1.toString());
+//
+//            }
 
 
 
@@ -785,21 +777,81 @@ public class EquipmentController {
 //
     }
 
+
+//_______________________________________________________________________________________________________________________________________________________
+//_______________________________________________________________________________________________________________________________________________________
+//_______________________________________________________________________________________________________________________________________________________
+//_______________________________________________________________________________________________________________________________________________________
+
+
     @MessageMapping("/lab/front/{userId}/{sessionId}")
-    public void handleLabFront(@DestinationVariable String userId , @DestinationVariable String sessionId , String message) throws JSONException {
+    public void handleLabFront(@DestinationVariable String userId , @DestinationVariable String sessionId , String message ) throws JSONException {
 
-
+        System.out.println(message);
 
 
 
     }
+
+    @RequestMapping( value="/lab/{labId}", method = RequestMethod.GET )
+    public String getLabPage(Model model, @PathVariable("labId") String labId ,  HttpServletRequest request ){
+
+        return "/lab/createlab";
+
+    }
+
+    //@PostMapping("/ajax/ImageData")
+//    @RequestMapping(value="/ajax/ImageData" , method = RequestMethod.POST)
+//    @ResponseBody
+//    public String uploadImage( HttpServletRequest request  ){
+//
+//       //System.out.println(  request.getParameter("type") );
+//        String dataStr = request.getParameter("data");
+//        System.out.println( dataStr );
+//
+//        return "test666";
+//    }
+
+     @RequestMapping(value="/ajax/uploadImage" , method = RequestMethod.POST)
+     @ResponseBody
+     public Object UploadImage(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException {
+
+        // String dataStr = request.getParameter("data");
+
+         System.out.println( reqBody );
+
+         Map<String,Object> sendData = new HashMap<>();
+         sendData.put("success",true);
+         sendData.put("data", "weixin.tang@stonybrook.edu" );
+         return sendData;
+     }
+
+    @RequestMapping(value="/ajax/downloadImages" , method = RequestMethod.POST)
+    @ResponseBody
+    public Object DownloadImages(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException {
+
+        // String dataStr = request.getParameter("data");
+
+        System.out.println( reqBody );
+        Map<String,Object> sendData = new HashMap<>();
+        sendData.put("success",true);
+        sendData.put("data", "weixin.tang@stonybrook.edu" );
+
+
+
+        return sendData;
+    }
+
+
+
+
 
 
     @MessageMapping("/lab/back/{userId}/{sessionId}")
     public void handleLabBack(@DestinationVariable String userId , @DestinationVariable String sessionId , String message) throws JSONException {
 
 
-
+        //
 
 
     }
