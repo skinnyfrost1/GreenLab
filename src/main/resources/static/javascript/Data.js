@@ -38,13 +38,29 @@ class EquipmentData{
 
             if( imageData != null ){
 
-                editOp.setAngleValue( imageData.angle );
-                editOp.setSizeValue( imageData.size );
+                // editOp.setAngleValue( imageData.angle );
+                // editOp.setSizeValue( imageData.size );
                 editOp.setStatusName( imageData.name );
                 editOp.setXposition( imageData.position.x );
                 editOp.setYPosition( imageData.position.y );
+                editOp.setReceiveText( imageData.receiveText[0] );
+                editOp.setSendtext( imageData.sendText[0] );
 
-
+                // getReceiveText(){
+                //     return document.getElementById(this.receiveText).value;
+                // }
+                //
+                // setReceiveText( value ){
+                //     document.getElementById(this.receiveText).value = value;
+                // }
+                //
+                // getSendText(){
+                //     return document.getElementById( this.sendText ).value;
+                // }
+                //
+                // setSendtext( value ){
+                //     document.getElementById( this.sendText ).value = value;
+                // }
             }
 
 
@@ -62,6 +78,7 @@ class EquipmentData{
 
         }
 
+
         var imageDataIds = this.currentEquipmentData.imageIds;
 
         var imageDataNames = [];
@@ -70,7 +87,16 @@ class EquipmentData{
             imageDataNames.push(name);
         }
 
-        editOp.setDropDown(  imageDataIds, imageDataNames );
+        if( imageDataNames.length != 0 ){
+
+
+            editOp.setDropDown(  imageDataIds, imageDataNames );
+
+        }else{
+
+            editOp.setDropDownHTML("");
+
+        }
 
 
 

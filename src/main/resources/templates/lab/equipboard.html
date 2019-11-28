@@ -154,42 +154,24 @@
             displayImageData(  ){
 
                 //console.log(this.imageData);
-
                 //var imageblobStr = localStorage.getItem( imageData.blobId );
-
                 // so we will look at the inner html id
                 // if it has such a stuff
 
                 if( this.imageData!= null ){
 
-
-
-                    console.log(this.imageData);
-
-                    var size = this.imageData.size;
-
-                    //var pos =  this.imageData.position;
-
-                    // var x=  pos.x;
-                    // var y = pos.y;
-
                     var x = this.imageData.position.x;
                     var y = this.imageData.position.y;
 
-                    //console.log( pos );
+                    this.setImageHTML(  x, y );
 
-                    //console.log( size );
-                    //console.log( x );
-                    //console.log( y );
+                }else{
 
-                    this.setImageHTML( size , x, y );
+
 
                 }
 
-
-
                 //this.setImageHTML( this.imageData.size , this.imageData.position.x  , this.imageData.position.y   );
-
 
             }
 
@@ -206,54 +188,34 @@
                 return "<img src='"+imageBlob+"' id='"+id+"' class='' style='position: fixed;' alt=''>";
             }
 
-            setImageHTML( size , x, y   ){
+            activeImage(  ){
+                var id = boardData.imageData.blobId;
 
-                // so we need get the blob id from the
 
-                // so it will check if the inside is
-                //console.log("what happened??A");
+                dragElement(document.getElementById(id));
+
+            }
+
+            setImageHTML(  x, y   ){
 
 
                 var htmlImageDataSec =  document.getElementById("ImageData");
-                var imageBlobStr = localStorage.getItem( boardData.imageData.blobId );
-                var imageBlob = JSON.parse(imageBlobStr);
-                var originalWidth = imageBlob.originalWidth;
-                var originalHeight = imageBlob.originalHeight;
-                var realSize = (size-10)/10;
-
-                if( realSize != 0 ){
-                    var setWidth = realSize*originalWidth;
-                    var setHeight = realSize*originalHeight;
-                }else{
-                    var setWidth = originalWidth;
-                    var setHeight = originalHeight;
-                }
-
-
                 var realX = x+boardData.originalDot.getX();
                 var realY = y+boardData.originalDot.getY();
 
-                //private int originalWidth;
-                //private int OriginalHeight;
-                // console.log(htmlImageDataSec.innerHTML);
-
                 if( htmlImageDataSec.innerHTML == "" ){
                     htmlImageDataSec.innerHTML = this.createImageHTML();
+                    this.activeImage( );
                 }else{
                     // if the two image is not equal
 
                     if(document.getElementById("ImageData").children[0].id != boardData.imageData.blobId ){
-
                         htmlImageDataSec.innerHTML = this.createImageHTML();
-
+                        this.activeImage( );
                     }
-
-
                 }
 
                 var imageSec = document.getElementById( boardData.imageData.blobId );
-
-                // console.log(imageSec);
 
                 if( imageSec!= null ){
                     imageSec.style.left = realX+"px";
@@ -356,8 +318,12 @@
 
                 receiveProtocal["connectSuccess"] = function ( data ) {
 
-                    console.log("connectSuccess");
+                    //console.log("connectSuccess");
+                    sendProtocal["updateBoard"]();
+                };
 
+                sendProtocal["updateBoard"] = function(){
+                    websocket.sendMessage( quickPrepare( "updateBoard"  ) ) ;
                 };
 
                 receiveProtocal["mousemove"] = function ( data ) {
@@ -403,8 +369,6 @@
 
                         if( testItem != null ){
                             boardData.setImageData( imageData );
-
-
 
                             boardData.displayImageData();
                         }else{
@@ -475,6 +439,83 @@
 
         }
 
+
+        // function imagePositionChange( imageBlobId ) {
+        //
+        //     var x= document.getElementById(imageBlobId).style.left - boardData.originalDot.getX()
+        //     var y = document.getElementById(imageBlobId).style.top -boardData.originalDot.getY()
+        //
+        //
+        //
+        // }
+
+
+        function dragElement(elmnt) {
+            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            if (document.getElementById(elmnt.id + "header")) {
+                // if present, the header is where you move the DIV from:
+                document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+            } else {
+                // otherwise, move the DIV from anywhere inside the DIV:
+                elmnt.onmousedown = dragMouseDown;
+            }
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // call a function whenever the cursor moves:
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // set the element's new position:
+
+
+                // so here we will calculate the relative position to the center dot
+                //console.log( pos3 +"___"+pos4);
+                //console.log( boardData.originalDot.getX()-pos3  +"___"+boardData.originalDot.getY()-pos4);
+
+
+                //console.log(sendData);
+
+                //boardData.imageData.blobId
+                //document.getElementById(boardData.imageData.blobId).style.left
+
+
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                // stop moving when mouse button is released:
+
+                var cdX =   boardData.originalDot.getX()  ;
+                var cdY =   boardData.originalDot.getY() ;
+                // // console.log(( pos3 - cdX ) +"___"+(pos4 - cdY));
+                var sendData  = {};
+                var x=  elmnt.offsetLeft - pos1 - cdX ;
+                sendData["x"] = x;
+                var y = elmnt.offsetTop - pos2 - cdY;
+                sendData["y"] = y;
+                sendData["imageData"] = boardData.imageData.id;
+                websocket.sendMessage( quickPrepare( "ImageDataMove", sendData  ) );
+
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
         function onLoad() {
 
             //console.log( window.location.pathname );
@@ -483,11 +524,16 @@
             //console.log(Arr[2]);
             itemId = Arr[2];
 
+            document.getElementById('mouseCursor').setAttribute('draggable', false);
+            document.getElementById('centerDot').setAttribute('draggable', false);
+
+
+
             // here we some configuration
             connect();
-            var main = new Main();
+            //var main = new Main();
             var configuration = new Configuration();
-            main.activeAll();
+            //main.activeAll();
             boardData = new BoardData();
             onResize();
 
@@ -537,11 +583,13 @@
 
 
 
-    <div id="ImageData" style="width: 100%; height: 100%; position: fixed;"></div>
+
 
     <img id="centerDot" src="https://img.icons8.com/windows/32/000000/plus-math.png" style=" position: fixed; width: 40px; left: 9999px;" >
 
     <img id="mouseCursor" src="https://img.icons8.com/ios/100/000000/cursor.png" style="position: fixed; width: 22px; left: 9999px;"  >
+
+    <div id="ImageData" style="width: 100%; height: 100%; position: fixed;"></div>
 
 </div>
 

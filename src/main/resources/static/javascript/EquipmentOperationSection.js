@@ -164,6 +164,8 @@ class EditOp{
         this.imagesDropdown = "imagestatusDropDown";
 
         this.imageDataDelete = "imageDataDelete";
+        this.receiveText = "receiveText";
+        this.sendText = "sendText";
 
         this.self = null;
 
@@ -259,6 +261,22 @@ class EditOp{
         document.getElementById(this.equipmentY).value  =value;
     }
 
+    getReceiveText(){
+        return document.getElementById(this.receiveText).value;
+    }
+
+    setReceiveText( value ){
+        document.getElementById(this.receiveText).value = value;
+    }
+
+    getSendText(){
+        return document.getElementById( this.sendText ).value;
+    }
+
+    setSendtext( value ){
+        document.getElementById( this.sendText ).value = value;
+    }
+
     handleStatusName( name ){
 
         // if( equipmentData.currentEquipmentData.currentImageIds != "" ){
@@ -347,9 +365,31 @@ class EditOp{
         sendProtocal["ImageDataDelete"]( makeLocal );
     }
 
+    handleSetReceiveText( ReceiveText ){
+
+        var makeLocal = equipmentData.currentEquipmentData.currentImageIds;
+        sendProtocal["ImageDataRecieveText"]( makeLocal , ReceiveText );
+    }
+
+    handleSetSendText( SendText ){
+
+        var makeLocal = equipmentData.currentEquipmentData.currentImageIds;
+        sendProtocal["ImageDataSendText"]( makeLocal , SendText );
+    }
+
     activeAll(){
 
         var editOp = this.self;
+
+        document.getElementById(editOp.receiveText).oninput = function(){
+            editOp.handleSetReceiveText( editOp.getReceiveText() );
+        };
+
+        document.getElementById(editOp.sendText).oninput = function(){
+            editOp.handleSetSendText( editOp.getSendText() );
+        };
+
+
 
         document.getElementById(editOp.equipmentX).oninput = function () {
             editOp.handleEquipmentXposition( editOp.getXposition() );

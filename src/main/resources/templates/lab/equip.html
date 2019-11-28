@@ -465,7 +465,29 @@
                 sendProtocal["ImageDataDelete"] = function ( imageData  ) {
 
                     websocket.sendMessage( quickPrepare("ImageDataDelete" , imageData ) );
-                }
+                };
+
+                sendProtocal["ImageDataRecieveText"] = function (imageData , ReceiveText ) {
+
+
+                    //console.log( ReceiveText );
+                    var sendData = {};
+                    sendData["imageData"] = imageData;
+                    sendData["ReceiveText"] = ReceiveText;
+                    websocket.sendMessage( quickPrepare( "ImageDataRecieveText", sendData ) );
+
+                };
+
+                sendProtocal["ImageDataSendText"] = function (imageData , SendText ) {
+
+                    //console.log( SendText);
+
+                    var sendData = {};
+                    sendData["imageData"] = imageData;
+                    sendData["SendText"] = SendText;
+                    websocket.sendMessage( quickPrepare( "ImageDataSendText", sendData ) );
+
+                };
 
             }
 
@@ -1098,20 +1120,34 @@
 
             <div class="input-group mb-3 ">
                 <div class="input-group-prepend">
-                    <span class="input-group-text">Status</span>
+                    <span class="input-group-text"><i class="fas fa-star-half-alt"></i> Status</span>
                 </div>
                 <input id="statusName" class="form-control" type="text" placeholder="Enter Status Name">
             </div>
 
 
 
-            <br>
+            <div class="btn btn-primary btn-lg d-none" >Add </div>
+
+            <div class="input-group mb-3 ">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="far fa-paper-plane"></i> Text</span>
+                </div>
+                <input id="sendText" class="form-control" type="text" placeholder="Enter Send Text ">
+            </div>
+
+            <div class="input-group mb-3 ">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-paper-plane fa-rotate-180"></i> Text</span>
+                </div>
+                <input id="receiveText" class="form-control" type="text" placeholder="Enter Receive Text ">
+            </div>
 
             <div class="form-group d-none">
                 <label for="">Size</label>
                 <input id="equipmentSize" class="custom-range" min="1" max="20" step="1" value="10" type="range">
             </div>
-            <br>
+<!--            <br>-->
 
             <div class="form-group d-none">
                 <label for="">Angle</label>

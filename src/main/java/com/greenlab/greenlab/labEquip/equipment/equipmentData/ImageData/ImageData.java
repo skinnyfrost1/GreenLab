@@ -23,6 +23,10 @@ public class ImageData {
 
     private String blobId;
 
+    private LinkedList<String> sendText;
+
+    private LinkedList<String> receiveText;
+
    // private LinkedList<String>
 
     //private LinkedList<Dot>  dots;
@@ -31,11 +35,29 @@ public class ImageData {
 
     public ImageData(){
         position  =new Position();
+        sendText= new LinkedList<>();
+        receiveText = new LinkedList<>();
         //dots = new LinkedList<>();
         //rectangles = new LinkedList<>();
     }
 
-//    public LinkedList<Dot> getDots() {
+    public LinkedList<String> getReceiveText() {
+        return receiveText;
+    }
+
+    public LinkedList<String> getSendText() {
+        return sendText;
+    }
+
+    public void setReceiveText(LinkedList<String> receiveText) {
+        this.receiveText = receiveText;
+    }
+
+    public void setSendText(LinkedList<String> sendText) {
+        this.sendText = sendText;
+    }
+
+    //    public LinkedList<Dot> getDots() {
 //        return dots;
 //    }
 //

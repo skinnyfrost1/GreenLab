@@ -190,13 +190,12 @@ public class EquipmentController {
             if( __equipmentId__ != null ){
 
                 EquipmentData equipmentData =  equipmentDataRepository.getById( __equipmentId__ );
+
                 if( equipmentData ==  null){
 
                     // if should
-
                     return;
                 }
-
             }
 
         }catch (Exception e){
@@ -311,10 +310,12 @@ public class EquipmentController {
             String equipmentId = jsonObject.get("itemId").toString();
             EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
             equipmentData.getImageIds().add(imageDataId);
+            equipmentData.setCurrentImageIds( imageDataId );
             equipmentDataRepository.save( equipmentData );
 
-            UpdateTheEquipment(  equipmentId ,  userId );
 
+            UpdateTheEquipment(  equipmentId ,  userId );
+            updateEquipmentBoard(  equipmentId );
             //updateEquipmentBoard(  equipmentId );
 
         }else if( jsonObject.get("type").toString().equals("updateStatusNameImage") ){
@@ -410,7 +411,7 @@ public class EquipmentController {
             UpdateTheEquipment(  equipmentId ,  userId );
 
             updateEquipmentBoard(  equipmentId );
-
+            updateEquipmentBoard(   equipmentId );
             //websocket.sendLabBoard();
 
         }else if( jsonObject.get("type").toString().equals("ImageDataDelete") ){
@@ -438,6 +439,38 @@ public class EquipmentController {
             UpdateTheEquipment(  equipmentId ,  userId );
 
             updateEquipmentBoard(  equipmentId );
+
+        }else if( jsonObject.get("type").toString().equals("ImageDataRecieveText") ){
+            String equipmentId = jsonObject.get("itemId").toString();
+            JSONObject jsonObject1 =  (JSONObject)jsonObject.get("data");
+            String imageDataId = jsonObject1.get("imageData").toString();
+            String receiveText = jsonObject1.get("ReceiveText").toString();
+            ImageData imageData = imageDataRepository.getById( imageDataId );
+            LinkedList<String> linkedList =  imageData.getReceiveText();
+            linkedList.clear();
+            linkedList.add( receiveText );
+            imageData.setReceiveText(linkedList);
+            imageDataRepository.save( imageData );
+
+            UpdateTheEquipment(  equipmentId ,  userId );
+
+            //System.out.println(  );
+
+        }else if( jsonObject.get("type").toString().equals("ImageDataSendText") ) {
+
+
+            String equipmentId = jsonObject.get("itemId").toString();
+            JSONObject jsonObject1 =  (JSONObject)jsonObject.get("data");
+            String imageDataId = jsonObject1.get("imageData").toString();
+            String receiveText = jsonObject1.get("SendText").toString();
+            ImageData imageData = imageDataRepository.getById( imageDataId );
+            LinkedList<String> linkedList =  imageData.getSendText();
+            linkedList.clear();
+            linkedList.add( receiveText );
+            imageData.setSendText( linkedList );
+            imageDataRepository.save( imageData );
+
+            UpdateTheEquipment(  equipmentId ,  userId );
 
         }else if( jsonObject.get("type").toString().equals("likeEquipment") ){
 
@@ -590,6 +623,7 @@ public class EquipmentController {
             String imageDataStr =  jsonMapper.writeValueAsString( imageData );
             //JSONObject jsonObject = new JSONObject();
             //jsonObject.put( "ImageData", imageDataStr );
+
             jsonObject2.put( "data", imageDataStr );
             sendEquipBoard( equipmentId , jsonObject2.toString() );
 
@@ -685,6 +719,11 @@ public class EquipmentController {
         if( type.equals("connectSuccess") ){
             //messagingTemplate.convertAndSend("/topic/image/" + userId + "/" + sessionId, jsonObject.toString() );
             sendUnique( userId , sessionId , jsonObject.toString() );
+
+
+
+            //updateEquipmentBoard(   equipmentId );
+
             return;
         }
 
@@ -693,8 +732,6 @@ public class EquipmentController {
         //JSONObject dataObject = (JSONObject) jsonObject.get("data");
 
         if( type.equals("mousemove") ){
-
-
 
             sendEquipBoard(equipmentId , message );
             //messagingTemplate.convertAndSend("/topic/equipment/board/" + equipmentId, message );
@@ -711,10 +748,41 @@ public class EquipmentController {
             String imageBlobStr =  jsonMapper.writeValueAsString( imageBlob );
             jsonObject.put( "data", imageBlobStr );
             sendUnique( userId , sessionId , jsonObject.toString() );
+        }else if (type.equals("ImageDataMove") ){
+             JSONObject jsonObject1 =  (JSONObject) jsonObject.get("data");
+             String imageDataId =   jsonObject1.get("imageData").toString();
+             ImageData imageData =  imageDataRepository.getById(imageDataId);
+             Position position = new Position();
+             position.setX((int) Double.parseDouble(jsonObject1.get("x").toString()) );
+             position.setY( (int) Double.parseDouble(jsonObject1.get("y").toString()) );
+             imageData.setPosition( position );
+
+             imageDataRepository.save(imageData);
+
+
+
+             updateEquipmentBoard(   equipmentId );
+
+            if( jsonObject1 == null ){
+
+                System.out.println("this is null");
+
+            }else{
+                System.out.println(jsonObject1.toString());
+
+            }
+
+
+
+            UpdateTheEquipment(  equipmentId ,  userId );
+
+        }else if( type.equals("updateBoard") ){
+
+            updateEquipmentBoard(   equipmentId );
         }
 
 
-
+//
     }
 
     @MessageMapping("/lab/front/{userId}/{sessionId}")
