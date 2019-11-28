@@ -138,15 +138,26 @@ public class EditCourseController{
     @PostMapping(value="/course/edit/requestlabmenu")
     public ResponseEntity<?> postCourseEditRequestLabMenu(@Valid @RequestBody SingleStringRequestBody reqBody, Errors errors, HttpServletRequest request){
         BooleanResponseBody result = new BooleanResponseBody();
-        String message = "Success!\nRemove:\n";
         if (errors.hasErrors()) {
             result.setMessage(
                     errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
             return ResponseEntity.badRequest().body(result);
         }
 
+        String courseObjectId = reqBody.getStr();
+        Course course = courseRepository.findBy_id(courseObjectId);
+        List<Lab> labs = course.getLabs();
+
+
+
+        String creator = (String) request.getSession().getAttribute("email");
+        List<Lab> labs = labRepository.findByCourseIdAndCreator(courseId, creator);
+
+
         return null;
     }
+
+    
 
 
 
