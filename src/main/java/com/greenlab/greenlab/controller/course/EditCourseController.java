@@ -108,10 +108,11 @@ public class EditCourseController{
         return ResponseEntity.ok(result);
     }
 
+    //input: courseObjectId,  labObjectIds
+    //add selected labs to the course. 
     @PostMapping(value = "/course/edit/addlabs")
     public ResponseEntity<?> postCourseEditAddLabs(@Valid @RequestBody MultiStringRequestBody reqBody, Errors errors, HttpServletRequest request){
         BooleanResponseBody result = new BooleanResponseBody();
-        String message = "Success!\nRemove:\n";
         if (errors.hasErrors()) {
             result.setMessage(
                     errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
@@ -123,22 +124,19 @@ public class EditCourseController{
         Course course = courseRepository.findBy_id(courseObjectId);
         List<Lab> labs = course.getLabs();
 
-        for (String s : labObjIds){
-            for (Lab l :labs){
-                if(l.get_id().equals(s)){
-                    message=message+l.getLabName()+"\n";
-                    labs.remove(l);
-                }
-            }
+        for (String _id : labObjIds){
+            labs.add(labRepository.findBy_id(_id));
+            result.setMessage("_id="+_id+"\n");
         }
-        result.setMessage(message);
-        result.setBool(true);
         return ResponseEntity.ok(result);
     }
 
+
+
+    //post 一个courseObjectId  _id， 然后返回一个list of lab name 和lab的object id
     @PostMapping(value="/course/edit/requestlabmenu")
     public ResponseEntity<?> postCourseEditRequestLabMenu(@Valid @RequestBody SingleStringRequestBody reqBody, Errors errors, HttpServletRequest request){
-        BooleanResponseBody result = new BooleanResponseBody();
+        LabMenuRequestBody result = new LabMenuRequestBody();
         if (errors.hasErrors()) {
             result.setMessage(
                     errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
@@ -157,19 +155,11 @@ public class EditCourseController{
                 labmenu.remove(l);
             }
         }
-
         List<String> labNameList = new ArrayList<>();
         for(Lab l :labmenu){
             labNameList.add("[\""+l.getLabName()+"\", \""+l.get_id()+"\"]");
         }
-
-        
-
-        return null;
+        return ResponseEntity.ok(result);
     }
-
-    
-
-
 
 }
