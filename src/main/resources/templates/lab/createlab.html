@@ -1244,7 +1244,10 @@
         function onResize() {
 
             middleBox.setWidth( window.innerWidth - 630 );
-            middleBox.setHeight(  window.innerHeight - 81 )
+            middleBox.setHeight(  window.innerHeight - 81 );
+            leftCardsBox.setHeight(window.innerHeight -(81));
+            assistantBox.setHeight(window.innerHeight -(81));
+            equipOpBox.setHeight(window.innerHeight -(81));
         }
 
 
@@ -1281,6 +1284,10 @@
         var itemId ;   // this is lab id
 
         var middleBox;
+        var leftCardsBox;
+        var assistantBox;
+        var equipOpBox;
+
         var labOpSections;
         var sendProtocal = {};
         var receiveProtocal = {};
@@ -1296,6 +1303,10 @@
             itemId = Arr[2];
 
             middleBox = new Box( "equipmentPanel" );
+            leftCardsBox = new Box("equipmentList");
+            assistantBox = new Box("operationList");
+            equipOpBox = new Box("equipmentOperationSection");
+
             onResize();
 
             configuration = new Configuration();
@@ -1442,20 +1453,7 @@
                     <p class="card-text h5 small">Author: Tony Stark </p>
                 </div>
             </div>
-            <div class="card mb-1">
-                <img class="card-img-top img-fluid" src="https://ml4141715.github.io/water/cdn/image/Seperator.png" alt="" draggable="false">
-                <div class="card-body">
-                    <p class="card-title h4 small font-weight-bold">Seperator</p>
-                    <p class="card-text h5 small">Author: Spider Man </p>
-                </div>
-            </div>
-            <div class="card mb-1">
-                <img class="card-img-top img-fluid" src="https://ml4141715.github.io/water/cdn/image/Timer.png" alt="" draggable="false">
-                <div class="card-body">
-                    <p class="card-title h4 small font-weight-bold">Timer</p>
-                    <p class="card-text h5 small">Author: Bat Man</p>
-                </div>
-            </div>
+
 
         </div>
 
@@ -1466,11 +1464,25 @@
 
 </div>
 
-<div id="equipmentPanel" >
+<div id="equipmentPanel"  >
 
 
+    <div class="w-100 h-100 border border-primary rounded" style="overflow: auto;" >
 
-        <div class="w-100 h-100 border border-primary rounded-top" id="middleBoard">
+
+        <div>
+            <div class=" btn btn-outline-primary ml-2 mt-2 btn-lg d-inline-block">
+                <i class="fas fa-folder"></i> All My Equipment
+            </div>
+
+            <div class="d-inline-block text-info ml-4 p-1 rounded-pill">
+                <i class="fas fa-campground"></i> tips: drag equipment to left
+            </div>
+
+        </div>
+            <div class="" id="middleBoard">
+
+
 
             <div class="card mb-1 grid-square"  >
 
@@ -1500,7 +1512,7 @@
 
         </div>
 
-
+    </div>
 
 <!--    <iframe  style="width: 100%;height:100%; border: 1px solid mediumseagreen; " th:src="${iframeAdress}" ></iframe>-->
 
@@ -1640,11 +1652,19 @@
         background-color: #008CBA;
     }
 
-    .grid-square {
+    #folderContent > .grid-square {
         width: 190px;
         height: 250px;
         display: inline-block;
-        background-color: #fff;
+        background-color: #ffece3;
+    }
+
+    #middleBoard > .grid-square {
+        width: 190px;
+        height: 250px;
+        display: inline-block;
+        background-color: #ffece3;
+        margin: 10px;
     }
 
 
@@ -1707,7 +1727,7 @@
     }
     #equipmentPanel{
         /*overflow: auto;*/
-        display: block;
+        /*display: block;*/
         /*position: fixed;*/
         /*padding-left: 380px;*/
         /*padding-right: 200px;*/
@@ -1727,7 +1747,9 @@
         /*background-color: #f44336;*/
         /*border: 3px solid #2e28b3;*/
         padding: 5px;
+        /*margin: 5px;*/
         float: left;
+
     }
     #equipmentOperationSection{
         position: fixed;
@@ -1748,12 +1770,25 @@
 
 <script>
 
-    new Sortable( document.getElementById("folderContent") , {
+    // new Sortable( document.getElementById("folderContent") , {
+    //     animation: 150,
+    //     ghostClass: 'blue-background-class'
+    // });
+
+    new Sortable(document.getElementById("middleBoard"), {
+        group: {
+            name: 'shared',
+            pull: 'clone',
+            put: false // Do not allow items to be put into this list
+        },
         animation: 150,
-        ghostClass: 'blue-background-class'
+        sort: false // To disable sorting: set sort to false
     });
 
-
+    new Sortable(document.getElementById("folderContent"), {
+        group: 'shared',
+        animation: 150
+    });
 
 
 
