@@ -8,13 +8,7 @@ public class LabData extends ItemData {
 
     // the structure here need to design
 
-    public LabData(){
 
-
-
-
-
-    }
 
 
 

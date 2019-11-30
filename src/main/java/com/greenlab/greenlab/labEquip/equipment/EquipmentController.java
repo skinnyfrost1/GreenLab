@@ -21,6 +21,9 @@ import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.User
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.UserEquipmentRepository;
 import com.greenlab.greenlab.labEquip.framework.imageBlob.ImageBlob;
 import com.greenlab.greenlab.labEquip.framework.imageBlob.ImageBlobRepository;
+import com.greenlab.greenlab.labEquip.laboratory.labData.LabData;
+import com.greenlab.greenlab.labEquip.laboratory.labData.LabDataRepository;
+import com.greenlab.greenlab.model.Lab;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -785,32 +788,117 @@ public class EquipmentController {
 
 
     @MessageMapping("/lab/front/{userId}/{sessionId}")
-    public void handleLabFront(@DestinationVariable String userId , @DestinationVariable String sessionId , String message ) throws JSONException {
+    public void handleLabFront(@DestinationVariable String userId , @DestinationVariable String sessionId , String message ) throws JSONException, JsonProcessingException {
 
-        System.out.println(message);
+//        {"type":"connectSuccess"}
+//        {"type":"likeLab","itemId":"5de1e3d65c9835c587c68dc9","data":true}
+//        {"type":"shareLab","itemId":"5de1e3d65c9835c587c68dc9","data":true}
+//        {"type":"duplicateLab","itemId":"5de1e3d65c9835c587c68dc9"}
+//        {"type":"labName","itemId":"5de1e3d65c9835c587c68dc9","data":"1"}
+//        {"type":"labDescription","itemId":"5de1e3d65c9835c587c68dc9","data":"2"}
+
+        JSONObject data = new JSONObject(message);
+        String type = data.get("type").toString();
+        if( type.equals("connectSuccess") ){
+
+            sendUnique( userId , sessionId , message );
+
+        }else{
+            String labId = data.get("itemId").toString();
+            LabData labData = labDataRepository.getById(labId);
+            ObjectMapper jsonMapper = new ObjectMapper();
+            if(labData == null){
+                return;
+            }
+
+            if( type.equals("likeLab") ){
+
+                Boolean like = (Boolean) data.get("data");
+                labData.setFavourite(like);
+                labDataRepository.save(labData);
+
+
+            }else if ( type.equals("shareLab") ){
+
+                Boolean share = (Boolean) data.get("data");
+                labData.setFavourite(share);
+                labDataRepository.save(labData);
+
+            }else if( type.equals("labName") ){
+
+               String name = data.get("data").toString();
+               labData.setName( name );
+               labDataRepository.save(labData);
+
+            }else if( type.equals("labDescription") ){
+
+                String description = data.get("data").toString();
+                labData.setDescription( description );
+                labDataRepository.save( labData );
+
+            }else if( type.equals("duplicateLab") ){
+
+
+
+            }else if( type.equals("deleteLab") ){
+
+
+
+            }else if( type.equals("refreshLab") ){
+
+                // here we need get all the data
+
+                String labDataStr =  jsonMapper.writeValueAsString( labData );
+                JSONObject jsonObject = new JSONObject(labDataStr);
+                data.put("data", jsonObject );
+                sendLabPad( labId , data.toString() );
+
+
+
+            }else if( type.equals("refreshAllEquipment") ){
+
+//                 List<EquipmentData> equipmentData =  equipmentDataRepository.findAllByOwnerId( userId );
+//                 JSONArray jsonArray = new JSONArray();
+//
+//                 for( int i = 0 ; i < equipmentData.size() ;i++ ){
+//
+//                     jsonArray.put( new JSONObject(jsonMapper.writeValueAsString( equipmentData.get(i) )) );
+//
+//                 }
+//
+//                 data.put("data", jsonArray );
+//
+//                 sendLabFolder( "", "" );
+
+
+            }
+
+
+
+
+        }
+
 
 
 
     }
+
+
 
     @RequestMapping( value="/lab/{labId}", method = RequestMethod.GET )
     public String getLabPage(Model model, @PathVariable("labId") String labId ,  HttpServletRequest request ){
 
-        return "/lab/createlab";
+        LabData labData = labDataRepository.getById(labId);
+
+        if(labData!= null){
+            return "/lab/createlab";
+        }else{
+            return "lab/test";
+        }
 
     }
 
-    //@PostMapping("/ajax/ImageData")
-//    @RequestMapping(value="/ajax/ImageData" , method = RequestMethod.POST)
-//    @ResponseBody
-//    public String uploadImage( HttpServletRequest request  ){
-//
-//       //System.out.println(  request.getParameter("type") );
-//        String dataStr = request.getParameter("data");
-//        System.out.println( dataStr );
-//
-//        return "test666";
-//    }
+
 
      @RequestMapping(value="/ajax/uploadImage" , method = RequestMethod.POST)
      @ResponseBody
@@ -818,7 +906,15 @@ public class EquipmentController {
 
         // String dataStr = request.getParameter("data");
 
-         System.out.println( reqBody );
+         //System.out.println( reqBody );
+
+         JSONObject jsonObject = new JSONObject(reqBody);
+         String imageBlob = jsonObject.get("coverImageData").toString();
+         String labId = jsonObject.get( "labId" ).toString();
+         //System.out.println( imageBlob );
+
+
+
 
          Map<String,Object> sendData = new HashMap<>();
          sendData.put("success",true);
@@ -826,11 +922,45 @@ public class EquipmentController {
          return sendData;
      }
 
-    @RequestMapping(value="/ajax/downloadImages" , method = RequestMethod.POST)
+     @Autowired
+     private LabDataRepository labDataRepository;
+
+    @RequestMapping(value="/ajax/createNewLab" , method = RequestMethod.POST)
+    @ResponseBody
+    public Object CreateNewLab(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException {
+
+
+        LabData labData = new LabData();
+        labData.setOwnerId("weixin.tang@stonybrook.edu");
+        String labId =  labDataRepository.save(labData).getId();
+
+        Map<String,Object> sendData = new HashMap<>();
+        sendData.put("success",true);
+        sendData.put("labId", labId );
+        return sendData;
+    }
+
+//    @RequestMapping(value="/ajax/refreshPage" , method = RequestMethod.POST)
+//    @ResponseBody
+//    public Object refreshPage(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException {
+//
+//
+//
+//        // just refresh everything make it as simple as possible
+//
+//
+//        Map<String,Object> sendData = new HashMap<>();
+//        sendData.put("success",true);
+//        sendData.put("data", "weixin.tang@stonybrook.edu" );
+//        return sendData;
+//    }
+
+        @RequestMapping(value="/ajax/downloadImages" , method = RequestMethod.POST)
     @ResponseBody
     public Object DownloadImages(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException {
 
         // String dataStr = request.getParameter("data");
+
 
         System.out.println( reqBody );
         Map<String,Object> sendData = new HashMap<>();
@@ -842,6 +972,9 @@ public class EquipmentController {
         return sendData;
     }
 
+//_______________________________________________________________________________________________________________________________________________________
+//_______________________________________________________________________________________________________________________________________________________
+//_______________________________________________________________________________________________________________________________________________________
 
 
 
