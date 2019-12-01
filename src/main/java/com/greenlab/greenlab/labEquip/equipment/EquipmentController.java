@@ -814,28 +814,31 @@ public class EquipmentController {
             if( type.equals("likeLab") ){
 
                 Boolean like = (Boolean) data.get("data");
+                //System.out.println(like);
                 labData.setFavourite(like);
                 labDataRepository.save(labData);
-
+                SendRefreshLab(  labId , userId );
 
             }else if ( type.equals("shareLab") ){
 
                 Boolean share = (Boolean) data.get("data");
-                labData.setFavourite(share);
-                labDataRepository.save(labData);
+                //System.out.println(share);
 
+                labData.setShared(share);
+                labDataRepository.save(labData);
+                SendRefreshLab(  labId , userId );
             }else if( type.equals("labName") ){
 
                String name = data.get("data").toString();
                labData.setName( name );
                labDataRepository.save(labData);
-
+                SendRefreshLab(  labId , userId );
             }else if( type.equals("labDescription") ){
 
                 String description = data.get("data").toString();
                 labData.setDescription( description );
                 labDataRepository.save( labData );
-
+                SendRefreshLab(  labId , userId );
             }else if( type.equals("duplicateLab") ){
 
 
@@ -851,11 +854,25 @@ public class EquipmentController {
                 String labDataStr =  jsonMapper.writeValueAsString( labData );
                 JSONObject jsonObject = new JSONObject(labDataStr);
                 data.put("data", jsonObject );
-                sendLabPad( labId , data.toString() );
-
+                //sendLabPad( labId , data.toString() );
+                sendUnique( userId , sessionId , data.toString() );
 
 
             }else if( type.equals("refreshAllEquipment") ){
+
+
+                JSONArray jsonArray = new JSONArray();
+                List<EquipmentData> equipmentDataList = equipmentDataRepository.findAllByOwnerId(userId);
+                for( int i = 0 ; i< equipmentDataList.size() ; i++ ){
+
+                   String equipStr =  jsonMapper.writeValueAsString(equipmentDataList.get(i));
+
+                   jsonArray.put(new JSONObject(equipStr));
+                }
+
+                data.put("data", jsonArray );
+
+                sendUnique( userId , sessionId , data.toString() );
 
 //                 List<EquipmentData> equipmentData =  equipmentDataRepository.findAllByOwnerId( userId );
 //                 JSONArray jsonArray = new JSONArray();
@@ -869,8 +886,6 @@ public class EquipmentController {
 //                 data.put("data", jsonArray );
 //
 //                 sendLabFolder( "", "" );
-
-
             }
 
 
@@ -883,6 +898,23 @@ public class EquipmentController {
 
     }
 
+    public void SendRefreshLab( String labId , String userId ) throws JSONException, JsonProcessingException {
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", "refreshLab" );
+        LabData labData = labDataRepository.getById(labId);
+        ObjectMapper jsonMapper = new ObjectMapper();
+        String labDataStr =  jsonMapper.writeValueAsString( labData );
+        JSONObject jsonlabData = new JSONObject(labDataStr);
+        jsonObject.put("data", jsonlabData );
+        jsonObject.put("itemId", labId );
+
+
+        //System.out.println("what YY happened??");
+
+        sendLabFolder( userId , jsonObject.toString() );
+
+    }
 
 
     @RequestMapping( value="/lab/{labId}", method = RequestMethod.GET )
@@ -902,19 +934,25 @@ public class EquipmentController {
 
      @RequestMapping(value="/ajax/uploadImage" , method = RequestMethod.POST)
      @ResponseBody
-     public Object UploadImage(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException {
+     public Object UploadImage(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException, JsonProcessingException {
 
         // String dataStr = request.getParameter("data");
 
          //System.out.println( reqBody );
 
          JSONObject jsonObject = new JSONObject(reqBody);
-         String imageBlob = jsonObject.get("coverImageData").toString();
+         String blob = jsonObject.get("coverImageData").toString();
          String labId = jsonObject.get( "labId" ).toString();
          //System.out.println( imageBlob );
+         LabData labData = labDataRepository.getById(labId);
+         ImageBlob imageBlob = new ImageBlob();
+         imageBlob.setBlob(blob);
+         String imageBlobId =  imageBlobRepository.save(imageBlob).getId();
+         labData.setCoverBlobId( imageBlobId );
 
+         labDataRepository.save(labData);
 
-
+         SendRefreshLab( labId , "weixin.tang@stonybrook.edu" );
 
          Map<String,Object> sendData = new HashMap<>();
          sendData.put("success",true);
@@ -957,15 +995,31 @@ public class EquipmentController {
 
         @RequestMapping(value="/ajax/downloadImages" , method = RequestMethod.POST)
     @ResponseBody
-    public Object DownloadImages(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException {
+    public Object DownloadImages(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException, JsonProcessingException {
 
-        // String dataStr = request.getParameter("data");
+        //System.out.println(reqBody);
 
 
-        System.out.println( reqBody );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JSONObject jsonObject = new JSONObject(reqBody);
+        JSONArray blobIdArr = (JSONArray) jsonObject.get("blobIds");
+
+        JSONArray blobDataArr = new JSONArray();
+
+        for( int i = 0 ; i<  blobIdArr.length() ; i++ ){
+
+           String blobId = blobIdArr.get(i).toString();
+            ImageBlob imageBlob = imageBlobRepository.getById(blobId);
+            String imagBlobStr = objectMapper.writeValueAsString(imageBlob);
+            JSONObject jsonObject1 =new JSONObject(imagBlobStr);
+            blobDataArr.put( imagBlobStr );
+
+        }
+
         Map<String,Object> sendData = new HashMap<>();
         sendData.put("success",true);
-        sendData.put("data", "weixin.tang@stonybrook.edu" );
+        sendData.put("data", blobDataArr.toString() );
 
 
 

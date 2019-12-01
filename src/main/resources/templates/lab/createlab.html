@@ -1103,20 +1103,24 @@
 
                 sendProtocal["refreshAllEquipment"] = function(){
 
-                    // no order
-                        // get from all folder
-                    //ok
+                    websocket.sendMessage( quickPrepare("refreshAllEquipment") );
 
+                };
+
+                receiveProtocal["refreshAllEquipment"] = function( data ){
+
+                    //console.log(data);
+                    labData.EquipmentData = data;
+                    labData.displayAllEquipment();
 
                 };
 
                 receiveProtocal["refreshLab"] = function ( data ) {
 
                     //console.log(data);
-
-                   labData
-
-
+                    labData.LabData = data;
+                    //labData = new LabData();
+                    labData.displayLab();
 
                 }
 
@@ -1236,7 +1240,10 @@
 
             constructor(){
 
-                this.labData = null;
+                this.LabData = null;
+
+                this.EquipmentData = null;
+
 
                 // so we need added equipment to the lab
                 // so also need lab name
@@ -1268,9 +1275,193 @@
                 // settingOp.setLikeBaseBoolean( data.favourite );
                 // settingOp.setShareBaseBoolean( data.shared );
 
+                // var coverBlobId = this.LabData.coverBlobId;
+                // var imageBlob = localStorage.getItem(coverBlobId);
+                // if( imageBlob == null ){
+                //
+                //     //
+                //
+                // }
 
 
 
+                var data = this.LabData;
+
+                if(data.coverBlobId == ""  ){
+
+                    this.__displayLab();
+
+                }else if(localStorage.getItem(data.coverBlobId) != null){
+
+                    this.__displayLab();
+
+                }else{
+                    // here we use ajax to get
+
+
+                    var sendData = {};
+                    sendData["labId"] = itemId;
+                    sendData["blobIds"] = [data.coverBlobId];
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/ajax/downloadImages",
+                        data: JSON.stringify(sendData),
+                        dataType: 'json',
+                        cache: false,
+                        timeout: 600000,
+                        success: function (info) {
+
+                           var imageBlobArr =  JSON.parse( info.data );
+                           //localStorage.setItem( imageBlob.id , info.data );
+                            //console.log(imageBlob[0]);
+                            //labData.__displayLab();
+                            var imageBlobStr = imageBlobArr[0];
+                            var imageBlob = JSON.parse(imageBlobStr);
+                            var imageBlobId = imageBlob.id;
+                            localStorage.setItem( imageBlobId , imageBlobStr );
+                            labData.__displayLab();
+
+
+                        },
+                        error: function (e) {
+
+
+
+                        }
+                    });
+
+
+                }
+
+                //introductionOp = new ImageOp();
+                //introductionOp.setCoverImage()
+
+                //introductionOp.
+
+                //settingOp = new SetOp();
+
+                        //console.log()
+
+
+
+
+
+
+            }
+
+            __displayLab(){
+                var data = this.LabData;
+                introductionOp.setNameValue( data.name );
+                introductionOp.setTextArea( data.description );
+                var imageBlob = JSON.parse(localStorage.getItem(data.coverBlobId));
+                introductionOp.setCoverImage( imageBlob.blob );
+                settingOp.setLikeBaseBoolean( data.favourite );
+                settingOp.setShareBaseBoolean( data.shared );
+
+            }
+
+
+            displayAllEquipment(){
+
+            //0
+                // coverBlobId: "5de015015c9835a27b197c03"
+                // currentImageIds: "5de069bb7d553616da7ced1c"
+                // description: "6666"
+                // favourite: false
+                // id: "5de00ab55c9835a27b197c00"
+                // imageIds: (2) ["5de069b57d553616da7ced1a", "5de069bb7d553616da7ced1c"]
+                // name: "wwww"
+                // originalPos: null
+                // ownerId: "weixin.tang@stonybrook.edu"
+                // shared: false
+                var imageblobSet = [];
+
+                for(  var i = 0 ; i<  this.EquipmentData.length ; i++ ){
+                    var equipmentData = this.EquipmentData[i];
+
+                    var imageBlobId = equipmentData.coverBlobId;
+                    var imageBlob = localStorage.getItem( imageBlobId );
+
+                    if( imageBlob == null){
+                        imageblobSet.push( imageBlobId );
+                    }
+
+                }
+
+
+                if( imageblobSet.length != 0 ){
+
+                    var sendData = {};
+                    sendData["labId"] = itemId;
+                    sendData["blobIds"] = imageblobSet;
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/ajax/downloadImages",
+                        data: JSON.stringify(sendData),
+                        dataType: 'json',
+                        cache: false,
+                        timeout: 600000,
+                        success: function (info) {
+
+                            var imageBlobArr =  JSON.parse( info.data );
+
+                            for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+                                var imageBlobStr = imageBlobArr[i];
+                                var imageBlob = JSON.parse(imageBlobStr);
+                                var imageBlobId = imageBlob.id;
+                                localStorage.setItem( imageBlobId , imageBlobStr );
+                            }
+
+                            //var imageBlob =  JSON.parse( info.data );
+                            //localStorage.setItem( imageBlob.id , info.data );
+                            labData.__displayAllEquipment();
+
+                            //console.log("666");
+                        },
+                        error: function (e) {
+
+
+
+                        }
+                    });
+
+                    // var imageBlobArr =  JSON.parse( info.data );
+                    // //localStorage.setItem( imageBlob.id , info.data );
+                    // //console.log(imageBlob[0]);
+                    // //labData.__displayLab();
+                    // var imageBlobStr = imageBlobArr[0];
+                    // var imageBlob = JSON.parse(imageBlobStr);
+                    // var imageBlobId = imageBlob.id;
+                    // localStorage.setItem( imageBlobId , imageBlobStr );
+                    // labData.__displayLab();
+
+                }else{
+
+                    this.__displayAllEquipment();
+
+                }
+
+
+
+
+            }
+
+            __displayAllEquipment(){
+
+                //var cards = new Cards();
+
+                for(  var i = 0 ; i<  this.EquipmentData.length ; i++ ){
+
+                    var equipmentData = this.EquipmentData[i];
+
+                    //cards.addCard(  "https://ml4141715.github.io/water/cdn/image/Holder.png" , equipmentData.name , equipmentData.description , "" );
+                    console.log(equipmentData);
+
+                }
+
+                //cards.setHTML();
 
             }
 
@@ -1379,7 +1570,8 @@
             labData = new LabData();
 
             connect();
-
+            //settingOp.setLikeBaseBoolean( true );
+            //settingOp.setShareBaseBoolean( true );
 
             //所以现在
                 // 先把sendProtocal
@@ -1487,6 +1679,9 @@
 
     </div>
 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+
     <div id="equipmentList" style="width:200px;">
 
 
@@ -1510,22 +1705,31 @@
         <div class="card-rows" id="folderContent">
 
 
+
             <div class="card mb-1 grid-square"  >
 
                 <img class="card-img-top d-inline-block grid-photo img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="">
 
                 <div class="card-body">
-                    <p class="card-title h4 pr-1 small font-weight-bold "><span><i class="fas fa-trash"></i> </span> Holder</p>
+                    <p class="card-title h4 pr-1 small font-weight-bold"><span><i class="fas fa-trash"></i> </span> Holder</p>
                     <p class="card-text h5 small">Author: Homelander </p>
                 </div>
             </div>
-            <div class="card mb-1 grid-square">
-                <img class="card-img-top img-fluid grid-photo" src="https://ml4141715.github.io/water/cdn/image/Measure.png" alt="" draggable="false">
-                <div class="card-body" >
-                    <p class="card-title h4 small font-weight-bold"><span><i class="fas fa-trash"></i> </span> Measure</p>
-                    <p class="card-text h5 small">Author: Tony Stark </p>
-                </div>
-            </div>
+
+
+
+
+
+
+
+
+            <!--            <div class="card mb-1 grid-square">-->
+<!--                <img class="card-img-top img-fluid grid-photo" src="https://ml4141715.github.io/water/cdn/image/Measure.png" alt="" draggable="false">-->
+<!--                <div class="card-body" >-->
+<!--                    <p class="card-title h4 small font-weight-bold"><span><i class="fas fa-trash"></i> </span> Measure</p>-->
+<!--                    <p class="card-text h5 small">Author: Tony Stark </p>-->
+<!--                </div>-->
+<!--            </div>-->
 
 <!--            <div class="card mb-1 grid-square"  >-->
 
@@ -1565,22 +1769,6 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
 
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" href="#">Features</a>-->
-<!--                    </li>-->
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" href="#">Pricing</a>-->
-<!--                    </li>-->
-<!--                    <li class="nav-item dropdown">-->
-<!--                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                            Dropdown link-->
-<!--                        </a>-->
-<!--                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">-->
-<!--                            <a class="dropdown-item" href="#">Action</a>-->
-<!--                            <a class="dropdown-item" href="#">Another action</a>-->
-<!--                            <a class="dropdown-item" href="#">Something else here</a>-->
-<!--                        </div>-->
-<!--                    </li>-->
                 </ul>
                 <li class="navbar-text">
                     <a class="nav-link" ><i class="fas fa-campground"></i> tips: drag equipment to left</a>
@@ -1588,17 +1776,6 @@
             </div>
         </nav>
 
-
-        <div class="d-none">
-            <div class=" btn btn-outline-primary ml-2 mt-2 btn-lg d-inline-block">
-                <i class="fas fa-folder"></i> All My Equipment
-            </div>
-
-            <div class="d-inline-block text-info ml-4 p-1 rounded-pill">
-                <i class="fas fa-campground"></i> tips: drag equipment to left
-            </div>
-
-        </div>
 
             <div class="" id="middleBoard">
 
@@ -1633,7 +1810,7 @@
             </div>
         </div>
 
-</div>
+
 
 <!--    <iframe  style="width: 100%;height:100%; border: 1px solid mediumseagreen; " th:src="${iframeAdress}" ></iframe>-->
 
@@ -1855,6 +2032,14 @@
         background-color: #ffece3;
     }
 
+    #middleBoard .btn-op {
+        display: none;
+    }
+
+    #folderContent .btn-op {
+        display: inline-block;
+    }
+
     #middleBoard > .grid-square {
         width: 190px;
         height: 250px;
@@ -2005,7 +2190,7 @@
         animation: 150
     });
 
-
+    $('[data-toggle="tooltip"]').tooltip();
 
 </script>
 
