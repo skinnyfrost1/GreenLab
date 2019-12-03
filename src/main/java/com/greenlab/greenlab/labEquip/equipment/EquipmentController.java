@@ -1017,6 +1017,8 @@ public class EquipmentController {
 
         }
 
+
+
         Map<String,Object> sendData = new HashMap<>();
         sendData.put("success",true);
         sendData.put("data", blobDataArr.toString() );

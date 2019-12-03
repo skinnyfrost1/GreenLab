@@ -969,31 +969,36 @@
                 //
                 // return ReturnData;
             }
+
+            __cardWithTrashBin(){
+
+                var ReturnData = "<div class=\"card mb-1 grid-square\"  id=\""+this.imageId+"\" >\n" +
+                    "                <img class=\"card-img-top img-fluid grid-photo\" src=\""+this.imageData+"\" alt=\"\" draggable=\"false\">\n" +
+                    "                <div class=\"card-body\">\n" +
+
+                    "                    <p class=\"card-title h4 small font-weight-bold\" ><span onclick='deleteEquipmentFromLab(this)'><i class='fas fa-trash'></i> </span>"+this.imageTitle+"</p>\n" +
+                    "                    <p class=\"card-text h5 small\">"+this.imageContent+"</p>\n" +
+                    "                </div>\n" +
+                    "            </div>";
+
+                return ReturnData;
+
+            }
+
+
             getHTML(){
-                return this.__cardHTML();
+                return this.__cardWithTrashBin();
+                //return this.__cardHTML();
             }
         }
-        // <div id="btn btn-group" >
-        //     <div class="btn btn-primary " ><i class="fas fa-eraser"></i></div>
-        // <div class="btn btn-success " ><i class="fas fa-clone "></i></div>
-        // <div class="btn btn-danger " ><i class="fas fa-heart "></i></div>
-        // </div>
 
-        //var changContent = "";
 
-        //onmouseleave=\"threeButton("+this.imageId+")\"
-        //onmouseenter=\"threeButton("+this.imageId+")\"
+        function deleteEquipmentFromLab( evt ){
 
-        //     function threeButton( evt ) {
-        //
-        //
-        // //evt.innerHTML
-        // //evt.id
-        //
-        //         console.log( evt.id  );
-        //
-        //
-        //     }
+            console.log(evt);
+
+        }
+
 
         class Cards{
             constructor(){
@@ -1037,24 +1042,24 @@
 
                 document.getElementById(this.folderContentId).innerHTML = this.__cardsHTML();
 
-                for( var i = 0 ; i< this.cards.length ; i++ ){
-
-                    var cardId = this.cards[i].imageId;
-
-                    document.getElementById(cardId).onclick = function (evt) {
-
-                        var cardId = evt.path[1].id;
-
-                        window.open("/equipment/"+cardId , "_blank");
-
-                        //console.log(cardId+"is card Id");
-                        //console.log(evt);
-                    }
-
-                    //console.log( cardId );
-
-
-                }
+                // for( var i = 0 ; i< this.cards.length ; i++ ){
+                //
+                //     var cardId = this.cards[i].imageId;
+                //
+                //     document.getElementById(cardId).onclick = function (evt) {
+                //
+                //         var cardId = evt.path[1].id;
+                //
+                //         window.open("/equipment/"+cardId , "_blank");
+                //
+                //         //console.log(cardId+"is card Id");
+                //         //console.log(evt);
+                //     }
+                //
+                //     //console.log( cardId );
+                //
+                //
+                // }
                 //console.log( "this.__cardsHTML()" );
 
             }
@@ -1450,18 +1455,21 @@
 
             __displayAllEquipment(){
 
-                //var cards = new Cards();
-
+                var cards = new Cards();
+                cards.folderContentId = "middleBoard";
                 for(  var i = 0 ; i<  this.EquipmentData.length ; i++ ){
 
                     var equipmentData = this.EquipmentData[i];
 
-                    //cards.addCard(  "https://ml4141715.github.io/water/cdn/image/Holder.png" , equipmentData.name , equipmentData.description , "" );
-                    console.log(equipmentData);
+
+
+                    //cards.addCard(  "https://ml4141715.github.io/water/cdn/image/Holder.png" , "equipmentData.name ", "equipmentData.description" , "equipmentData.id" );
+                     cards.addCard(  "https://ml4141715.github.io/water/cdn/image/Holder.png" , equipmentData.name+"&nbsp" , equipmentData.description+"&nbsp" , "equipmentData.id" );
+                    //console.log(equipmentData);
 
                 }
 
-                //cards.setHTML();
+                cards.setHTML();
 
             }
 
@@ -1570,6 +1578,9 @@
             labData = new LabData();
 
             connect();
+
+
+
             //settingOp.setLikeBaseBoolean( true );
             //settingOp.setShareBaseBoolean( true );
 
@@ -1608,6 +1619,7 @@
                     }
                 });
         }
+
 
     </script>
 
@@ -1777,38 +1789,38 @@
         </nav>
 
 
-            <div class="" id="middleBoard">
-
-                <div class="card mb-1 grid-square"  >
-
-                    <img class="card-img-top d-inline-block grid-photo img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="">
-
-                    <div class="card-body">
-                        <p class="card-title h4 pr-1 small font-weight-bold">Holder</p>
-                        <p class="card-text h5 small">Author: Homelander </p>
-                    </div>
-                </div>
-
-                <div class="card mb-1 grid-square"  >
-
-                    <img class="card-img-top d-inline-block grid-photo img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="">
-
-                    <div class="card-body">
-                        <p class="card-title h4 pr-1 small font-weight-bold"><span><i class="fas fa-trash"></i> </span>Holder </p>
-
-                        <p class="card-text h5 small">Author: Homelander </p>
-                    </div>
+            <div class="card-rows" id="middleBoard">
 
 
+<!--                <div class="card mb-1 grid-square"  >-->
 
-                    </div>
+<!--                    <img class="card-img-top d-inline-block grid-photo img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="">-->
 
-                </div>
+<!--                    <div class="card-body">-->
+<!--                        <p class="card-title h4 pr-1 small font-weight-bold">Holder</p>-->
+<!--                        <p class="card-text h5 small">Author: Homelander </p>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="card mb-1 grid-square"  >-->
+
+<!--                    <img class="card-img-top d-inline-block grid-photo img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="">-->
+
+<!--                    <div class="card-body">-->
+<!--                        <p class="card-title h4 pr-1 small font-weight-bold"><span><i class="fas fa-trash"></i> </span>Holder </p>-->
+
+<!--                        <p class="card-text h5 small">Author: Homelander </p>-->
+<!--                    </div>-->
+<!--                </div>-->
 
 
 
             </div>
-        </div>
+
+
+
+    </div>
+</div>
 
 
 
