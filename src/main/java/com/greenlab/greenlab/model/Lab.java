@@ -22,10 +22,12 @@ public class Lab {
     private String labName;
     private String labDescription;
     private String creator;
+
     private String stepObjectId;
     private List<Material> materials;
     private List<Container> containers;
     private List<Holder> holders;
+
     // private List<Steps> steps;
 
     public Lab() {
@@ -53,5 +55,16 @@ public class Lab {
         this.containers = containers;
         this.holders = holders;
     }
+
+    //_______________________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
 
 }

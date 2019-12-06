@@ -611,7 +611,6 @@
                 }
             }
 
-
         }
 
 
@@ -1241,6 +1240,23 @@
     <!--  lab Data  -->
     <script>
 
+
+        class ImageStorage{
+
+            constructor(){
+                this.imageBlob = {};
+            }
+
+            getItem( key ){
+                return this.imageBlob[key];
+            }
+
+            setItem( key , value ){
+                this.imageBlob[key] = value;
+            }
+
+        }
+
         class LabData{
 
             constructor(){
@@ -1281,7 +1297,7 @@
                 // settingOp.setShareBaseBoolean( data.shared );
 
                 // var coverBlobId = this.LabData.coverBlobId;
-                // var imageBlob = localStorage.getItem(coverBlobId);
+                // var imageBlob = imageStorage.getItem(coverBlobId);
                 // if( imageBlob == null ){
                 //
                 //     //
@@ -1296,7 +1312,7 @@
 
                     this.__displayLab();
 
-                }else if(localStorage.getItem(data.coverBlobId) != null){
+                }else if(imageStorage.getItem(data.coverBlobId) != null){
 
                     this.__displayLab();
 
@@ -1304,9 +1320,14 @@
                     // here we use ajax to get
 
 
+
+
                     var sendData = {};
                     sendData["labId"] = itemId;
                     sendData["blobIds"] = [data.coverBlobId];
+
+                    console.log(sendData);
+
                     $.ajax({
                         type: "POST",
                         contentType: "application/json",
@@ -1318,13 +1339,10 @@
                         success: function (info) {
 
                            var imageBlobArr =  JSON.parse( info.data );
-                           //localStorage.setItem( imageBlob.id , info.data );
-                            //console.log(imageBlob[0]);
-                            //labData.__displayLab();
                             var imageBlobStr = imageBlobArr[0];
                             var imageBlob = JSON.parse(imageBlobStr);
                             var imageBlobId = imageBlob.id;
-                            localStorage.setItem( imageBlobId , imageBlobStr );
+                            imageStorage.setItem( imageBlobId , imageBlobStr );
                             labData.__displayLab();
 
 
@@ -1339,18 +1357,6 @@
 
                 }
 
-                //introductionOp = new ImageOp();
-                //introductionOp.setCoverImage()
-
-                //introductionOp.
-
-                //settingOp = new SetOp();
-
-                        //console.log()
-
-
-
-
 
 
             }
@@ -1359,7 +1365,7 @@
                 var data = this.LabData;
                 introductionOp.setNameValue( data.name );
                 introductionOp.setTextArea( data.description );
-                var imageBlob = JSON.parse(localStorage.getItem(data.coverBlobId));
+                var imageBlob = JSON.parse(imageStorage.getItem(data.coverBlobId));
                 introductionOp.setCoverImage( imageBlob.blob );
                 settingOp.setLikeBaseBoolean( data.favourite );
                 settingOp.setShareBaseBoolean( data.shared );
@@ -1386,20 +1392,27 @@
                     var equipmentData = this.EquipmentData[i];
 
                     var imageBlobId = equipmentData.coverBlobId;
-                    var imageBlob = localStorage.getItem( imageBlobId );
 
-                    if( imageBlob == null){
-                        imageblobSet.push( imageBlobId );
+                    if( imageBlobId != "" ){
+                        var imageBlob = imageStorage.getItem( imageBlobId );
+
+                        if( imageBlob == null){
+                            imageblobSet.push( imageBlobId );
+                        }
                     }
 
                 }
 
+                //console.log( this.EquipmentData );
+
+                //console.log(  imageblobSet  );
 
                 if( imageblobSet.length != 0 ){
 
                     var sendData = {};
                     sendData["labId"] = itemId;
                     sendData["blobIds"] = imageblobSet;
+
                     $.ajax({
                         type: "POST",
                         contentType: "application/json",
@@ -1414,16 +1427,19 @@
 
                             for( var i = 0 ; i< imageBlobArr.length ;i++ ){
                                 var imageBlobStr = imageBlobArr[i];
+
                                 var imageBlob = JSON.parse(imageBlobStr);
+
                                 var imageBlobId = imageBlob.id;
-                                localStorage.setItem( imageBlobId , imageBlobStr );
+
+                                imageStorage.setItem( imageBlobId , imageBlobStr );
                             }
 
                             //var imageBlob =  JSON.parse( info.data );
-                            //localStorage.setItem( imageBlob.id , info.data );
+                            //imageStorage.setItem( imageBlob.id , info.data );
                             labData.__displayAllEquipment();
 
-                            //console.log("666");
+                            //console.log(info);
                         },
                         error: function (e) {
 
@@ -1433,13 +1449,13 @@
                     });
 
                     // var imageBlobArr =  JSON.parse( info.data );
-                    // //localStorage.setItem( imageBlob.id , info.data );
+                    // //imageStorage.setItem( imageBlob.id , info.data );
                     // //console.log(imageBlob[0]);
                     // //labData.__displayLab();
                     // var imageBlobStr = imageBlobArr[0];
                     // var imageBlob = JSON.parse(imageBlobStr);
                     // var imageBlobId = imageBlob.id;
-                    // localStorage.setItem( imageBlobId , imageBlobStr );
+                    // imageStorage.setItem( imageBlobId , imageBlobStr );
                     // labData.__displayLab();
 
                 }else{
@@ -1461,10 +1477,24 @@
 
                     var equipmentData = this.EquipmentData[i];
 
+                    //var imageBlob = JSON.parse(imageStorage.getItem( equipmentData.coverBlobId ));
 
+                    var blob;
+
+                    if(equipmentData.coverBlobId!=""){
+
+                        var imageBlob = JSON.parse(imageStorage.getItem( equipmentData.coverBlobId ));
+
+                        blob = imageBlob.blob;
+
+                    }else{
+
+                        blob = "";
+
+                    }
 
                     //cards.addCard(  "https://ml4141715.github.io/water/cdn/image/Holder.png" , "equipmentData.name ", "equipmentData.description" , "equipmentData.id" );
-                     cards.addCard(  "https://ml4141715.github.io/water/cdn/image/Holder.png" , equipmentData.name+"&nbsp" , equipmentData.description+"&nbsp" , "equipmentData.id" );
+                     cards.addCard( blob , equipmentData.name+"&nbsp" , equipmentData.description+"&nbsp" , "equipmentData.id" );
                     //console.log(equipmentData);
 
                 }
@@ -1547,9 +1577,11 @@
 
         var labData;
         var configuration;
+        var imageStorage;
 
         function onLoad() {
 
+            imageStorage = new ImageStorage();
             var pathName = window.location.pathname;
             var Arr = pathName.split("/");
             itemId = Arr[2];
