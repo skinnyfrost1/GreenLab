@@ -21,6 +21,7 @@ public class Course {
     private String courseDescription;
     private String creator;
     private String createDate;
+    @DBRef
     private List<User> students;
     @DBRef
     private List<Lab> labs;
@@ -126,4 +127,11 @@ public class Course {
         this.creator = creator;
     }
 
+    public List<Lab> getLabs() {
+        return labs;
+    }
+
+    public void setLabs(List<Lab> labs) {
+        this.labs = labs;
+    }
 }

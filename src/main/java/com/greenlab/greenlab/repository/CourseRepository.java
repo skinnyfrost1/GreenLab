@@ -8,5 +8,6 @@ public interface CourseRepository extends MongoRepository<Course, String> {
      List<Course> findByCreator(String creator);
      Course findBy_id(String id);
      List<Course> findByCourseId(String courseId);
+     Course findByCourseIdAndCreator(String courseId,String creator);
 //     Course findCourseById(String Id);
 }

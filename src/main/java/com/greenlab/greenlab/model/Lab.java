@@ -64,4 +64,35 @@ public class Lab {
                 '}';
     }
 
+    public String getLabName() {
+        return labName;
+    }
+
+    public void setLabName(String labName) {
+        this.labName = labName;
+    }
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getLabDescription() {
+        return labDescription;
+    }
+
+    public void setLabDescription(String labDescription) {
+        this.labDescription = labDescription;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 }

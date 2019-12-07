@@ -160,6 +160,8 @@ public class CreateCourseController {
         String email = (String) request.getSession().getAttribute("email");
         List<String> labNameList = new ArrayList<>();
         String courseId = reqBody.getStr();
+        courseId = courseId.replaceAll(" ","");
+        courseId = courseId.toUpperCase();
         List<Lab> labs = labRepository.findByCourseId(courseId);
         for (Lab l : labs){
             if (l.getCreator().equals(email)){

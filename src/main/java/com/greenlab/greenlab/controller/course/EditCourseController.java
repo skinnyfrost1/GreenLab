@@ -1,27 +1,28 @@
 package com.greenlab.greenlab.controller.course;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.greenlab.greenlab.dto.*;
 import com.greenlab.greenlab.model.Course;
 import com.greenlab.greenlab.model.Lab;
+import com.greenlab.greenlab.model.StuCourse;
+import com.greenlab.greenlab.model.User;
 import com.greenlab.greenlab.repository.CourseRepository;
 import com.greenlab.greenlab.repository.LabRepository;
-import com.greenlab.greenlab.dto.MultiStringRequestBody;
-import com.greenlab.greenlab.dto.BooleanResponseBody;
 
+import com.greenlab.greenlab.repository.StuCourseRepository;
+import com.greenlab.greenlab.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 // import org.springframework.web.bind.annotation.PostMapping;
 // import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +35,10 @@ public class EditCourseController{
     private CourseRepository courseRepository;
     @Autowired
     private LabRepository labRepository;
-
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private StuCourseRepository stuCourseRepository;
     @GetMapping(value = "/course/edit")
     public String getCreateCourse(ModelMap model, @RequestParam(value = "id") String id,
                                   HttpServletRequest request) {
@@ -50,6 +54,8 @@ public class EditCourseController{
         // for(Lab temp : labs){
         //     System.out.println(temp.testString());
         // }
+        List<User> students = course.getStudents();
+        model.addAttribute("students",students);
         return "profEditCourse";
     }
 
@@ -88,6 +94,46 @@ public class EditCourseController{
         return null;
     }
 
+    @ResponseBody
+    @PostMapping(value = "/course/edit/deleteStu")
+    public ResponseEntity<?> postCourseEditDelStu(@RequestParam(value = "courseId") String courseId,
+                                                  @RequestParam(value = "studentEmail") String studentEmail,
+                                                  ModelMap model, HttpServletRequest request){
+        DeleteStudentResponseBody result = new DeleteStudentResponseBody();
+//        if (errors.hasErrors()) {
+//            result.setMessage(
+//                    errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
+//            return ResponseEntity.badRequest().body(result);
+//        }
+        System.out.println("In delete student.");
+        String email = (String) request.getSession().getAttribute("email");
+//        String courseId = reqBody.getCourseId();
+//        String studentEmail = reqBody.getStudentEmail();
+        Course course = courseRepository.findByCourseIdAndCreator(courseId,email);//null
+        User student = userRepository.findByEmail(studentEmail);
+        List<User> students = course.getStudents();
+        System.out.println(students.size());
+        Iterator<User> it = students.iterator();
+        while (it.hasNext()) {
+            User s = it.next();
+            if (s.getUid().equals(student.getUid())) {
+                it.remove();
+                break;
+            }
+        }
+        System.out.println(students.size());
+        course.setStudents(students);
+        courseRepository.save(course);
+        System.out.println(courseId + " " + studentEmail);
+        StuCourse stuCourse = stuCourseRepository.findByCourseIdAndStudentEmail(courseId,studentEmail);
+        System.out.println(stuCourse.toString());
+        List<Lab> labs = labRepository.findByCourseId(courseId);
+        stuCourseRepository.delete(stuCourse);
+//        request.getSession().setAttribute("labs", labs);
+        model.addAttribute("students",students);
+        result.setStudents(students);
+        return ResponseEntity.ok(result);
+    }
 
 
 
