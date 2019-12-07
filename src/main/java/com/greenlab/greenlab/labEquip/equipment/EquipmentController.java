@@ -886,6 +886,14 @@ public class EquipmentController {
 //                 data.put("data", jsonArray );
 //
 //                 sendLabFolder( "", "" );
+            }else if( type.equals("labEquipList") ){
+
+                JSONArray jsonArray = (JSONArray)data.get("data");
+
+                //System.out.println(jsonArray.toString());
+
+                sendLabPad( labId , message );
+
             }
 
 
@@ -917,7 +925,7 @@ public class EquipmentController {
     }
 
 
-    @RequestMapping( value="/lab/{labId}", method = RequestMethod.GET )
+    @RequestMapping( value="/editlab/{labId}", method = RequestMethod.GET )
     public String getLabPage(Model model, @PathVariable("labId") String labId ,  HttpServletRequest request ){
 
         LabData labData = labDataRepository.getById(labId);
@@ -930,6 +938,20 @@ public class EquipmentController {
 
     }
 
+    @RequestMapping( value="/editlabboard/{labId}", method = RequestMethod.GET )
+    public String getLabBoardPage(Model model, @PathVariable("labId") String labId ,  HttpServletRequest request ){
+
+        LabData labData = labDataRepository.getById(labId);
+
+
+
+        if(labData!= null){
+            return "/lab/labboard";
+        }else{
+            return "lab/test";
+        }
+
+    }
 
 
      @RequestMapping(value="/ajax/uploadImage" , method = RequestMethod.POST)
@@ -993,7 +1015,7 @@ public class EquipmentController {
 //        return sendData;
 //    }
 
-        @RequestMapping(value="/ajax/downloadImages" , method = RequestMethod.POST)
+    @RequestMapping(value="/ajax/downloadImages" , method = RequestMethod.POST)
     @ResponseBody
     public Object DownloadImages(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException, JsonProcessingException {
 
@@ -1040,8 +1062,27 @@ public class EquipmentController {
     public void handleLabBack(@DestinationVariable String userId , @DestinationVariable String sessionId , String message) throws JSONException {
 
 
-        //
+        JSONObject data = new JSONObject(message);
+        String type = data.get("type").toString();
+        if( type.equals("connectSuccess") ){
 
+            sendUnique( userId , sessionId , message );
+
+        }else {
+            String labId = data.get("itemId").toString();
+            LabData labData = labDataRepository.getById(labId);
+            ObjectMapper jsonMapper = new ObjectMapper();
+            if (labData == null) {
+                return;
+            }
+            if( type.equals("") ){
+
+
+
+            }
+        }
+
+         //sendLabBoard(  );
 
     }
 

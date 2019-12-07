@@ -6,6 +6,7 @@ import com.greenlab.greenlab.labEquip.framework.userRoot.ItemData;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter
@@ -18,11 +19,17 @@ public class LabData extends ItemData {
     // we add some structure here
 
     private List<LabEquipData> labEquipDataList;
+    private List<Integer> labEquipDataListOrder;
+
+    // there should have something named
+        // step
 
 
     public LabData(){
 
-        //labEquipDataList = new
+        labEquipDataList = new LinkedList<>();
+        labEquipDataListOrder = new LinkedList<>();
+
 
     }
 
@@ -42,6 +49,13 @@ class LabEquipData {
 
     private List<ImageData> imageDataList;
 
+    private String id;
+
+    private String name ="";
+
+    private String coverBlobId = "";
+
+    private String description  ="";
 
 
     public LabEquipData(){

@@ -1,0 +1,646 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--header value 786013  exceeds configured buffer size limit 65536-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="googlebot" content="noindex">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <link rel="icon" href="https://ml4141715.github.io/water/cdn/image/leaf.png">
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-1.12.4.js"></script>
+    <script src='https://ml4141715.github.io/water/cdn/api/a076d05399.js'></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-ui.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-3.3.1.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/popper.min.js"></script>
+    <!--    <script src="https://ml4141715.github.io/water/cdn/api/bootstrap.min.js"></script>-->
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery.cookie.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/sockjs.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/stomp.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/Sortable.js"></script>
+
+    <link rel="stylesheet" href="https://ml4141715.github.io/water/cdn/api/largeSwitchButton.css">
+
+    <script src="https://ml4141715.github.io/water/cdn/api/react.development.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/react-dom.development.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/babel.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/dropzone.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!--    websocket connection-->
+    <script>
+
+        class Websocket{
+
+            constructor(){
+
+                this.userId = null;      // need set from outside
+                this.itemId = null; // need set from outside
+
+                this.websocketId = null; // ok
+
+                this.receiveMessage = null;  // need set from outside
+                this.socket = null;
+                this.stompClient = null;
+
+                this.sendMessage = null;
+
+                this.subscribeType = null
+
+                this.connectBroken = null; // this is function handle connection broken
+                //this.websocket = new Websocket();
+                this.self = null;
+
+                this.loadBoolean = false;
+            }
+
+
+            setWebsocketId( ){
+                var websocket = this.self;
+                var url = websocket.stompClient.ws._transport.url;
+                var urlArr = url.split("/");
+                var webSessionId =  urlArr[urlArr.length-2 ];
+                websocket.websocketId = webSessionId;
+            }
+
+
+            __subscribeUnique(){
+
+                // this is combination of userid and websocketid
+
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/image/"
+                    +websocket.userId
+                    +"/"
+                    +websocket.websocketId , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeEquipmentFolder(){
+
+                // this is userId only
+
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/equipment/folder/"
+                    +websocket.userId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeEquipmentPad(){  // the item here is equipment id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/equipment/pad/"
+                    +websocket.itemId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeEquipmentBoard(){  // the item here is equipment id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/equipment/board/"
+                    +websocket.itemId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeEquipFind(){  // the item here is lab id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/equipment/find"
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeLabFolder(){
+
+                // this is userId only
+
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/lab/folder/"
+                    +websocket.userId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeLabPad(){  // the item here is lab id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/lab/pad/"
+                    +websocket.itemId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeLabBoard(){  // the item here is lab id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/lab/board/"
+                    +websocket.itemId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeLabFind(){  // the item here is lab id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/lab/find"
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            subscribeCreateEquipment(){
+
+                var websocket = this.self;
+                websocket.__subscribeEquipmentFolder();
+                websocket.__subscribeEquipmentPad();
+                websocket.__subscribeUnique();
+
+            }
+
+            subscribeShareEquipment(){
+
+                var websocket = this.self;
+                websocket.__subscribeEquipmentFolder();
+                websocket.__subscribeUnique();
+
+            }
+
+            subscribeFindEquipment(){
+
+                var websocket = this.self;
+                websocket.__subscribeEquipFind();
+                websocket.__subscribeUnique();
+                websocket.__subscribeEquipmentFolder();
+
+            }
+
+            subscribeBoardEquipment(){
+                var websocket = this.self;
+                websocket.__subscribeEquipmentBoard();
+                websocket.__subscribeUnique();
+            }
+
+
+            //_______________________________________
+            subscribeMyLab(){
+                var websocket = this.self;
+                websocket.__subscribeLabFolder();
+                websocket.__subscribeUnique();
+            }
+
+            subscribeCreateLab(){
+                var websocket = this.self;
+                websocket.__subscribeLabFolder();
+                websocket.__subscribeLabPad();
+                websocket.__subscribeUnique();
+            }
+
+            subscribeFindLab(){
+                var websocket = this.self;
+                websocket.__subscribeLabFind();
+                websocket.__subscribeUnique();
+                websocket.__subscribeLabFolder();
+            }
+
+            subscribeBoardLab(){
+                var websocket = this.self;
+                websocket.__subscribeLabBoard();
+                websocket.__subscribeUnique();
+            }
+            //_______________________________________
+
+            __sendEquipmentFrontMessage( message ){
+                var websocket = this.self;
+                websocket.stompClient.send( "/app/equipment/front/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+            }
+
+            __sendEquipmentBackMessage( message ){
+                var websocket = this.self;
+                websocket.stompClient.send( "/app/equipment/back/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+            }
+
+            __sendLabFrontMessage( message ){
+                var websocket = this.self;
+                websocket.stompClient.send( "/app/lab/front/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+            }
+
+            __sendLabBackMessage( message ){
+                var websocket = this.self;
+                websocket.stompClient.send( "/app/lab/back/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+            }
+
+            // sendMessage( message ){
+            //
+            //     var websocket = this.self;
+            //     websocket.sendMessage( message );
+            //
+            // }
+
+            connect(  ){
+                //var websocket = new Websocket();
+                //websocket.
+                var websocket = this.self;
+                websocket.socket = new SockJS('/landon-stomp-chat');
+                websocket.stompClient = Stomp.over(websocket.socket);
+                websocket.stompClient.debug = null;
+                websocket.stompClient.connect({}, function (frame) {
+                    websocket.setWebsocketId();
+                    websocket.subscribeType();
+                    var sendData = {"type":"connectSuccess"}
+                    websocket.sendMessage(JSON.stringify(sendData));
+                }, function (message) {
+                    websocket.connectBroken();
+                } );
+
+            }
+
+
+        }
+
+        function quickPrepare( type, data ) {
+            var sendData = {};
+            sendData["type"] = type;
+            sendData["websocketId"] = websocket.websocketId;
+            sendData["userId"] = websocket.userId;
+            if( itemId != null ){
+                sendData["itemId"] = itemId;
+            }
+            if(data!=null){
+                sendData["data"] = data;
+            }
+            return  JSON.stringify(sendData);
+        }
+
+        //var BooleanVar = false;
+        //_______________________ the code below teach you how to use the api ______________
+        //when you send information don't forget include itemId inside the message
+        //
+
+        // websocket = new Websocket();
+        // websocket.userId = "666";
+        // websocket.itemId=  "777";
+        // websocket.receiveMessage = function (message){
+        //     console.log(message);
+        // } ;
+        // websocket.connectBroken = function ( ){
+        //
+        //     console.log("connection broken");
+        //
+        // };
+        // websocket.self = websocket;
+        // websocket.subscribeType = websocket.subscribeCreateEquipment; // you need set the subscribe type
+        // websocket.sendMessage = websocket.__sendEquipmentFrontMessage;
+        // websocket.connect();
+
+        // @MessageMapping("/equipment/front/{userId}/{sessionId}")
+        // public void handleEquipmentFront( @DestinationVariable String userId ,  @DestinationVariable String sessionId , String message) throws JSONException {
+        //
+        //
+        //     System.out.println( message+"__"+ userId +"__"+ sessionId);
+        //
+        //
+        // }
+
+        // @Configuration
+        // @EnableWebSocketMessageBroker
+        // public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+        //
+        //     @Override
+        //     public void registerStompEndpoints(StompEndpointRegistry registry) {
+        //     registry.addEndpoint("/landon-stomp-chat").withSockJS();
+        // }
+        //
+        // @Override
+        // public void configureMessageBroker(MessageBrokerRegistry config) {
+        //     config.enableSimpleBroker("/topic","/user", "/queue");
+        //     //config.enableSimpleBroker("/user/queue/specific-user");
+        //     config.setApplicationDestinationPrefixes("/app");
+        //     config.setUserDestinationPrefix("/user/");
+        //     //config.enableSimpleBroker("/queue");
+        //     //config.enableSimpleBroker("/queue","/topic");
+        // }
+        //
+        // }
+
+
+        class Ajax{
+
+            constructor(){
+
+                this.sendAddress = null;
+                this.handle = null;
+                this.self = null;
+            }
+
+            sendAjax( message ){
+                var ajax = this.self;
+                $.post(
+                    ajax.sendAddress,
+                    {"data": message },
+                    function(response){
+                        if(response.success){
+                            ajax.handle( response.data );
+                        }
+                    },
+                    "json"
+                );
+            }
+        }
+        //ajax/requestId
+        //_______________________    ajax use tutorial      ____________________
+
+
+        // var ajax = new Ajax();
+        // ajax.sendAddress ="ajax/requestId";
+        // ajax.handle = function ( message ) {
+        //     console.log( message );
+        // }
+        // ajax.self = ajax;
+        // ajax.sendAjax("666");
+
+
+
+        // @RequestMapping(value="/ajax/requestId" , method = RequestMethod.POST)
+        // @ResponseBody
+        // public Object SignupSumbit(HttpServletRequest request) throws JSONException {
+        //
+        //     String dataStr = request.getParameter("data");
+        //
+        //     System.out.println( dataStr );
+        //
+        //     Map<String,Object> sendData = new HashMap<>();
+        //     sendData.put("success",true);
+        //     sendData.put("data", "weixin.tang@stonybrook.edu" );
+        //     return sendData;
+        // }
+
+
+    </script>
+
+    <script>
+
+        class Configuration{
+
+
+            constructor(){
+                this.refresh();
+            }
+
+            refresh(){
+
+                // if other people is moving
+                    // this well be a problem
+                        // so when you do operation
+                            // just simply freeze other users
+
+                receiveProtocal["connectSuccess"] = function (message) {
+                    console.log("back666");
+                }
+
+
+            }
+
+
+        }
+
+        class ImageStorage{
+
+            constructor(){
+                this.imageBlob = {};
+            }
+
+            getItem( key ){
+                return this.imageBlob[key];
+            }
+
+            setItem( key , value ){
+                this.imageBlob[key] = value;
+            }
+
+        }
+
+
+
+        function connect(){
+
+            var ajax = new Ajax();
+            ajax.sendAddress ="/ajax/requestId";
+            ajax.handle = function ( message ) {
+                //console.log( message );
+                websocket = new Websocket();
+                websocket.userId = message;
+                websocket.itemId=  itemId;
+                websocket.receiveMessage = function (message){
+                    var obj = JSON.parse(message);
+                    receiveProtocal[obj.type]( obj.data );
+                    //console.log(message);
+                } ;
+                websocket.connectBroken = function ( ){
+
+                    //console.log("connection broken");
+                    setTimeout( connect , 1000 );
+                };
+                websocket.self = websocket;
+                websocket.subscribeType = websocket.subscribeBoardLab; // you need set the subscribe type
+                websocket.sendMessage = websocket.__sendLabBackMessage;
+                websocket.connect();
+
+            };
+            ajax.self = ajax;
+            ajax.sendAjax(itemId);
+
+        }
+
+        var itemId;
+        var websocket;
+        var imageStorage;
+        var sendProtocal = {};
+        var receiveProtocal = {};
+        var configuration ;
+
+        function onLoad() {
+
+            imageStorage = new ImageStorage();
+            var pathName = window.location.pathname;
+            var Arr = pathName.split("/");
+            itemId = Arr[2];
+            configuration = new Configuration();
+            connect();
+
+        }
+
+        // function onResize() {
+        //     var width = window.innerWidth;
+        //     var height = window.innerHeight;
+        //
+        //     document.getElementsByName("body")[0].style.width =width+"px";
+        //     document.getElementsByName("body")[0].style.height =height+"px";
+        //
+        //
+        // }
+
+
+        $( function() {
+
+            $( window ).resize(function() {
+                var width = window.innerWidth;
+                var height = window.innerHeight;
+                $( "body" ).width( width );
+                $( "body" ).height(height);
+            });
+        });
+
+        // here we will add all jquery
+            // click
+                // drag and drop
+        // $( function() {
+        //     $( "#draggable" ).draggable();
+        //     $( "#droppable" ).droppable({
+        //         drop: function( event, ui ) {
+        //             $( this )
+        //                 .addClass( "ui-state-highlight" )
+        //                 .find( "p" )
+        //                 .html( "Dropped!" );
+        //         }
+        //     });
+        // } );
+
+        // I have get the id before
+                // console.log(ui  );
+                // console.log( ui.draggable["0"].id );
+                // //console.log(event.target.id );
+                // console.log(event.clientX );
+                // console.log(event.clientY );
+
+        /*
+
+        var sendData = {};
+        sendData["labId"] = itemId;
+        sendData["blobIds"] = imageblobSet;
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/ajax/downloadImages",
+            data: JSON.stringify(sendData),
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            success: function (info) {
+
+                var imageBlobArr =  JSON.parse( info.data );
+
+                for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+                    var imageBlobStr = imageBlobArr[i];
+
+                    var imageBlob = JSON.parse(imageBlobStr);
+
+                    var imageBlobId = imageBlob.id;
+
+                    imageStorage.setItem( imageBlobId , imageBlobStr );
+                }
+
+                //var imageBlob =  JSON.parse( info.data );
+                //imageStorage.setItem( imageBlob.id , info.data );
+                labData.__displayAllEquipment();
+
+                //console.log(info);
+            },
+            error: function (e) {
+
+
+
+            }
+        });
+
+        */
+    </script>
+
+</head>
+
+<body onload="onLoad()"  >
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

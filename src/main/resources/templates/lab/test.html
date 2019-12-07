@@ -37,52 +37,115 @@
     <script src="https://ml4141715.github.io/water/cdn/api/babel.min.js"></script>
     <script src="https://ml4141715.github.io/water/cdn/api/dropzone.js"></script>
 
-
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 </head>
 
 <body>
 
-<div class="btn btn-primary" >
-    test1
-</div>
-
-<div class="leftCardsList">
-
-    <div class="myCard">
-
-        666
-
-    </div>
-
-</div>
-
-<div class="midCardsList">
-
-    <div class="myCard">
-
-        888
-
-    </div>
-
-</div>
-
-
 <style>
-
-    .leftCardsList > .myCard{
-
-        background-color: #008CBA;
-
-    }
-
-    .midCardsList > .myCard{
-
-
-        background-color: #6fb3b8;
-    }
-
+    #draggable1 { width: 100px; height: 100px; padding: 0.5em; float: left; margin: 10px 10px 10px 0; }
+    #droppable2 { width: 150px; height: 150px; padding: 0.5em; float: left; margin: 10px; }
 </style>
+
+<script>
+    $( function() {
+        $( "#draggable1" ).draggable();
+
+        $( "#draggable1" ).click(function() {
+            //$( "#target" ).mousemove();
+            console.log("777");
+        });
+
+        $("#draggable1"  ).mousemove(
+            function (event) {
+
+                console.log("666");
+
+            }
+        );
+
+        $( "#droppable2" ).droppable({
+            drop: function( event, ui ) {
+
+                $( this )
+                    .addClass( "ui-state-highlight" )
+                    .find( "p" )
+                    .html( "Dropped!" );
+
+                console.log(ui  );
+                console.log( ui.draggable["0"].id );
+                //console.log(event.target.id );
+                console.log(event.clientX );
+                console.log(event.clientY );
+                //offsetX
+                //offsetY
+                //screenX: 185
+                //screenY: 227
+                    //originalEvent
+
+
+            }
+        });
+        $( "body" ).mousemove(
+            function (event) {
+
+                //console.log("666");
+
+            }
+        );
+
+
+
+    } );
+</script>
+
+<div id="draggable1" class="ui-widget-content">
+    <p>Drag me to my target</p>
+</div>
+
+
+
+<div id="droppable2" class="ui-widget-header">
+    <p>Drop here</p>
+</div>
+
+                <div class="card">
+                    <div class='card-header' id="headingOne">
+                        <h2 class='mb-0'>
+                            <button class='btn btn-link' type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne'>
+                                Step 1
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id='collapseOne' class='collapse show' aria-labelledby='headingOne' data-parent='#accordionExample'>
+                        <div class='card-body'>
+
+                            <div class='input-group mb-3'>
+                                <div class='input-group-prepend'>
+                                    <span class='input-group-text'>info:</span>
+                                </div>
+                                <input class='form-control' type='text' placeholder='step description'>
+                            </div>
+
+
+                            <div class='btn btn-group'>
+                                <div class='btn btn-info mr-2'>
+                                    <i class='far fa-save'></i> Show Before
+                                </div>
+
+                                <div class='btn btn-primary'>
+                                    <i class='far fa-save'></i> Show End
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
 
 </body>
 
