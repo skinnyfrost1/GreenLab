@@ -547,8 +547,6 @@
             }
         }
 
-
-
         class ImageOp{
             constructor(){
                 this.equipmentNameInputId = "equipmentNameInput";
@@ -613,11 +611,6 @@
                     imageOp.handleImageInput( ImageData );
                 }
             }
-
-        }
-
-
-
 
 
 
@@ -781,32 +774,204 @@
 
             }
 
-            __getCardHead( inputId ){
-                var Str = "<div class='input-group mb-3'><div class='input-group-prepend'><span class='input-group-text'>info:</span></div><input id='"+inputId+"' class='form-control' type='text' placeholder='step description'></div>";
+            // __getCardHead( inputId ){
+            //     var Str = "<div class='input-group mb-3'><div class='input-group-prepend'><span class='input-group-text'>info:</span></div><input id='"+inputId+"' class='form-control' type='text' placeholder='step description'></div>";
+            //     return Str;
+            // }
+            //
+            // __getBefore( beforeId ){
+            //     var Str = "<div class='btn btn-info mr-2'><i class='far fa-save'></i> Show Before</div>";
+            //     return Str;
+            // }
+            //
+            // __getEnd( endId ){
+            //     var Str = "<div class='btn btn-primary'><i class='far fa-save'></i> Show End</div>";
+            //     return Str;
+            // }
+
+            __getBtnGroup(){
+
+
+                    // <div class="btn btn-group">
+                    //     <div class="btn btn-info mr-2">
+                    //         <i class="far fa-save"></i> Before
+                    //     </div>
+                    //
+                    //     <div class="btn btn-success mr-2">
+                    //         <i class="far fa-save"></i> Save
+                    //     </div>
+                    //
+                    //     <div class="btn btn-primary">
+                    //         <i class="far fa-save"></i> End
+                    //     </div>
+                    // </div>
+
+
+                var str = "<div class=\"btn btn-group\">\n" +
+                    "                                <div class=\"btn btn-info mr-2\" onclick='beforeStepClick(this)'>\n" +
+                    "                                    <i class=\"far fa-save\"></i> Before\n" +
+                    "                                </div>\n" +
+                    "\n" +
+                    "                                <div class=\"btn btn-success mr-2\" onclick='EndStepClick(this)'>\n" +
+                    "                                    <i class=\"far fa-save\"></i> Save\n" +
+                    "                                </div>\n" +
+                    "\n" +
+                    "                                <div class=\"btn btn-primary\" onclick='EndStepClick(this)'>\n" +
+                    "                                    <i class=\"far fa-save\"></i> End\n" +
+                    "                                </div>\n" +
+                    "                            </div>";
+
+                return str;
+            }
+
+
+            // __getCardBody(  bodyId , content ){
+            //     var start = "<div id='collapseOne' class='collapse show' aria-labelledby='headingOne' data-parent='#accordionExample'>";
+            //     var end = "</div>";
+            //
+            //     return start+content+end;
+            //
+            // }
+
+            __getInputGroup(){
+
+                // <div class="input-group mb-3">
+                //     <div class="input-group-prepend">
+                //         <span class="input-group-text">info:</span>
+                //     </div>
+                //     <input class="form-control" type="text" placeholder="step description">
+                // </div>
+
+                var Str = " <div class=\"input-group mb-3\">\n" +
+                    "                    <div class=\"input-group-prepend\">\n" +
+                    "                        <span class=\"input-group-text\">info:</span>\n" +
+                    "                    </div>\n" +
+                    "                    <input class=\"form-control\" oninput='infoStepInput(this)' type=\"text\" placeholder=\"step description\">\n" +
+                    "                </div>";
+
                 return Str;
+
             }
 
-            __getBefore( beforeId ){
-                var Str = "<div class='btn btn-info mr-2'><i class='far fa-save'></i> Show Before</div>";
+            __getCard(){
+
+            //
+            // <div class="card">
+            //         <div class="card-header" id="headingOne">
+            //             <h2 class="mb-0">
+            //                 <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            //                     Step 1
+            //                 </button>
+            //             </h2>
+            //         </div>
+            //
+            //         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            //             <div class="card-body">
+            //
+            //                 <div class="input-group mb-3">
+            //                     <div class="input-group-prepend">
+            //                         <span class="input-group-text">info:</span>
+            //                     </div>
+            //                     <input class="form-control" type="text" placeholder="step description">
+            //                 </div>
+            //
+            //
+            //
+            //                 <div class="btn btn-group">
+            //                     <div class="btn btn-info mr-2">
+            //                         <i class="far fa-save"></i> Before
+            //                     </div>
+            //
+            //                     <div class="btn btn-success mr-2">
+            //                         <i class="far fa-save"></i> Save
+            //                     </div>
+            //
+            //                     <div class="btn btn-primary">
+            //                         <i class="far fa-save"></i> End
+            //                     </div>
+            //                 </div>
+            //
+            //             </div>
+            //         </div>
+            //     </div>
+            //
+
+
+                // <div class="card">
+                //     <div class="card-header" id="headingOne">
+                //         <h2 class="mb-0">
+                //             <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                //                 Step 1
+                //             </button>
+                //         </h2>
+                //     </div>
+                //
+                //     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                //         <div class="card-body">
+                //
+                //
+                //         </div>
+                //     </div>
+                // </div>
+
+                // here need two different id
+                    // collapseId
+                    // cardheadId
+
+                var Str = "<div class=\"card\">\n" +
+                    "                    <div class=\"card-header\" id=\"headingOne\">\n" +
+                    "                        <h2 class=\"mb-0\">\n" +
+                    "                            <button class=\"btn btn-link\" type=\"button\" data-toggle=\"collapse\" data-target=\"#collapseOne\" aria-expanded=\"true\" aria-controls=\"collapseOne\">\n" +
+                    "                                Step 1\n" +
+                    "                            </button>\n" +
+                    "                        </h2>\n" +
+                    "                    </div>\n" +
+                    "\n" +
+                    "                    <div id=\"collapseOne\" class=\"collapse show\" aria-labelledby=\"headingOne\" data-parent=\"#accordionExample\">\n" +
+                    "                        <div class=\"card-body\">\n" +
+                    "\n" +this.__getInputGroup()+
+                    "\n" +this.__getBtnGroup()+
+                    "                        </div>\n" +
+                    "                    </div>\n" +
+                    "                </div>";
+
                 return Str;
-            }
-
-            __getEnd( endId ){
-                var Str = "<div class='btn btn-primary'><i class='far fa-save'></i> Show End</div>";
-                return Str;
-            }
-
-            __getCardBody(  bodyId , content ){
-                var start = "<div id='collapseOne' class='collapse show' aria-labelledby='headingOne' data-parent='#accordionExample'>";
-                var end = "</div>";
-
-                return start+content+end;
 
             }
+
+
 
         }
 
+        $(function () {
 
+
+            var stepOp = new StepOp();
+
+            //document.getElementById("accordionExample").innerHTML = stepOp.__getCard();
+
+            //stepOp.__getCard()
+
+
+        });
+
+        function infoStepInput( evt ) {
+
+        }
+
+        function beforeStepClick( evt ) {
+
+
+
+        }
+
+        function SaveStepClick( evt ) {
+
+        }
+
+        function EndStepClick( evt ) {
+
+        }
 
     </script>
 
@@ -1662,11 +1827,7 @@
 
     </script>
 
-
-
     <title>Green Lab</title>
-
-
 
     <!--    onLoad-->
     <script>
@@ -1685,6 +1846,7 @@
             leftCardsBox.setHeight(window.innerHeight -(81));
             assistantBox.setHeight(window.innerHeight -(81));
             equipOpBox.setHeight(window.innerHeight -(81));
+            folderContentBox.setHeight(window.innerHeight -(81));
         }
 
 
@@ -1748,6 +1910,7 @@
             leftCardsBox = new Box("equipmentList");
             assistantBox = new Box("operationList");
             equipOpBox = new Box("equipmentOperationSection");
+            folderContentBox = new Box("folderContent");
 
             onResize();
 
@@ -1851,6 +2014,7 @@
         </ul>
     </div>
 </nav>
+
 
 
 <div id="equipmentBody">
@@ -2111,73 +2275,79 @@
 
             <div class="accordion" id="accordionExample">
 
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Step 1
-                            </button>
-                        </h2>
-                    </div>
 
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                        <div class="card-body">
 
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">info:</span>
+
+
+           
+                                <div class="card">
+                                    <div class="card-header" id="headingOne">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                Step 1
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                        <div class="card-body">
+
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">info:</span>
+                                                </div>
+                                                <input class="form-control" type="text" placeholder="step description">
+                                            </div>
+
+
+
+                                            <div class="btn btn-group">
+                                                <div class="btn btn-info mr-2">
+                                                    <i class="far fa-save"></i> Before
+                                                </div>
+
+                                                <div class="btn btn-success mr-2">
+                                                    <i class="far fa-save"></i> Save
+                                                </div>
+
+                                                <div class="btn btn-primary">
+                                                    <i class="far fa-save"></i> End
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
-                                <input class="form-control" type="text" placeholder="step description">
-                            </div>
 
-<!--                            <div class="btn btn-info">-->
-<!--                                <i class="far fa-save"></i> Save this step-->
-<!--                            </div>-->
-
-                            <div class="btn btn-group">
-                                <div class="btn btn-info mr-2">
-                                    <i class="far fa-save"></i> Show Before
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                Step 2
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            777
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="btn btn-primary">
-                                    <i class="far fa-save"></i> Show End
+                                <div class="card">
+                                    <div class="card-header" id="headingThree">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                Step 3
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            888
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-<!--                               <span class="pr-1" > Step 2:</span> <span class="text-info" > 22222 </span>-->
-                                Step 2
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                        <div class="card-body">
-                            777
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" id="headingThree">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                Step 3
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                        <div class="card-body">
-                            888
-                        </div>
-                    </div>
-                </div>
 
             </div>
 
