@@ -1,5 +1,9 @@
 package com.greenlab.greenlab.controller.course;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 // import org.springframework.web.bind.annotation.PostMapping;
 // import org.springframework.web.bind.annotation.RequestBody;
@@ -135,6 +140,76 @@ public class EditCourseController{
         return ResponseEntity.ok(result);
     }
 
+    @ResponseBody
+    @PostMapping(value = "/course/edit/uploadRoster2")
+    public String postCourseEditUploadRoster(@RequestParam(value = "courseId", required = false) String courseId,
+                                             @RequestParam(value = "file", required = false) MultipartFile file,
+                                             ModelMap model, HttpServletRequest request){
+        String creator = (String) request.getSession().getAttribute("email");
+        Course course = courseRepository.findByCourseIdAndCreator(courseId,creator);
+        List<User> students = course.getStudents();
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                ByteArrayInputStream inputFilestream = new ByteArrayInputStream(bytes);
+                BufferedReader br = new BufferedReader(new InputStreamReader(inputFilestream ));
+                String line = "";
+                int count = 0;
+                while ((line = br.readLine()) != null) {
+                    if(count==0){
+                        //First Line
+                    }else {
+                        String[] columns = line.split(",");
+                        System.out.println(columns[2]);
+                        String stuID = columns[2];
+                        if(userRepository.findByUid(stuID)!=null){
+                            User student = userRepository.findByUid(stuID);
+                            if(stuCourseRepository.findByCourseIdAndStudentEmail(courseId,student.getEmail()) != null){
+                                continue;
+                            }
+                            StuCourse stuCourse = new StuCourse(course.get_id(),student.getEmail(),course.getCourseId());
+                            stuCourse.set_id(course.get_id()+student.getEmail());
+                            System.out.println(stuCourse.toString());
+                            stuCourseRepository.save(stuCourse);
+                            students.add(student);
+                            course.setStudents(students);
+                            courseRepository.save(course);
+                        }
+                    }
+                    count++;
+
+                }
+                br.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        StringBuilder sb = new StringBuilder();
+//        sb.append("<div class=\"notVeryBigContainer\" th:id=\"'div_' + ${student.getEmail()}\" >");
+        for(User s:students){
+            sb.append("<div class=\"notVeryBigContainer\" id=\"div_" + s.getEmail() + "\">");
+            sb.append("<table class=\"courseContainer\">");
+            sb.append("<col width=\"15%\"/><col width=\"25%\"/><col width=\"40%\"/><col width=\"20%\"/>");
+            sb.append("<tr>");
+            sb.append("<td class=\"courseCellPadding\">");
+            sb.append("<div class=\"webfont\">").append(s.getFirstname()).append("</div>");
+            sb.append("<input id=\"studentEmail\" type=\"text\" name=\"studentEmail\" value=\"${").append(s.getEmail()).append("\"hidden>");
+            sb.append("</td>");
+            sb.append("<td class=\"courseCellPadding\">").append(s.getLastname()).append("</td>");
+            sb.append("<td class=\"courseCellPadding\">").append(s.getUid()).append("<td/>");
+            sb.append("<td class=\"courseCellPadding\">");
+            sb.append("<a id=\"").append(s.getEmail()).append("\" class=\"headerUnselected\" onclick=\"deleteStudent(this)\"><i class='fas fa-trash-alt headerIcon'></i></a>");
+            sb.append("</td>");
+            sb.append("</tr>");
+            sb.append("</table>");
+            sb.append("</div>");
+
+        }
+
+        return sb.toString();
+    }
 
 
 }

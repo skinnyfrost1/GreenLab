@@ -83,7 +83,8 @@
 <!-- Title -->
 <div class="title webfont" th:text="${course.courseId}"></div>
 <!-- Two containers -->
-<form th:action="@{/course/edit}" method = "post">
+<form id="uploadRosterForm" action="" method = "post" enctype="multipart/form-data"></form>
+<form th:action="@{/course/edit}" method = "post" enctype="multipart/form-data">
     <div style="text-align: center;">
         <!-- Left container -->
         <div class="createCourseContainer webfont">
@@ -148,16 +149,42 @@
     <div style="text-align: center;margin:0em 0em 1em 0em">
         <div class="bigContainer webfont" style="width:83.5%;margin:0em 0em 0em 6.5em;">
 <!--            <div class=" webfont" style="text-align:left; margin: 0.5em 0.5em; " >Student roster</div>-->
+<!--            <div>-->
+<!--                <div class="webfont bold" style=" text-align: left; ">Student Roster-->
+<!--                    <span>-->
+<!--                    <a href="#displayStudent" style = "margin:0em 1em;" onclick="test()"> UploadRoster </a>-->
+<!--                    </span>-->
+<!--                </div>-->
+<!--            </div>-->
             <div>
-                <div class="webfont bold" style=" text-align: left; ">Student Roster
                     <span>
-                    <a href="" style = "margin:0em 1em;"> UploadRoster </a>
+                    <div>
+                        <label for="file" style="margin:0em 5em 0em 0em;font-weight: bold">Student Roster</label>
+                        <input form="uploadRosterForm" type="file" id="file" name="file" value="" accept=".csv" onchange="uploadRoster2()">
+                        <input form="uploadRosterForm" type="text" name="courseId" th:value="${course.getCourseId()}" hidden>
+                        <a onclick=show('img1') > Click to see the roster format ( only .csv accepted ) </a>
+                        <a ><img class="equipmentContainer" th:src="@{/image/RosterFormat.png}" style="position: fixed; text-align: center; width: 16em; height: 12em; top: 5em; z-index: 9999; display: none" id="img1"></a>
+                        <script type="text/javascript">
+                        function show(id)
+                        {
+                            var img = document.getElementById(id);
+                            if(img.style.display == "block") {
+                                document.getElementById(id).style.display = "none";
+                            }
+                            else if(document.getElementById(id).style.display == "none") {
+                                document.getElementById(id).style.display = "block";
+                            }
+                        }
+                        </script>
+                    </div>
+                        <!--            <a href="" style = "margin:0em 1em;"> UploadRoster </a>-->
                     </span>
-                </div>
             </div>
 
             <!-- loop -->
             <!-- one course -->
+            <div id="displayStudent">
+
             <div th:each="student: ${students}" class="notVeryBigContainer" th:id="'div_' + ${student.getEmail()}" >
     <!--            <div th:if="${role=='professor'}"><a th:href="'/course/edit?id=' +${course.get_id()}">-->
                     <table class="courseContainer">
@@ -176,13 +203,14 @@
                             <td class="courseCellPadding" th:text="${student.getUid()}" />
                             <td class="courseCellPadding">
 <!--                                <a th:href="@{/logout}" ><i class='fas fa-trash-alt'></i></a>-->
-                                <a th:id="${student.getEmail()}" class="headerUnselected" onclick="ahhhhh(this)"><i class='fas fa-trash-alt headerIcon'></i></a>
+                                <a th:id="${student.getEmail()}" class="headerUnselected" onclick="deleteStudent(this)"><i class='fas fa-trash-alt headerIcon'></i></a>
                             </td>
                         </tr>
 
                     </table>
-                </a>
             </div>
+            </div>
+
         </div>
     </div>
     <span>
