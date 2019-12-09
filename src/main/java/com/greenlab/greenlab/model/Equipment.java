@@ -45,20 +45,20 @@ public class Equipment {
         this.heater = heater;
     }
 
-    // @Override
-    // public String toString(){
-    //     String str = "{\n"+
-    //                 "\"equipmentName\":"+equipmentName+
-    //                 "\n\"description\":"+description+
-    //                 "\n\"creator\":"+creator+
-    //                 "\n\"isMaterial\":"+isMaterial+
-    //                 "\n\"blandable\":"+blandable+
-    //                 "\n\"blander\":"+blander+
-    //                 "\n\"heatable\":"+heatable+
-    //                 "\n\"heater\":"+heater+
-    //                 "\n}";
-    //     return str;
-    // }
+    @Override
+    public String toString(){
+        String str = "{\n"+
+                    "\"equipmentName\":"+equipmentName+
+                    "\n\"description\":"+description+
+                    "\n\"creator\":"+creator+
+                    "\n\"isMaterial\":"+isMaterial+
+                    "\n\"blandable\":"+blandable+
+                    "\n\"blander\":"+blander+
+                    "\n\"heatable\":"+heatable+
+                    "\n\"heater\":"+heater+
+                    "\n}";
+        return str;
+    }
     
 
 }

@@ -3,9 +3,8 @@ package com.greenlab.greenlab.controller.equipment;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
-
-// import com.greenlab.greenlab.model.Equipment;
-// import com.greenlab.greenlab.repository.EquipmentRepository;
+import com.greenlab.greenlab.model.Equipment;
+import com.greenlab.greenlab.repository.EquipmentRepository;
 
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
@@ -19,8 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class CreateEquipmentController {
-    // @Autowired
-    // private EquipmentRepository equipmentRepository;
+    @Autowired
+    private EquipmentRepository equipmentRepository;
 
     @GetMapping(value = "/equipment/create")
     public String getEquipmentCreate(HttpServletRequest request, ModelMap model) {
@@ -35,33 +34,33 @@ public class CreateEquipmentController {
         return "profCreateEquip";
     }
 
-    // @PostMapping(value = "/equipment/create")
-    // public String postEquipmentCreate(@RequestParam("equipmentName") String equipmentName,
-    //         @RequestParam("equipmentDescription") String description, @RequestParam("isMaterial") Boolean isMaterial,
-    //         @RequestParam("blander") Boolean blander, @RequestParam("blandable") Boolean blandable,
-    //         @RequestParam("heater") Boolean heater, @RequestParam("heatable") Boolean heatable,
-    //         @RequestParam("imageFile") MultipartFile file, HttpServletRequest request, ModelMap model)
-    //         throws IOException {
+    @PostMapping(value = "/equipment/create")
+    public String postEquipmentCreate(@RequestParam("equipmentName") String equipmentName,
+            @RequestParam("equipmentDescription") String description, @RequestParam("isMaterial") Boolean isMaterial,
+            @RequestParam("blander") Boolean blander, @RequestParam("blandable") Boolean blandable,
+            @RequestParam("heater") Boolean heater, @RequestParam("heatable") Boolean heatable,
+            @RequestParam("imageFile") MultipartFile file, HttpServletRequest request, ModelMap model)
+            throws IOException {
 
-    //     String role = (String) request.getSession().getAttribute("role");
-    //     if (role == null)
-    //         return "redirect:/index";
-    //     if (!role.equals("professor")) {
-    //         model.addAttribute("errormsg", "Only professors can create new courses");
-    //         return "error";
-    //     }
+        String role = (String) request.getSession().getAttribute("role");
+        if (role == null)
+            return "redirect:/index";
+        if (!role.equals("professor")) {
+            model.addAttribute("errormsg", "Only professors can create new courses");
+            return "error";
+        }
 
-    //     String creator = (String) request.getSession().getAttribute("email");
-    //     Equipment equipment = new Equipment(equipmentName, description, creator, isMaterial, blandable, blander,
-    //             heatable, heater);
-    //     equipment.setImage(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
-    //     equipmentRepository.save(equipment);
+        String creator = (String) request.getSession().getAttribute("email");
+        Equipment equipment = new Equipment(equipmentName, description, creator, isMaterial, blandable, blander,
+                heatable, heater);
+        equipment.setImage(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
+        equipmentRepository.save(equipment);
 
-    //     // return "profViewEquip";
+        // return "profViewEquip";
 
-    //     //debug
-    //     // model.addAttribute("errormsg",equipment.toString());
-    //     return "error";
-    // }
+        //debug
+        model.addAttribute("errormsg",equipment.toString());
+        return "error";
+    }
 
 }
