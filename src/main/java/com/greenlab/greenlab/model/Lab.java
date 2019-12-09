@@ -24,14 +24,14 @@ public class Lab {
     private String creator;
     private String stepObjectId;
     private List<Material> materials;
-    private List<Container> containers;
-    private List<Holder> holders;
+    // private List<Container> containers;
+    // private List<Holder> holders;
     // private List<Steps> steps;
 
     public Lab() {
         materials = new ArrayList<Material>();
-        containers = new ArrayList<Container>();
-        holders = new ArrayList<Holder>();
+        // containers = new ArrayList<Container>();
+        // holders = new ArrayList<Holder>();
         // steps = new ArrayList<Steps>();
     }
 
@@ -42,17 +42,17 @@ public class Lab {
         this.labDescription = labDescription;
         this.creator = creator;
     }
-    public Lab(String _id, String courseId, String labName, String labDescription, String creator,
-            List<Material> materials, List<Container> containers, List<Holder> holders) {
-        this._id = _id;
-        this.courseId = courseId;
-        this.labName = labName;
-        this.labDescription = labDescription;
-        this.creator = creator;
-        this.materials = materials;
-        this.containers = containers;
-        this.holders = holders;
-    }
+    // public Lab(String _id, String courseId, String labName, String labDescription, String creator,
+    //         List<Material> materials, List<Container> containers, List<Holder> holders) {
+    //     this._id = _id;
+    //     this.courseId = courseId;
+    //     this.labName = labName;
+    //     this.labDescription = labDescription;
+    //     this.creator = creator;
+    //     this.materials = materials;
+    //     this.containers = containers;
+    //     this.holders = holders;
+    // }
 
 
     public String testString() {
