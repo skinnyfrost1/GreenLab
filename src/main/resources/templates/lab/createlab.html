@@ -484,6 +484,7 @@
                 // this.self = null;
             }
             setActive( Id ){
+
                 document.getElementById(Id).className="nav-link text-muted active";
                 //console.log( Id.slice(9) );
                 // we also need active the body content
@@ -515,18 +516,31 @@
                 return [ this.activeImage ,this.activeEdit , this.activeArea, this.activeAdd ]
             }
             activeImage(){
+                //console.log("??12");
+                document.getElementById("equipList").className = "w-100 h-100 border border-primary rounded";
+                document.getElementById("drawing").className = "w-100 h-100 border border-primary rounded d-none ";
+                document.getElementById("folderContent").className = "card-rows";
                 this.clearActive();
                 this.setActive( this.imageId );
             }
             activeAdd(){
+                //console.log("??2");
                 this.clearActive();
                 this.setActive( this.addId );
             }
             activeArea(){
+
+
+                //console.log("??");
+
                 this.clearActive();
                 this.setActive( this.areaId );
             }
             activeEdit(){
+
+                document.getElementById("equipList").className = "w-100 h-100 border border-primary rounded d-none";
+                document.getElementById("drawing").className = "w-100 h-100 border border-primary rounded";
+                document.getElementById("folderContent").className = "card-rows hideTrashBin";
                 this.clearActive();
                 this.setActive( this.editId );
             }
@@ -770,6 +784,7 @@
                     console.log("123AB");
 
                 });
+
 
 
             }
@@ -1182,61 +1197,125 @@
             //
             // });
 
-            $('#folderContent').bind("DOMSubtreeModified",function(){
-               // alert('changed');
-                //console.log("626");
-                //console.log( document.getElementById("folderContent").children[0].id );
-                // if( boolean == false ){
-                //     boolean = true;
-                // }else{
-                //     boolean =false;
-                    //console.log("1______");
-                //console.log("2______");
-                //}
-
-                // so we will put all those things
-                var nodeIds =[];
-                var nodes = document.getElementById("folderContent").children;
-                for( var i = 0 ; i < nodes.length ; i++ ){
-                    var node = nodes[i];
-                    nodeIds.push( node.id );
-                    //console.log( node.id );
-                }
-
-                if( nodeIds.length >= max ){
-
-                    sendProtocal["labEquipList"]( nodeIds );
-
-                    max = nodeIds.length;
-                }
-
-
-
-
-            });
+            // $('#folderContent').bind("DOMSubtreeModified",function(){
+            //    // alert('changed');
+            //     //console.log("626");
+            //     //console.log( document.getElementById("folderContent").children[0].id );
+            //     // if( boolean == false ){
+            //     //     boolean = true;
+            //     // }else{
+            //     //     boolean =false;
+            //         //console.log("1______");
+            //     //console.log("2______");
+            //     //}
+            //
+            //     // so we will put all those things
+            //     var nodeIds =[];
+            //     var nodes = document.getElementById("folderContent").children;
+            //     for( var i = 0 ; i < nodes.length ; i++ ){
+            //         var node = nodes[i];
+            //         nodeIds.push( node.id );
+            //         //console.log( node.id );
+            //     }
+            //
+            //     if( nodeIds.length > max ){
+            //
+            //         sendProtocal["labEquipList"]( nodeIds );
+            //
+            //         max = nodeIds.length;
+            //     }else if( nodeIds.length == max ){
+            //
+            //         sendProtocal["labEquipList"]( nodeIds );
+            //
+            //     }
+            //
+            //
+            //
+            //
+            // });
 
             // $( "#folderContent" ).mouseup(function() {
             //     console.log("636");
             // });
 
             new Sortable(document.getElementById("middleBoard"), {
-                group: {
-                    name: 'shared',
-                    pull: 'clone',
-                    put: false // Do not allow items to be put into this list
-                },
+                group: 'shared',
                 animation: 150,
                 sort: false // To disable sorting: set sort to false
             });
-
+            //
             new Sortable(document.getElementById("folderContent"), {
-                group: 'shared',
-                animation: 150
+                group: 'shared2',
+                animation: 150,
+                sort: false
             });
 
             // $('[data-toggle="tooltip"]').tooltip();
 
         });
+
+        function cardsClick( evt ) {
+            //console.log( "node.id" );
+
+            //console.log(evt.parentNode.id);
+
+            if(  evt.parentNode.id == "middleBoard"){
+
+
+                var nodeIds =[];
+                nodeIds.push(evt.id);
+                var nodes = document.getElementById("folderContent").children;
+                for( var i = 0 ; i < nodes.length ; i++ ){
+                    var node = nodes[i];
+                    nodeIds.push( node.id );
+                    //console.log( node.id );
+                }
+                sendProtocal["labEquipList"]( nodeIds );
+
+            }else if( evt.parentNode.id == "folderContent" ){
+
+                // if( evt.parentNode.className == "card-rows hideTrashBin" ){
+                //
+                //
+                //     console.log( "6788hb" );
+                //
+                // }
+
+                //console.log( "6788hb" );
+
+                // console.log( evt.parentNode.class );
+                //console.log( evt.parentNode.className );
+
+                if( evt.parentNode.className == "card-rows hideTrashBin" ){
+
+                    var id = evt.id;
+                    var parenNode = evt.parentNode;
+                    parenNode.removeChild(evt);
+
+                    var nodeIds =[];
+                    var nodes = document.getElementById("folderContent").children;
+                    for( var i = 0 ; i < nodes.length ; i++ ){
+                        var node = nodes[i];
+                        nodeIds.push( node.id );
+                        //console.log( node.id );
+                    }
+                    sendProtocal["labEquipList"]( nodeIds );
+
+                    sendProtocal["addEquipToBoard"](id);
+
+
+
+                }
+
+
+                //console.log(evt.parentNode);
+
+            }
+            //console.log(evt.parentNode.id);
+
+
+
+        }
 
         class Card{
             constructor(){
@@ -1281,7 +1360,7 @@
 
             __cardWithTrashBin(){
 
-                var ReturnData = "<div class=\"card mb-1 grid-square\"  id=\""+this.imageId+"\" >\n" +
+                var ReturnData = "<div class=\"card mb-1 grid-square\"  id=\""+this.imageId+"\" onclick='cardsClick(this)'>\n" +
                     "                <img class=\"card-img-top img-fluid grid-photo\" src=\""+this.imageData+"\" alt=\"\" draggable=\"false\">\n" +
                     "                <div class=\"card-body\">\n" +
 
@@ -1302,11 +1381,26 @@
         }
 
 
+
+
         function deleteEquipmentFromLab( evt ){
 
-            var id =  evt.parentNode.parentNode.parentNode.id;
+            var equip = evt.parentNode.parentNode.parentNode;
 
-            //sendProtocal[""]
+            var folderContent = equip.parentNode;
+
+
+            folderContent.removeChild( equip );
+
+
+            var nodeIds =[];
+            var nodes = document.getElementById("folderContent").children;
+            for( var i = 0 ; i < nodes.length ; i++ ){
+                var node = nodes[i];
+                nodeIds.push( node.id );
+                //console.log( node.id );
+            }
+            sendProtocal["labEquipList"]( nodeIds );
 
         }
 
@@ -1402,7 +1496,7 @@
                 this.introductionSection();
                 this.loadSuccess();
                 this.settingSection();
-
+                this.stepSection();
 
             }
 
@@ -1411,6 +1505,7 @@
                 receiveProtocal["connectSuccess"] = function (message) {
                     sendProtocal["refreshLab"]();
                     sendProtocal["refreshAllEquipment"]();
+                    sendProtocal["labEquipList"]();
                 };
 
                 sendProtocal["refreshLab"] = function () {
@@ -1439,7 +1534,7 @@
                     //labData = new LabData();
                     labData.displayLab();
 
-                }
+                };
 
 
 
@@ -1448,15 +1543,14 @@
                     //console.log(nodeIds);
                     websocket.sendMessage(quickPrepare( "labEquipList", nodeIds ));
 
-                }
+                };
 
-                receiveProtocal["labEquipList"] = function (nodeIds) {
+                receiveProtocal["labEquipList"] = function ( equips ) {
 
-                    //console.log(nodeIds);
+                    //console.log(equips);
 
-                    // we need genrate the cards
-
-
+                    labData.folderContentEquip = equips;
+                    labData.displayFolderConetnt();
 
                 }
 
@@ -1563,7 +1657,19 @@
 
             }
 
+            stepSection(){
 
+                sendProtocal["addEquipToBoard"] = function(id){
+
+
+                    console.log(id);
+
+
+                }
+
+
+
+            }
 
         }
 
@@ -1596,7 +1702,7 @@
 
                 this.EquipmentData = null;
 
-
+                this.folderContentEquip = null;
                 // so we need added equipment to the lab
                 // so also need lab name
                 // lab into
@@ -1606,7 +1712,114 @@
                     //
             }
 
+            displayFolderConetnt(){
 
+                var equips = this.folderContentEquip;
+
+                var imageblobSet = [];
+                for( var i = 0 ; i <  equips.length ; i++  ){
+
+                    var equip = JSON.parse(equips[i]);
+
+                    //console.log(equip);
+                    var imageblob = imageStorage.getItem( equip.coverBlobId );
+                    if( imageblob == null ){
+                        imageblobSet.push(  equip.coverBlobId );
+                    }
+
+                }
+
+                if( imageblobSet.length != 0 ){
+
+                    var sendData = {};
+                    sendData["labId"] = itemId;
+                    sendData["blobIds"] = imageblobSet;
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/ajax/downloadImages",
+                        data: JSON.stringify(sendData),
+                        dataType: 'json',
+                        cache: false,
+                        timeout: 600000,
+                        success: function (info) {
+                            var imageBlobArr =  JSON.parse( info.data );
+                            for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+                                var imageBlobStr = imageBlobArr[i];
+                                var imageBlob = JSON.parse(imageBlobStr);
+                                var imageBlobId = imageBlob.id;
+                                imageStorage.setItem( imageBlobId , imageBlobStr );
+                            }
+
+                            //var imageBlob =  JSON.parse( info.data );
+                            //imageStorage.setItem( imageBlob.id , info.data );
+                            //labData.__displayAllEquipment();
+                            labData.__displayFolderConetnt();
+
+
+
+                            //console.log(info);
+                        },
+                        error: function (e) {
+
+
+
+                        }
+                    });
+
+
+                }else{
+
+                    labData.__displayFolderConetnt();
+
+                }
+
+
+
+                //cards.addCard(  )
+
+            }
+
+            __displayFolderConetnt(){
+
+                var equips = this.folderContentEquip;
+                var cards = new Cards();
+                cards.folderContentId = "folderContent";
+
+
+
+                for( var i = 0 ; i <  equips.length ; i++  ) {
+
+                    var equipmentData = JSON.parse(equips[i]);
+
+                    //console.log("66g");
+                    //console.log(equip);
+                    //imageStorage.getItem(equip.coverBlobId)
+                    var blob;
+
+                    if(equipmentData.coverBlobId!=""){
+
+                        var imageBlob = JSON.parse(imageStorage.getItem( equipmentData.coverBlobId ));
+
+                        blob = imageBlob.blob;
+
+                    }else{
+
+                        blob = "";
+
+                    }
+
+                    //cards.addCard(  "https://ml4141715.github.io/water/cdn/image/Holder.png" , "equipmentData.name ", "equipmentData.description" , "equipmentData.id" );
+                    cards.addCard( blob , equipmentData.name+"&nbsp" , equipmentData.description+"&nbsp" , equipmentData.id );
+
+
+
+
+                }
+
+                cards.setHTML();
+            }
 
             displayLab(){
 
@@ -1954,7 +2167,7 @@
 
             labOpSections = new EquipmentOperationSection();
             labOpSections.activeAllButton(labOpSections);
-            labOpSections.setIndexActive(1);
+            labOpSections.setIndexActive(0);
 
             introductionOp = new ImageOp();
             introductionOp.self = introductionOp;
@@ -2153,7 +2366,7 @@
 <div id="equipmentPanel"  >
 
 
-    <div class="w-100 h-100 border border-primary rounded d-none" style="overflow: auto;" >
+    <div id="equipList" class="w-100 h-100 border border-primary rounded " style="overflow: auto;" >
 
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top justify-content-between">
@@ -2174,7 +2387,7 @@
         </nav>
 
 
-            <div class="card-rows" id="middleBoard">
+            <div class="card-rows hideTrashBin" id="middleBoard">
 
 
 <!--                <div class="card mb-1 grid-square"  >-->
@@ -2207,7 +2420,7 @@
     </div>
 
 
-    <iframe class="w-100 h-100 border border-primary rounded "  src="/editlabboard/5de1e3d65c9835c587c68dc9" id="drawing">
+    <iframe class="w-100 h-100 border border-primary rounded d-none"  src="/editlabboard/5de1e3d65c9835c587c68dc9" id="drawing">
     </iframe>
 
     <script>
@@ -2477,10 +2690,9 @@
         display: none;
     }
 
-    #middleBoard span{
+    .hideTrashBin span{
         display: none;
     }
-
 
     .grid-photo-center {
         display: block;

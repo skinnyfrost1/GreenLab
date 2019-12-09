@@ -629,16 +629,155 @@
         */
     </script>
 
+    <script>
+
+        // so before we connect the front create lab and lab board
+            // I would guess you
+                // create some fake data and directly show here
+
+        // so we need include some image here
+
+        //https://ml4141715.github.io/water/cdn/image/acidBurette.png
+        //https://ml4141715.github.io/water/cdn/image/Canula.png
+        //https://ml4141715.github.io/water/cdn/image/Container.png
+        //https://ml4141715.github.io/water/cdn/image/dropper.png
+        //https://ml4141715.github.io/water/cdn/image/droppingliquid.png
+
+        // $(function () {
+        //
+        //     // $( "#1" ).draggable();
+        //     // $( "#2" ).draggable();
+        //     //
+        //     // $( "#1" ).droppable({
+        //     //     drop: function( event, ui ) {
+        //     //         // $( this )
+        //     //         //     .addClass( "ui-state-highlight" )
+        //     //         //     .find( "p" )
+        //     //         //     .html( "Dropped!" );
+        //     //
+        //     //         console.log("666");
+        //     //
+        //     //     }
+        //     // });
+        //     //
+        //     // $( "#2" ).droppable({
+        //     //     drop: function( event, ui ) {
+        //     //
+        //     //
+        //     //         console.log("777");
+        //     //
+        //     //
+        //     //     }
+        //     // });
+        //
+        //
+        //     $( function() {
+        //         $( "#2" ).draggable();
+        //         $( "#1" ).draggable();
+        //         $( "#1" ).droppable({
+        //             drop: function( event, ui ) {
+        //
+        //                 // $( this )
+        //                 //     .addClass( "ui-state-highlight" )
+        //                 //     .find( "p" )
+        //                 //     .html( "Dropped!" );
+        //
+        //                 console.log("666");
+        //             }
+        //         });
+        //
+        //         $( "#1" ).click(function() {
+        //
+        //
+        //             console.log("999");
+        //         });
+        //
+        //         // $( "#2" ).ondrag(
+        //         //
+        //         //
+        //         //
+        //         //
+        //         // );
+        //
+        //
+        //     } );
+        //
+        // });
+
+        // not inside quik prepare
+            // the data should include websocket id
+                // so this should be do in the back side not the front side
+                    // the front check if it's itself
+                        // just don't do anything
+                            // ok
+                            //
+                            //
+
+        function onMouseDown( evt ) {
+            var parentNode = evt.parentNode;
+            parentNode.removeChild(evt);
+            parentNode.append(  evt );
+        }
+
+        function onClick(evt ) {
+
+
+
+            //console.log(evt.id);
+
+        }
+
+        function onDrag( evt ) {
+
+            console.log(evt.id);
+
+        }
+
+        class Equipment{
+
+            constructor(){
+
+
+
+            }
+
+            getHTML(){
+
+                var value = ""
+
+            }
+
+
+
+        }
+
+        $(function () {
+
+
+
+
+
+
+
+        });
+
+
+    </script>
+
 </head>
 
 <body onload="onLoad()"  >
 
 
+<!--<img id="1" src="https://ml4141715.github.io/water/cdn/image/acidBurette.png" onclick="onClick(this)" onmousedown="onMouseDown(this)" style="position: fixed;" alt="">-->
 
+<!--<img id="2" src="https://ml4141715.github.io/water/cdn/image/Canula.png" onclick="onClick(this)" onmousedown="onMouseDown(this)" ondrag="onDrag(this)" style="position: fixed;" alt="">-->
 
+<!--<img src="image/heater_ps_1.png" alt="">-->
 
+<!--<img src="image/flask_ps_0.png" alt="">-->
 
-
+<!--<img src="image/flask_ps_1.png" alt="">-->
 
 
 </body>

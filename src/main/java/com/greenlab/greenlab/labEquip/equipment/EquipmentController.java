@@ -888,11 +888,65 @@ public class EquipmentController {
 //                 sendLabFolder( "", "" );
             }else if( type.equals("labEquipList") ){
 
-                JSONArray jsonArray = (JSONArray)data.get("data");
+                try{
 
-                //System.out.println(jsonArray.toString());
+                    JSONArray jsonArray = (JSONArray)data.get("data");
 
-                sendLabPad( labId , message );
+
+
+                    List<String> list = new LinkedList<>();
+                    for( int i = 0 ; i< jsonArray.length(); i++ ){
+
+                        list.add( jsonArray.getString(i) );
+
+                    }
+
+                    labData.setLabEquipDataList( list );
+                    labDataRepository.save( labData );
+
+
+                    JSONArray equipArr = new JSONArray();
+
+                    for( int i = 0 ; i< jsonArray.length(); i++ ){
+
+                        String equipId = jsonArray.getString(i);
+
+                        EquipmentData equipmentData = equipmentDataRepository.getById(equipId);
+                        equipArr.put( jsonMapper.writeValueAsString( equipmentData ) );
+
+                    }
+
+
+
+                    data.put( "data", equipArr );
+                    sendLabPad( labId , data.toString() );
+                    //System.out.println("666");
+
+                }catch (Exception e){
+
+                    //System.out.println("686");
+
+                    List<String> list = labData.getLabEquipDataList();
+
+                    JSONArray equipArr = new JSONArray();
+
+                    for( int i = 0 ; i< list.size(); i++ ){
+
+                        String equipId = list.get(i);
+                        EquipmentData equipmentData = equipmentDataRepository.getById(equipId);
+                        equipArr.put( jsonMapper.writeValueAsString( equipmentData ) );
+
+                    }
+
+                    data.put( "data", equipArr );
+                    sendLabPad( labId , data.toString() );
+                }
+
+
+
+
+
+
 
             }
 
@@ -1050,6 +1104,43 @@ public class EquipmentController {
         return sendData;
     }
 
+    @RequestMapping(value="/ajax/downloadEquipments" , method = RequestMethod.POST)
+    @ResponseBody
+    public Object DownloadEquipments(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException, JsonProcessingException {
+
+        //System.out.println(reqBody);
+
+
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JSONObject jsonObject = new JSONObject(reqBody);
+
+
+//        JSONArray blobIdArr = (JSONArray) jsonObject.get("blobIds");
+//
+//        JSONArray EquipDataArr = new JSONArray();
+//
+//        for( int i = 0 ; i<  blobIdArr.length() ; i++ ){
+//
+//            String blobId = blobIdArr.get(i).toString();
+//            ImageBlob imageBlob = imageBlobRepository.getById(blobId);
+//            String imagBlobStr = objectMapper.writeValueAsString(imageBlob);
+//            JSONObject jsonObject1 =new JSONObject(imagBlobStr);
+//            EquipDataArr.put( imagBlobStr );
+//
+//        }
+
+
+
+        Map<String,Object> sendData = new HashMap<>();
+        sendData.put("success",true);
+        //sendData.put("data", blobDataArr.toString() );
+
+
+
+        return sendData;
+    }
+
 //_______________________________________________________________________________________________________________________________________________________
 //_______________________________________________________________________________________________________________________________________________________
 //_______________________________________________________________________________________________________________________________________________________
@@ -1131,7 +1222,6 @@ public class EquipmentController {
 
         return jsonArray;
     }
-
 
     public JSONArray prepareAllFolder( String userId ) throws JSONException, JsonProcessingException {
         // here we will prepare all information except images

@@ -18,17 +18,19 @@ public class LabData extends ItemData {
 
     // we add some structure here
 
-    private List<LabEquipData> labEquipDataList;
-    private List<Integer> labEquipDataListOrder;
+    //private List<LabEquipData> labEquipDataList;
+    //private List<Integer> labEquipDataListOrder;
 
     // there should have something named
         // step
 
+    private List<String> labEquipDataList;
 
     public LabData(){
 
+        //labEquipDataList = new LinkedList<>();
+        //labEquipDataListOrder = new LinkedList<>();
         labEquipDataList = new LinkedList<>();
-        labEquipDataListOrder = new LinkedList<>();
 
 
     }
