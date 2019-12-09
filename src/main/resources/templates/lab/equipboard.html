@@ -568,6 +568,22 @@
 
         }
 
+        class ImageStorage{
+
+            constructor(){
+                this.imageBlob = {};
+            }
+
+            getItem( key ){
+                return this.imageBlob[key];
+            }
+
+            setItem( key , value ){
+                this.imageBlob[key] = value;
+            }
+
+        }
+
         class BoardData{
 
             constructor(){
@@ -586,7 +602,7 @@
             displayImageData(  ){
 
                 //console.log(this.imageData);
-                //var imageblobStr = localStorage.getItem( imageData.blobId );
+                //var imageblobStr = imageStorage.getItem( imageData.blobId );
                 // so we will look at the inner html id
                 // if it has such a stuff
 
@@ -609,7 +625,7 @@
 
             createImageHTML(  ){
 
-                var imageBlobStr = localStorage.getItem( boardData.imageData.blobId );
+                var imageBlobStr = imageStorage.getItem( boardData.imageData.blobId );
                 var imageBlob = (JSON.parse(imageBlobStr)).blob;
                 var id = boardData.imageData.blobId;
 
@@ -786,21 +802,28 @@
                 receiveProtocal["updateBoard"] = function(data){
 
                     //console.log("updateBoard 66");
-
+                    //console.log(data);
                     //console.log(JSON.parse( data) );
+
+
 
                     if( data == null ){
 
                         // we will hide the image data
 
+                        document.getElementById("ImageData").innerHTML = "";
+
+
 
                     }else{
                         var imageData = JSON.parse(data);
 
-                        var testItem = localStorage.getItem( imageData.blobId );
+                        var testItem = imageStorage.getItem( imageData.blobId );
+
+                        boardData.setImageData( imageData );
 
                         if( testItem != null ){
-                            boardData.setImageData( imageData );
+
 
                             boardData.displayImageData();
                         }else{
@@ -821,7 +844,7 @@
                     //console.log(data);
                     var imageBlobStr = data;
                     var imageBlob = JSON.parse( data );
-                    localStorage.setItem( imageBlob.id, imageBlobStr );
+                    imageStorage.setItem( imageBlob.id, imageBlobStr );
 
                     boardData.displayImageData();
 
@@ -948,7 +971,11 @@
             }
         }
 
+        var imageStorage;
+
         function onLoad() {
+
+            imageStorage = new ImageStorage();
 
             //console.log( window.location.pathname );
             var pathName = window.location.pathname;

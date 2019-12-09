@@ -413,16 +413,19 @@ public class EquipmentController {
             String equipmentId = jsonObject.get("itemId").toString();
             String selectImageDataId = jsonObject.get("data").toString();
             EquipmentData equipmentData = equipmentDataRepository.getById( equipmentId );
-            if( equipmentData.getCurrentImageIds().equals( selectImageDataId ) ){
-                equipmentData.setCurrentImageIds("");
-
-                //websocket.sendLabBoard();
-
-                //websocket.
-
-            }
             LinkedList<String> linkedList =  equipmentData.getImageIds();
+
             linkedList.remove( selectImageDataId );
+            if( equipmentData.getCurrentImageIds().equals( selectImageDataId ) ){
+                if( linkedList.size()>0 ){
+                    equipmentData.setCurrentImageIds( linkedList.get(0) );
+                }else{
+                    equipmentData.setCurrentImageIds("");
+                }
+                //websocket.sendLabBoard();
+                //websocket.
+            }
+
             equipmentData.setImageIds( linkedList );
             equipmentDataRepository.save( equipmentData );
 
@@ -430,6 +433,7 @@ public class EquipmentController {
             String imageBlobId = imageData.getBlobId();
             decreamentImageBlobCount(  imageBlobId  );
             imageDataRepository.deleteById(selectImageDataId);
+
             UpdateTheEquipment(  equipmentId ,  userId );
 
             updateEquipmentBoard(  equipmentId );
@@ -600,37 +604,98 @@ public class EquipmentController {
     }
 
 
+    @RequestMapping(value="/ajax/uploadEquipStatusImage" , method = RequestMethod.POST)
+    @ResponseBody
+    public Object uploadEquipStatusImage(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException, JsonProcessingException {
 
-//    @RequestMapping(value="/ajax/uploadImage" , method = RequestMethod.POST)
-//    @ResponseBody
-//    public Object UploadEquipImage(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException, JsonProcessingException {
-//
-//        // String dataStr = request.getParameter("data");
-//
-//        //System.out.println( reqBody );
-//
-//        JSONObject jsonObject = new JSONObject(reqBody);
-//        String blob = jsonObject.get("coverImageData").toString();
-//        String labId = jsonObject.get( "labId" ).toString();
-//        //System.out.println( imageBlob );
-//        LabData labData = labDataRepository.getById(labId);
-//        ImageBlob imageBlob = new ImageBlob();
-//        imageBlob.setBlob(blob);
-//        String imageBlobId =  imageBlobRepository.save(imageBlob).getId();
-//        labData.setCoverBlobId( imageBlobId );
-//
-//        labDataRepository.save(labData);
-//
-//        SendRefreshLab( labId , "weixin.tang@stonybrook.edu" );
-//
-//        Map<String,Object> sendData = new HashMap<>();
-//        sendData.put("success",true);
-//
-//
-//
-//        sendData.put("data", "weixin.tang@stonybrook.edu" );
-//        return sendData;
-//    }
+        // String dataStr = request.getParameter("data");
+
+        //System.out.println( reqBody );
+
+        JSONObject jsonObject = new JSONObject(reqBody);
+        String userId = jsonObject.get("userId").toString();
+        String equipmentId = jsonObject.get( "equipId" ).toString();
+        String imageDataStr = jsonObject.get( "imageData" ).toString();
+        Integer width = Integer.parseInt(jsonObject.get("width").toString());
+        Integer height = Integer.parseInt(jsonObject.get("height").toString());
+
+        ImageBlob imageBlob = new ImageBlob();
+        imageBlob.setBlob(imageDataStr);
+        imageBlob.setOriginalHeight( height );
+        imageBlob.setOriginalWidth( width );
+        imageBlob.setCounter(1);
+        String imageBlobId =  imageBlobRepository.save(imageBlob).getId();
+        ImageData imageData = new ImageData();
+        imageData.setBlobId( imageBlobId );
+        String imageDataId =  imageDataRepository.save( imageData ).getId();
+        EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
+        equipmentData.getImageIds().add(imageDataId);
+        equipmentData.setCurrentImageIds( imageDataId );
+        equipmentDataRepository.save( equipmentData );
+        UpdateTheEquipment(  equipmentId ,  userId );
+        updateEquipmentBoard(  equipmentId );
+
+
+        Map<String,Object> sendData = new HashMap<>();
+        sendData.put("success",true);
+
+        //sendData.put("data", "weixin.tang@stonybrook.edu" );
+        return sendData;
+    }
+
+    @RequestMapping(value="/ajax/uploadEquipCoverImage" , method = RequestMethod.POST)
+    @ResponseBody
+    public Object uploadEquipCoverImage(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException, JsonProcessingException {
+
+        // String dataStr = request.getParameter("data");
+
+        //System.out.println( reqBody );
+
+        JSONObject jsonObject = new JSONObject(reqBody);
+        String userId = jsonObject.get("userId").toString();
+        String equipmentId = jsonObject.get( "equipId" ).toString();
+        String imageDataStr = jsonObject.get( "imageData" ).toString();
+
+        //System.out.println(equipmentId);
+
+        EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
+        ImageBlob imageBlob = new ImageBlob();
+        imageBlob.setBlob(imageDataStr);
+        imageBlob.setCounter(1);
+        String imageBlobId =  imageBlobRepository.save(imageBlob).getId();
+        if( equipmentData.getCoverBlobId().equals("")  ){
+        }else{
+            ImageBlob imageBlob1 = imageBlobRepository.getById( equipmentData.getCoverBlobId() );
+            int counter = imageBlob1.getCounter() -1;
+            if( counter <= 0 ){
+                imageBlobRepository.deleteById( equipmentData.getCoverBlobId() );
+            }else{
+                imageBlob1.setCounter( counter );
+                imageBlobRepository.save( imageBlob1 );
+            }
+        }
+        equipmentData.setCoverBlobId(imageBlobId);
+        equipmentDataRepository.save(equipmentData);
+        sendEquipFolder( userId , prepareUpdateAll() );
+
+        //System.out.println("6666");
+        //System.out.println( imageBlob );
+        //        LabData labData = labDataRepository.getById(labId);
+        //        ImageBlob imageBlob = new ImageBlob();
+        //        imageBlob.setBlob(blob);
+        //        String imageBlobId =  imageBlobRepository.save(imageBlob).getId();
+        //        labData.setCoverBlobId( imageBlobId );
+        //
+        //        labDataRepository.save(labData);
+        //
+        //        SendRefreshLab( labId , "weixin.tang@stonybrook.edu" );
+
+        Map<String,Object> sendData = new HashMap<>();
+        sendData.put("success",true);
+
+        //sendData.put("data", "weixin.tang@stonybrook.edu" );
+        return sendData;
+    }
 
     public void updateEquipmentBoard(  String equipmentId ) throws JSONException, JsonProcessingException {
 

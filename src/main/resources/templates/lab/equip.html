@@ -1971,6 +1971,8 @@
 
             displayEquipment(){
 
+
+
                 var name = this.currentEquipmentData.name;
                 var description = this.currentEquipmentData.description;
                 var currentImageId = this.currentEquipmentData.coverBlobId;
@@ -2415,10 +2417,35 @@
 
                 sendProtocal["uploadCoverImageBoth"] = function (imageData) {
 
-                    websocket.sendMessage( quickPrepare("uploadCoverImageBoth" , imageData ) );
+                    //websocket.sendMessage( quickPrepare("uploadCoverImageBoth" , imageData ) );
 
-                    // var userId = websocket.userId;
-                    // var websocketId = websocket.websocketId;
+                    var userId = websocket.userId;
+                    var websocketId = websocket.websocketId;
+
+                    var sendData = {};
+                    sendData["userId"] = websocket.userId;
+                    sendData["equipId"] = itemId;
+                    sendData["imageData"] = imageData;
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/ajax/uploadEquipCoverImage",
+                        data: JSON.stringify(sendData),
+                        dataType: 'json',
+                        cache: false,
+                        timeout: 600000,
+                        success: function (data) {
+
+                            console.log(data);
+
+                        },
+                        error: function (e) {
+
+
+
+                        }
+                    });
 
 
 
@@ -2496,10 +2523,32 @@
                     sendData["imageData"] = imageData;
                     sendData["width"] = width;
                     sendData["height"] = height;
+                    sendData["userId"] = websocket.userId;
+                    sendData["equipId"] = itemId;
+
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/ajax/uploadEquipStatusImage",
+                        data: JSON.stringify(sendData),
+                        dataType: 'json',
+                        cache: false,
+                        timeout: 600000,
+                        success: function (data) {
+
+                            console.log(data);
+
+                        },
+                        error: function (e) {
 
 
 
-                    websocket.sendMessage( quickPrepare("uploadStatusImageImage" , sendData ) );
+                        }
+                    });
+
+
+                    //websocket.sendMessage( quickPrepare("uploadStatusImageImage" , sendData ) );
                     //console.log(sendData);
 
                     // not just send data but we need find some where to get the width and height
