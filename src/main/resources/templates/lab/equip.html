@@ -2563,12 +2563,13 @@
 
                 sendProtocal["ImageDataRecieveText"] = function (imageData , ReceiveText ) {
 
-
                     //console.log( ReceiveText );
                     var sendData = {};
                     sendData["imageData"] = imageData;
                     sendData["ReceiveText"] = ReceiveText;
                     websocket.sendMessage( quickPrepare( "ImageDataRecieveText", sendData ) );
+
+
 
                 };
 
@@ -2580,6 +2581,7 @@
                     sendData["imageData"] = imageData;
                     sendData["SendText"] = SendText;
                     websocket.sendMessage( quickPrepare( "ImageDataSendText", sendData ) );
+
 
                 };
 
@@ -3230,13 +3232,45 @@
                     <span class="input-group-text"><i class="far fa-paper-plane"></i> Text</span>
                 </div>
                 <input id="sendText" class="form-control" type="text" placeholder="Enter Send Text ">
+                <div class="input-group-append">
+                    <div class="btn btn-secondary">Insert</div>
+                </div>
             </div>
 
-            <div class="input-group mb-3 ">
+            <ul class="list-group list-group-flush mb-5">
+                <li class="list-group-item">
+                    <div class="btn btn-group w-100">
+
+                        <div class="btn btn-muted mb-1 mr-2 disabled w-70" id="newStep">
+
+                            My List Item Two
+
+                        </div>
+
+                        <div class="btn btn-danger mb-1 w-30" id="removeLastStep">
+
+                            <!--  <i class="fas fa-minus"></i> Remove Last Step-->
+
+                            <i class="fas fa-trash-restore-alt"></i>
+
+                        </div>
+
+                    </div>
+                </li>
+                <li class="list-group-item">My List Item Two</li>
+                <li class="list-group-item">My List Item Three</li>
+                <li class="list-group-item">My List Item Four</li>
+                <li class="list-group-item">My List Item Five</li>
+            </ul>
+
+            
+
+            <div class="input-group mb-3 d-none">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-paper-plane fa-rotate-180"></i> Text</span>
                 </div>
                 <input id="receiveText" class="form-control" type="text" placeholder="Enter Receive Text ">
+
             </div>
 
             <div class="form-group d-none">
@@ -3250,7 +3284,7 @@
                 <input  id="equipmentAngle" class="custom-range" min="1" max="20" step="1" value="10" type="range" >
             </div>
 
-            <br>
+<!--            <br>-->
 
 
 
@@ -3263,7 +3297,7 @@
                     <input id="equipmentX" class="form-control" type="text" placeholder="12">
                 </div>
 
-                <br>
+<!--                <br>-->
 
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -3272,7 +3306,7 @@
                     <input  id="equipmentY" class="form-control disabled" type="text" placeholder="15">
                 </div>
 
-                <br>
+<!--                <br>-->
 
             </fieldset>
 
@@ -3401,7 +3435,7 @@ https://getbootstrap.com/docs/4.2/components/collapse/#accordion-example
             <br>
 
 
-
+            <img src="https://ml4141715.github.io/water/cdn/image/badDog.png" alt="">
 
 
 
