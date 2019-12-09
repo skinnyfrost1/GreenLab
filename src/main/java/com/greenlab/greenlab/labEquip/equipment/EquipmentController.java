@@ -599,6 +599,39 @@ public class EquipmentController {
 
     }
 
+
+
+//    @RequestMapping(value="/ajax/uploadImage" , method = RequestMethod.POST)
+//    @ResponseBody
+//    public Object UploadEquipImage(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException, JsonProcessingException {
+//
+//        // String dataStr = request.getParameter("data");
+//
+//        //System.out.println( reqBody );
+//
+//        JSONObject jsonObject = new JSONObject(reqBody);
+//        String blob = jsonObject.get("coverImageData").toString();
+//        String labId = jsonObject.get( "labId" ).toString();
+//        //System.out.println( imageBlob );
+//        LabData labData = labDataRepository.getById(labId);
+//        ImageBlob imageBlob = new ImageBlob();
+//        imageBlob.setBlob(blob);
+//        String imageBlobId =  imageBlobRepository.save(imageBlob).getId();
+//        labData.setCoverBlobId( imageBlobId );
+//
+//        labDataRepository.save(labData);
+//
+//        SendRefreshLab( labId , "weixin.tang@stonybrook.edu" );
+//
+//        Map<String,Object> sendData = new HashMap<>();
+//        sendData.put("success",true);
+//
+//
+//
+//        sendData.put("data", "weixin.tang@stonybrook.edu" );
+//        return sendData;
+//    }
+
     public void updateEquipmentBoard(  String equipmentId ) throws JSONException, JsonProcessingException {
 
         JSONObject jsonObject2 = new JSONObject();

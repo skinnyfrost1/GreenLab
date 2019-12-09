@@ -2,7 +2,21 @@
 
 
 
+class ImageStorage{
 
+    constructor(){
+        this.imageBlob = {};
+    }
+
+    getItem( key ){
+        return this.imageBlob[key];
+    }
+
+    setItem( key , value ){
+        this.imageBlob[key] = value;
+    }
+
+}
 
 
 
