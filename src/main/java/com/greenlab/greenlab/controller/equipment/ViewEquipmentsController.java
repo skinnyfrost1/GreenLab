@@ -30,8 +30,9 @@ public class ViewEquipmentsController {
 
         String creator = (String) request.getSession().getAttribute("email");
         List<Equipment> equipments = equipRepo.findByCreator(creator);
-
         
+        model.addAttribute("equipments",equipments);
+        return "profViewEquip";
 
     }
     
