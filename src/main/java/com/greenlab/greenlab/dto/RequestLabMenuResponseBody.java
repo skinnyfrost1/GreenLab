@@ -11,5 +11,5 @@ import lombok.Setter;
 public class RequestLabMenuResponseBody {
     String message;
     List<String> labNameList;
-
+    List<String> lab_IdList;
 }

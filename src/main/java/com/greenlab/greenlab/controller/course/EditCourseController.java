@@ -53,6 +53,9 @@ public class EditCourseController{
     private UserRepository userRepository;
     @Autowired
     private StuCourseRepository stuCourseRepository;
+
+
+
     @GetMapping(value = "/course/edit")
     public String getCreateCourse(ModelMap model, @RequestParam(value = "id") String id,
                                   HttpServletRequest request) {
@@ -65,6 +68,18 @@ public class EditCourseController{
         model.addAttribute("role",role);
         List<Lab> labs = course.getLabs();
         model.addAttribute("labs",labs);
+
+
+        List<Lab> restLabs = labRepository.findByCourseId(course.getCourseId());
+        System.out.println(restLabs.size());
+        for (Lab lab : labs){
+            restLabs.remove(lab);
+        }
+        model.addAttribute("restLabs",restLabs);
+
+
+
+
         // for(Lab temp : labs){
         //     System.out.println(temp.testString());
         // }
@@ -79,10 +94,20 @@ public class EditCourseController{
                                     @RequestParam(value = "courseId", required = false) String courseId,
                                    @RequestParam(value = "courseName", required = false) String courseName,
                                    @RequestParam(value = "semester", required = false) String semester,
-                                   @RequestParam(value = "courseDescription", required = false) String courseDescription, ModelMap model,
-                                   HttpServletRequest request) {
+                                   @RequestParam(value = "courseDescription", required = false) String courseDescription,
+                                   @RequestParam(value = "editLabSelected", required = false) List<String> editLabSelected,
+                                    ModelMap model, HttpServletRequest request) {
 
 //        String creator = (String) request.getSession().getAttribute("email");
+        List<Lab> labs = new ArrayList<>();
+        for (String id : editLabSelected){
+            Lab temp = labRepository.findBy_id(id);
+            labs.add(temp);
+            System.out.println("EditLabSelected = "+id);
+        }
+//
+
+
         Course course = courseRepository.findBy_id(_id);
         System.out.println(course.get_id());
         courseId = courseId.replaceAll(" ","");
@@ -91,7 +116,7 @@ public class EditCourseController{
         course.setCourseName(courseName);
         course.setSemester(semester);
         course.setCourseDescription(courseDescription);
-//        System.out.println(course.get_id());
+        course.setLabs(labs);
         courseRepository.save(course);
         return "redirect:/courses";
     }
