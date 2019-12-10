@@ -17,7 +17,7 @@ public class Equipment {
     private String equipmentName;
     private String description;
     private String creator;
-    private boolean isMaterial;
+    private boolean material;
     private boolean blandable;
     private boolean blander;
     private boolean heatable;
@@ -32,13 +32,13 @@ public class Equipment {
 
     }
 
-    public Equipment(String equipmentName, String description, String creator, boolean isMaterial, boolean blandable,
+    public Equipment(String equipmentName, String description, String creator, boolean material, boolean blandable,
             boolean blander, boolean heatable, boolean heater) {
 
         this.equipmentName = equipmentName;
         this.description = description;
         this.creator = creator;
-        this.isMaterial = isMaterial;
+        this.material = material;
         this.blandable = blandable;
         this.blander = blander;
         this.heatable = heatable;
@@ -51,7 +51,7 @@ public class Equipment {
                     "\"equipmentName\":"+equipmentName+
                     "\n\"description\":"+description+
                     "\n\"creator\":"+creator+
-                    "\n\"isMaterial\":"+isMaterial+
+                    "\n\"material\":"+material+
                     "\n\"blandable\":"+blandable+
                     "\n\"blander\":"+blander+
                     "\n\"heatable\":"+heatable+

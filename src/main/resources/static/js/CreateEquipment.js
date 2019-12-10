@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  document.getElementById("imageFile").addEventListener("change", readFile);
+  document.getElementById("image").addEventListener("change", readFile);
   function readFile() {
   
     if (this.files && this.files[0]) {
