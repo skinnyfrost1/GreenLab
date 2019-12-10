@@ -1,7 +1,8 @@
 package com.greenlab.greenlab.model;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.greenlab.greenlab.lab.LabEquipment;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -23,13 +24,13 @@ public class Lab {
     private String labDescription;
     private String creator;
     private String stepObjectId;
-    private List<Material> materials;
-    // private List<Container> containers;
-    // private List<Holder> holders;
-    // private List<Steps> steps;
+    @DBRef
+    private List<Equipment> preparedEquipment;   //equipments which the professor pick to use in the lab. 
+    private List<LabEquipment> equipmentInLab;      //equipments that have been created in Lab. 
+
 
     public Lab() {
-        materials = new ArrayList<Material>();
+        // materials = new ArrayList<Material>();
         // containers = new ArrayList<Container>();
         // holders = new ArrayList<Holder>();
         // steps = new ArrayList<Steps>();

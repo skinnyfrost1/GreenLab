@@ -56,12 +56,12 @@ public class SignupController {
         User user = userRepository.findByEmail(email);
         if (user != null){
             model.addAttribute("emailError","Email is exist.");
-            return "signup";
+            return "signUp";
         }
         user = userRepository.findByUid(uid);
         if (user != null){
             model.addAttribute("uidError","UID is exist.");
-            return "signup";
+            return "signUp";
         }
         password = PasswordChecker.encryptSHA512(password);
         user = new User(uid, email, password, firstname, lastname, role);
