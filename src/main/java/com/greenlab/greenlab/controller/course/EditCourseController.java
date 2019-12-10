@@ -56,6 +56,17 @@ public class EditCourseController{
         model.addAttribute("role",role);
         List<Lab> labs = course.getLabs();
         model.addAttribute("labs",labs);
+
+
+        List<Lab> restLabs = labRepository.findByCourseId(course.getCourseId());
+        for (Lab lab : labs){
+            restLabs.remove(lab);
+        }
+        model.addAttribute("restLabs",restLabs);
+
+
+
+
         // for(Lab temp : labs){
         //     System.out.println(temp.testString());
         // }
@@ -70,10 +81,17 @@ public class EditCourseController{
                                     @RequestParam(value = "courseId", required = false) String courseId,
                                    @RequestParam(value = "courseName", required = false) String courseName,
                                    @RequestParam(value = "semester", required = false) String semester,
-                                   @RequestParam(value = "courseDescription", required = false) String courseDescription, ModelMap model,
-                                   HttpServletRequest request) {
+                                   @RequestParam(value = "courseDescription", required = false) String courseDescription,
+                                   @RequestParam(value = "editLabSelected", required = false) List<String> editLabSelected,
+                                    ModelMap model, HttpServletRequest request) {
 
 //        String creator = (String) request.getSession().getAttribute("email");
+
+        for (String str : editLabSelected){
+            System.out.println("EditLabSelected = "+str);
+        }
+
+
         Course course = courseRepository.findBy_id(_id);
         System.out.println(course.get_id());
         courseId = courseId.replaceAll(" ","");

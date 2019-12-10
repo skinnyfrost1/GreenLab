@@ -1,5 +1,18 @@
 // $(document).ready(function(){
 // console.log("Ready!!");
+$("#editCourseEditLabs").show().hide().removeClass("show");
+$("#submitEditBtnContainer").show().hide().removeClass("show");
+$("#previousEditBtnContainer").show().hide().removeClass("show");
+$("#nextEditBtnContainer").show().hide().removeClass("show");
+$("#editCourseInfoContainer").show().hide().removeClass("show");
+$("#deleteCourseBtnContainer").show().hide().removeClass("show");
+$("#studentRosterContainer").show().hide().removeClass("show");
+
+$("#editCourseInfoContainer").show().addClass("show");
+$("#studentRosterContainer").show().addClass("show");
+$("#deleteCourseBtnContainer").show().addClass("show");
+$("#nextEditBtnContainer").show().addClass("show");
+
 function deleteStudent(studentEmail) {
     console.log("on click!!");
     $.ajax({
@@ -91,3 +104,28 @@ function uploadRoster2() {
         }
     });
 }
+//$(document).ready(function(e) {
+$("#nextEditBtn").click(function (e) {
+    $("#studentRosterContainer").show().hide().removeClass("show");
+
+    $("#editCourseInfoContainer").show().hide().removeClass("show");
+    $("#deleteCourseBtnContainer").show().hide().removeClass("show");
+    $("#nextEditBtnContainer").show().hide().removeClass("show");
+
+    $("#editCourseEditLabs").show().addClass("show");
+    $("#previousEditBtnContainer").show().addClass("show");
+    $("#submitEditBtnContainer").show().addClass("show");
+})
+
+$("#previousEditBtn").click(function (e) {
+    $("#editCourseEditLabs").show().hide().removeClass("show");
+    $("#previousEditBtnContainer").show().hide().removeClass("show");
+    $("#submitEditBtnContainer").show().hide().removeClass("show");
+
+    $("#editCourseInfoContainer").show().addClass("show");
+    $("#studentRosterContainer").show().addClass("show");
+    $("#deleteCourseBtnContainer").show().addClass("show");
+    $("#nextEditBtnContainer").show().addClass("show");
+})
+
+//})
