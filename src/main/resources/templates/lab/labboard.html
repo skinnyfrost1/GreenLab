@@ -477,7 +477,7 @@
     </script>
     <!-- data section -->
     <script>
-        class ImageStatus{
+        class LabImageStatus{
 
             constructor(){
                 this.name = null;
@@ -507,25 +507,29 @@
 
         }
 
-        class EquipmentData{
+        class LabEquipData{
 
             constructor(){
-
-
                 this.id = null;
                 this.imageStatusArr = [];
-
-
             }
 
             addImageStatus( name,  sendTextArr , imageblobId ){
-                var imageStatus = new ImageStatus();
+                var imageStatus = new LabImageStatus();
                 imageStatus.setName(name);
                 imageStatus.setSendTextArr( sendTextArr );
                 imageStatus.setImageBlobId( imageblobId );
                 this.imageStatusArr.push( imageStatus );
             }
-
+            getLabImageStatusByIndex( index ){
+                return this.imageStatusArr[index];
+            }
+            getLabImageStatusArr(){
+                return this.imageStatusArr;
+            }
+            getLabImageStatusByName( name ){
+                
+            }
             setId( id ){
                 this.id = id;
             }
@@ -536,15 +540,10 @@
                 this.imageStatusArr = [];
             }
 
-
-
         }
 
-
-        class EquipmentStatus{
-
+        class LabEquipStatus{
             constructor(){
-
                 // private int labEquipDataId;
                 // private String currentStatus;
                 // private int x;
@@ -554,10 +553,31 @@
                 this.x = null;
                 this.y = null;
             }
-
-            
-
-
+            // getX(){
+            //     return this.x;
+            // }
+            // setX( x ){
+            //     this.x = x;
+            // }
+            // getY(){
+            //     return this.y;
+            // }
+            // setY( y ){
+            //     this.y = y;
+            // }
+            //
+            // setCurrentStatus( currentStatus ){
+            //     this.currentStatus = currentStatus;
+            // }
+            // setLabEquipDataId( labEquipDataId ){
+            //     this.labEquipDataId = labEquipDataId;
+            // }
+            // getCurrentStatus(){
+            //     return this.currentStatus;
+            // }
+            // getLabEquipDataId(){
+            //     return this.labEquipDataId;
+            // }
         }
 
         class Step{
@@ -578,127 +598,178 @@
                 return this.after;
             }
 
+            setBefore(before){
+                this.before = before;
+            }
+            setCurrent( current ){
+                this.current =current;
+            }
+            setAfter( after ){
+                this.after = after;
+            }
 
         }
-
-        class Steps{
+        class LabSteps{
 
             constructor(){
                 this.currentStepIndex = null;
-                this.steps = null;
+                this.steps = [];
             }
 
-
-
+            setCurrentStepIndex( index ){
+                this.currentStepIndex = index;
+            }
+            getCurrentStepIndex(){
+                return this.currentStepIndex;
+            }
+            clearSteps(){
+                this.steps = [];
+            }
+            addStep( step ){
+                this.steps.push(step);
+            }
+            getStepByIndex( index ){
+                return this.steps[ index ];
+            }
+            getCurrentStep( ){
+                return this.getStepByIndex( this.currentStepIndex );
+            }
 
         }
-
-
-
         class LabData{
 
             constructor(){
+                this.EquipmentDataArr = [ ];
+                this.labSteps = null;
 
-
-
+                this.EquipNodeArr = [];
 
             }
-
+            addEquipmentData( equipmentData ){
+                this.EquipmentDataArr.push( equipmentData );
+            }
+            getEquipmentDataByIndex( index ){
+                return this.EquipmentDataArr[index];
+            }
+            clearEquipmentData(){
+                this.EquipmentDataArr = [];
+            }
+            getLabSteps(){
+                return this.labSteps;
+            }
             setLabData( data ){
-
+                this.EquipmentDataArr = [];
                 var labData = JSON.parse(data);
-
-                var currentLabStep = labData.currentLabStep;
-                var labEquipDataList = labData.labEquipDataList;
-                var labSteps = labData.labSteps;
                 var usedEquipList = labData.usedEquipList;
-
-
                 for( var i = 0 ; i < usedEquipList.length ; i++ ){
 
+                    var labEquipData = new LabEquipData();
+                    labEquipData.setId(i);
+                    //labEquipData.clearImageStatusArr();
                     var equipPackStr =  usedEquipList[i];
-
-                    var  equipmentData = JSON.parse(equipPackStr.equipmentDataStr);
-
-                    //var equipmentDataId = equipmentData.
-
-                    console.log(equipmentData);
-
+                    //var  equipmentData = JSON.parse(equipPackStr.equipmentDataStr);
+                    //console.log(equipmentData);
                     var  imageDataStrArr =  equipPackStr.imageDataStrArr ;
-
                     for( var b = 0 ; b < imageDataStrArr.length ; b++ ){
-
                         var imageData = JSON.parse(imageDataStrArr[b]);
-
-                        console.log(imageData);
-
-
+                        //console.log(imageData);
+                        labEquipData.addImageStatus(  imageData.name , imageData.sendText , imageData.blobId ) //name,  sendTextArr , imageblobId
                     }
+                    this.EquipmentDataArr.push( labEquipData );
+                }
 
 
+                var steps = labData.labSteps;
+                var currentLabStepIndex = labData.currentLabStep;
+                var labSteps = new LabSteps();
+                labSteps.setCurrentStepIndex( currentLabStepIndex );
+                for( var i = 0 ; i < steps.length ; i++ ){
+                    var step = new Step();
+                    step.setAfter( steps[i].after );
+                    step.setBefore( steps[i].before );
+                    step.setCurrent( steps[i].current );
+                    labSteps.addStep( step );
+                }
+                this.labSteps = labSteps;
+            }
+
+            // now we need display the whole things
+
+            displayLabBoard(){
+
+                //console.log("666");
+
+                // now we need check all the image
+
+
+
+                var nodeLength = this.EquipNodeArr.length;
+                var equipLength = this.EquipmentDataArr.length;
+
+                if( nodeLength  < equipLength  ){
+
+                    for( var i = nodeLength ; i < equipLength ; i++ ){
+                        var labEquipData = new LabEquipData();
+                        labEquipData = this.EquipmentDataArr[i]
+
+                        labEquipData.getLabImageStatusByIndex( i );
+
+
+                        // var equipNode = new EquipNode();
+                        // equipNode.id = i;
+                        // equipNode.src =
+                        //this.EquipNodeArr.push();
+                    }
 
                 }
 
+                // var sendData = {};
+                // sendData["labId"] = itemId;
+                // sendData["blobIds"] = imageblobSet;
+                //
+                // $.ajax({
+                //     type: "POST",
+                //     contentType: "application/json",
+                //     url: "/ajax/downloadImages",
+                //     data: JSON.stringify(sendData),
+                //     dataType: 'json',
+                //     cache: false,
+                //     timeout: 600000,
+                //     success: function (info) {
+                //         var imageBlobArr =  JSON.parse( info.data );
+                //         for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+                //             var imageBlobStr = imageBlobArr[i];
+                //             var imageBlob = JSON.parse(imageBlobStr);
+                //             var imageBlobId = imageBlob.id;
+                //             imageStorage.setItem( imageBlobId , imageBlobStr );
+                //         }
+                //
+                //         //var imageBlob =  JSON.parse( info.data );
+                //         //imageStorage.setItem( imageBlob.id , info.data );
+                //         //labData.__displayAllEquipment();
+                //         labData.__displayFolderConetnt();
+                //
+                //
+                //
+                //         //console.log(info);
+                //     },
+                //     error: function (e) {
+                //
+                //
+                //
+                //     }
+                // });
+
+
             }
 
         }
-    </script>
 
-    <script>
-
-
-
-
-        class Configuration{
-
-
-            constructor(){
-                this.refresh();
-            }
-
-            refresh(){
-
-                // if other people is moving
-                    // this well be a problem
-                        // so when you do operation
-                            // just simply freeze other users
-
-                receiveProtocal["connectSuccess"] = function (message) {
-
-                    //console.log("666HHH");
-
-                    //setInterval( sendProtocal["refreshBoard"]() , 100 );
-                    sendProtocal["refreshBoard"]();
-                };
-
-                sendProtocal["refreshBoard"] = function(){
-
-                    websocket.sendMessage( quickPrepare( "refreshBoard" ) );
-
-                };
-                //refreshBoard
-
-                receiveProtocal["refreshBoard"] = function (data) {
-
-
-                    //setTimeout( 1000, websocket.sendMessage( quickPrepare( "refreshBoard" ) ) );
-                    //setTimeout( 1000, websocket.sendMessage( quickPrepare( "refreshBoard" ) ) );
-                    //console.log( JSON.parse(data) );
-
-                    labData.setLabData( data );
-
-
-
-                };
-
-
-
-
-
-            }
-
-
-        }
+        // var step = new Step();
+        // var labData = new LabData();
+        // var labSteps = new LabSteps();
+        // var labEquipData = new LabEquipData();
+        // var LabImageStatus = new LabImageStatus();
 
         class ImageStorage{
 
@@ -715,10 +786,30 @@
             }
 
         }
+    </script>
 
+<!--  configuration  -->
+    <script>
+        class Configuration{
+            constructor(){
+                this.refresh();
+            }
+            refresh(){
+                receiveProtocal["connectSuccess"] = function (message) {
+                    sendProtocal["refreshBoard"]();
+                };
+                sendProtocal["refreshBoard"] = function(){
+                    websocket.sendMessage( quickPrepare( "refreshBoard" ) );
+                };
+                receiveProtocal["refreshBoard"] = function (data) {
+                    labData.setLabData( data );
+                    labData.displayLabBoard();
+                };
+            }
+        }
+    </script>
 
-
-
+    <script>
 
         var itemId;
         var websocket;
@@ -726,7 +817,7 @@
         var sendProtocal = {};
         var receiveProtocal = {};
         var configuration ;
-        var labData;
+        var labData ;//= new LabData();
 
         function onLoad() {
 
@@ -749,7 +840,6 @@
         //
         //
         // }
-
 
         $( function() {
 
@@ -829,135 +919,58 @@
 
     <script>
 
-        // so before we connect the front create lab and lab board
-            // I would guess you
-                // create some fake data and directly show here
+        class EquipNode{  // here will only one status
+            constructor(){
+                this.id = null;  // this should combine equip id and
+                this.src = null;
+            }
 
-        // so we need include some image here
+            __getHTML(){
+                return "<img id='"+this.id+"' src='"+this.src+"' ondrag='onDrag(this)' onmousedown='onMouseDown(this)' style='position: fixed;' >";
+            }
 
-        //https://ml4141715.github.io/water/cdn/image/acidBurette.png
-        //https://ml4141715.github.io/water/cdn/image/Canula.png
-        //https://ml4141715.github.io/water/cdn/image/Container.png
-        //https://ml4141715.github.io/water/cdn/image/dropper.png
-        //https://ml4141715.github.io/water/cdn/image/droppingliquid.png
+            getNode(){
+                var generate = document.getElementById(generateDiv);
+                generate.innerHTML = this.__getHTML();
+                $( "#"+this.id ).draggable();
+                $( "#"+this.id ).droppable({
+                    drop: function( event, ui ) {
+                        onDrop( event.target.id , ui.draggable["0"].id );
+                    }
+                });
 
-        // $(function () {
-        //
-        //     // $( "#1" ).draggable();
-        //     // $( "#2" ).draggable();
-        //     //
-        //     // $( "#1" ).droppable({
-        //     //     drop: function( event, ui ) {
-        //     //         // $( this )
-        //     //         //     .addClass( "ui-state-highlight" )
-        //     //         //     .find( "p" )
-        //     //         //     .html( "Dropped!" );
-        //     //
-        //     //         console.log("666");
-        //     //
-        //     //     }
-        //     // });
-        //     //
-        //     // $( "#2" ).droppable({
-        //     //     drop: function( event, ui ) {
-        //     //
-        //     //
-        //     //         console.log("777");
-        //     //
-        //     //
-        //     //     }
-        //     // });
-        //
-        //
-        //     $( function() {
-        //         $( "#2" ).draggable();
-        //         $( "#1" ).draggable();
-        //         $( "#1" ).droppable({
-        //             drop: function( event, ui ) {
-        //
-        //                 // $( this )
-        //                 //     .addClass( "ui-state-highlight" )
-        //                 //     .find( "p" )
-        //                 //     .html( "Dropped!" );
-        //
-        //                 console.log("666");
-        //             }
-        //         });
-        //
-        //         $( "#1" ).click(function() {
-        //
-        //
-        //             console.log("999");
-        //         });
-        //
-        //         // $( "#2" ).ondrag(
-        //         //
-        //         //
-        //         //
-        //         //
-        //         // );
-        //
-        //
-        //     } );
-        //
-        // });
+                // console.log( generate.childNodes );
+                var node = generate.childNodes[0];
+                generate.removeChild( node );
+                console.log( generate.childNodes );
+                return node;
+            }
 
-        // not inside quik prepare
-            // the data should include websocket id
-                // so this should be do in the back side not the front side
-                    // the front check if it's itself
-                        // just don't do anything
-                            // ok
-                            //
-                            //
+        }
 
         function onMouseDown( evt ) {
+            console.log(evt.id);
             var parentNode = evt.parentNode;
             parentNode.removeChild(evt);
             parentNode.append(  evt );
-        }
-
-        function onClick(evt ) {
-
-
-
-            //console.log(evt.id);
-
         }
 
         function onDrag( evt ) {
 
             console.log(evt.id);
 
-        }
-
-        class Equipment{
-
-            constructor(){
-
-
-
-            }
-
-            getHTML(){
-
-                var value = ""
-
-            }
-
-
+            console.log("x pos is:"+evt.style.left+" y pos is"+evt.style.top );
 
         }
 
-        $(function () {
+        function onDrop( idTo,  idFrom  ){
 
+            console.log("idFrom"+idFrom);  // the one you drag
+            console.log( "idTo"+idTo );  // the one uder it
 
+            //document.getElementById(idTo).src = heater;
 
-
-
-
-
-        });
+        }
 
 
     </script>
@@ -967,16 +980,18 @@
 <body onload="onLoad()"  >
 
 
-<!--<img id="1" src="https://ml4141715.github.io/water/cdn/image/acidBurette.png" onclick="onClick(this)" onmousedown="onMouseDown(this)" style="position: fixed;" alt="">-->
+    <div id="working" >
 
-<!--<img id="2" src="https://ml4141715.github.io/water/cdn/image/Canula.png" onclick="onClick(this)" onmousedown="onMouseDown(this)" ondrag="onDrag(this)" style="position: fixed;" alt="">-->
+    </div>
 
-<!--<img src="image/heater_ps_1.png" alt="">-->
 
-<!--<img src="image/flask_ps_0.png" alt="">-->
+    <div id="generate" class="d-none">
 
-<!--<img src="image/flask_ps_1.png" alt="">-->
+    </div>
 
+    <div class="d-none" id="leisure">
+
+    </div>
 
 </body>
 
