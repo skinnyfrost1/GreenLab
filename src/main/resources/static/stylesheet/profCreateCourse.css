@@ -85,6 +85,11 @@
     cursor: pointer;
 }
 
+.save-button-disabled{
+    opacity: 0.6;
+    pointer-events: none;
+}
+
 .delete-button {
     color: white;
     background-color:#e65449;    /*background: #269b9b;*/

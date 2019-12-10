@@ -4,7 +4,7 @@ $(document).ready(function () {
         var confirmPassord = $('input[name=confirmPassword]').val();
         if (password == confirmPassord) {
             $('#confirmPasswordLabel').css("color", "green");
-            $('#submit').attr("disabled", false);
+            // $('#submit').attr("disabled", false);
         }
         else {
             $('#confirmPasswordLabel').css("color", "red");

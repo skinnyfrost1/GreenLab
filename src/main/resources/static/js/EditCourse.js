@@ -1,18 +1,43 @@
 // $(document).ready(function(){
 // console.log("Ready!!");
+$(document).ready(function(e) {
+    $("#editCourseEditLabs").show().hide().removeClass("show");
+    $("#submitEditBtnContainer").show().hide().removeClass("show");
+    $("#previousEditBtnContainer").show().hide().removeClass("show");
+    $("#nextEditBtnContainer").show().hide().removeClass("show");
+    $("#editCourseInfoContainer").show().hide().removeClass("show");
+    $("#deleteCourseBtnContainer").show().hide().removeClass("show");
+    $("#studentRosterContainer").show().hide().removeClass("show");
 
-$("#editCourseEditLabs").show().hide().removeClass("show");
-$("#submitEditBtnContainer").show().hide().removeClass("show");
-$("#previousEditBtnContainer").show().hide().removeClass("show");
-$("#nextEditBtnContainer").show().hide().removeClass("show");
-$("#editCourseInfoContainer").show().hide().removeClass("show");
-$("#deleteCourseBtnContainer").show().hide().removeClass("show");
-$("#studentRosterContainer").show().hide().removeClass("show");
+    $("#editCourseInfoContainer").show().addClass("show");
+    $("#studentRosterContainer").show().addClass("show");
+    $("#deleteCourseBtnContainer").show().addClass("show");
+    $("#nextEditBtnContainer").show().addClass("show");
 
-$("#editCourseInfoContainer").show().addClass("show");
-$("#studentRosterContainer").show().addClass("show");
-$("#deleteCourseBtnContainer").show().addClass("show");
-$("#nextEditBtnContainer").show().addClass("show");
+})
+
+function valthisform() {
+    console.log("changed")
+    var checkboxs=document.getElementsByName("editLabSelected");
+    console.log("checkboxs")
+    var okay=false;
+    for(var i=0,l=checkboxs.length;i<l;i++) {
+        if(checkboxs[i].checked) {
+            okay=true;
+            break;
+        }
+    }
+    if(okay){
+        console.log("ok")
+        $('#saveEditBtn').removeAttr("disabled", 'disabled');
+        $('#saveEditBtn').show().removeClass(".save-button-disabled")
+    }
+    else{
+        console.log("not ok")
+        $('#saveEditBtn').attr('disabled');
+        $('#saveEditBtn').show().addClass(".save-button-disabled")
+    }
+}
 
 function deleteStudent(studentEmail) {
     console.log("on click!!");
@@ -105,7 +130,6 @@ function uploadRoster2() {
         }
     });
 }
-//$(document).ready(function(e) {
 $("#nextEditBtn").click(function (e) {
     $("#studentRosterContainer").show().hide().removeClass("show");
 
@@ -116,6 +140,7 @@ $("#nextEditBtn").click(function (e) {
     $("#editCourseEditLabs").show().addClass("show");
     $("#previousEditBtnContainer").show().addClass("show");
     $("#submitEditBtnContainer").show().addClass("show");
+    valthisform()
 })
 
 $("#previousEditBtn").click(function (e) {
@@ -127,6 +152,10 @@ $("#previousEditBtn").click(function (e) {
     $("#studentRosterContainer").show().addClass("show");
     $("#deleteCourseBtnContainer").show().addClass("show");
     $("#nextEditBtnContainer").show().addClass("show");
+})
+
+$("#editCourseEditLabs").change(function (e) {
+    valthisform()
 })
 
 //})

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +45,9 @@ public class EditCourseController{
     private UserRepository userRepository;
     @Autowired
     private StuCourseRepository stuCourseRepository;
+
+
+
     @GetMapping(value = "/course/edit")
     public String getCreateCourse(ModelMap model, @RequestParam(value = "id") String id,
                                   HttpServletRequest request) {
@@ -59,6 +63,7 @@ public class EditCourseController{
 
 
         List<Lab> restLabs = labRepository.findByCourseId(course.getCourseId());
+        System.out.println(restLabs.size());
         for (Lab lab : labs){
             restLabs.remove(lab);
         }
@@ -86,10 +91,13 @@ public class EditCourseController{
                                     ModelMap model, HttpServletRequest request) {
 
 //        String creator = (String) request.getSession().getAttribute("email");
-
-        for (String str : editLabSelected){
-            System.out.println("EditLabSelected = "+str);
+        List<Lab> labs = new ArrayList<>();
+        for (String id : editLabSelected){
+            Lab temp = labRepository.findBy_id(id);
+            labs.add(temp);
+            System.out.println("EditLabSelected = "+id);
         }
+//
 
 
         Course course = courseRepository.findBy_id(_id);
@@ -100,7 +108,7 @@ public class EditCourseController{
         course.setCourseName(courseName);
         course.setSemester(semester);
         course.setCourseDescription(courseDescription);
-//        System.out.println(course.get_id());
+        course.setLabs(labs);
         courseRepository.save(course);
         return "redirect:/courses";
     }
