@@ -1129,7 +1129,16 @@ public class EquipmentController {
                 labSteps.set(currentLabStep , labStep  );
                 labData.setLabSteps( labSteps );  // <--------------- set the first step
 
-                labDataRepository.save( labData );
+                labData = labDataRepository.save( labData );
+
+                //jsonMapper.writeValueAsString(labData);
+
+                // now we need send to the front side
+
+                data.put("type", "refreshBoard" );
+                data.put( "data" , jsonMapper.writeValueAsString( labData ) );
+
+                sendLabBoard( labId , data.toString() );
 
                 //labEquipStatus.
 
@@ -1142,6 +1151,7 @@ public class EquipmentController {
 
                 //LabEquipData labEquipData = new LabEquipData();
                 //labEquipData.setEquipmentDataStr();
+
 
 
 
@@ -1347,7 +1357,7 @@ public class EquipmentController {
 
 
     @MessageMapping("/lab/back/{userId}/{sessionId}")
-    public void handleLabBack(@DestinationVariable String userId , @DestinationVariable String sessionId , String message) throws JSONException {
+    public void handleLabBack(@DestinationVariable String userId , @DestinationVariable String sessionId , String message) throws JSONException, JsonProcessingException {
 
 
         JSONObject data = new JSONObject(message);
@@ -1363,9 +1373,12 @@ public class EquipmentController {
             if (labData == null) {
                 return;
             }
-            if( type.equals("") ){
+            if( type.equals("refreshBoard") ){
 
+                data.put("type", "refreshBoard" );
+                data.put( "data" , jsonMapper.writeValueAsString( labData ) );
 
+                sendLabBoard( labId , data.toString() );
 
             }
         }

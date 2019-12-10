@@ -38,14 +38,11 @@
     <script src="https://ml4141715.github.io/water/cdn/api/jquery-ui.js"></script>
     <script src="https://ml4141715.github.io/water/cdn/api/jquery-3.3.1.min.js"></script>
     <script src="https://ml4141715.github.io/water/cdn/api/popper.min.js"></script>
-    <!--    <script src="https://ml4141715.github.io/water/cdn/api/bootstrap.min.js"></script>-->
     <script src="https://ml4141715.github.io/water/cdn/api/jquery.cookie.js"></script>
     <script src="https://ml4141715.github.io/water/cdn/api/sockjs.min.js"></script>
     <script src="https://ml4141715.github.io/water/cdn/api/stomp.min.js"></script>
     <script src="https://ml4141715.github.io/water/cdn/api/Sortable.js"></script>
-
     <link rel="stylesheet" href="https://ml4141715.github.io/water/cdn/api/largeSwitchButton.css">
-
     <script src="https://ml4141715.github.io/water/cdn/api/react.development.js"></script>
     <script src="https://ml4141715.github.io/water/cdn/api/react-dom.development.js"></script>
     <script src="https://ml4141715.github.io/water/cdn/api/babel.min.js"></script>
@@ -447,53 +444,6 @@
         //     return sendData;
         // }
 
-
-    </script>
-
-    <script>
-
-        class Configuration{
-
-
-            constructor(){
-                this.refresh();
-            }
-
-            refresh(){
-
-                // if other people is moving
-                    // this well be a problem
-                        // so when you do operation
-                            // just simply freeze other users
-
-                receiveProtocal["connectSuccess"] = function (message) {
-                    console.log("back666");
-                }
-
-
-            }
-
-
-        }
-
-        class ImageStorage{
-
-            constructor(){
-                this.imageBlob = {};
-            }
-
-            getItem( key ){
-                return this.imageBlob[key];
-            }
-
-            setItem( key , value ){
-                this.imageBlob[key] = value;
-            }
-
-        }
-
-
-
         function connect(){
 
             var ajax = new Ajax();
@@ -524,15 +474,263 @@
 
         }
 
+    </script>
+    <!-- data section -->
+    <script>
+        class ImageStatus{
+
+            constructor(){
+                this.name = null;
+                this.sendTextArr = null;
+                this.imageblobId = null;
+            }
+
+            setName( name ){
+                this.name = name;
+            }
+            setSendTextArr( sendTextArr ){
+                this.sendTextArr = sendTextArr;
+            }
+            setImageBlobId( imageblobId ){
+                this.imageblobId = imageblobId;
+            }
+
+            getName(){
+                return this.name;
+            }
+            getSendTextArr(){
+                return this.sendTextArr;
+            }
+            getImageblobId(){
+                return this.imageblobId;
+            }
+
+        }
+
+        class EquipmentData{
+
+            constructor(){
+
+
+                this.id = null;
+                this.imageStatusArr = [];
+
+
+            }
+
+            addImageStatus( name,  sendTextArr , imageblobId ){
+                var imageStatus = new ImageStatus();
+                imageStatus.setName(name);
+                imageStatus.setSendTextArr( sendTextArr );
+                imageStatus.setImageBlobId( imageblobId );
+                this.imageStatusArr.push( imageStatus );
+            }
+
+            setId( id ){
+                this.id = id;
+            }
+            getId( ){
+                return this.id;
+            }
+            clearImageStatusArr(){
+                this.imageStatusArr = [];
+            }
+
+
+
+        }
+
+
+        class EquipmentStatus{
+
+            constructor(){
+
+                // private int labEquipDataId;
+                // private String currentStatus;
+                // private int x;
+                // private int y;
+                this.labEquipDataId = null;
+                this.currentStatus = null;
+                this.x = null;
+                this.y = null;
+            }
+
+            
+
+
+        }
+
+        class Step{
+
+            constructor(){
+                this.before = null;
+                this.current = null;
+                this.after = null;
+            }
+
+            getBefore(){
+                return this.before;
+            }
+            getCurrent(){
+                return this.current;
+            }
+            getAfter(){
+                return this.after;
+            }
+
+
+        }
+
+        class Steps{
+
+            constructor(){
+                this.currentStepIndex = null;
+                this.steps = null;
+            }
+
+
+
+
+        }
+
+
+
+        class LabData{
+
+            constructor(){
+
+
+
+
+            }
+
+            setLabData( data ){
+
+                var labData = JSON.parse(data);
+
+                var currentLabStep = labData.currentLabStep;
+                var labEquipDataList = labData.labEquipDataList;
+                var labSteps = labData.labSteps;
+                var usedEquipList = labData.usedEquipList;
+
+
+                for( var i = 0 ; i < usedEquipList.length ; i++ ){
+
+                    var equipPackStr =  usedEquipList[i];
+
+                    var  equipmentData = JSON.parse(equipPackStr.equipmentDataStr);
+
+                    //var equipmentDataId = equipmentData.
+
+                    console.log(equipmentData);
+
+                    var  imageDataStrArr =  equipPackStr.imageDataStrArr ;
+
+                    for( var b = 0 ; b < imageDataStrArr.length ; b++ ){
+
+                        var imageData = JSON.parse(imageDataStrArr[b]);
+
+                        console.log(imageData);
+
+
+                    }
+
+
+
+                }
+
+            }
+
+        }
+    </script>
+
+    <script>
+
+
+
+
+        class Configuration{
+
+
+            constructor(){
+                this.refresh();
+            }
+
+            refresh(){
+
+                // if other people is moving
+                    // this well be a problem
+                        // so when you do operation
+                            // just simply freeze other users
+
+                receiveProtocal["connectSuccess"] = function (message) {
+
+                    //console.log("666HHH");
+
+                    //setInterval( sendProtocal["refreshBoard"]() , 100 );
+                    sendProtocal["refreshBoard"]();
+                };
+
+                sendProtocal["refreshBoard"] = function(){
+
+                    websocket.sendMessage( quickPrepare( "refreshBoard" ) );
+
+                };
+                //refreshBoard
+
+                receiveProtocal["refreshBoard"] = function (data) {
+
+
+                    //setTimeout( 1000, websocket.sendMessage( quickPrepare( "refreshBoard" ) ) );
+                    //setTimeout( 1000, websocket.sendMessage( quickPrepare( "refreshBoard" ) ) );
+                    //console.log( JSON.parse(data) );
+
+                    labData.setLabData( data );
+
+
+
+                };
+
+
+
+
+
+            }
+
+
+        }
+
+        class ImageStorage{
+
+            constructor(){
+                this.imageBlob = {};
+            }
+
+            getItem( key ){
+                return this.imageBlob[key];
+            }
+
+            setItem( key , value ){
+                this.imageBlob[key] = value;
+            }
+
+        }
+
+
+
+
+
         var itemId;
         var websocket;
         var imageStorage;
         var sendProtocal = {};
         var receiveProtocal = {};
         var configuration ;
+        var labData;
 
         function onLoad() {
 
+            labData = new LabData();
             imageStorage = new ImageStorage();
             var pathName = window.location.pathname;
             var Arr = pathName.split("/");
