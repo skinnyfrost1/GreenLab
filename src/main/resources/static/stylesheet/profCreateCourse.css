@@ -104,3 +104,16 @@
     /*font-weight: bold;*/
     cursor: pointer;
 }
+
+.smallIcon, .smallIcon:visited {
+    color: #ffffff;
+    text-decoration: none;
+    cursor: auto;
+    opacity: 1.0;
+}
+
+.smallIcon:hover {
+    color: #218787;
+    text-decoration: none;
+    cursor: pointer;
+}

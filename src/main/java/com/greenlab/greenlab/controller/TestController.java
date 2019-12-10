@@ -130,5 +130,46 @@ public class TestController{
         }
         return "added 10 labs.";
     }
-    
+
+    @GetMapping(value="/test/add5labs")
+    public String getAdd5Labs(){
+        String courseId = "CHE133";
+        String labDescription = "this is lab description";
+        String creator = "anhui.jiang@stonybrook.edu";
+
+        for (int i = 0; i<10;i++){
+            String labName = "Lab "+Integer.toString(i);
+            String buf = courseId + labName + creator;
+            buf = buf.toLowerCase();
+            buf = buf.replaceAll(" ","");
+            String _id = buf;
+            Lab l = labRepository.findBy_id(_id);
+            if (l==null)
+                l = new Lab(_id, courseId, labName, labDescription, creator);
+
+            labRepository.save(l);
+        }
+        return "added 5 labs.";
+    }
+
+    @GetMapping(value="/test/add10student")
+    public String getAdd10Student() {
+        String password = "123";
+        password = PasswordChecker.encryptSHA512(password);
+        String role = "student";
+        User user;
+        for (int i = 0; i<10; i++){
+            int temp = 111111111+i;
+            String uid = Integer.toString(temp);
+            String email = "student" + Integer.toString(i) +"@greenlab.edu";
+            String firstname = "First"+Integer.toString(i);
+            String lastname = "Last"+Integer.toString(i);
+            user = new User(uid,email,password,firstname,lastname,role);
+            User temp_user = userRepository.findByEmail(email);
+            if (temp_user!=null)
+                return "<div>You already added 10 students.</div>";
+            userRepository.save(user);
+        }
+        return "successfully add 10 students.";
+    }
 }

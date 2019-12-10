@@ -1,17 +1,30 @@
 package com.greenlab.greenlab.controller.course;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.greenlab.greenlab.dto.BooleanResponseBody;
+import com.greenlab.greenlab.dto.DeleteStudentResponseBody;
+import com.greenlab.greenlab.dto.LabMenuRequestBody;
+import com.greenlab.greenlab.dto.MultiStringRequestBody;
+import com.greenlab.greenlab.dto.SingleStringRequestBody;
 import com.greenlab.greenlab.model.Course;
 import com.greenlab.greenlab.model.Lab;
+import com.greenlab.greenlab.model.StuCourse;
+import com.greenlab.greenlab.model.User;
 import com.greenlab.greenlab.repository.CourseRepository;
 import com.greenlab.greenlab.repository.LabRepository;
-import com.greenlab.greenlab.dto.*;
+import com.greenlab.greenlab.repository.StuCourseRepository;
+import com.greenlab.greenlab.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +35,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 // import org.springframework.web.bind.annotation.PostMapping;
 // import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +49,10 @@ public class EditCourseController{
     private CourseRepository courseRepository;
     @Autowired
     private LabRepository labRepository;
-
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private StuCourseRepository stuCourseRepository;
     @GetMapping(value = "/course/edit")
     public String getCreateCourse(ModelMap model, @RequestParam(value = "id") String id,
                                   HttpServletRequest request) {
@@ -50,6 +68,8 @@ public class EditCourseController{
         // for(Lab temp : labs){
         //     System.out.println(temp.testString());
         // }
+        List<User> students = course.getStudents();
+        model.addAttribute("students",students);
         return "profEditCourse";
     }
 
@@ -108,29 +128,117 @@ public class EditCourseController{
         return ResponseEntity.ok(result);
     }
 
-    //input: courseObjectId,  labObjectIds
-    //add selected labs to the course. 
-    @PostMapping(value = "/course/edit/addlabs")
-    public ResponseEntity<?> postCourseEditAddLabs(@Valid @RequestBody MultiStringRequestBody reqBody, Errors errors, HttpServletRequest request){
-        BooleanResponseBody result = new BooleanResponseBody();
-        if (errors.hasErrors()) {
-            result.setMessage(
-                    errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
-            return ResponseEntity.badRequest().body(result);
+    @ResponseBody
+    @PostMapping(value = "/course/edit/deleteStu")
+    public ResponseEntity<?> postCourseEditDelStu(@RequestParam(value = "courseId") String courseId,
+                                                  @RequestParam(value = "studentEmail") String studentEmail,
+                                                  ModelMap model, HttpServletRequest request){
+        DeleteStudentResponseBody result = new DeleteStudentResponseBody();
+//        if (errors.hasErrors()) {
+//            result.setMessage(
+//                    errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
+//            return ResponseEntity.badRequest().body(result);
+//        }
+        System.out.println("In delete student.");
+        String email = (String) request.getSession().getAttribute("email");
+//        String courseId = reqBody.getCourseId();
+//        String studentEmail = reqBody.getStudentEmail();
+        Course course = courseRepository.findByCourseIdAndCreator(courseId,email);//null
+        User student = userRepository.findByEmail(studentEmail);
+        List<User> students = course.getStudents();
+        System.out.println(students.size());
+        Iterator<User> it = students.iterator();
+        while (it.hasNext()) {
+            User s = it.next();
+            if (s.getUid().equals(student.getUid())) {
+                it.remove();
+                break;
+            }
         }
-        String courseObjectId = reqBody.getCourseObjectId();
-        List<String> labObjIds = reqBody.getStrs();
-
-        Course course = courseRepository.findBy_id(courseObjectId);
-        List<Lab> labs = course.getLabs();
-
-        for (String _id : labObjIds){
-            labs.add(labRepository.findBy_id(_id));
-            result.setMessage("_id="+_id+"\n");
-        }
+        System.out.println(students.size());
+        course.setStudents(students);
+        courseRepository.save(course);
+        System.out.println(courseId + " " + studentEmail);
+        StuCourse stuCourse = stuCourseRepository.findByCourseIdAndStudentEmail(courseId,studentEmail);
+        System.out.println(stuCourse.toString());
+        List<Lab> labs = labRepository.findByCourseId(courseId);
+        stuCourseRepository.delete(stuCourse);
+//        request.getSession().setAttribute("labs", labs);
+        model.addAttribute("students",students);
+        result.setStudents(students);
         return ResponseEntity.ok(result);
     }
 
+    @ResponseBody
+    @PostMapping(value = "/course/edit/uploadRoster2")
+    public String postCourseEditUploadRoster(@RequestParam(value = "courseId", required = false) String courseId,
+                                             @RequestParam(value = "file", required = false) MultipartFile file,
+                                             ModelMap model, HttpServletRequest request){
+        String creator = (String) request.getSession().getAttribute("email");
+        Course course = courseRepository.findByCourseIdAndCreator(courseId,creator);
+        List<User> students = course.getStudents();
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                ByteArrayInputStream inputFilestream = new ByteArrayInputStream(bytes);
+                BufferedReader br = new BufferedReader(new InputStreamReader(inputFilestream ));
+                String line = "";
+                int count = 0;
+                while ((line = br.readLine()) != null) {
+                    if(count==0){
+                        //First Line
+                    }else {
+                        String[] columns = line.split(",");
+                        System.out.println(columns[2]);
+                        String stuID = columns[2];
+                        if(userRepository.findByUid(stuID)!=null){
+                            User student = userRepository.findByUid(stuID);
+                            if(stuCourseRepository.findByCourseIdAndStudentEmail(courseId,student.getEmail()) != null){
+                                continue;
+                            }
+                            StuCourse stuCourse = new StuCourse(course.get_id(),student.getEmail(),course.getCourseId());
+                            stuCourse.set_id(course.get_id()+student.getEmail());
+                            System.out.println(stuCourse.toString());
+                            stuCourseRepository.save(stuCourse);
+                            students.add(student);
+                            course.setStudents(students);
+                            courseRepository.save(course);
+                        }
+                    }
+                    count++;
+
+                }
+                br.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        StringBuilder sb = new StringBuilder();
+//        sb.append("<div class=\"notVeryBigContainer\" th:id=\"'div_' + ${student.getEmail()}\" >");
+        for(User s:students){
+            sb.append("<div class=\"notVeryBigContainer\" id=\"div_" + s.getEmail() + "\">");
+            sb.append("<table class=\"courseContainer\">");
+            sb.append("<col width=\"15%\"/><col width=\"25%\"/><col width=\"40%\"/><col width=\"20%\"/>");
+            sb.append("<tr>");
+            sb.append("<td class=\"courseCellPadding\">");
+            sb.append("<div class=\"webfont\">").append(s.getFirstname()).append("</div>");
+            sb.append("<input id=\"studentEmail\" type=\"text\" name=\"studentEmail\" value=\"${").append(s.getEmail()).append("\"hidden>");
+            sb.append("</td>");
+            sb.append("<td class=\"courseCellPadding\">").append(s.getLastname()).append("</td>");
+            sb.append("<td class=\"courseCellPadding\">").append(s.getUid()).append("<td/>");
+            sb.append("<td class=\"courseCellPadding\">");
+            sb.append("<a id=\"").append(s.getEmail()).append("\" class=\"headerUnselected\" onclick=\"deleteStudent(this)\"><i class='fas fa-trash-alt headerIcon'></i></a>");
+            sb.append("</td>");
+            sb.append("</tr>");
+            sb.append("</table>");
+            sb.append("</div>");
+
+        }
+
+        return sb.toString();
+    }
 
 
     //post 一个courseObjectId  _id， 然后返回一个list of lab name 和lab的object id
