@@ -1022,9 +1022,7 @@
         }
 
     </script>
-
-
-<!--    labJS/FolderMin.js-->
+    <!--  labJS/FolderMin.js-->
     <script >
 
 
@@ -1662,8 +1660,8 @@
                 sendProtocal["addEquipToBoard"] = function(id){
 
 
-                    console.log(id);
-
+                    //console.log(id);
+                    websocket.sendMessage( quickPrepare( "addEquipToBoard", id ) );
 
                 }
 
@@ -2529,9 +2527,9 @@
 
                 <div class="btn btn-danger mb-1 disabled w-50" id="removeLastStep">
 
-                        <!--  <i class="fas fa-minus"></i> Remove Last Step-->
+                          <i class="fas fa-minus"></i> Remove Last Step
 
-                    <i class="fas fa-vials"></i> Test the Lab
+<!--                    <i class="fas fa-vials"></i> Test the Lab-->
 
                 </div>
 

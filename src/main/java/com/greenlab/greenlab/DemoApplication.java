@@ -1,11 +1,13 @@
 package com.greenlab.greenlab;
 
+import com.greenlab.greenlab.labEquip.equipment.equipmentData.ImageData.ImageDataRepository;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.equipmentData.EquipmentDataRepository;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.UserEquipment;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.UserEquipmentFolder;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.UserEquipmentFolderRepository;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.UserEquipmentRepository;
 import com.greenlab.greenlab.labEquip.framework.imageBlob.ImageBlobRepository;
+import com.greenlab.greenlab.labEquip.laboratory.labData.LabEquipData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -33,7 +35,10 @@ public class DemoApplication implements CommandLineRunner {
 	private SimpMessagingTemplate messagingTemplate;
 
 	@Autowired
-	private EquipmentDataRepository equipmentDataRepository;
+	public EquipmentDataRepository equipmentDataRepository;
+
+	@Autowired
+	public ImageDataRepository imageDataRepository;
 
 	@Autowired
 	private ImageBlobRepository imageBlobRepository;
@@ -45,6 +50,9 @@ public class DemoApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		createOneUser();
+
+
+
 
 
 	}

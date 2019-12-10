@@ -21,8 +21,7 @@ import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.User
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.UserEquipmentRepository;
 import com.greenlab.greenlab.labEquip.framework.imageBlob.ImageBlob;
 import com.greenlab.greenlab.labEquip.framework.imageBlob.ImageBlobRepository;
-import com.greenlab.greenlab.labEquip.laboratory.labData.LabData;
-import com.greenlab.greenlab.labEquip.laboratory.labData.LabDataRepository;
+import com.greenlab.greenlab.labEquip.laboratory.labData.*;
 import com.greenlab.greenlab.model.Lab;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -443,10 +442,20 @@ public class EquipmentController {
             JSONObject jsonObject1 =  (JSONObject)jsonObject.get("data");
             String imageDataId = jsonObject1.get("imageData").toString();
             String receiveText = jsonObject1.get("ReceiveText").toString();
+            String[] receiveArr  = receiveText.split(" ");
+
+
             ImageData imageData = imageDataRepository.getById( imageDataId );
             LinkedList<String> linkedList =  imageData.getReceiveText();
             linkedList.clear();
-            linkedList.add( receiveText );
+
+            for (String str : receiveArr){
+                if(str.equals("")==false){
+                    linkedList.add( str );
+                }
+
+            }
+
             imageData.setReceiveText(linkedList);
             imageDataRepository.save( imageData );
 
@@ -461,10 +470,16 @@ public class EquipmentController {
             JSONObject jsonObject1 =  (JSONObject)jsonObject.get("data");
             String imageDataId = jsonObject1.get("imageData").toString();
             String receiveText = jsonObject1.get("SendText").toString();
+            String[] receiveArr  = receiveText.split(" ");
+
             ImageData imageData = imageDataRepository.getById( imageDataId );
             LinkedList<String> linkedList =  imageData.getSendText();
             linkedList.clear();
-            linkedList.add( receiveText );
+            for (String str : receiveArr){
+                if(str.equals("")==false){
+                    linkedList.add( str );
+                }
+            }
             imageData.setSendText( linkedList );
             imageDataRepository.save( imageData );
 
@@ -1043,12 +1058,96 @@ public class EquipmentController {
 
 
 
+            }
+
+            else if( type.equals("addEquipToBoard")  ){
+
+                //private int currentLabStep;
+                //
+                //private List<String> labEquipDataList;
+                //private List<LabStep> labSteps;
+                //private List<LabEquipData> usedEquipList;
+
+                //private int id;
+                //private String equipmentDataStr;
+                //private List<String> imageDataStrArr;
+
+                //_______________________________________________________________________ the code to create labEquipData
+                String equipId = data.get("data").toString();
+                EquipmentData equipmentData =  equipmentDataRepository.getById(equipId);
+                String equipmentDataStr = jsonMapper.writeValueAsString(equipmentData);
+                LinkedList<String> imageIds = equipmentData.getImageIds();
+                LabEquipData labEquipData = new LabEquipData();
+                labEquipData.setEquipmentDataStr(equipmentDataStr);
+                List<String> imageDataStrArr = new LinkedList<>();
+                String fristStatusName = null;
+                for( int i = 0 ; i < imageIds.size() ;i++ ){
+
+                    String imageDataId = imageIds.get(i);
+                    ImageData imageData =  imageDataRepository.getById(imageDataId);
+                    if( i == 0 ){
+
+                        fristStatusName = imageData.getName();
+
+                    }
+                    String imageDataStr =  jsonMapper.writeValueAsString(imageData);
+                    imageDataStrArr.add(imageDataStr);
+
+                }
+
+                if( fristStatusName == null ){
+                    return;
+                }
+
+                labEquipData.setImageDataStrArr( imageDataStrArr );
+                //_______________________________________________________________________
+                //System.out.println( equipId );
+                int currentLabStep = labData.getCurrentLabStep();
+
+                //private List<LabEquipStatus> before;
+                //private List<LabEquipStatus> current;
+                //private List<LabEquipStatus> after;
+
+                List<LabEquipData> usedEquipList = labData.getUsedEquipList();
+                int usedEquipListSize = usedEquipList.size();
+                labEquipData.setId(usedEquipListSize);  // so if empty should be 0
+                usedEquipList.add(labEquipData);
+                labData.setUsedEquipList( usedEquipList );  // <--------------- set equip list
+
+                List<LabStep> labSteps =  labData.getLabSteps();
+                LabStep labStep =  labSteps.get( currentLabStep );
+                List<LabEquipStatus> current = labStep.getCurrent( );
+
+                LabEquipStatus labEquipStatus = new LabEquipStatus();
+                labEquipStatus.setLabEquipDataId(usedEquipListSize);
+                labEquipStatus.setCurrentStatus( imageIds.get(0) );
+                labEquipStatus.setX(20);
+                labEquipStatus.setY(20);
+
+                current.add(labEquipStatus);
+                labStep.setCurrent( current );
+                labSteps.set(currentLabStep , labStep  );
+                labData.setLabSteps( labSteps );  // <--------------- set the first step
+
+                labDataRepository.save( labData );
+
+                //labEquipStatus.
+
+                //current.add( )
+
+                //private int labEquipDataId;
+                //private String currentStatus;
+                //private int x;
+                //private int y;
+
+                //LabEquipData labEquipData = new LabEquipData();
+                //labEquipData.setEquipmentDataStr();
 
 
 
             }
 
-
+//addEquipToBoard
 
 
         }

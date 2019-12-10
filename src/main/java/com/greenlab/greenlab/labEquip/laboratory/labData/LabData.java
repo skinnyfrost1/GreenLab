@@ -2,9 +2,13 @@ package com.greenlab.greenlab.labEquip.laboratory.labData;
 
 
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.ImageData.ImageData;
+import com.greenlab.greenlab.labEquip.equipment.equipmentData.equipmentData.EquipmentData;
+import com.greenlab.greenlab.labEquip.equipment.equipmentData.equipmentData.EquipmentDataRepository;
 import com.greenlab.greenlab.labEquip.framework.userRoot.ItemData;
+import com.greenlab.greenlab.model.Lab;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,25 +17,21 @@ import java.util.List;
 @Setter
 public class LabData extends ItemData {
 
-
-    // the structure here need to design
-
-    // we add some structure here
-
-    //private List<LabEquipData> labEquipDataList;
-    //private List<Integer> labEquipDataListOrder;
-
-    // there should have something named
-        // step
+    private int currentLabStep;
 
     private List<String> labEquipDataList;
+    private List<LabStep> labSteps;
+    private List<LabEquipData> usedEquipList;
 
     public LabData(){
 
-        //labEquipDataList = new LinkedList<>();
-        //labEquipDataListOrder = new LinkedList<>();
+        usedEquipList = new LinkedList<>();
         labEquipDataList = new LinkedList<>();
+        labSteps = new LinkedList<>();
 
+        currentLabStep = 0;
+        LabStep labStep = new LabStep();
+        labSteps.add(labStep);
 
     }
 
@@ -39,30 +39,35 @@ public class LabData extends ItemData {
 
 }
 
-@Getter
-@Setter
-class LabEquipData {
-
-    // this we clone all the equipmentdata to here
-
-    // no like or dislike
-
-    private String imageBlobId;
-
-    private List<ImageData> imageDataList;
-
-    private String id;
-
-    private String name ="";
-
-    private String coverBlobId = "";
-
-    private String description  ="";
 
 
-    public LabEquipData(){
 
 
-    }
 
-}
+//@Getter
+//@Setter
+//class LabEquipData {
+//
+//    // this we clone all the equipmentdata to here
+//
+//    // no like or dislike
+//
+//    private String imageBlobId;
+//
+//    private List<ImageData> imageDataList;
+//
+//    private String id;
+//
+//    private String name ="";
+//
+//    private String coverBlobId = "";
+//
+//    private String description  ="";
+//
+//
+//    public LabEquipData(){
+//
+//
+//    }
+//
+//}
