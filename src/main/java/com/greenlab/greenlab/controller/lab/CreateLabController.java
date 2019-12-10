@@ -42,6 +42,7 @@ public class CreateLabController{
         ResponseEquipment tempRE;
         for (Equipment equipment : equipments){
             String image = Base64.getEncoder().encodeToString(equipment.getImage().getData());
+            image = "data:image/png;base64," + image;
             System.out.println(image);
             tempRE = new ResponseEquipment();
             tempRE.set_id(equipment.get_id());

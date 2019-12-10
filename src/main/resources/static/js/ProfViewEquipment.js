@@ -20,7 +20,7 @@ $(document).ready(function () {
         var data = result[i].image;
         var str = equipmentContainer.innerHTML;
         equipmentContainer.innerHTML = str + '<div class="equipment viewEquipContainer" id="' + _id + '">' + equipmentName +
-          '<image src = "data:image/png;base64,' + data + '"' + '</div>'
+          '<img src = "data:image/png;base64,' + data + '">' + '</div>'
       }
     },
     error: function (e) {
