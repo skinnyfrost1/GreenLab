@@ -143,7 +143,7 @@
                             <div class="webfont" th:text="${lab.labName}"></div>
                         </td>
                         <td class="courseCellPadding">
-                            <input class="webfont" type="checkbox" th:value="${lab._id}" checked></input>
+                            <input class="webfont" name="editLabSelected" type="checkbox" th:value="${lab._id}" checked></input>
                         </td>
                     </tr>
                 </table>
@@ -173,7 +173,7 @@
                             <div class="webfont" th:text="${lab.labName}"></div>
                         </td>
                         <td class="courseCellPadding">
-                            <input class="webfont" type="checkbox" th:value="${lab._id}"></input>
+                            <input class="webfont" name="editLabSelected" type="checkbox" th:value="${lab._id}"></input>
                         </td>
                     </tr>
                 </table>

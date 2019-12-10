@@ -1,5 +1,6 @@
 // $(document).ready(function(){
 // console.log("Ready!!");
+
 $("#editCourseEditLabs").show().hide().removeClass("show");
 $("#submitEditBtnContainer").show().hide().removeClass("show");
 $("#previousEditBtnContainer").show().hide().removeClass("show");
