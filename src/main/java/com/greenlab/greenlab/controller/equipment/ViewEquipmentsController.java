@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.greenlab.greenlab.dto.BooleanResponseBody;
 import com.greenlab.greenlab.dto.EquipmentsResponseBody;
 import com.greenlab.greenlab.dto.ResponseEquipment;
 import com.greenlab.greenlab.dto.SingleStringRequestBody;
@@ -20,7 +19,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.thymeleaf.standard.expression.Each;
 
 @Controller
 public class ViewEquipmentsController {
@@ -42,7 +40,6 @@ public class ViewEquipmentsController {
 
     @PostMapping("/equipments")
     public ResponseEntity<?> postEquipments(@RequestBody SingleStringRequestBody requestBody, HttpServletRequest request){
-        EquipmentsResponseBody result = new EquipmentsResponseBody();
         String role = (String) request.getSession().getAttribute("role");
         String email = (String) request.getSession().getAttribute("email");
 
