@@ -19,8 +19,8 @@ import java.util.List;
 @Setter
 public class LabEquipData{
 
-    private int id;
-    private String equipmentDataStr;
+    private int id;                    // this is 0123 id
+    private String equipmentDataStr;                         //  if you are looking for current name status name
     private List<String> imageDataStrArr;
 
 

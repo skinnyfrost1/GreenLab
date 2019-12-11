@@ -1062,6 +1062,12 @@ public class EquipmentController {
 
             else if( type.equals("addEquipToBoard")  ){
 
+                List< LabStep> labSteps = labData.getLabSteps();
+                if( labSteps.size() == 0 ){
+                    labSteps.add( new LabStep() );
+                }
+                labData.setLabSteps( labSteps );
+                labData.setCurrentLabStep(0);
                 //private int currentLabStep;
                 //
                 //private List<String> labEquipDataList;
@@ -1114,13 +1120,13 @@ public class EquipmentController {
                 usedEquipList.add(labEquipData);
                 labData.setUsedEquipList( usedEquipList );  // <--------------- set equip list
 
-                List<LabStep> labSteps =  labData.getLabSteps();
+                //List<LabStep> labSteps =  labData.getLabSteps();
                 LabStep labStep =  labSteps.get( currentLabStep );
                 List<LabEquipStatus> current = labStep.getCurrent( );
 
                 LabEquipStatus labEquipStatus = new LabEquipStatus();
                 labEquipStatus.setLabEquipDataId(usedEquipListSize);
-                labEquipStatus.setCurrentStatus( imageIds.get(0) );
+                labEquipStatus.setCurrentStatus( fristStatusName );
                 labEquipStatus.setX(20);
                 labEquipStatus.setY(20);
 

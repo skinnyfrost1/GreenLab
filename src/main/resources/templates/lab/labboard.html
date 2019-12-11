@@ -528,7 +528,14 @@
                 return this.imageStatusArr;
             }
             getLabImageStatusByName( name ){
-                
+                for( var i = 0 ; i< this.imageStatusArr.length ; i++ ){
+                    var labImageStatus =  this.imageStatusArr[i] ;
+                    //labImageStatus = new LabImageStatus();
+                    if( name ==  labImageStatus.getName() ){
+                        return  labImageStatus;
+                    }
+                }
+                return null;
             }
             setId( id ){
                 this.id = id;
@@ -696,74 +703,172 @@
             // now we need display the whole things
 
             displayLabBoard(){
-
-                //console.log("666");
-
-                // now we need check all the image
-
-
-
                 var nodeLength = this.EquipNodeArr.length;
                 var equipLength = this.EquipmentDataArr.length;
-
+                var imageBlobArr = [];
                 if( nodeLength  < equipLength  ){
-
                     for( var i = nodeLength ; i < equipLength ; i++ ){
-                        var labEquipData = new LabEquipData();
-                        labEquipData = this.EquipmentDataArr[i]
-
-                        labEquipData.getLabImageStatusByIndex( i );
-
-
-                        // var equipNode = new EquipNode();
-                        // equipNode.id = i;
-                        // equipNode.src =
-                        //this.EquipNodeArr.push();
+                        //var labEquipData = new LabEquipData();
+                        var labEquipData = this.EquipmentDataArr[i];
+                        for( var b = 0 ; b <  labEquipData.getLabImageStatusArr().length ; b++ ){
+                            var labImageStatus = labEquipData.getLabImageStatusByIndex( b );
+                            //labImageStatus = new LabImageStatus();
+                            var imageblobId = labImageStatus.getImageblobId()
+                            var imageBlob =  imageStorage.getItem( imageblobId );
+                            if( imageBlob == null ){
+                                imageBlobArr.push( imageblobId );
+                            }
+                        }
                     }
 
                 }
 
-                // var sendData = {};
-                // sendData["labId"] = itemId;
-                // sendData["blobIds"] = imageblobSet;
-                //
-                // $.ajax({
-                //     type: "POST",
-                //     contentType: "application/json",
-                //     url: "/ajax/downloadImages",
-                //     data: JSON.stringify(sendData),
-                //     dataType: 'json',
-                //     cache: false,
-                //     timeout: 600000,
-                //     success: function (info) {
-                //         var imageBlobArr =  JSON.parse( info.data );
-                //         for( var i = 0 ; i< imageBlobArr.length ;i++ ){
-                //             var imageBlobStr = imageBlobArr[i];
-                //             var imageBlob = JSON.parse(imageBlobStr);
-                //             var imageBlobId = imageBlob.id;
-                //             imageStorage.setItem( imageBlobId , imageBlobStr );
-                //         }
-                //
-                //         //var imageBlob =  JSON.parse( info.data );
-                //         //imageStorage.setItem( imageBlob.id , info.data );
-                //         //labData.__displayAllEquipment();
-                //         labData.__displayFolderConetnt();
-                //
-                //
-                //
-                //         //console.log(info);
-                //     },
-                //     error: function (e) {
-                //
-                //
-                //
-                //     }
-                // });
+                if( imageBlobArr.length != 0 ){
+                    var sendData = {};
+                    sendData["labId"] = itemId;
+                    sendData["blobIds"] = imageBlobArr;
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/ajax/downloadImages",
+                        data: JSON.stringify(sendData),
+                        dataType: 'json',
+                        cache: false,
+                        timeout: 600000,
+                        success: function (info) {
+                            var imageBlobArr =  JSON.parse( info.data );
+                            for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+                                var imageBlobStr = imageBlobArr[i];
+                                var imageBlob = JSON.parse(imageBlobStr);
+                                var imageBlobId = imageBlob.id;
+                                imageStorage.setItem( imageBlobId , imageBlobStr );
+                            }
 
+                            labData.__displayLabBoard();
+
+                            //console.log(info);
+                        },
+                        error: function (e) {
+
+                        }
+                    });
+                }else{
+                    //console.log("777");
+                    labData.__displayLabBoard();
+
+                }
+            }
+
+            __displayLabBoard(){
+
+                //console.log("666UUU");
+                var nodeLength = this.EquipNodeArr.length;
+                var equipLength = this.EquipmentDataArr.length;
+                if( nodeLength  < equipLength  ){
+                    for( var i = nodeLength ; i < equipLength ; i++ ) {
+                        var labEquipData = this.EquipmentDataArr[i];
+                        //labEquipData = new LabEquipData();
+                        var labImageStatus = labEquipData.getLabImageStatusByIndex(0);
+                        //labImageStatus = new LabImageStatus();
+                        //labImageStatus.getImageblobId()
+                        var equipNode = new EquipNode();
+
+                        //console.log("labImageStatus.getImageblobId()")
+                        //console.log( labImageStatus.getImageblobId() );
+                        //equipNode.src = JSON.parse(imageStorage.getItem(labImageStatus.getImageblobId())).blob;
+
+                        equipNode.id = i;
+                        equipNode.name = labImageStatus.getName();
+                        equipNode.sendText = JSON.stringify(labImageStatus.getSendTextArr());
+                        var theNode =  equipNode.getNode();
+                        this.EquipNodeArr.push(theNode);
+                        //document.getElementById("working").append( theNode );
+                    }
+                }
+
+                // now we have all the node
+
+                var childNodes =  document.getElementById(workingDiv).childNodes;
+
+                var labSteps =  this.labSteps;
+                //labSteps = new LabSteps();
+                var step = labSteps.getCurrentStep();
+                //step = new Step();
+                var current =  step.getCurrent();
+
+                // first remove the node from html
+
+                for( var i = 0 ; i < childNodes.length ; i++  ){
+                    var nodeInHTM = childNodes[i];
+                    // console.log(nodeInHTM);
+                    var id = nodeInHTM.id;
+                    var inCurrentBool = false;
+                    for( var b = 0 ; b < current.length ; b++  ){
+                        // here we will hide the node
+                        if( current[b].labEquipDataId == id ){
+                            inCurrentBool = true;
+                        }
+                        //document.getElementById(workingDiv).removeChild( nodeInHTM  );
+                    }
+                    if( inCurrentBool == true ){
+                        document.getElementById(workingDiv).removeChild( nodeInHTM  );
+                    }
+                }
+
+                //console.log("the current is ");
+                //console.log( current );
+
+                for( var i = 0 ; i< current.length ; i++  ){
+                    //var labEquipStatus =  new LabEquipStatus();
+                    var labEquipStatus = current[i];
+
+
+
+                    var currentStatus =  labEquipStatus.currentStatus;
+                    var labEquipDataId = labEquipStatus.labEquipDataId;
+                    var x = labEquipStatus.x;
+                    var y = labEquipStatus.y;
+
+                    // here we will check if it's inside html
+                    // if not we will remove from html
+
+                    var inCurrentBool = false;
+                    for( var b = 0 ; b < childNodes.length ; b++ ){
+                        if( current[i].labEquipDataId == childNodes[b].id ){
+                            inCurrentBool = true;
+                        }
+                    }
+
+                    if( inCurrentBool == false ){
+                        //console.log("seems didn't go here");
+                        document.getElementById(workingDiv).append( this.EquipNodeArr[labEquipDataId] );
+                    }
+                    this.EquipNodeArr[labEquipDataId].style.left = x+"px";
+                    this.EquipNodeArr[labEquipDataId].style.top = y+"px";
+                    this.EquipNodeArr[labEquipDataId].name = currentStatus;
+                    var equipmentData = this.getEquipmentDataByIndex( labEquipDataId  );
+                    var imageStatus = equipmentData.getLabImageStatusByName( currentStatus );
+                    var sendtextArr = imageStatus.getSendTextArr();
+                    this.EquipNodeArr[labEquipDataId].sendtext = JSON.stringify( sendtextArr );
+
+                    //console.log("imageStatus.getImageblobId()  the wrong ");
+                    //console.log(imageStatus.getImageblobId());
+
+                    this.EquipNodeArr[labEquipDataId].src = JSON.parse(imageStorage.getItem( imageStatus.getImageblobId() )).blob;
+
+
+                }
 
             }
 
         }
+
+        //labEquipData.getLabImageStatusArr()
+        //labEquipData.getLabImageStatusByIndex( i );
+        // var equipNode = new EquipNode();
+        // equipNode.id = i;
+        // equipNode.src =
+        //this.EquipNodeArr.push();
 
         // var step = new Step();
         // var labData = new LabData();
@@ -805,6 +910,19 @@
                     labData.setLabData( data );
                     labData.displayLabBoard();
                 };
+
+                receiveProtocal["refreshBoardExceptSelf"] = function (data) {
+
+                    // we will get websocket id
+                        // we will check if it's self
+
+                    // if it's self
+                        // won't do anything
+
+                    //
+
+                }
+
             }
         }
     </script>
@@ -919,14 +1037,20 @@
 
     <script>
 
+        var workingDiv = "working";
+        var generateDiv = "generate";
+        var leisureDiv = "leisure";
+
         class EquipNode{  // here will only one status
             constructor(){
                 this.id = null;  // this should combine equip id and
                 this.src = null;
+                this.name = null;
+                this.sendText = null;
             }
 
             __getHTML(){
-                return "<img id='"+this.id+"' src='"+this.src+"' ondrag='onDrag(this)' onmousedown='onMouseDown(this)' style='position: fixed;' >";
+                return "<img id='"+this.id+"' sendText='"+this.sendText+"' name='"+this.name+"' src='"+this.src+"' onmouseleave='onMouseLeave(this)' ondrag='onDrag(this)' onmouseup='onMouseUp(this)' onmousedown='onMouseDown(this)' style='position: fixed;' >";
             }
 
             getNode(){
@@ -950,9 +1074,25 @@
 
         function onMouseDown( evt ) {
             console.log(evt.id);
-            var parentNode = evt.parentNode;
-            parentNode.removeChild(evt);
-            parentNode.append(  evt );
+
+            //websocket.sendMessage( quickPrepare( "onMouseDown" , evt.id ) );
+
+            // var parentNode = evt.parentNode;
+            // parentNode.removeChild(evt);
+            // parentNode.append(  evt );
+
+        }
+
+        function onMouseLeave(evt ){
+
+            console.log("mouse leave detected");
+
+        }
+
+        function onMouseUp( evt ) {
+
+            console.log("mouse up detected");
+
         }
 
         function onDrag( evt ) {
