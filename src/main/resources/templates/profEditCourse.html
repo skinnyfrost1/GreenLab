@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:disabled="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <script src="/js/EditCourse.js"></script>
@@ -85,7 +85,7 @@
 <!-- Two containers -->
 <form id="uploadRosterForm" action="" method = "post" enctype="multipart/form-data"></form>
 <form th:action="@{/course/edit}" method = "post" enctype="multipart/form-data">
-    <div style="text-align: center;">
+    <div id="editCourseInfoContainer" class="show" style="text-align: center;">
         <!-- Left container -->
         <div class="createCourseContainer webfont">
             <div class=" webfont bold" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
@@ -110,8 +110,13 @@
         <!-- End of left Container -->
 
         <!-- Right container-->
+
+        <!-- End of right container -->
+    </div>
+    <!-- End of two containers-->
+    <div class="show" id="editCourseEditLabs" style="text-align: center;">
         <div class="createCourseContainer webfont">
-            <div class=" webfont bold" style="text-align:left;margin: 0.5em 0;">Labs
+            <div class=" webfont bold" style="text-align:left;margin: 0.5em 0;">Existed Labs
                 <span>
                     <a href="" class="" style="margin:0em 1em 0em 20em;"></i></a>
             </span>
@@ -127,26 +132,61 @@
                     <!-- <col width="20%"/> -->
                     <!-- <tbody style="padding: 0; margin: 0;"> -->
                     <tr>
-                        <td class="courseCellPadding">
-                            <div th:text="${course.courseId}"></div>
-                        </td>
-                        <td class="courseCellPadding">
-                            <div class="webfont" th:text="'[ ' + ${course.semester} + ' ]'"></div>
-                        </td>
+                        <!--                        <td class="courseCellPadding">-->
+                        <!--                            <div th:text="${course.courseId}"></div>-->
+                        <!--                        </td>-->
+                        <!--                        <td class="courseCellPadding">-->
+                        <!--                            <div class="webfont" th:text="'[ ' + ${course.semester} + ' ]'"></div>-->
+                        <!--                        </td>-->
+
                         <td class="courseCellPadding">
                             <div class="webfont" th:text="${lab.labName}"></div>
                         </td>
-
+                        <td class="courseCellPadding">
+<!--                            <div class="checkBoxDiv">-->
+                                <input class="webfont" name="editLabSelected" type="checkbox" th:value="${lab._id}" checked></input>
+<!--                            </div>-->
+                        </td>
                     </tr>
                 </table>
 
             </div>
-
         </div>
-        <!-- End of right container -->
+
+
+        <div class="createCourseContainer webfont">
+            <input id='testEditHidden' type='hidden' value='default' name='editLabSelected'>
+            <div class=" webfont bold" style="text-align:left;margin: 0.5em 0;">Labs To Add
+                <span>
+                    <a href="" class="" style="margin:0em 1em 0em 20em;"></i></a>
+            </span>
+            </div>
+            <!-- one lab -->
+            <!-- loop -->
+            <div th:each="lab: ${restLabs}"class="bigLabContainer">
+                <a th:href="'/course/edit?id=' +${course.get_id()}"></a>
+                <table class="labContainer" >
+                    <col width="30%"/>
+                    <col width="40%"/>
+                    <col width="30%"/>
+                    <!-- <col width="20%"/> -->
+                    <!-- <tbody style="padding: 0; margin: 0;"> -->
+                    <tr>
+                        <td class="courseCellPadding">
+                            <div class="webfont" th:text="${lab.labName}"></div>
+                        </td>
+                        <td class="courseCellPadding">
+<!--                            <div class="checkBoxDiv">-->
+                                <input class="webfont" name="editLabSelected" type="checkbox" th:value="${lab._id}"></input>
+<!--                            </div>-->
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
-    <!-- End of two containers-->
-    <div style="text-align: center;margin:0em 0em 1em 0em">
+
+    <div style="text-align: center;margin:0em 0em 1em 0em" class="show" id="studentRosterContainer">
         <div class="bigContainer webfont" style="width:83.5%;margin:0em 0em 0em 6.5em;">
 <!--            <div class=" webfont" style="text-align:left; margin: 0.5em 0.5em; " >Student roster</div>-->
 <!--            <div>-->
@@ -184,44 +224,60 @@
             <!-- loop -->
             <!-- one course -->
             <div id="displayStudent">
+                <div th:each="student: ${students}" class="notVeryBigContainer" th:id="'div_' + ${student.getEmail()}" >
+        <!--            <div th:if="${role=='professor'}"><a th:href="'/course/edit?id=' +${course.get_id()}">-->
+                        <table class="courseContainer">
+                            <col width="15%"/>
+                            <col width="25%"/>
+                            <col width="40%"/>
+                            <col width="20%"/>
+                            <!-- <col width="20%"/> -->
+                            <!-- <tbody style="padding: 0; margin: 0;"> -->
+                            <tr >
+                                <td class="courseCellPadding">
+                                    <div class="webfont" th:text="${student.getFirstname()}"></div>
+                                    <input id="studentEmail" type="text" name="studentEmail" th:value="${student.getEmail()}"hidden>
+                                </td>
+                                <td class="courseCellPadding" th:text="${student.getLastname()}" />
+                                <td class="courseCellPadding" th:text="${student.getUid()}" />
+                                <td class="courseCellPadding">
+    <!--                                <a th:href="@{/logout}" ><i class='fas fa-trash-alt'></i></a>-->
+                                    <a th:id="${student.getEmail()}" class="headerUnselected" onclick="deleteStudent(this)"><i class='fas fa-trash-alt headerIcon'></i></a>
+                                </td>
+                            </tr>
 
-            <div th:each="student: ${students}" class="notVeryBigContainer" th:id="'div_' + ${student.getEmail()}" >
-    <!--            <div th:if="${role=='professor'}"><a th:href="'/course/edit?id=' +${course.get_id()}">-->
-                    <table class="courseContainer">
-                        <col width="15%"/>
-                        <col width="25%"/>
-                        <col width="40%"/>
-                        <col width="20%"/>
-                        <!-- <col width="20%"/> -->
-                        <!-- <tbody style="padding: 0; margin: 0;"> -->
-                        <tr >
-                            <td class="courseCellPadding">
-                                <div class="webfont" th:text="${student.getFirstname()}"></div>
-                                <input id="studentEmail" type="text" name="studentEmail" th:value="${student.getEmail()}"hidden>
-                            </td>
-                            <td class="courseCellPadding" th:text="${student.getLastname()}" />
-                            <td class="courseCellPadding" th:text="${student.getUid()}" />
-                            <td class="courseCellPadding">
-<!--                                <a th:href="@{/logout}" ><i class='fas fa-trash-alt'></i></a>-->
-                                <a th:id="${student.getEmail()}" class="headerUnselected" onclick="deleteStudent(this)"><i class='fas fa-trash-alt headerIcon'></i></a>
-                            </td>
-                        </tr>
-
-                    </table>
-            </div>
+                        </table>
+                </div>
             </div>
 
         </div>
     </div>
+
     <span>
-        <input form="deleteForm" name="courseObjectId" th:value="${course._id}" hidden/>
-        <input form="deleteForm" type="submit" value="Delete" class="delete-button webfont" style="float:left;margin:0.5em 8% 2em 8%;">
-        <input type="submit" value="Save" class="save-button webfont" style="float:right;margin:0.5em 8% 2em 8%;">
+
+        <div id="deleteCourseBtnContainer" class="show">
+            <input form="deleteForm" name="courseObjectId" th:value="${course._id}" hidden/>
+            <input form="deleteForm" type="submit" value="Delete" class="delete-button webfont" style="float:left;margin:0.5em 8% 2em 8%;">
+        </div>
+
+        <div id="submitEditBtnContainer" class="show">
+            <input type="submit" id="saveEditBtn" value="Save" class="save-button webfont" style="float:right;margin:0.5em 8% 2em 8%;">
+        </div>
+
+        <div id="previousEditBtnContainer" class="show">
+            <button type="button" class="show save-button" id="previousEditBtn" style="margin:0em 10% 0em 0em;float:left;">PREVIOUS</button>
+        </div>
+
+        <div id="nextEditBtnContainer" class="show">
+            <button type="button" class="show save-button" id="nextEditBtn" style="margin:0em 10% 0em 0em;float:right;">NEXT</button>
+        </div>
+
     </span>
 <!--    <div style="text-align:right;">-->
 <!--    </div>-->
 </form>
 <form id='deleteForm' th:action="@{/course/delete}" method = "post"></form>
 </body>
+<script src="/js/EditCourse.js"></script>
 <!--<script type="text/javascript" th:src="@{/js/EditCourse.js}"></script>-->
 </html>

@@ -7,8 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MultiStringRequestBody{
-    String courseObjectId;
-    List<String> strs;
-    
+
+
+public class LabMenuRequestBody{
+    String message;
+    List<String> labs;
 }

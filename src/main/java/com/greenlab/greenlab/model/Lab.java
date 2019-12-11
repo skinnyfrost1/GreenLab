@@ -1,7 +1,8 @@
 package com.greenlab.greenlab.model;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.greenlab.greenlab.lab.LabEquipment;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -23,15 +24,15 @@ public class Lab {
     private String labDescription;
     private String creator;
     private String stepObjectId;
-    private List<Material> materials;
-    private List<Container> containers;
-    private List<Holder> holders;
-    // private List<Steps> steps;
+    @DBRef
+    private List<Equipment> preparedEquipment;   //equipments which the professor pick to use in the lab. 
+    private List<LabEquipment> equipmentInLab;      //equipments that have been created in Lab. 
+
 
     public Lab() {
-        materials = new ArrayList<Material>();
-        containers = new ArrayList<Container>();
-        holders = new ArrayList<Holder>();
+        // materials = new ArrayList<Material>();
+        // containers = new ArrayList<Container>();
+        // holders = new ArrayList<Holder>();
         // steps = new ArrayList<Steps>();
     }
 
@@ -42,17 +43,17 @@ public class Lab {
         this.labDescription = labDescription;
         this.creator = creator;
     }
-    public Lab(String _id, String courseId, String labName, String labDescription, String creator,
-            List<Material> materials, List<Container> containers, List<Holder> holders) {
-        this._id = _id;
-        this.courseId = courseId;
-        this.labName = labName;
-        this.labDescription = labDescription;
-        this.creator = creator;
-        this.materials = materials;
-        this.containers = containers;
-        this.holders = holders;
-    }
+    // public Lab(String _id, String courseId, String labName, String labDescription, String creator,
+    //         List<Material> materials, List<Container> containers, List<Holder> holders) {
+    //     this._id = _id;
+    //     this.courseId = courseId;
+    //     this.labName = labName;
+    //     this.labDescription = labDescription;
+    //     this.creator = creator;
+    //     this.materials = materials;
+    //     this.containers = containers;
+    //     this.holders = holders;
+    // }
 
 
     public String testString() {

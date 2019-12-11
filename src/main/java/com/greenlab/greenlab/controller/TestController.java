@@ -75,7 +75,7 @@ public class TestController{
     @GetMapping(value="/test/add30courses")
     public String getAdd30Courses() {
         for (int i=0;i<30;i++){
-            String courseId = "CHE 1"+Integer.toString(i);
+            String courseId = "CHE1"+Integer.toString(i);
             String courseName = "Course name "+Integer.toString(i);
             String semester = "Spring "+Integer.toString(i);
             String courseDescription = "no bb";
@@ -122,7 +122,9 @@ public class TestController{
             String _id = buf;
             Lab l = labRepository.findBy_id(_id);
             if (l==null)
-                l = new Lab(_id, courseId, labName, labDescription, creator, null, null, null);
+                // l = new Lab(_id, courseId, labName, labDescription, creator, null, null, null);
+                l = new Lab(_id, courseId, labName, labDescription, creator);
+
             
             labRepository.save(l);
         }
@@ -143,7 +145,7 @@ public class TestController{
             String _id = buf;
             Lab l = labRepository.findBy_id(_id);
             if (l==null)
-                l = new Lab(_id, courseId, labName, labDescription, creator, null, null, null);
+                l = new Lab(_id, courseId, labName, labDescription, creator);
 
             labRepository.save(l);
         }

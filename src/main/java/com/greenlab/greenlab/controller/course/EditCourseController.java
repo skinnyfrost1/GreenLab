@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,22 +12,30 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.greenlab.greenlab.dto.*;
+import com.greenlab.greenlab.dto.BooleanResponseBody;
+import com.greenlab.greenlab.dto.DeleteStudentResponseBody;
+import com.greenlab.greenlab.dto.LabMenuRequestBody;
+import com.greenlab.greenlab.dto.MultiStringRequestBody;
+import com.greenlab.greenlab.dto.SingleStringRequestBody;
 import com.greenlab.greenlab.model.Course;
 import com.greenlab.greenlab.model.Lab;
 import com.greenlab.greenlab.model.StuCourse;
 import com.greenlab.greenlab.model.User;
 import com.greenlab.greenlab.repository.CourseRepository;
 import com.greenlab.greenlab.repository.LabRepository;
-
 import com.greenlab.greenlab.repository.StuCourseRepository;
 import com.greenlab.greenlab.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 // import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +53,9 @@ public class EditCourseController{
     private UserRepository userRepository;
     @Autowired
     private StuCourseRepository stuCourseRepository;
+
+
+
     @GetMapping(value = "/course/edit")
     public String getCreateCourse(ModelMap model, @RequestParam(value = "id") String id,
                                   HttpServletRequest request) {
@@ -56,6 +68,18 @@ public class EditCourseController{
         model.addAttribute("role",role);
         List<Lab> labs = course.getLabs();
         model.addAttribute("labs",labs);
+
+
+        List<Lab> restLabs = labRepository.findByCourseId(course.getCourseId());
+        System.out.println(restLabs.size());
+        for (Lab lab : labs){
+            restLabs.remove(lab);
+        }
+        model.addAttribute("restLabs",restLabs);
+
+
+
+
         // for(Lab temp : labs){
         //     System.out.println(temp.testString());
         // }
@@ -70,10 +94,20 @@ public class EditCourseController{
                                     @RequestParam(value = "courseId", required = false) String courseId,
                                    @RequestParam(value = "courseName", required = false) String courseName,
                                    @RequestParam(value = "semester", required = false) String semester,
-                                   @RequestParam(value = "courseDescription", required = false) String courseDescription, ModelMap model,
-                                   HttpServletRequest request) {
+                                   @RequestParam(value = "courseDescription", required = false) String courseDescription,
+                                   @RequestParam(value = "editLabSelected", required = false) List<String> editLabSelected,
+                                    ModelMap model, HttpServletRequest request) {
 
 //        String creator = (String) request.getSession().getAttribute("email");
+        List<Lab> labs = new ArrayList<>();
+        for (String id : editLabSelected){
+            Lab temp = labRepository.findBy_id(id);
+            labs.add(temp);
+            System.out.println("EditLabSelected = "+id);
+        }
+//
+
+
         Course course = courseRepository.findBy_id(_id);
         System.out.println(course.get_id());
         courseId = courseId.replaceAll(" ","");
@@ -82,21 +116,41 @@ public class EditCourseController{
         course.setCourseName(courseName);
         course.setSemester(semester);
         course.setCourseDescription(courseDescription);
-//        System.out.println(course.get_id());
+        course.setLabs(labs);
         courseRepository.save(course);
         return "redirect:/courses";
     }
     
+
+
+    //this method is use to delete labs from a course. 
+    //input: courseObjectId, labObjectIds 
     @PostMapping(value = "/course/edit/dellabs")
-    public ResponseEntity<?> postCourseEditLabs(@Valid @RequestBody MultiStringRequestBody reqBody, Errors errors, HttpServletRequest request){
+    public ResponseEntity<?> postCourseEditDelLabs(@Valid @RequestBody MultiStringRequestBody reqBody, Errors errors, HttpServletRequest request){
         BooleanResponseBody result = new BooleanResponseBody();
+        String message = "Success!\nRemove:\n";
         if (errors.hasErrors()) {
             result.setMessage(
                     errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
             return ResponseEntity.badRequest().body(result);
         }
+        String courseObjectId = reqBody.getCourseObjectId();
+        List<String> labObjIds = reqBody.getStrs();
 
-        return null;
+        Course course = courseRepository.findBy_id(courseObjectId);
+        List<Lab> labs = course.getLabs();
+
+        for (String s : labObjIds){
+            for (Lab l :labs){
+                if(l.get_id().equals(s)){
+                    message=message+l.getLabName()+"\n";
+                    labs.remove(l);
+                }
+            }
+        }
+        result.setMessage(message);
+        result.setBool(true);
+        return ResponseEntity.ok(result);
     }
 
     @ResponseBody
@@ -211,5 +265,34 @@ public class EditCourseController{
         return sb.toString();
     }
 
+
+    //post 一个courseObjectId  _id， 然后返回一个list of lab name 和lab的object id
+    @PostMapping(value="/course/edit/requestlabmenu")
+    public ResponseEntity<?> postCourseEditRequestLabMenu(@Valid @RequestBody SingleStringRequestBody reqBody, Errors errors, HttpServletRequest request){
+        LabMenuRequestBody result = new LabMenuRequestBody();
+        if (errors.hasErrors()) {
+            result.setMessage(
+                    errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
+            return ResponseEntity.badRequest().body(result);
+        }
+        String courseObjectId = reqBody.getStr();
+        Course course = courseRepository.findBy_id(courseObjectId);
+        List<Lab> labs = course.getLabs();
+
+        String courseId = course.getCourseId();
+        String creator = (String) request.getSession().getAttribute("email");
+        List<Lab> labmenu = labRepository.findByCourseIdAndCreator(courseId, creator);
+        
+        for (Lab l : labs){
+            if (labmenu.contains(l)){
+                labmenu.remove(l);
+            }
+        }
+        List<String> labNameList = new ArrayList<>();
+        for(Lab l :labmenu){
+            labNameList.add("[\""+l.getLabName()+"\", \""+l.get_id()+"\"]");
+        }
+        return ResponseEntity.ok(result);
+    }
 
 }

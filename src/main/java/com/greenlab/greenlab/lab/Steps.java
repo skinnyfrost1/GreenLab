@@ -6,10 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Steps{
-    private String stepNumber;
-    private String labObjectId;
-    private String subjectA;
-    private String action;
-    private String objectB;
-}
 
+    private int stepNumber;
+    private LabEquipment equipmentA;
+    private LabEquipment equipmentB;
+    private LabEquipment solution;
+    private String info;
+
+}

@@ -10,10 +10,7 @@
   <link th:href="@{/stylesheet/profViewEquip.css}" type="text/css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
     integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <title>View Equipments</title>
+  <title>profViewCourse</title>
 </head>
 
 <body>
@@ -87,15 +84,53 @@
   <div class="title webfont">Your Equipments
     <a href="" class="headerUnselected" style="margin:0em 5em 0em 20em;"><i class='fas fa-trash-alt headerIcon'></i></a>
   </div>
- 
-
-  <div id="equipmentsContainer" class="" style="text-align:center;">
-    
-    
-
+  <!-- <table style="width:100%">
+    <col width="33.4%"/>
+    <col width="33.3%"/>
+    <col width="33.3%"/>
+    <tr>
+      <td>
+        <div class="viewEquipContainer"></div>
+      </td>
+      <td>
+        <div class="viewEquipContainer"></div>
+      </td>
+      <td>
+        <div class="viewEquipContainer"></div>
+      </td>
+    </tr>
+  </table> -->
+  <div style="text-align:center;">
+    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Container.png">
+      <br>
+      50 ml beaker
+    </div>
+    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Heater.png">
+      <br>
+      Small alcohol lamp
+    </div>
+    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Timer.png">
+      <br>
+      Timer
+    </div>
   </div>
 
-  <script type="text/javascript" th:src="@{/js/ProfViewEquipment.js}"></script>
+  <div style="text-align:center;">
+    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Holder.png">
+      <br>
+      Holder
+    </div>
+    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Measure.png">
+      <br>
+      Measure
+    </div>
+    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Seperator.png">
+      <br>
+      Seperator
+    </div>
+  </div>
+
+
 </body>
 
 </html>

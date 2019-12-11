@@ -66,6 +66,7 @@ public class CreateCourseController {
                                    @RequestParam(value = "semester", required = false) String semester,
                                    @RequestParam(value = "courseDescription", required = false) String courseDescription,
                                    @RequestParam(value = "select", required = false) List<String> labNameList,
+//                                   @RequestParam(value = "select", required = false) List<String> lab_IdList,
                                    @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model,
                                    HttpServletRequest request) {
         String role = (String) request.getSession().getAttribute("role");
@@ -77,6 +78,11 @@ public class CreateCourseController {
         }
 
         List<Lab> labs = new ArrayList<>();
+//        Lab tempLab;
+//        for (String _id : lab_IdList){
+//            tempLab = labRepository.findBy_id(_id);
+//            labs.add(tempLab);
+//        }
         List<Lab> tempLab = (List<Lab>) request.getSession().getAttribute("labs");
         for(Lab l : tempLab){
             for(String name : labNameList){
@@ -159,6 +165,7 @@ public class CreateCourseController {
         }
         String email = (String) request.getSession().getAttribute("email");
         List<String> labNameList = new ArrayList<>();
+//        List<String> lab_IdList = new ArrayList<>();
         String courseId = reqBody.getStr();
         courseId = courseId.replaceAll(" ","");
         courseId = courseId.toUpperCase();
@@ -166,6 +173,7 @@ public class CreateCourseController {
         for (Lab l : labs){
             if (l.getCreator().equals(email)){
                 labNameList.add(l.getLabName());
+//                lab_IdList.add(l.get_id());
             }
             else{
                 labs.remove(l);
@@ -173,9 +181,8 @@ public class CreateCourseController {
         }
         request.getSession().setAttribute("labs", labs);
         result.setLabNameList(labNameList);
+//        result.setLab_IdList(lab_IdList);
         result.setMessage("Success!");
-        
         return ResponseEntity.ok(result);
-        
     }
 }
