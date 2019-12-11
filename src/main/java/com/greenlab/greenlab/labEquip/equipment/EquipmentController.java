@@ -1430,8 +1430,12 @@ public class EquipmentController {
                 JSONObject receiveData = (JSONObject) data.get("data");
                 Integer dragId =  receiveData.getInt("dragId");
                 Integer dropId =  receiveData.getInt(  "dropId" );
-
-
+                String dragName =  receiveData.getString("dragName");
+                String dropName =  receiveData.getString("dropName");
+                System.out.println("dragId"+dragId.toString());
+                System.out.println("dropId"+dropId.toString());
+                System.out.println("dragName"+dragName);
+                System.out.println("dropName"+dropName);
 
                 List<LabStep> labSteps =  labData.getLabSteps();
                 LabStep labStep =  labSteps.get( labData.getCurrentLabStep() );
@@ -1440,14 +1444,32 @@ public class EquipmentController {
                     LabEquipStatus labEquipStatus = current.get( i );
                     if( labEquipStatus.getLabEquipDataId() == dragId ){
 
-
+                        if( dragName.equals("") == false ){
+                            current.remove( i );
+                            labEquipStatus.setCurrentStatus( dragName );
+                            current.add( i , labEquipStatus );
+                        }
 
                     }else if( labEquipStatus.getLabEquipDataId() == dropId ){
 
+                        if( dropName.equals("") == false ){
+                            current.remove( i );
+                            labEquipStatus.setCurrentStatus( dropName );
+                            current.add( i , labEquipStatus );
+                        }
                     }
-
-
                 }
+
+                labStep.setCurrent( current );
+                labSteps.set( labData.getCurrentLabStep() , labStep );
+                labData.setLabSteps( labSteps );
+                labDataRepository.save( labData );
+                data.put("type", "refreshBoard" );
+                data.put( "data" , jsonMapper.writeValueAsString( labData ) );
+                sendLabBoard( labId , data.toString() );
+
+
+
 
 //                // now we need get sendText from both equipment
 //                List<LabEquipData> labEquipDataList =   labData.getUsedEquipList();
@@ -1488,9 +1510,6 @@ public class EquipmentController {
 //                        break;
 //                    }
 //                }
-
-
-
 
             }
         }

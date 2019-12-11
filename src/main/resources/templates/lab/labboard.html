@@ -814,7 +814,7 @@
                         //document.getElementById(workingDiv).removeChild( nodeInHTM  );
                     }
                     if( inCurrentBool == false ){
-                        console.log("what happened A");
+                        //console.log("what happened A");
                         document.getElementById(workingDiv).removeChild( nodeInHTM  );
                     }
                 }
@@ -845,7 +845,7 @@
 
                     if( inCurrentBool == false ){
                         //console.log("seems didn't go here");
-                        console.log("what happened B");
+                        //console.log("what happened B");
                         document.getElementById(workingDiv).append( this.EquipNodeArr[labEquipDataId] );
                     }
 
@@ -955,6 +955,8 @@
                 };
 
                 receiveProtocal["onMouseDown"] = function (id) {
+
+                    //console.log("mouse down 666");
 
                     var equipNode =  labData.EquipNodeArr[id];
                     var parentNode = equipNode.parentNode;
@@ -1109,7 +1111,7 @@
                 // console.log( generate.childNodes );
                 var node = generate.childNodes[0];
                 generate.removeChild( node );
-                console.log( generate.childNodes );
+                //console.log( generate.childNodes );
                 return node;
             }
 
@@ -1124,13 +1126,13 @@
 
         function onMouseLeave(evt ){
 
-            console.log("mouse leave detected");
+            //console.log("mouse leave detected");
 
         }
 
         function onMouseUp( evt ) {
 
-            console.log("mouse up detected");
+            //console.log("mouse up detected");
 
         }
 
@@ -1168,13 +1170,19 @@
             // we is the correct name
                 // ok
 
-            labData = new LabData();
+            //labData = new LabData();
             // var labEquipData =   labData.getEquipmentDataByIndex( idFrom )
             // labEquipData = new LabEquipData();
             // labEquipData.getLabImageStatusByName()
 
-            var labSteps =  labData.getLabSteps()
+            var labSteps =  labData.getLabSteps();
+            //labSteps = new LabSteps();
+
+
             var step =  labSteps.getCurrentStep();
+
+            //var step =  labSteps.getStepByIndex(0);
+
             var current = step.getCurrent();
 
             var fromName = null;
@@ -1190,26 +1198,54 @@
                 }
             }
 
+            //console.log(fromName);
+            //console.log(toName);
+
             var equipFrom =  labData.getEquipmentDataByIndex( idFrom );
             var fromlabImageStatus =   equipFrom.getLabImageStatusByName( fromName );
-            var fromSendTextArr = fromlabEquipStatus.getSendTextArr();
+            var fromSendTextArr = fromlabImageStatus.getSendTextArr();
 
+            //console.log("fromSendTextArr");
+            //console.log(fromSendTextArr);
 
             var equipTo =  labData.getEquipmentDataByIndex( idTo );
             var tolabImageStatus =   equipTo.getLabImageStatusByName( toName );
-            var toSendTextArr = tolabEquipStatus.getSendTextArr();
+            var toSendTextArr = tolabImageStatus.getSendTextArr();
+
+            //console.log( "toSendTextArr" );
+            //console.log( toSendTextArr );
 
             // so for each from
                 // we will look at to
 
-            
+            var changeFrom = "";
+            var changeTo = "";
+
+            for( var  i = 0 ; i< fromSendTextArr.length ; i++ ){
+                var iter =fromSendTextArr[i];
+                if( equipTo.getLabImageStatusByName( iter )!= null ){
+                    changeTo = iter;
+                    break;
+                }
+            }
+
+            //console.log(equipFrom.getLabImageStatusByName("onfire"));
+
+            for( var  i = 0 ; i< toSendTextArr.length ; i++ ){
+                var iter =toSendTextArr[i];
+                if( equipFrom.getLabImageStatusByName( iter )!= null ){
+
+
+
+                    changeFrom = iter;
+                    break;
+                }
+            }
+
+            sendData["dragName"] = changeFrom;
+            sendData["dropName"] = changeTo;
 
             // for each to we will look at from
-                //
-
-
-
-
 
 
             //sendData["timeStamp"] = (new Date()).getTime();
