@@ -66,11 +66,13 @@ public class EditCourseController {
         List<Lab> templabs = course.getLabs();
         List<Lab> temprestLabs = labRepository.findByCourseId(course.getCourseId());
         System.out.println("restLab.size() = " + temprestLabs.size());
-        for (Lab lab : templabs) {
-            for (Lab rLab : temprestLabs) {
-                if (lab.get_id().equals(rLab.get_id())) {
-                    temprestLabs.remove(rLab);
-                    break;
+        if (templabs != null) {
+            for (Lab lab : templabs) {
+                for (Lab rLab : temprestLabs) {
+                    if (lab.get_id().equals(rLab.get_id())) {
+                        temprestLabs.remove(rLab);
+                        break;
+                    }
                 }
             }
         }
@@ -78,14 +80,17 @@ public class EditCourseController {
         List<LabNameAndId> restLabs = new ArrayList<>();
 
         LabNameAndId buffer;
-        for (Lab lab : templabs) {
-            buffer = new LabNameAndId(lab.get_id(), lab.getLabName());
-            labs.add(buffer);
+        if (templabs != null) {
+            for (Lab lab : templabs) {
+                buffer = new LabNameAndId(lab.get_id(), lab.getLabName());
+                labs.add(buffer);
+            }
         }
-
-        for (Lab lab : temprestLabs) {
-            buffer = new LabNameAndId(lab.get_id(), lab.getLabName());
-            restLabs.add(buffer);
+        if (temprestLabs != null) {
+            for (Lab lab : temprestLabs) {
+                buffer = new LabNameAndId(lab.get_id(), lab.getLabName());
+                restLabs.add(buffer);
+            }
         }
 
         model.addAttribute("labs", labs);
@@ -112,7 +117,11 @@ public class EditCourseController {
         List<Lab> labs = new ArrayList<>();
         for (String id : editLabSelected) {
             Lab temp = labRepository.findBy_id(id);
-            labs.add(temp);
+
+            if (temp != null)
+                labs.add(temp);
+            else
+                System.out.println("temp = null");
             System.out.println("EditLabSelected = " + id);
         }
         //
