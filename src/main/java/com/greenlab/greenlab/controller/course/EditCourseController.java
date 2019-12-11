@@ -66,6 +66,7 @@ public class EditCourseController {
         List<Lab> templabs = course.getLabs();
         List<Lab> temprestLabs = labRepository.findByCourseId(course.getCourseId());
         System.out.println("restLab.size() = " + temprestLabs.size());
+
         if (templabs != null) {
             for (Lab lab : templabs) {
                 for (Lab rLab : temprestLabs) {
@@ -93,6 +94,7 @@ public class EditCourseController {
             }
         }
 
+
         model.addAttribute("labs", labs);
         model.addAttribute("restLabs", restLabs);
 
@@ -118,10 +120,12 @@ public class EditCourseController {
         for (String id : editLabSelected) {
             Lab temp = labRepository.findBy_id(id);
 
+
             if (temp != null)
                 labs.add(temp);
             else
                 System.out.println("temp = null");
+
             System.out.println("EditLabSelected = " + id);
         }
         //

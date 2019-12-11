@@ -1,5 +1,6 @@
 .viewEquipContainer {
-  margin: 0em 5em 5em 5em;
+  margin: 0em 2.5em 5em 2.5em;
+  padding: 0.5em 0em;
   width: 10em;
   height:10em;
   display:inline-table;
@@ -8,7 +9,7 @@
   border-color: #eee;
   border-width: 1px;
   border-style: solid;
-  box-shadow: 5px 5px 5px rgb(0,0,0,0.3);
+  box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
 }
 
 
@@ -22,4 +23,7 @@
   background-repeat: no-repeat;
   background-size: contain;
   height: 4em;
+  width: 267px;
+  height: 267px;
+  object-fit: cover;
 }
