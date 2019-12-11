@@ -71,9 +71,14 @@ public class EditCourseController{
 
 
         List<Lab> restLabs = labRepository.findByCourseId(course.getCourseId());
-        System.out.println(restLabs.size());
+        System.out.println("restLab.size() = "+restLabs.size());
         for (Lab lab : labs){
-            restLabs.remove(lab);
+            for (Lab rLab : restLabs){
+                if (lab.get_id().equals(rLab.get_id())){
+                    restLabs.remove(rLab);
+                    break;
+                }
+            }
         }
         model.addAttribute("restLabs",restLabs);
 
