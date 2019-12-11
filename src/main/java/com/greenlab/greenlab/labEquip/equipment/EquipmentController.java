@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import com.greenlab.greenlab.dto.SingleStringRequestBody;
+import com.greenlab.greenlab.lab.Steps;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.ImageData.ImageData;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.ImageData.ImageDataRepository;
 import com.greenlab.greenlab.labEquip.equipment.equipmentData.equipmentData.EquipmentData;
@@ -1383,12 +1384,52 @@ public class EquipmentController {
 
                 data.put("type", "refreshBoard" );
                 data.put( "data" , jsonMapper.writeValueAsString( labData ) );
-
                 sendLabBoard( labId , data.toString() );
+
+            }else if(type.equals("onMouseDown") ){
+                sendLabBoard( labId , data.toString() );
+            }else if(type.equals("onDrag") ){
+
+                JSONObject receiveData = (JSONObject) data.get("data");
+
+                Integer x  = Integer.parseInt(receiveData.getString( "x" ));
+                Integer y  = Integer.parseInt( receiveData.getString( "y" ));
+                Integer equipId =  Integer.parseInt(receiveData.getString("equipId"));
+                String timeStamp = receiveData.getString("timeStamp");
+                // now we need set the value in
+
+                List<LabStep> labSteps =  labData.getLabSteps();
+
+                LabStep labStep =  labSteps.get( labData.getCurrentLabStep() );
+                List<LabEquipStatus> current =  labStep.getCurrent();
+                for( int i = 0 ; i< current.size() ; i++ ){
+                    LabEquipStatus labEquipStatus = current.get( i );
+                    if( labEquipStatus.getLabEquipDataId() == equipId ){
+                        current.remove( i );
+                        labEquipStatus.setX( x  );
+                        labEquipStatus.setY( y );
+                        current.add( i , labEquipStatus );
+                        break;
+                    }
+                }
+                labSteps.set(labData.getCurrentLabStep() , labStep  );
+                labData.setLabSteps( labSteps );
+
+                labDataRepository.save( labData );
+                JSONObject sendData = new JSONObject();
+                sendData.put( "labData" , jsonMapper.writeValueAsString( labData ) );
+                sendData.put( "websocketId" , sessionId );
+                data.put("type", "refreshBoardExceptSelf" );
+                data.put( "data" , sendData );
+                sendData.put( "timeStamp", timeStamp );
+                sendLabBoard( labId , data.toString() );
+                //data.put("type", "refreshBoardExceptSelf" );
 
             }
         }
 
+        //onDrag
+        //onMouseDown
          //sendLabBoard(  );
 
     }

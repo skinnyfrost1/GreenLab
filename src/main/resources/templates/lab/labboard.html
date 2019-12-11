@@ -780,6 +780,7 @@
                         equipNode.id = i;
                         equipNode.name = labImageStatus.getName();
                         equipNode.sendText = JSON.stringify(labImageStatus.getSendTextArr());
+                        equipNode.src = JSON.parse(imageStorage.getItem( labImageStatus.getImageblobId() )).blob;
                         var theNode =  equipNode.getNode();
                         this.EquipNodeArr.push(theNode);
                         //document.getElementById("working").append( theNode );
@@ -798,6 +799,8 @@
 
                 // first remove the node from html
 
+
+
                 for( var i = 0 ; i < childNodes.length ; i++  ){
                     var nodeInHTM = childNodes[i];
                     // console.log(nodeInHTM);
@@ -810,7 +813,8 @@
                         }
                         //document.getElementById(workingDiv).removeChild( nodeInHTM  );
                     }
-                    if( inCurrentBool == true ){
+                    if( inCurrentBool == false ){
+                        console.log("what happened A");
                         document.getElementById(workingDiv).removeChild( nodeInHTM  );
                     }
                 }
@@ -841,20 +845,38 @@
 
                     if( inCurrentBool == false ){
                         //console.log("seems didn't go here");
+                        console.log("what happened B");
                         document.getElementById(workingDiv).append( this.EquipNodeArr[labEquipDataId] );
                     }
+
+                    // we will check and set
+
+                    // if( this.EquipNodeArr[labEquipDataId].style.left != (x+"px") ){
+                    //
+                    //     this.EquipNodeArr[labEquipDataId].style.left = x+"px";
+                    //
+                    // }
+                    // if( this.EquipNodeArr[labEquipDataId].style.top != (y+"px") ){
+                    //
+                    // }
+
                     this.EquipNodeArr[labEquipDataId].style.left = x+"px";
                     this.EquipNodeArr[labEquipDataId].style.top = y+"px";
-                    this.EquipNodeArr[labEquipDataId].name = currentStatus;
-                    var equipmentData = this.getEquipmentDataByIndex( labEquipDataId  );
-                    var imageStatus = equipmentData.getLabImageStatusByName( currentStatus );
-                    var sendtextArr = imageStatus.getSendTextArr();
-                    this.EquipNodeArr[labEquipDataId].sendtext = JSON.stringify( sendtextArr );
+                    if( this.EquipNodeArr[labEquipDataId].name != currentStatus ){
+                        this.EquipNodeArr[labEquipDataId].name = currentStatus;
+                        this.EquipNodeArr[labEquipDataId].name = currentStatus;
+                        var equipmentData = this.getEquipmentDataByIndex( labEquipDataId  );
+                        var imageStatus = equipmentData.getLabImageStatusByName( currentStatus );
+                        var sendtextArr = imageStatus.getSendTextArr();
+                        this.EquipNodeArr[labEquipDataId].sendtext = JSON.stringify( sendtextArr );
 
-                    //console.log("imageStatus.getImageblobId()  the wrong ");
-                    //console.log(imageStatus.getImageblobId());
+                        //console.log("imageStatus.getImageblobId()  the wrong ");
+                        //console.log(imageStatus.getImageblobId());
 
-                    this.EquipNodeArr[labEquipDataId].src = JSON.parse(imageStorage.getItem( imageStatus.getImageblobId() )).blob;
+                        this.EquipNodeArr[labEquipDataId].src = JSON.parse(imageStorage.getItem( imageStatus.getImageblobId() )).blob;
+
+                    }
+
 
 
                 }
@@ -913,18 +935,41 @@
 
                 receiveProtocal["refreshBoardExceptSelf"] = function (data) {
 
-                    // we will get websocket id
-                        // we will check if it's self
+                    //console.log(data);
+                    //data.labData
 
-                    // if it's self
-                        // won't do anything
+                    if( websocket.websocketId != data.websocketId ){
 
-                    //
+                        var receiveTimeStamp =  data.timeStamp;
 
+                        //console.log(receiveTimeStamp);
+                        // var a =  new Date(receiveTimeStamp);
+                        //console.log("print something here anyway");
+
+                        if( receiveTimeStamp > timeStamp ){
+                            labData.setLabData( data.labData );
+                            labData.displayLabBoard();
+                            timeStamp = receiveTimeStamp;
+                        }
+
+
+
+                    }
+
+                }
+
+                receiveProtocal["onMouseDown"] = function (id) {
+                    var equipNode =  labData.EquipNodeArr[id];
+                    var parentNode = equipNode.parentNode;
+                    parentNode.removeChild(equipNode);
+                    parentNode.append(  equipNode );
                 }
 
             }
         }
+
+        var timeStamp =  0 ;
+
     </script>
 
     <script>
@@ -1073,13 +1118,9 @@
         }
 
         function onMouseDown( evt ) {
-            console.log(evt.id);
+            //console.log(evt.id);
 
-            //websocket.sendMessage( quickPrepare( "onMouseDown" , evt.id ) );
-
-            // var parentNode = evt.parentNode;
-            // parentNode.removeChild(evt);
-            // parentNode.append(  evt );
+            websocket.sendMessage( quickPrepare( "onMouseDown" , evt.id ) );
 
         }
 
@@ -1097,9 +1138,18 @@
 
         function onDrag( evt ) {
 
-            console.log(evt.id);
+            //console.log(evt.id);
+            //console.log("x pos is:"+evt.style.left+" y pos is"+evt.style.top );
 
-            console.log("x pos is:"+evt.style.left+" y pos is"+evt.style.top );
+            var sendData = {};
+            sendData["x"] = (evt.style.left).substr( 0 , evt.style.left.length -2 );
+            sendData["y"] = (evt.style.top).substr( 0 , evt.style.top.length -2 );
+            sendData["equipId"] = evt.id;
+            var d = new Date();
+            var n = d.getTime();
+            sendData["timeStamp"] = n;
+            //sendData["websocketId"] = websocket.websocketId;
+            websocket.sendMessage(quickPrepare( "onDrag" ,  sendData  ));
 
         }
 
