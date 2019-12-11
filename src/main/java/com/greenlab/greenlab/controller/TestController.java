@@ -123,7 +123,7 @@ public class TestController{
             Lab l = labRepository.findBy_id(_id);
             if (l==null)
                 // l = new Lab(_id, courseId, labName, labDescription, creator, null, null, null);
-                l = new Lab(_id, courseId, labName, labDescription, creator);
+                l = new Lab(_id, courseId, labName, labDescription, creator,null);
 
             
             labRepository.save(l);
@@ -145,7 +145,7 @@ public class TestController{
             String _id = buf;
             Lab l = labRepository.findBy_id(_id);
             if (l==null)
-                l = new Lab(_id, courseId, labName, labDescription, creator);
+                l = new Lab(_id, courseId, labName, labDescription, creator,null);
 
             labRepository.save(l);
         }

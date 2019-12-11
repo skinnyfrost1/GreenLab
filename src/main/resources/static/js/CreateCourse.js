@@ -25,6 +25,13 @@ console.log("3");
 // };
 
 $(document).ready(function(e) {
+
+    $("#addLabBigContainer").hide().removeClass("show");
+    console.log("1");
+    $("#saveBtnContainer").hide().removeClass("show");
+    console.log("2");
+    $("#previousBtnContainer").hide().removeClass("show");
+    console.log("3");
     // $("#addLabBtn").click(function(e) {
     //     if( $("#labMenu").hasClass("show") ){
     //         // 执行隐藏
