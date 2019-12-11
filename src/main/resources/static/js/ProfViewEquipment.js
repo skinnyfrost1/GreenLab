@@ -19,8 +19,8 @@ $(document).ready(function () {
         var equipmentName = result[i].equipmentName;
         var data = result[i].image;
         var str = equipmentContainer.innerHTML;
-        equipmentContainer.innerHTML = str + '<div class="equipment viewEquipContainer" id="' + _id + '">' + equipmentName +
-          '<img src = "data:image/png;base64,' + data + '">' + '</div>'
+        equipmentContainer.innerHTML = str + '<div class="equipment viewEquipContainer" id="' + _id + '">'  +
+          '<img src = "data:image/png;base64,' + data + '">' + '<div class="equipmentName">' + equipmentName+ '</div></div>'
       }
     },
     error: function (e) {
