@@ -2,8 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:disabled="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <script src="/js/EditCourse.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
@@ -124,32 +124,33 @@
             <!-- one lab -->
             <!-- loop -->
             <div th:each="lab: ${labs}"class="bigLabContainer">
-                <a th:href="'/course/edit?id=' +${course.get_id()}"></a>
-                <table class="labContainer" >
-                    <col width="30%"/>
-                    <col width="40%"/>
-                    <col width="30%"/>
-                    <!-- <col width="20%"/> -->
-                    <!-- <tbody style="padding: 0; margin: 0;"> -->
-                    <tr>
-                        <!--                        <td class="courseCellPadding">-->
-                        <!--                            <div th:text="${course.courseId}"></div>-->
-                        <!--                        </td>-->
-                        <!--                        <td class="courseCellPadding">-->
-                        <!--                            <div class="webfont" th:text="'[ ' + ${course.semester} + ' ]'"></div>-->
-                        <!--                        </td>-->
+                <div class="labExisted">
+                    <a th:href="'/course/edit?id=' +${course.get_id()}"></a>
+                    <table class="labContainer" >
+                        <col width="30%"/>
+                        <col width="40%"/>
+                        <col width="30%"/>
+                        <!-- <col width="20%"/> -->
+                        <!-- <tbody style="padding: 0; margin: 0;"> -->
+                        <tr>
+                            <!--                        <td class="courseCellPadding">-->
+                            <!--                            <div th:text="${course.courseId}"></div>-->
+                            <!--                        </td>-->
+                            <!--                        <td class="courseCellPadding">-->
+                            <!--                            <div class="webfont" th:text="'[ ' + ${course.semester} + ' ]'"></div>-->
+                            <!--                        </td>-->
 
-                        <td class="courseCellPadding">
-                            <div class="webfont" th:text="${lab.labName}"></div>
-                        </td>
-                        <td class="courseCellPadding">
-<!--                            <div class="checkBoxDiv">-->
-                                <input class="webfont" name="editLabSelected" type="checkbox" th:value="${lab._id}" checked></input>
-<!--                            </div>-->
-                        </td>
-                    </tr>
-                </table>
-
+                            <td class="courseCellPadding">
+                                <div class="webfont" th:text="${lab.labName}"></div>
+                            </td>
+                            <td class="courseCellPadding">
+    <!--                            <div class="checkBoxDiv">-->
+                                    <input class="webfont" name="editLabSelected" type="checkbox" th:value="${lab._id}" checked></input>
+    <!--                            </div>-->
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -164,24 +165,24 @@
             <!-- one lab -->
             <!-- loop -->
             <div th:each="lab: ${restLabs}"class="bigLabContainer">
-                <a th:href="'/course/edit?id=' +${course.get_id()}"></a>
-                <table class="labContainer" >
-                    <col width="30%"/>
-                    <col width="40%"/>
-                    <col width="30%"/>
-                    <!-- <col width="20%"/> -->
-                    <!-- <tbody style="padding: 0; margin: 0;"> -->
-                    <tr>
-                        <td class="courseCellPadding">
-                            <div class="webfont" th:text="${lab.labName}"></div>
-                        </td>
-                        <td class="courseCellPadding">
-<!--                            <div class="checkBoxDiv">-->
+                <div class="labToAdd">
+                    <a th:href="'/course/edit?id=' +${course.get_id()}"></a>
+                    <table class="labContainer" >
+                        <col width="30%"/>
+                        <col width="40%"/>
+                        <col width="30%"/>
+                        <!-- <col width="20%"/> -->
+                        <!-- <tbody style="padding: 0; margin: 0;"> -->
+                        <tr>
+                            <td class="courseCellPadding">
+                                <div class="webfont" th:text="${lab.labName}"></div>
+                            </td>
+                            <td class="courseCellPadding">
                                 <input class="webfont" name="editLabSelected" type="checkbox" th:value="${lab._id}"></input>
-<!--                            </div>-->
-                        </td>
-                    </tr>
-                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
