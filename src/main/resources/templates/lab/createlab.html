@@ -768,14 +768,23 @@
 
             }
 
-
-
-
             activeAll(){
 
                 $( "#"+this.newStepId ).click(function() {
 
                     console.log("123A");
+
+                    var labdata = labData.LabData;
+                    var labSteps = labdata.labSteps;
+                    var lastStep = labSteps[labSteps.length-1];
+                    var after = lastStep.after;
+                    if( after.length == 0 ){
+
+                    }else{
+
+                        websocket.sendMessage( quickPrepare( "newStep" ) );
+
+                    }
 
                 });
 
@@ -783,7 +792,17 @@
 
                     console.log("123AB");
 
+                    var labdata = labData.LabData;
+
+                    //console.log(labdata);
+
+                    var labSteps = labdata.labSteps;
+                    if( labSteps.length > 1 ){
+                        websocket.sendMessage( quickPrepare("removeLastStep") );
+                    }
+
                 });
+
 
 
 
@@ -813,7 +832,7 @@
                         "                                    <i class=\"far fa-save\"></i> Before\n" +
                         "                                </div>\n" +
                         "\n" +
-                        "                                <div class=\"btn btn-success mr-2 w-33\" onclick='EndStepClick(this)'>\n" +
+                        "                                <div class=\"btn btn-success mr-2 w-33\" onclick='SaveStepClick(this)'>\n" +
                         "                                    <i class=\"far fa-save\"></i> Save\n" +
                         "                                </div>\n" +
                         "\n" +
@@ -838,8 +857,6 @@
                 return str;
             }
 
-
-
             __getInputGroup( content , contentId){
                 // <div class="input-group mb-3">
                 //     <div class="input-group-prepend">
@@ -856,7 +873,7 @@
                 return Str;
             }
 
-            __getCard( id , stepName , boolean , content ){
+            __getCard( id , stepName , booleanSave , content , booleanShow ){
                 //
                 // <div class="card">
                 //         <div class="card-header" id="headingOne">
@@ -922,19 +939,27 @@
                 var bodyId = id+"_body";
                 var contentId = id+"_content";
 
+                var collapseCodition ;
+                if( booleanShow == true ){
+                    collapseCodition = "show";
+                }else{
+                    collapseCodition = "";
+                }
+
+
                 var Str = "<div class=\"card\">\n" +
                     "                    <div class=\"card-header\" id=\""+headId+"\">\n" +
                     "                        <h2 class=\"mb-0\">\n" +
-                    "                            <button class=\"btn btn-link\" type=\"button\" data-toggle=\"collapse\" data-target=\"#"+bodyId+"\" aria-expanded=\"true\" aria-controls=\""+bodyId+"\">\n" +
+                    "                            <button class=\"btn btn-link\" onclick='expandStep(this)' type=\"button\" data-toggle=\"collapse\" data-target=\"#"+bodyId+"\" aria-expanded=\"true\" aria-controls=\""+bodyId+"\">\n" +
                     "                                "+stepName+"\n" +
                     "                            </button>\n" +
                     "                        </h2>\n" +
                     "                    </div>\n" +
                     "\n" +
-                    "                    <div id=\""+bodyId+"\" class=\"collapse\" aria-labelledby=\""+headId+"\" data-parent=\"#accordionExample\">\n" +
+                    "                    <div id=\""+bodyId+"\" class=\"collapse "+collapseCodition+"\" aria-labelledby=\""+headId+"\" data-parent=\"#accordionExample\">\n" +
                     "                        <div class=\"card-body\">\n" +
                     "\n" +this.__getInputGroup( content , contentId )+
-                    "\n" +this.__getBtnGroup( boolean )+
+                    "\n" +this.__getBtnGroup( booleanSave )+
                     "                        </div>\n" +
                     "                    </div>\n" +
                     "                </div>";
@@ -961,9 +986,6 @@
 
             }
 
-
-
-
         }
 
 
@@ -985,10 +1007,24 @@
         $(function () {
 
             var stepOp = new StepOp();
-            document.getElementById("accordionExample").innerHTML = stepOp.__getCard("1", "Step 1" , true , "666" )+stepOp.__getCard("2", "Step 2", false , "777");
+            document.getElementById("accordionExample").innerHTML = stepOp.__getCard("1", "Step 1" , true , "666" , true )+stepOp.__getCard("2", "Step 2", false , "777", false );
             setStepInfoById( "1" , "123");
             getStepInfoById( "1" );
+
         });
+
+        function expandStep(evt) {
+
+            var idB = evt.parentNode.parentNode.id;
+            var idArr = idB.split("_");
+            var id = idArr[0];
+
+            // this is set the current step
+
+
+            console.log(id);
+
+        }
 
         function getIdFromEvt( evt ) {
             var idB = evt.parentNode.parentNode.parentNode.id;
@@ -1002,22 +1038,35 @@
             //console.log(evt.parentNode.parentNode.parentNode.id);
             var id = getIdFromEvt( evt );
 
-
+            //console.log( id );
+            var sendData = {};
+            sendData["id"] = id;
+            sendData["info"] = evt.value;
+            //console.log(JSON.stringify(sendData));
+            websocket.sendMessage(quickPrepare( "stepInfo" , sendData ));
 
         }
+
         function beforeStepClick( evt ) {
 
             var id = getIdFromEvt( evt );
-
+            //console.log( id );
+            websocket.sendMessage(quickPrepare( "stepBefore" , id ));
             //console.log(getIdFromEvt( evt ));
         }
         function SaveStepClick( evt ) {
             var id = getIdFromEvt( evt );
             //console.log(evt);
+            //console.log( "what happened here??" );
+            websocket.sendMessage(quickPrepare( "stepSave" , id ));
         }
+
         function EndStepClick( evt ) {
             var id = getIdFromEvt( evt );
             //console.log(evt);
+            //console.log( id );
+            //console.log( "what happened here??666" );
+            websocket.sendMessage(quickPrepare( "stepAfter" , id ));
 
         }
 
@@ -1500,6 +1549,9 @@
 
             loadSuccess(){
 
+
+
+
                 receiveProtocal["connectSuccess"] = function (message) {
                     sendProtocal["refreshLab"]();
                     sendProtocal["refreshAllEquipment"]();
@@ -1663,9 +1715,20 @@
                     //console.log(id);
                     websocket.sendMessage( quickPrepare( "addEquipToBoard", id ) );
 
-                }
+                };
 
+                //stepInfo
 
+                receiveProtocal["stepInfo"] = function (data) {
+
+                    //console.log(data);
+
+                    var id = data.id;
+                    var info = data.info;
+
+                    
+
+                };
 
             }
 
@@ -1911,6 +1974,43 @@
                 introductionOp.setCoverImage( imageBlob.blob );
                 settingOp.setLikeBaseBoolean( data.favourite );
                 settingOp.setShareBaseBoolean( data.shared );
+
+                // so here we need
+
+                //console.log(data);
+
+                var steps = data.labSteps;
+                var stepsLength = steps.length;
+                var currentLabStep = data.currentLabStep;
+
+                // the problem how do I set which one is open which one is not
+                //var stepOp = new StepOp();
+                //stepOp.__getCard()
+
+                var total = "";
+                for( var i = 0 ; i< stepsLength ; i++ ){
+                    var step = steps[i];
+                    var showBoolean;
+                    var saveBoolean;
+                    var info = "";
+                    if( currentLabStep == i ){
+                        showBoolean = true;
+                    }else{
+                        showBoolean = false;
+                    }
+                    if( i == stepsLength-1 ){
+                        saveBoolean = true;
+                    }else{
+                        saveBoolean = false;
+                    }
+                    if( step.info != null ){
+                        info = step.info;
+                    }
+                    total = total + stepOp.__getCard(i, "Step "+(i+1) , saveBoolean , info , showBoolean );
+                    document.getElementById("accordionExample").innerHTML = total;
+                }
+
+
 
             }
 
@@ -2519,13 +2619,13 @@
 
             <div class="btn btn-group w-100">
 
-                <div class="btn btn-success mb-1 mr-2 disabled w-50" id="newStep">
+                <div class="btn btn-success mb-1 mr-2 disabled w-30" id="newStep">
 
                     <i class="fas fa-plus"></i> New Step
 
                 </div>
 
-                <div class="btn btn-danger mb-1 disabled w-50" id="removeLastStep">
+                <div class="btn btn-danger mb-1 disabled w-70" id="removeLastStep">
 
                           <i class="fas fa-minus"></i> Remove Last Step
 

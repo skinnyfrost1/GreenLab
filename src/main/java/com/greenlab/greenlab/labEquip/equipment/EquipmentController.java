@@ -964,7 +964,6 @@ public class EquipmentController {
             }else if( type.equals("refreshLab") ){
 
                 // here we need get all the data
-
                 String labDataStr =  jsonMapper.writeValueAsString( labData );
                 JSONObject jsonObject = new JSONObject(labDataStr);
                 data.put("data", jsonObject );
@@ -1096,6 +1095,7 @@ public class EquipmentController {
 
                         fristStatusName = imageData.getName();
 
+
                     }
                     String imageDataStr =  jsonMapper.writeValueAsString(imageData);
                     imageDataStrArr.add(imageDataStr);
@@ -1162,8 +1162,103 @@ public class EquipmentController {
 
 
 
+            }else if( type.equals("newStep")  ){
+
+
+
+
+                    System.out.println( "newStep received" );
+
+
+//removeLastStep
+            }else if( type.equals("removeLastStep")  ){
+
+                System.out.println( "removeLastStep received" );
+
+                data.put("type", "refreshBoard" );
+                data.put( "data" , jsonMapper.writeValueAsString( labData ) );
+                sendLabBoard( labId , data.toString() );
+
+            }else if( type.equals("stepInfo")  ){
+
+                //Integer index = data.getInt("data");
+                JSONObject receiveData = (JSONObject) data.get("data");
+                //System.out.println( "stepInfo received" );
+                Integer stepId =  receiveData.getInt("id");
+                String info = receiveData.getString("info");
+
+                List<LabStep> labSteps = labData.getLabSteps();
+                LabStep labStep =  labSteps.get( stepId );
+                labStep.setInfo( info );
+                labSteps.set( stepId , labStep );
+                labData.setLabSteps( labSteps );
+                labDataRepository.save( labData );
+                //data.put("type", "refreshBoard" );
+                //data.put( "data" , jsonMapper.writeValueAsString( labData ) );
+                //sendLabBoard( labId , data.toString() );
+                //SendRefreshLab(  labId , userId );
+
+                // this will be different again
+
+                //data = new JSONObject();
+                //data.put("type","stepInfo" );
+
+                //System.out.println(data.toString()  );
+                //System.out.println("6666");
+
+                sendLabPad( labId , data.toString() );
+
+
+                //sendLabPad( labId , data.toString() );
+            }else if( type.equals("stepBefore")  ){
+
+                Integer index = data.getInt("data");
+
+                System.out.println( "stepBefore received" );
+
+
+
+
+
+
+
+                data.put("type", "refreshBoard" );
+                data.put( "data" , jsonMapper.writeValueAsString( labData ) );
+                sendLabBoard( labId , data.toString() );
+
+            }else if( type.equals("stepSave")  ){
+
+                Integer index = data.getInt("data");
+                System.out.println( "stepSave received" );
+
+
+
+
+
+
+                data.put("type", "refreshBoard" );
+                data.put( "data" , jsonMapper.writeValueAsString( labData ) );
+                sendLabBoard( labId , data.toString() );
+
+            }else if( type.equals("stepAfter")  ){
+
+                Integer index = data.getInt("data");
+                System.out.println( "stepAfter received" );
+
+
+
+
+
+
+
+                data.put("type", "refreshBoard" );
+                data.put( "data" , jsonMapper.writeValueAsString( labData ) );
+                sendLabBoard( labId , data.toString() );
+
             }
 
+            //stepBefore
+            //stepInfo
 //addEquipToBoard
 
 
@@ -1195,12 +1290,16 @@ public class EquipmentController {
 
     @RequestMapping( value="/editlab/{labId}", method = RequestMethod.GET )
     public String getLabPage(Model model, @PathVariable("labId") String labId ,  HttpServletRequest request ){
-
+        System.out.println("1_dfghjfgh");
         LabData labData = labDataRepository.getById(labId);
 
+        System.out.println("2_dfghjfgh");
+
         if(labData!= null){
+            System.out.println("3_dfghjfgh");
             return "/lab/createlab";
         }else{
+            System.out.println("4_dfghjfgh");
             return "lab/test";
         }
 
@@ -1432,10 +1531,10 @@ public class EquipmentController {
                 Integer dropId =  receiveData.getInt(  "dropId" );
                 String dragName =  receiveData.getString("dragName");
                 String dropName =  receiveData.getString("dropName");
-                System.out.println("dragId"+dragId.toString());
-                System.out.println("dropId"+dropId.toString());
-                System.out.println("dragName"+dragName);
-                System.out.println("dropName"+dropName);
+//                System.out.println("dragId"+dragId.toString());
+//                System.out.println("dropId"+dropId.toString());
+//                System.out.println("dragName"+dragName);
+//                System.out.println("dropName"+dropName);
 
                 List<LabStep> labSteps =  labData.getLabSteps();
                 LabStep labStep =  labSteps.get( labData.getCurrentLabStep() );

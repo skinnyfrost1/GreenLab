@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 public class LabStep {
 
+    private String info;
     private List<LabEquipStatus> before;
     private List<LabEquipStatus> current;
     private List<LabEquipStatus> after;
