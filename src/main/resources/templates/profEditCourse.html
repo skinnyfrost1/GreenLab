@@ -155,6 +155,7 @@
 
 
         <div class="createCourseContainer webfont">
+            <input id='testEditHidden' type='hidden' value='default' name='editLabSelected'>
             <div class=" webfont bold" style="text-align:left;margin: 0.5em 0;">Labs To Add
                 <span>
                     <a href="" class="" style="margin:0em 1em 0em 20em;"></i></a>
@@ -223,31 +224,30 @@
             <!-- loop -->
             <!-- one course -->
             <div id="displayStudent">
+                <div th:each="student: ${students}" class="notVeryBigContainer" th:id="'div_' + ${student.getEmail()}" >
+        <!--            <div th:if="${role=='professor'}"><a th:href="'/course/edit?id=' +${course.get_id()}">-->
+                        <table class="courseContainer">
+                            <col width="15%"/>
+                            <col width="25%"/>
+                            <col width="40%"/>
+                            <col width="20%"/>
+                            <!-- <col width="20%"/> -->
+                            <!-- <tbody style="padding: 0; margin: 0;"> -->
+                            <tr >
+                                <td class="courseCellPadding">
+                                    <div class="webfont" th:text="${student.getFirstname()}"></div>
+                                    <input id="studentEmail" type="text" name="studentEmail" th:value="${student.getEmail()}"hidden>
+                                </td>
+                                <td class="courseCellPadding" th:text="${student.getLastname()}" />
+                                <td class="courseCellPadding" th:text="${student.getUid()}" />
+                                <td class="courseCellPadding">
+    <!--                                <a th:href="@{/logout}" ><i class='fas fa-trash-alt'></i></a>-->
+                                    <a th:id="${student.getEmail()}" class="headerUnselected" onclick="deleteStudent(this)"><i class='fas fa-trash-alt headerIcon'></i></a>
+                                </td>
+                            </tr>
 
-            <div th:each="student: ${students}" class="notVeryBigContainer" th:id="'div_' + ${student.getEmail()}" >
-    <!--            <div th:if="${role=='professor'}"><a th:href="'/course/edit?id=' +${course.get_id()}">-->
-                    <table class="courseContainer">
-                        <col width="15%"/>
-                        <col width="25%"/>
-                        <col width="40%"/>
-                        <col width="20%"/>
-                        <!-- <col width="20%"/> -->
-                        <!-- <tbody style="padding: 0; margin: 0;"> -->
-                        <tr >
-                            <td class="courseCellPadding">
-                                <div class="webfont" th:text="${student.getFirstname()}"></div>
-                                <input id="studentEmail" type="text" name="studentEmail" th:value="${student.getEmail()}"hidden>
-                            </td>
-                            <td class="courseCellPadding" th:text="${student.getLastname()}" />
-                            <td class="courseCellPadding" th:text="${student.getUid()}" />
-                            <td class="courseCellPadding">
-<!--                                <a th:href="@{/logout}" ><i class='fas fa-trash-alt'></i></a>-->
-                                <a th:id="${student.getEmail()}" class="headerUnselected" onclick="deleteStudent(this)"><i class='fas fa-trash-alt headerIcon'></i></a>
-                            </td>
-                        </tr>
-
-                    </table>
-            </div>
+                        </table>
+                </div>
             </div>
 
         </div>
