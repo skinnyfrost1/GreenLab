@@ -864,7 +864,7 @@
                     this.EquipNodeArr[labEquipDataId].style.top = y+"px";
                     if( this.EquipNodeArr[labEquipDataId].name != currentStatus ){
                         this.EquipNodeArr[labEquipDataId].name = currentStatus;
-                        this.EquipNodeArr[labEquipDataId].name = currentStatus;
+                        //this.EquipNodeArr[labEquipDataId].name = currentStatus;
                         var equipmentData = this.getEquipmentDataByIndex( labEquipDataId  );
                         var imageStatus = equipmentData.getLabImageStatusByName( currentStatus );
                         var sendtextArr = imageStatus.getSendTextArr();
@@ -951,19 +951,17 @@
                             labData.displayLabBoard();
                             timeStamp = receiveTimeStamp;
                         }
-
-
-
                     }
-
-                }
+                };
 
                 receiveProtocal["onMouseDown"] = function (id) {
+
                     var equipNode =  labData.EquipNodeArr[id];
                     var parentNode = equipNode.parentNode;
                     parentNode.removeChild(equipNode);
                     parentNode.append(  equipNode );
-                }
+
+                };
 
             }
         }
@@ -1155,10 +1153,67 @@
 
         function onDrop( idTo,  idFrom  ){
 
-            console.log("idFrom"+idFrom);  // the one you drag
-            console.log( "idTo"+idTo );  // the one uder it
+            //console.log("idFrom"+idFrom);  // the one you drag
+            //console.log( "idTo"+idTo );  // the one uder it
 
             //document.getElementById(idTo).src = heater;
+
+            var sendData = {};
+            sendData["dragId"] = idFrom;
+            sendData["dropId"] = idTo;
+
+            // now the login handle in the front side
+                // what we need to do
+                    // tell the back side
+            // we is the correct name
+                // ok
+
+            labData = new LabData();
+            // var labEquipData =   labData.getEquipmentDataByIndex( idFrom )
+            // labEquipData = new LabEquipData();
+            // labEquipData.getLabImageStatusByName()
+
+            var labSteps =  labData.getLabSteps()
+            var step =  labSteps.getCurrentStep();
+            var current = step.getCurrent();
+
+            var fromName = null;
+            var toName = null;
+
+            for( var i = 0 ;i< current.length ; i++ ){
+                var labEquipStatus =current[i];
+                //labEquipStatus =  new LabEquipStatus();
+                if( labEquipStatus.labEquipDataId == idFrom ){
+                    fromName = labEquipStatus.currentStatus;
+                }else if( labEquipStatus.labEquipDataId == idTo ){
+                    toName = labEquipStatus.currentStatus;
+                }
+            }
+
+            var equipFrom =  labData.getEquipmentDataByIndex( idFrom );
+            var fromlabImageStatus =   equipFrom.getLabImageStatusByName( fromName );
+            var fromSendTextArr = fromlabEquipStatus.getSendTextArr();
+
+
+            var equipTo =  labData.getEquipmentDataByIndex( idTo );
+            var tolabImageStatus =   equipTo.getLabImageStatusByName( toName );
+            var toSendTextArr = tolabEquipStatus.getSendTextArr();
+
+            // so for each from
+                // we will look at to
+
+            
+
+            // for each to we will look at from
+                //
+
+
+
+
+
+
+            //sendData["timeStamp"] = (new Date()).getTime();
+            websocket.sendMessage(quickPrepare( "onDrop" ,  sendData  ));
 
         }
 

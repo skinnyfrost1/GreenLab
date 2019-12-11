@@ -1425,6 +1425,73 @@ public class EquipmentController {
                 sendLabBoard( labId , data.toString() );
                 //data.put("type", "refreshBoardExceptSelf" );
 
+            }else if(type.equals("onDrop") ){
+
+                JSONObject receiveData = (JSONObject) data.get("data");
+                Integer dragId =  receiveData.getInt("dragId");
+                Integer dropId =  receiveData.getInt(  "dropId" );
+
+
+
+                List<LabStep> labSteps =  labData.getLabSteps();
+                LabStep labStep =  labSteps.get( labData.getCurrentLabStep() );
+                List<LabEquipStatus> current =  labStep.getCurrent();
+                for( int i = 0 ; i< current.size() ; i++ ){
+                    LabEquipStatus labEquipStatus = current.get( i );
+                    if( labEquipStatus.getLabEquipDataId() == dragId ){
+
+
+
+                    }else if( labEquipStatus.getLabEquipDataId() == dropId ){
+
+                    }
+
+
+                }
+
+//                // now we need get sendText from both equipment
+//                List<LabEquipData> labEquipDataList =   labData.getUsedEquipList();
+//
+//
+//
+//                List<LabStep> labSteps =  labData.getLabSteps();
+//                LabStep labStep =  labSteps.get( labData.getCurrentLabStep() );
+//                List<LabEquipStatus> current =  labStep.getCurrent();
+//
+//                String dragName ;
+//                String dropName ;
+//
+//                for( int i = 0 ; i< current.size() ; i++ ){
+//                    LabEquipStatus labEquipStatus = current.get( i );
+//                    if( labEquipStatus.getLabEquipDataId() == dragId ){
+//                        dragName = labEquipStatus.getCurrentStatus();
+//                    }else if( labEquipStatus.getLabEquipDataId() == dropId ){
+//                        dropName  = labEquipStatus.getCurrentStatus();
+//                    }
+//                }
+//
+//                LabEquipData dragEquipData = labEquipDataList.get(dragId);
+//                LabEquipData dropEquipData = labEquipDataList.get(dropId);
+//
+//                dragEquipData.get
+
+
+//                for( int i = 0 ; i< current.size() ; i++ ){
+//                    LabEquipStatus labEquipStatus = current.get( i );
+//                    if( labEquipStatus.getLabEquipDataId() == dragId ){
+//                        current.remove( i );
+//
+//                        // we will do some set here
+//
+//
+//                        current.add( i , labEquipStatus );
+//                        break;
+//                    }
+//                }
+
+
+
+
             }
         }
 
