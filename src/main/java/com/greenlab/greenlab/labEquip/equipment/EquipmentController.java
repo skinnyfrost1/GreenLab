@@ -1526,6 +1526,9 @@ public class EquipmentController {
             }
             else if(type.equals("onDrag") ){
 
+
+                //System.out.println( "ondrag detected" );
+
                 JSONObject receiveData = (JSONObject) data.get("data");
 
                 Integer x  = Integer.parseInt(receiveData.getString( "x" ));
@@ -1551,6 +1554,9 @@ public class EquipmentController {
                 labSteps.set(labData.getCurrentLabStep() , labStep  );
                 labData.setLabSteps( labSteps );
 
+
+                //System.out.println(jsonMapper.writeValueAsString( labData ));
+
                 labDataRepository.save( labData );
                 JSONObject sendData = new JSONObject();
                 sendData.put( "labData" , jsonMapper.writeValueAsString( labData ) );
@@ -1559,7 +1565,7 @@ public class EquipmentController {
                 data.put( "data" , sendData );
                 sendData.put( "timeStamp", timeStamp );
                 sendLabBoard( labId , data.toString() );
-                //data.put("type", "refreshBoardExceptSelf" );
+                data.put("type", "refreshBoardExceptSelf" );
 
             }
             else if(type.equals("onDrop") ){

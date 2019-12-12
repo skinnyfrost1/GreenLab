@@ -717,7 +717,7 @@
                         for( var b = 0 ; b <  labEquipData.getLabImageStatusArr().length ; b++ ){
                             var labImageStatus = labEquipData.getLabImageStatusByIndex( b );
                             //labImageStatus = new LabImageStatus();
-                            var imageblobId = labImageStatus.getImageblobId()
+                            var imageblobId = labImageStatus.getImageblobId();
                             var imageBlob =  imageStorage.getItem( imageblobId );
                             if( imageBlob == null ){
                                 imageBlobArr.push( imageblobId );
@@ -855,10 +855,11 @@
                 //console.log( current );
 
                 for( var i = 0 ; i< current.length ; i++  ){
+
+
+
                     //var labEquipStatus =  new LabEquipStatus();
                     var labEquipStatus = current[i];
-
-
 
                     var currentStatus =  labEquipStatus.currentStatus;
                     var labEquipDataId = labEquipStatus.labEquipDataId;
@@ -870,7 +871,10 @@
 
                     var inCurrentBool = false;
                     for( var b = 0 ; b < childNodes.length ; b++ ){
-                        if( current[i].labEquipDataId == childNodes[b].id ){
+                        if( labEquipDataId == childNodes[b].id ){
+
+                            setEquipNode(  childNodes[b] ,  x, y , currentStatus    );
+
                             inCurrentBool = true;
                         }
                     }
@@ -878,60 +882,55 @@
                     if( inCurrentBool == false ){
                         //console.log("seems didn't go here");
                         //console.log("what happened B");
-
                         for( var b = 0 ; b <  this.EquipNodeArr.length ; b++ ){
-
                             var equipNode =   this.EquipNodeArr[b];
-
                             if( equipNode.id == labEquipDataId){
-
                                 document.getElementById(workingDiv).append( equipNode );
 
+                                setEquipNode(  equipNode ,  x, y , currentStatus    );
+
                             }
-
                         }
-
-
                     }
-
-                    // we will check and set
-
-                    // if( this.EquipNodeArr[labEquipDataId].style.left != (x+"px") ){
+                    // if( this.EquipNodeArr[labEquipDataId] != null ){
                     //
                     //     this.EquipNodeArr[labEquipDataId].style.left = x+"px";
+                    //     this.EquipNodeArr[labEquipDataId].style.top = y+"px";
+                    //     if( this.EquipNodeArr[labEquipDataId].name != currentStatus ){
+                    //         this.EquipNodeArr[labEquipDataId].name = currentStatus;
+                    //         //this.EquipNodeArr[labEquipDataId].name = currentStatus;
+                    //         var equipmentData = this.getEquipmentDataByIndex( labEquipDataId  );
+                    //         var imageStatus = equipmentData.getLabImageStatusByName( currentStatus );
+                    //         var sendtextArr = imageStatus.getSendTextArr();
+                    //         this.EquipNodeArr[labEquipDataId].sendtext = JSON.stringify( sendtextArr );
+                    //
+                    //         //console.log("imageStatus.getImageblobId()  the wrong ");
+                    //         //console.log(imageStatus.getImageblobId());
+                    //
+                    //         this.EquipNodeArr[labEquipDataId].src = JSON.parse(imageStorage.getItem( imageStatus.getImageblobId() )).blob;
+                    //
+                    //     }
                     //
                     // }
-                    // if( this.EquipNodeArr[labEquipDataId].style.top != (y+"px") ){
-                    //
-                    // }
-
-                    if( this.EquipNodeArr[labEquipDataId] != null ){
-
-                        this.EquipNodeArr[labEquipDataId].style.left = x+"px";
-                        this.EquipNodeArr[labEquipDataId].style.top = y+"px";
-                        if( this.EquipNodeArr[labEquipDataId].name != currentStatus ){
-                            this.EquipNodeArr[labEquipDataId].name = currentStatus;
-                            //this.EquipNodeArr[labEquipDataId].name = currentStatus;
-                            var equipmentData = this.getEquipmentDataByIndex( labEquipDataId  );
-                            var imageStatus = equipmentData.getLabImageStatusByName( currentStatus );
-                            var sendtextArr = imageStatus.getSendTextArr();
-                            this.EquipNodeArr[labEquipDataId].sendtext = JSON.stringify( sendtextArr );
-
-                            //console.log("imageStatus.getImageblobId()  the wrong ");
-                            //console.log(imageStatus.getImageblobId());
-
-                            this.EquipNodeArr[labEquipDataId].src = JSON.parse(imageStorage.getItem( imageStatus.getImageblobId() )).blob;
-
-                        }
-
-                    }
-
-
-
-
 
                 }
 
+            }
+
+        }
+
+        function setEquipNode(  equipNode,  x, y , currentStatus    ) {
+
+            equipNode.style.left = x+"px";
+            equipNode.style.top = y+"px";
+            if( equipNode.name != currentStatus ){
+                equipNode.name = currentStatus;
+                //this.EquipNodeArr[labEquipDataId].name = currentStatus;
+                var equipmentData = this.getEquipmentDataByIndex( equipNode.id );
+                var imageStatus = equipmentData.getLabImageStatusByName( currentStatus );
+                var sendtextArr = imageStatus.getSendTextArr();
+                equipNode.sendtext = JSON.stringify( sendtextArr );
+                equipNode.src = JSON.parse(imageStorage.getItem( imageStatus.getImageblobId() )).blob;
             }
 
         }
