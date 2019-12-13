@@ -12,11 +12,11 @@ public class DoLab {
     @Id
     private String id;
 
-    private boolean isComplete ;
-    private int currentStep  ;
-    private int maxStep  ;
-    private String labData ;
+    private LabData labData = null;
 
+    private int currentStep = 0;
+
+    private boolean isComplete = false;
 
     public DoLab(){
 

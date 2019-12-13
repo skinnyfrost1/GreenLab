@@ -900,6 +900,8 @@ public class EquipmentController {
 //_______________________________________________________________________________________________________________________________________________________ below lab front
 //_______________________________________________________________________________________________________________________________________________________
 
+    @Autowired
+    private DoLabRepository doLabRepository;
 
     @MessageMapping("/lab/front/{userId}/{sessionId}")
     public void handleLabFront(@DestinationVariable String userId , @DestinationVariable String sessionId , String message ) throws JSONException, JsonProcessingException {
@@ -969,16 +971,25 @@ public class EquipmentController {
 
                 //DoLab doLab = (DoLab) labData;
 
-                String labDataStr =   jsonMapper.writeValueAsString( labData );
+                //String labDataStr =   jsonMapper.writeValueAsString( labData );
+
+                DoLab doLab = new DoLab();
+                doLab.setLabData( labData );
+//                doLab.setComplete( false );
+//                doLab.setCurrentStep( 0 );
+//                doLab.setMaxStep( labData.getLabSteps().size() );
+//                doLab.setCoverImageBlobId( labData.getCoverBlobId() );
+//                doLab.setName( labData.getName() );
+//                doLab.setDescription( labData.getDescription() );
+
+                doLab = doLabRepository.save( doLab );
+
+                String id =  doLab.getId();
 
                 //private boolean isComplete ;
                 //private int currentStep  ;
                 //private int maxStep  ;
                 //private String labData ;
-
-
-
-
 
 
             }
