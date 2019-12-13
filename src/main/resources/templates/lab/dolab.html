@@ -115,7 +115,6 @@
 
 
 
-
                     var sendData = {};
                     sendData["labId"] = itemId;
                     sendData["blobIds"] = labDataOp.getEquipCoverBlobIds();
@@ -221,7 +220,7 @@
 
             initLabData(){
 
-                this.setCurrentLabStep(  1 );
+                this.setCurrentLabStep(  0 );
                 for( var i = 0 ; i < doLabData["labData"]["labSteps"].length ; i++ ){
                     //doLabData["labData"]["labSteps"][i]
                     this.setStepCurrentToBefore(  i );
@@ -351,7 +350,30 @@
             displayPad.setStepInfo( labDataOp.getStepInfo( labDataOp.getCurrentLabStep() ) );
 
 
+            //displayPad
+            //getEquipIdListNeedToAddInThisStep()
+            var equipIdList =  labDataOp.getEquipIdListNeedToAddInThisStep();
 
+             var cards = new Cards();
+            // cards.__creatFakeData();
+            // cards.__creatFakeData();
+            // cards.__creatFakeData();
+            //
+            // cards.setHTML();
+
+            for( var i = 0 ; i < equipIdList.length ; i++ ){
+
+                var index = equipIdList[i];
+
+                var imageBlob = JSON.parse( imageStorage.getItem(labDataOp.getEquipCoverBlobId( index )));
+
+
+                cards.addCard( imageBlob.blob , labDataOp.getEquipmentTitleName( index ), "", index );
+
+
+            }
+
+            cards.setHTML();
 
 
 
@@ -365,53 +387,43 @@
         class DisplayPad{
 
             constructor(){
-
                 this.labName = "labName";
                 this.labDescription = "labDescription";
                 this.stepProgressBar = "stepProgressBar";
                 this.stepIndex = "stepIndex";
                 this.stepInfo = "stepInfo";
-
-
             }
 
             setLabName( value ){
-
                 document.getElementById( this.labName ).innerText = value;
-
             }
 
             setlabDescription( value ){
-
                 document.getElementById( this.labDescription ).innerText = value;
             }
 
             setStepName( value ){
-
                 document.getElementById( this.stepIndex ).innerText = "Step "+value;
             }
 
             setStepInfo( value ){
-
                 document.getElementById(  this.stepInfo ).innerText = value;
-
             }
 
             setProgressBar( value ){
-
-
-
                 document.getElementById( this.stepProgressBar ).innerText = value+" %";
-
                 document.getElementById( this.stepProgressBar ).style.width = value+"%"
-
             }
 
             reStartOnClick( ){
 
-                console.log("thnANM");
-
+                //console.log("thnANM");
                 // we will but all the current to
+                // now we need
+                // but to it and display it
+                    // I need that code
+                // labData.setLabData( JSON.stringify(doLabData["labData"]) );
+                // labData.displayLabBoard();
 
 
 
@@ -1204,9 +1216,6 @@
     <!-- cards here   -->
     <script>
 
-
-
-
         class Card{
             constructor(){
                 this.imageData = null;
@@ -1251,27 +1260,6 @@
                 return this.__cardHTML();
             }
         }
-        // <div id="btn btn-group" >
-        //     <div class="btn btn-primary " ><i class="fas fa-eraser"></i></div>
-        // <div class="btn btn-success " ><i class="fas fa-clone "></i></div>
-        // <div class="btn btn-danger " ><i class="fas fa-heart "></i></div>
-        // </div>
-
-        //var changContent = "";
-
-        //onmouseleave=\"threeButton("+this.imageId+")\"
-        //onmouseenter=\"threeButton("+this.imageId+")\"
-
-        //     function threeButton( evt ) {
-        //
-        //
-        // //evt.innerHTML
-        // //evt.id
-        //
-        //         console.log( evt.id  );
-        //
-        //
-        //     }
 
         class Cards{
             constructor(){
@@ -1353,8 +1341,6 @@
         // cards.__creatFakeData();
         // cards.__creatFakeData();
         // cards.setHTML();
-
-
 
 
     </script>
@@ -1502,16 +1488,6 @@
 
         </div>
 
-        <script>
-
-            var cards = new Cards();
-            cards.__creatFakeData();
-            cards.__creatFakeData();
-            cards.__creatFakeData();
-
-            cards.setHTML();
-
-        </script>
 
     </div>
 
