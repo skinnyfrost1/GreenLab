@@ -1,8 +1,3 @@
-
-
- 
-
-
 $(document).ready(function () {
   var mousex = 0, mousey = 0; //这个..我也不知道是什么,网上找回来的代码原本就有了,要来做拖动用的.
   var divLeft, divTop;        //这个..我也不知道是什么,网上找回来的代码原本就有了,要来做拖动用的.
@@ -16,8 +11,6 @@ $(document).ready(function () {
     this.name = name;
     this.maker = maker;
  }
-
-
 
   //当这个叫but的按钮被按下去以后,就会生成一些图片.
   $(".equipmentContainer").click(function () {
@@ -142,9 +135,5 @@ $(document).ready(function () {
     unSelected();
     unAssociated();
   }
-
-
-
-  
 
 });
