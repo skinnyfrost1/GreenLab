@@ -16,8 +16,12 @@ $(document).ready(function () {
     var ws = document.getElementById('workspace').innerHTML;
     var id = "equip_" + equips.length;
     console.log(this.src);
-    ws += '<div class="workspaceEquipment" id="' + id + '" ><img src="'+this.src+'" style="position:absolute"><div>';
+    ws += '<div class="workspaceEquipment" id="' + id + '" ><img class="workspaceEquipment_img" id="' + id +'_img" src="'+this.src+'" style="position:absolute"><div>';
     document.getElementById('workspace').innerHTML = ws;
+    var imgWidth = 2+$("#" + id+"_img").width();
+    var imgHeight = 2+$("#"+ id+"_img").height();
+    $("#"+id).css("width",imgWidth+"px");
+    $("#"+id).css("height",imgHeight+"px");
     var el = document.getElementById(id);
     el.style.zIndex = equips.length;
     equips.push(id);
