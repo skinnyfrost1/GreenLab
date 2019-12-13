@@ -95,15 +95,16 @@
         <col width="30%" />
         <tr>
             <!-- Vertial menu -->
-            <td>}vertical-menu webfont" style="margin: 3.2em 0 -0.2em -0.2em;">
+            <td>
+                <div class="vertical-menu webfont" style="margin: 3.2em 0 -0.2em -0.2em;">
                     <a><img class="equipmentContainer" th:src="@{/image/Container.png}"></a>
                     <a><img class="equipmentContainer" th:src="@{/image/Heater.png}"></a>
                     <a><img class="equipmentContainer" th:src="@{/image/Timer.png}"></a>
                     <a><img class="equipmentContainer" th:src="@{/image/Measure.png}"></a>
                     <a><img class="equipmentContainer" th:src="@{/image/Holder.png}"></a>
                     <a><img class="equipmentContainer" th:src="@{/image/Seperator.png}"></a>
-                    <a th:each="equip:${preparedEquipments}"><img class="equipmentContainer"
-                            th:attr="src=@{${equip.image}}" title="${equip.equipmentName}"></a>
+                    <a th:each="equip:${preparedEquipments}"><img th:id="${equip._id}" class="equipmentContainer"
+                            th:attr="src=@{${equip.image}}" th:title="${equip.equipmentName}"></a>
                     <!-- <div></div>
           <div><a class="vertical-menu-Icon"><i class='fas fa-plus'></i></a></div>
           <div><a class="vertical-menu-Icon"><i class='fas fa-trash-alt'></i></a></div>
@@ -114,7 +115,9 @@
 
             <!-- Middle Pane-->
             <td>
-                <div class="workspace middlePaneContainer webfont"></div>
+                <!-- <div class="workspace middlePaneContainer webfont"></div> -->
+                <div id="workspace" class="workspace"></div>
+
             </td>
             <!-- End of middle Pane-->
 
@@ -155,7 +158,7 @@
         </tr>
     </table>
 
-    <!-- <script th:src="@{/js/DivWorkSpace.js}"></script> -->
+    <script th:src="@{/js/CreateWorkspace.js}"></script>
 </body>
 
 </html>

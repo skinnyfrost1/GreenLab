@@ -11,37 +11,19 @@ $(document).ready(function () {
   let associated;             //将要和seleted发生一些什么的equip的id
 
 
-
-  
-  
-  document.getElementById("inp").addEventListener("change", readFile);
-  
- 
-  function readFile() {
-  
-    if (this.files && this.files[0]) {
-      var FR= new FileReader();
-      FR.addEventListener("load", function(e) {
-        document.getElementById("img").src       = e.target.result;
-        document.getElementById("b64").innerHTML = e.target.result;
-      }); 
-      FR.readAsDataURL( this.files[0] );
-    }
-    
-  }
-  
   //当这个叫but的按钮被按下去以后,就会生成一些图片.
-  $("#but").click(function () {
+  $(".equipmentContainer").click(function () {
     var ws = document.getElementById('workspace').innerHTML;
     var id = "equip_" + equips.length;
-    ws += '<img class="Equipment" id="' + id + '" src="maplestory.png" alt="bb" style="position:absolute">';
+    console.log(this.src);
+    ws += '<img class="workspaceEquipment" id="' + id + '" src="'+this.src+'" style="position:absolute">';
     document.getElementById('workspace').innerHTML = ws;
     var el = document.getElementById(id);
     el.style.zIndex = equips.length;
     equips.push(id);
 
     //建立一个mousedown 的 event handler
-    $(".Equipment").mousedown(function (e) {
+    $(".workspaceEquipment").mousedown(function (e) {
       var id = $(this).attr('id'); //获取被点击的图片的id
       unAssociated();
       unSelected();
@@ -80,15 +62,15 @@ $(document).ready(function () {
     return false;//如果不这样，鼠标松开时图片也会随着鼠标的移动而移动
   }
 
-  $(document).mouseup(function ()
+  $(document).mouseup(function (event)
   {
-    $(".Equipment").unbind("mousemove");//当鼠标松开时，删除鼠标移动的处理程序
+    $(".workspaceEquipment").unbind("mousemove");//当鼠标松开时，删除鼠标移动的处理程序
     
     
     if (selected != null) {
       for (var i = equips.length - 1; i >= 0; i--) {
         if (equips[i] != selected) {
-          var overlap = isOverlap(equips[i]);
+          var overlap = isOverlap(event,equips[i]);
           if (overlap == true) {
             doAssociated(equips[i]);
             console.log("overlap!")
@@ -101,65 +83,22 @@ $(document).ready(function () {
     }
   });
 
-
-
-
-  function isOverlap(b) {
-    var a = selected;
-    var aLeft, aRight, aTop, aBot;
+    function isOverlap(event, b) {
     var bLeft, bRight, bTop, bBot;
-    var o1 = $("#" + a).last();
-    var aOffset = o1.offset();
-    aLeft = aOffset.left;
-    aRight = aLeft + $("#" + a).width();
-    aTop = aOffset.top;
-    aBot = aTop + $("#" + a).height();
-
     bLeft = $("#" + b).offset().left;
     bRight = bLeft + $("#" + b).width();
     bTop = $("#" + b).offset().top;
     bBot = bTop + $("#" + b).height();
 
-    //check a's left top
-    if (aLeft >= bLeft && aLeft <= bRight &&
-      aTop >= bTop && aTop <= bBot)
+    //check if event x,y in b
+    if (event.pageX >= bLeft && event.pageX <= bRight
+      && event.pageY >= bTop && event.pageY <= bBot)
       return true;
 
-    //check a's right top
-    if (aRight >= bLeft && aRight <= bRight &&
-      aTop >= bTop && aTop <= bBot)
-      return true;
-
-    //check a's left bot
-    if (aLeft >= bLeft && aLeft <= bRight &&
-      aBot >= bTop && aBot <= bBot)
-      return true;
-
-    //check a's right bot
-    if (aRight >= bLeft && aRight <= bRight &&
-      aBot >= bTop && aBot <= bBot)
-      return true;
-
-
-    //check b's left top
-    if (bLeft >= aLeft && bLeft <= aRight &&
-      bTop >= aTop && bTop <= aBot)
-      return true
-    //check b's right top
-    if (bRight >= aLeft && bRight <= aRight &&
-      bTop >= aTop && bTop <= aBot)
-      return true
-
-    //check b's left bot
-    if (bLeft >= aLeft && bLeft <= aRight &&
-      bBot >= aTop && bBot <= aBot)
-      return true
-    //check b's right bot
-    if (bRight >= aLeft && bRight <= aRight &&
-      bBot >= aTop && bBot <= aBot)
-      return true
+    // if ()
+    //   return true;
+    return false
   }
-
 
   //
   function unSelected() {
