@@ -963,6 +963,25 @@ public class EquipmentController {
             else if( type.equals("deleteLab") ){
 
             }
+            else if( type.equals("generateDoLab") ){
+
+                //System.out.println( "generateDoLab" );
+
+                //DoLab doLab = (DoLab) labData;
+
+                String labDataStr =   jsonMapper.writeValueAsString( labData );
+
+                //private boolean isComplete ;
+                //private int currentStep  ;
+                //private int maxStep  ;
+                //private String labData ;
+
+
+
+
+
+
+            }
             else if( type.equals("refreshLab") ){
 
                 // here we need get all the data
@@ -1009,9 +1028,8 @@ public class EquipmentController {
 
                     JSONArray jsonArray = (JSONArray)data.get("data");
 
-
-
-                    List<String> list = new LinkedList<>();
+                    List<String> list;
+                    list = new LinkedList<>();
                     for( int i = 0 ; i< jsonArray.length(); i++ ){
 
                         list.add( jsonArray.getString(i) );
@@ -1033,36 +1051,37 @@ public class EquipmentController {
 
                     }
 
-
-
                     data.put( "data", equipArr );
                     sendLabPad( labId , data.toString() );
+
                     //System.out.println("666");
 
                 }catch (Exception e){
-
                     //System.out.println("686");
-
                     List<String> list = labData.getLabEquipDataList();
-
                     JSONArray equipArr = new JSONArray();
-
                     for( int i = 0 ; i< list.size(); i++ ){
-
                         String equipId = list.get(i);
                         EquipmentData equipmentData = equipmentDataRepository.getById(equipId);
                         equipArr.put( jsonMapper.writeValueAsString( equipmentData ) );
-
                     }
-
                     data.put( "data", equipArr );
                     sendLabPad( labId , data.toString() );
                 }
 
 
-
-
             }
+
+            else if( type.equals("clearLabEquipList")  ){
+                //labData.setLabEquipDataList( new LinkedList<>() );
+                List<String> labEquipDataList = new LinkedList<>();
+                labData.setLabEquipDataList( labEquipDataList );
+                labDataRepository.save( labData );
+                //System.out.println( "clearLabEquipList received" );
+                SendRefreshLab(  labId , userId );
+            }
+
+            //clearLabEquipList
             else if( type.equals("addEquipToBoard")  ){
 
                 List< LabStep> labSteps = labData.getLabSteps();
@@ -1170,17 +1189,59 @@ public class EquipmentController {
             else if( type.equals("newStep")  ){
 
 
+                List<LabStep> steps =  labData.getLabSteps();
+                LabStep labStep = new LabStep();
+                if( steps.size() == 0 ){
+                    steps.add( labStep );
+                }else{
+                    LabStep lastStep =  steps.get( steps.size()- 1 );
+                    List< LabEquipStatus > lastStepAfter =  lastStep.getAfter();
+                    labStep.setBefore( lastStepAfter );
+                    labStep.setCurrent( lastStepAfter );
+
+                    steps.add( labStep );
+                }
 
 
-                    System.out.println( "newStep received" );
+                labData.setLabSteps( steps );
+
+
+
+                labDataRepository.save(labData);
+
+
+
+                SendRefreshLab(  labId , userId );
+                refreshLabBoard(  data ,  labData ,  labId  ,  jsonMapper );
+                   // System.out.println( "newStep received" );
 
 
 //removeLastStep
             }
             else if( type.equals("removeLastStep")  ){
 
-                    System.out.println( "removeLastStep received" );
-//
+               // System.out.println( "removeLastStep received" );
+               List<LabStep> steps =  labData.getLabSteps();
+               int stepsLength = steps.size();
+               int currentStepIndex = labData.getCurrentLabStep();
+
+               if( (stepsLength-1) ==  currentStepIndex ){
+                   currentStepIndex = -1;
+               }
+
+                LabStep labStep = steps.get( stepsLength-1 );
+                steps.remove( stepsLength-1 );
+                labData.setLabSteps( steps );
+                labData.setCurrentLabStep( -1 );
+                labData = removeIfNotInLabStep( labStep ,  labData );
+
+                labDataRepository.save(labData);
+
+                SendRefreshLab(  labId , userId );
+                refreshLabBoard(  data ,  labData ,  labId  ,  jsonMapper );
+
+                //System.out.println( jsonMapper.writeValueAsString( labData )  );
+                //    System.out.println( "removeLastStep received" );
 //                data.put("type", "refreshBoard" );
 //                data.put( "data" , jsonMapper.writeValueAsString( labData ) );
 //                sendLabBoard( labId , data.toString() );
@@ -1221,12 +1282,14 @@ public class EquipmentController {
             else if( type.equals("saveBefore")  ){
 
                 Integer index = data.getInt("data");
-
-                System.out.println( "saveBefore received" );
-
-
-
-
+                List<LabStep> steps =  labData.getLabSteps();
+                //System.out.println( "saveBefore received" );
+                int currentStep = labData.getCurrentLabStep();
+                LabStep labStep =  steps.get( currentStep );
+                labStep.setBefore( labStep.getCurrent() );
+                labDataRepository.save(labData);
+                SendRefreshLab(  labId , userId );
+                refreshLabBoard(  data ,  labData ,  labId  ,  jsonMapper );
 
 
 
@@ -1238,9 +1301,14 @@ public class EquipmentController {
             else if( type.equals("saveEnd")  ){
 
                 Integer index = data.getInt("data");
-                System.out.println( "saveEnd received" );
-
-
+                List<LabStep> steps =  labData.getLabSteps();
+                //System.out.println( "saveBefore received" );
+                int currentStep = labData.getCurrentLabStep();
+                LabStep labStep =  steps.get( currentStep );
+                labStep.setAfter( labStep.getCurrent() );
+                labDataRepository.save(labData);
+                SendRefreshLab(  labId , userId );
+                refreshLabBoard(  data ,  labData ,  labId  ,  jsonMapper );
 
 
 
@@ -1253,13 +1321,19 @@ public class EquipmentController {
             else if( type.equals("displayBefore")  ){
 
                 Integer index = data.getInt("data");
-                System.out.println( "displayBefore received" );
+                List<LabStep> steps =  labData.getLabSteps();
+                int currentStep = labData.getCurrentLabStep();
 
+                LabStep labStep =  steps.get( currentStep );
+                labStep.setCurrent( labStep.getBefore() );
+                steps.set( currentStep , labStep );
+                labData.setLabSteps( steps );
+                labDataRepository.save(labData);
 
-
-
-
-
+                SendRefreshLab(  labId , userId );
+                refreshLabBoard(  data ,  labData ,  labId  ,  jsonMapper );
+                //System.out.println( "displayBefore received" );
+                //labData.getlabData.getCurrentLabStep()
 
 //                data.put("type", "refreshBoard" );
 //                data.put( "data" , jsonMapper.writeValueAsString( labData ) );
@@ -1267,28 +1341,77 @@ public class EquipmentController {
 
             }
             else if( type.equals("displayEnd")  ){
-                Integer index = data.getInt("data");
 
-                System.out.println( "displayEnd received" );
+                Integer index = data.getInt("data");
+                List<LabStep> steps =  labData.getLabSteps();
+                int currentStep = labData.getCurrentLabStep();
+
+                LabStep labStep =  steps.get( currentStep );
+                labStep.setCurrent( labStep.getAfter() );
+                steps.set( currentStep , labStep );
+                labData.setLabSteps( steps );
+                labDataRepository.save(labData);
+
+                SendRefreshLab(  labId , userId );
+                refreshLabBoard(  data ,  labData ,  labId  ,  jsonMapper );
+                //System.out.println( "displayEnd received" );
 
             }
             else if( type.equals("insertStepBelow")  ){
                 Integer index = data.getInt("data");
 
+                List<LabStep> steps =  labData.getLabSteps();
+                int currentStep = labData.getCurrentLabStep();
+                LabStep labStep =  steps.get( currentStep );
+                LabStep newLabStep = new LabStep();
 
-                System.out.println( "insertStepBelow received" );
+                newLabStep.setBefore( labStep.getAfter() );
+                newLabStep.setCurrent( labStep.getAfter()  );
+                //steps.set( currentStep+1 ,  )
+                steps.add( currentStep+1 , newLabStep );
+                labData.setLabSteps( steps );
+                labData.setCurrentLabStep( currentStep+1 );
+                labDataRepository.save(labData);
+
+                SendRefreshLab(  labId , userId );
+                refreshLabBoard(  data ,  labData ,  labId  ,  jsonMapper );
+
+                //System.out.println( "insertStepBelow received" );
             }
             else if( type.equals("removeThisStep")  ){
 
-                Integer index = data.getInt("data");
+                int index = data.getInt("data");
 
-                System.out.println( "removeThisStep received" );
+                System.out.println(index);
+                System.out.println("index");
+                List<LabStep> steps =  labData.getLabSteps();
+
+                LabStep step = steps.get(index);
+                steps.remove(  index );
+                labData.setLabSteps( steps );
+                labData.setCurrentLabStep(-1);
+                labData = removeIfNotInLabStep( step ,  labData );
+                labDataRepository.save(labData);
+                SendRefreshLab(  labId , userId );
+                refreshLabBoard(  data ,  labData ,  labId  ,  jsonMapper );
+
+
+
+                //System.out.println( "removeThisStep received" );
             }
             else if( type.equals("expandStep")  ){
 
                 Integer index = data.getInt("data");
 
-                System.out.println( "expandStep received" );
+                labData.setCurrentLabStep( index );
+
+                //System.out.println(index);
+                //System.out.println("index");
+                labDataRepository.save( labData );
+                //Integer index = data.getInt("data");
+                SendRefreshLab(  labId , userId );
+                refreshLabBoard(  data ,  labData ,  labId  ,  jsonMapper );
+                //System.out.println( "expandStep received" );
             }
 
 
@@ -1320,7 +1443,7 @@ public class EquipmentController {
 
         //System.out.println("what YY happened??");
 
-        sendLabFolder( userId , jsonObject.toString() );
+        sendLabPad( labId , jsonObject.toString() );
 
     }
 
@@ -1531,8 +1654,8 @@ public class EquipmentController {
 
                 JSONObject receiveData = (JSONObject) data.get("data");
 
-                Integer x  = Integer.parseInt(receiveData.getString( "x" ));
-                Integer y  = Integer.parseInt( receiveData.getString( "y" ));
+                int x  = (int)Double.parseDouble(receiveData.getString( "x" ));
+                int y  = (int)Double.parseDouble( receiveData.getString( "y" ));
                 Integer equipId =  Integer.parseInt(receiveData.getString("equipId"));
                 String timeStamp = receiveData.getString("timeStamp");
                 // now we need set the value in
@@ -1695,7 +1818,7 @@ public class EquipmentController {
 
                 refreshLabBoard(  data , labData ,  labId  ,  jsonMapper );
 
-                System.out.println( "removeEquipFromBoard" );
+                //System.out.println( "removeEquipFromBoard" );
 
             }
 
@@ -1724,6 +1847,75 @@ public class EquipmentController {
         labData.setUsedEquipList( equipmentDataList );
         return labData;
     }
+
+
+    public LabData removeIfNotInLabStep( LabStep labStep , LabData labData ){
+
+        List<LabEquipStatus> before =   labStep.getBefore();
+        List<LabEquipStatus> current =   labStep.getCurrent();
+        List<LabEquipStatus> after =   labStep.getAfter();
+        int equipLength = labData.getUsedEquipList().size();
+        // now we need compress them together
+        boolean[] array = new boolean[ equipLength ];
+        // 666
+        for( int i = 0 ; i < equipLength ; i++ ){
+            array[i] = false;
+        }
+
+        for( int i = 0  ; i < before.size() ; i ++ ){
+            LabEquipStatus labEquipStatus =  before.get( i );
+            int id =  labEquipStatus.getLabEquipDataId(  );
+            array[id] = true;
+        }
+        for( int i = 0 ; i < current.size() ; i ++ ){
+            LabEquipStatus labEquipStatus =  current.get( i );
+            int id =  labEquipStatus.getLabEquipDataId(  );
+            array[id] = true;
+        }
+        for( int i = 0 ; i < after.size() ; i ++ ){
+            LabEquipStatus labEquipStatus =  after.get( i );
+            int id =  labEquipStatus.getLabEquipDataId(  );
+            array[id] = true;
+        }
+
+        List<Integer> list = new LinkedList<>();
+        for( int i = 0 ; i < equipLength ; i++ ){
+
+            if( array[i] == true ){
+
+                list.add( i );
+
+            }
+
+        }
+
+        return  removeIfNotInLab( list , labData  );
+
+
+    }
+
+    public LabData removeIfNotInLab( List<Integer> labequipId ,  LabData labData  ){
+        List< LabStep > labSteps =  labData.getLabSteps();
+         List<LabEquipData>  usedEquipList =   labData.getUsedEquipList();
+        for( int i = 0 ; i < labequipId.size() ; i++ ){
+            int index = labequipId.get(i);
+            Boolean check =  checkIfInsideLabSteps( index , labSteps  );
+            if( check == false ){
+                //LabEquipData labEquipData = new LabEquipData();
+                //labEquipData.se
+                LabEquipData labEquipData = usedEquipList.get( index );
+                labEquipData.setEquipmentDataStr( null );
+                labEquipData.setImageDataStrArr( null );
+                usedEquipList.set( index , labEquipData );
+                //labData.get
+            }
+        }
+        labData.setUsedEquipList( usedEquipList );
+        return labData ;
+
+
+    }
+
     public Boolean checkIfInsideLabSteps( int equipIndex , List< LabStep > labSteps  ){
         for( int i = 0 ; i< labSteps.size() ; i++ ){
             LabStep labStep = labSteps.get(i);

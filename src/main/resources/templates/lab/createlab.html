@@ -642,7 +642,7 @@
                 this.shareEquipment = "shareEquipment";
                 this.createDuplicate = "createDuplicate";
                 this.deleteEquipment = "deleteEquipment";
-
+                this.generateDoLab = "generateDoLab";
                 this.self = null;
             }
 
@@ -752,6 +752,10 @@
                     setOp.handleDelete();
                 };
 
+                document.getElementById( setOp.generateDoLab ).onclick = function () {
+                    websocket.sendMessage( quickPrepare( "generateDoLab"  ) );
+                }
+
             }
 
 
@@ -772,32 +776,46 @@
 
                 $( "#"+this.newStepId ).click(function() {
 
-                    console.log("123A");
+                    //console.log("123A");
 
                     var labdata = labData.LabData;
                     var labSteps = labdata.labSteps;
-                    var lastStep = labSteps[labSteps.length-1];
-                    var after = lastStep.after;
-                    if( after.length == 0 ){
 
-                    }else{
+                    if( labSteps.length == 0 ){
+
 
                         websocket.sendMessage( quickPrepare( "newStep" ) );
+                    }else{
+
+
+                        var lastStep = labSteps[labSteps.length-1];
+                        var after = lastStep.after;
+                        if( after.length == 0 ){
+
+                        }else{
+
+                            websocket.sendMessage( quickPrepare( "newStep" ) );
+
+                        }
 
                     }
+
+
 
                 });
 
                 $( "#"+this.removeLastStep ).click(function() {
 
-                    console.log("123AB");
+                    //console.log("123AB");
+
+                    //console.log(labData);
 
                     var labdata = labData.LabData;
 
                     //console.log(labdata);
 
                     var labSteps = labdata.labSteps;
-                    if( labSteps.length > 1 ){
+                    if( labSteps.length > 0 ){
                         websocket.sendMessage( quickPrepare("removeLastStep") );
                     }
 
@@ -1043,7 +1061,7 @@
             var contentId = id+"_content";
             var value = document.getElementById( contentId ).value;
 
-            console.log(value);
+            //console.log(value);
 
         }
 
@@ -1126,7 +1144,16 @@
             var id = getIdFromEvt( evt );
             //console.log(id);
             //console.log( "insertStepBelow" );
-            websocket.sendMessage( quickPrepare( "insertStepBelow" , id ) );
+            // now we need check the current step is saved
+            // if not saved --> click
+             var afterlength =  labData.LabData.labSteps[id].after.length;
+             if( afterlength != 0 ){
+                 websocket.sendMessage( quickPrepare( "insertStepBelow" , id ) );
+
+             }
+
+
+
         }
         function removeThisStep(evt){
             var id = getIdFromEvt( evt );
@@ -1393,6 +1420,7 @@
 
             //console.log(evt.parentNode.id);
 
+
             if(  evt.parentNode.id == "middleBoard"){
 
 
@@ -1421,54 +1449,67 @@
 
                 if( evt.parentNode.className == "card-rows hideTrashBin" ){
 
-
+                    //console.log( "node.id waht happened here B?");
                     // there are still something need to do here
                         // we need check the step if it's not null
                             // or the current step is point to a valid step
 
-                    console.log( labData );
+                    //console.log( labData );
 
                     var LabData = labData.LabData;
                     var labSteps = LabData.labSteps;
                     var currentLabStep = LabData.currentLabStep;
 
+
+
                     if( labSteps.length != 0 ){
 
+                        //console.log( "node.id waht happened here C?");
+
                         if( currentLabStep >= 0 && currentLabStep < labSteps.length ){
+
+                            //console.log( "node.id waht happened hereD");
+
                             var id = evt.id;
                             var parenNode = evt.parentNode;
                             parenNode.removeChild(evt);
+                            sendLabEquipList();
 
-                            var nodeIds =[];
-                            var nodes = document.getElementById("folderContent").children;
-                            for( var i = 0 ; i < nodes.length ; i++ ){
-                                var node = nodes[i];
-                                nodeIds.push( node.id );
-                                //console.log( node.id );
-                            }
-                            sendProtocal["labEquipList"]( nodeIds );
+                            // var id = evt.id;
+                            // var parenNode = evt.parentNode;
+                            // parenNode.removeChild(evt);
+                            //
+                            // var nodeIds =[];
+                            // var nodes = document.getElementById("folderContent").children;
+                            // for( var i = 0 ; i < nodes.length ; i++ ){
+                            //     var node = nodes[i];
+                            //     nodeIds.push( node.id );
+                            //     //console.log( node.id );
+                            // }
+                            //
+                            // if( nodeIds.length == 0 ){
+                            //
+                            //     websocket.sendMessage(quickPrepare( "clearLabEquipList" ));
+                            //
+                            // }else{
+                            //
+                            //     sendProtocal["labEquipList"]( nodeIds );
+                            //
+                            // }
+                            //console.log( "node.id waht happened here?");
 
-                            sendProtocal["addEquipToBoard"](id);
+                            //setTimeout(100)
+
+                            setTimeout(function(){ sendProtocal["addEquipToBoard"](id); }, 100);
+
 
                         }
 
                     }
 
-
-
-
-
-
-
                 }
 
-
-                //console.log(evt.parentNode);
-
             }
-            //console.log(evt.parentNode.id);
-
-
 
         }
 
@@ -1544,6 +1585,19 @@
 
             folderContent.removeChild( equip );
 
+
+            var nodeIds =[];
+            var nodes = document.getElementById("folderContent").children;
+            for( var i = 0 ; i < nodes.length ; i++ ){
+                var node = nodes[i];
+                nodeIds.push( node.id );
+                //console.log( node.id );
+            }
+            sendProtocal["labEquipList"]( nodeIds );
+
+        }
+
+        function sendLabEquipList() {
 
             var nodeIds =[];
             var nodes = document.getElementById("folderContent").children;
@@ -1691,6 +1745,9 @@
 
                 sendProtocal["labEquipList"] = function ( nodeIds ) {
 
+
+
+                    //console.log("nodeIds");
                     //console.log(nodeIds);
                     websocket.sendMessage(quickPrepare( "labEquipList", nodeIds ));
 
@@ -1876,7 +1933,7 @@
 
             displayFolderConetnt(){
 
-                var equips = this.folderContentEquip;
+                var equips =  this.folderContentEquip;
 
                 var imageblobSet = [];
                 for( var i = 0 ; i <  equips.length ; i++  ){
@@ -2068,7 +2125,9 @@
             }
 
             __displayLab(){
+
                 var data = this.LabData;
+                //sendProtocal["labEquipList"](labData.LabData.labEquipDataList);
                 introductionOp.setNameValue( data.name );
                 introductionOp.setTextArea( data.description );
                 var imageBlob = JSON.parse(imageStorage.getItem(data.coverBlobId));
@@ -2107,9 +2166,10 @@
                     if( step.info != null ){
                         info = step.info;
                     }
-                    total = total + stepOp.__getCard(i, "Step "+(i+1) , saveBoolean , info , showBoolean );
-                    document.getElementById("accordionExample").innerHTML = total;
+                    total = total + stepOp.__getCard(i, "Step "+(i+1) , info , showBoolean );
+
                 }
+                document.getElementById("accordionExample").innerHTML = total;
 
 
 
@@ -2733,9 +2793,6 @@
 
             <div class="accordion" id="accordionExample">
 
-
-
-
                 <div class="card">
                     <div class="card-header" id="headingOne">
                         <h2 class="mb-0">
@@ -2850,6 +2907,10 @@
 
             <br>
 
+
+            <div id="generateDoLab" class="btn btn-lg h2 d-block btn-primary text-capitalize" ><i class="fas fa-vial"></i> Generate do Lab</div>
+
+            <br>
 
         </div>
 

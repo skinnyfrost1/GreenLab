@@ -5,12 +5,6 @@
 
 
 
-
-
-
-
-
-
 <!--header value 786013  exceeds configured buffer size limit 65536-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
@@ -712,7 +706,7 @@
                 if( currentStepIndex == -1 ){
 
 
-                   //var childNodes = document.getElementById(workingDiv).childNodes;
+                    //var childNodes = document.getElementById(workingDiv).childNodes;
 
                     document.getElementById(workingDiv).innerHTML = "";
 
@@ -786,54 +780,54 @@
                 var nodeLength = this.EquipNodeArr.length;
                 var equipLength = this.EquipmentDataArr.length;
                 //if( nodeLength  < equipLength  ){
-                    for( var i = 0 ; i < equipLength ; i++ ) {
-                        var labEquipData = this.EquipmentDataArr[i];
-                        //labEquipData = new LabEquipData();
+                for( var i = 0 ; i < equipLength ; i++ ) {
+                    var labEquipData = this.EquipmentDataArr[i];
+                    //labEquipData = new LabEquipData();
 
 
 
-                        var labImageStatus = labEquipData.getLabImageStatusByIndex(0);
+                    var labImageStatus = labEquipData.getLabImageStatusByIndex(0);
 
-                        if( labImageStatus != null ){
+                    if( labImageStatus != null ){
 
-                            var BooleanInside  = false;
+                        var BooleanInside  = false;
 
-                            for( var b = 0 ; b < nodeLength ; b++ ){
+                        for( var b = 0 ; b < nodeLength ; b++ ){
 
-                                var node = this.EquipNodeArr[b];
-                                if( i == node.id ){
+                            var node = this.EquipNodeArr[b];
+                            if( i == node.id ){
 
-                                    BooleanInside = true;
-                                    break;
-                                }
-
+                                BooleanInside = true;
+                                break;
                             }
-
-
-                            if( BooleanInside == false ){
-                                //labImageStatus = new LabImageStatus();
-                                //labImageStatus.getImageblobId()
-                                var equipNode = new EquipNode();
-
-                                //console.log("labImageStatus.getImageblobId()")
-                                //console.log( labImageStatus.getImageblobId() );
-                                //equipNode.src = JSON.parse(imageStorage.getItem(labImageStatus.getImageblobId())).blob;
-
-                                equipNode.id = i;
-                                equipNode.name = labImageStatus.getName();
-                                equipNode.sendText = JSON.stringify(labImageStatus.getSendTextArr());
-                                equipNode.src = JSON.parse(imageStorage.getItem( labImageStatus.getImageblobId() )).blob;
-                                var theNode =  equipNode.getNode();
-                                this.EquipNodeArr.push(theNode);
-                            }
-
-
 
                         }
 
 
-                        //document.getElementById("working").append( theNode );
+                        if( BooleanInside == false ){
+                            //labImageStatus = new LabImageStatus();
+                            //labImageStatus.getImageblobId()
+                            var equipNode = new EquipNode();
+
+                            //console.log("labImageStatus.getImageblobId()")
+                            //console.log( labImageStatus.getImageblobId() );
+                            //equipNode.src = JSON.parse(imageStorage.getItem(labImageStatus.getImageblobId())).blob;
+
+                            equipNode.id = i;
+                            equipNode.name = labImageStatus.getName();
+                            equipNode.sendText = JSON.stringify(labImageStatus.getSendTextArr());
+                            equipNode.src = JSON.parse(imageStorage.getItem( labImageStatus.getImageblobId() )).blob;
+                            var theNode =  equipNode.getNode();
+                            this.EquipNodeArr.push(theNode);
+                        }
+
+
+
                     }
+
+
+                    //document.getElementById("working").append( theNode );
+                }
                 //}
 
                 // now we have all the node
@@ -849,7 +843,7 @@
                 // first remove the node from html
 
 
-               // console.log(childNodes.length);
+                // console.log(childNodes.length);
 
                 var markNodeToRemove = [];
 
@@ -1006,7 +1000,7 @@
         }
     </script>
 
-<!--  configuration  -->
+    <!--  configuration  -->
     <script>
         class Configuration{
             constructor(){
@@ -1050,9 +1044,9 @@
                     //console.log("mouse down 666");
                     var equipNode ;
                     for( var i  = 0 ; i<  labData.EquipNodeArr.length ;i++  ){
-                       if( id ==  labData.EquipNodeArr[i].id ){
-                           equipNode = labData.EquipNodeArr[i];
-                       }
+                        if( id ==  labData.EquipNodeArr[i].id ){
+                            equipNode = labData.EquipNodeArr[i];
+                        }
                     }
 
                     //var equipNode =  labData.EquipNodeArr[id];
@@ -1112,8 +1106,8 @@
         });
 
         // here we will add all jquery
-            // click
-                // drag and drop
+        // click
+        // drag and drop
         // $( function() {
         //     $( "#draggable" ).draggable();
         //     $( "#droppable" ).droppable({
@@ -1127,11 +1121,11 @@
         // } );
 
         // I have get the id before
-                // console.log(ui  );
-                // console.log( ui.draggable["0"].id );
-                // //console.log(event.target.id );
-                // console.log(event.clientX );
-                // console.log(event.clientY );
+        // console.log(ui  );
+        // console.log( ui.draggable["0"].id );
+        // //console.log(event.target.id );
+        // console.log(event.clientX );
+        // console.log(event.clientY );
 
         /*
 
@@ -1275,10 +1269,10 @@
             sendData["dropId"] = idTo;
 
             // now the login handle in the front side
-                // what we need to do
-                    // tell the back side
+            // what we need to do
+            // tell the back side
             // we is the correct name
-                // ok
+            // ok
 
             //labData = new LabData();
             // var labEquipData =   labData.getEquipmentDataByIndex( idFrom )
@@ -1326,7 +1320,7 @@
             //console.log( toSendTextArr );
 
             // so for each from
-                // we will look at to
+            // we will look at to
 
             var changeFrom = "";
             var changeTo = "";
@@ -1371,19 +1365,29 @@
 <body onload="onLoad()"  >
 
 
-    <div id="working" ></div>
+<div id="working" ></div>
 
 
-    <div id="generate" class="d-none">
+<div id="generate" class="d-none">
 
-    </div>
+</div>
 
-    <div class="d-none" id="leisure">
+<div class="d-none" id="leisure">
 
-    </div>
+</div>
 
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
 
 

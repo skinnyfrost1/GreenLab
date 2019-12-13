@@ -13,10 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 public class LabController {
 
 
-    @RequestMapping( value = "/mylab", method = RequestMethod.GET )
+    @RequestMapping( value = "/dolab", method = RequestMethod.GET )
     public String getEquipmentBoard(Model model, @PathVariable("equipmentId") String equipmentId, HttpServletRequest request  ){
 
-        return "lab/mylab";
+
+
+        return "lab/dolab";
 
     }
 
