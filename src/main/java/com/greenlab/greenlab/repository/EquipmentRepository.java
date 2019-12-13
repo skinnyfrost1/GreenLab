@@ -10,4 +10,5 @@ public interface EquipmentRepository extends MongoRepository<Equipment, String> 
     List<Equipment> findByCreator (String creator);
     Equipment findBy_id(String _id);
     List<Equipment> findByEquipmentName(String equipmentName);
+    List<Equipment> findByEquipmentNameContains(String equipmentName);
 }
