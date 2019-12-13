@@ -114,21 +114,20 @@
                     //console.log(dolabData);
 
                     doLabData =   JSON.parse(info.doLabData);
-
+                    labData.setLabData( JSON.stringify(doLabData["labData"]) );
+                    labDataOp.initLabData();
+                    labData.displayLabBoard();
                     // here we need clear out some data
                     // set all current to before
 
-
-
-
                     //labData.setLabData( doLabData.labData );
-                    console.log(doLabData["labData"]);
+                    //console.log(doLabData["labData"]);
 
-                    labData.setLabData( JSON.stringify(doLabData["labData"]) );
+
 
                     //labData.setLabData( JSON.stringify(info.labData) );
 
-                    labData.displayLabBoard();
+
                 },
                 error: function (e) {
 
@@ -137,7 +136,60 @@
 
         }
 
-        
+        //doLabData["labData"]["currentLabStep"]
+
+        class LabDataOp{
+
+            setCurrentLabStep(  currentLabStep ){
+                doLabData["labData"]["currentLabStep"] = currentLabStep;
+                labData.setLabData( JSON.stringify(doLabData["labData"]) );
+            }
+
+            getCurrentLabStep(  ){
+                return doLabData["labData"]["currentLabStep"];
+
+            }
+
+            //labSteps
+
+            setStepCurrentToBefore(  index ){
+                doLabData["labData"]["labSteps"][index][ "current" ]  =  JSON.parse(JSON.stringify( doLabData["labData"]["labSteps"][index][ "before" ]));
+                labData.setLabData( JSON.stringify(doLabData["labData"]) );
+            }
+
+
+            setEquipPos( index , x , y ){
+                 var current =  doLabData["labData"]["labSteps"][ this.getCurrentLabStep( ) ]["current"];
+                 for( var i = 0 ; i < current.length ; i++ ){
+                     if( current[i]["labEquipDataId"] == index ){
+                         //console.log("should be work");
+                         doLabData["labData"]["labSteps"][ this.getCurrentLabStep( ) ]["current"][i]["x"] = x;
+                         doLabData["labData"]["labSteps"][ this.getCurrentLabStep( ) ]["current"][i]["y"] = y;
+                         labData.setLabData( JSON.stringify(doLabData["labData"]) );
+                     }
+                 }
+            }
+
+            setEquipName(  index , name  ){
+                var current =  doLabData["labData"]["labSteps"][ this.getCurrentLabStep( ) ]["current"];
+                for( var i = 0 ; i < current.length ; i++ ){
+                    if( current[i]["labEquipDataId"] == index ){
+                        doLabData["labData"]["labSteps"][ this.getCurrentLabStep( ) ]["current"][i]["currentStatus"] = name;
+                        labData.setLabData( JSON.stringify(doLabData["labData"]) );
+                    }
+                }
+            }
+
+            initLabData(){
+                this.setCurrentLabStep(  1 );
+                for( var i = 0 ; i < doLabData["labData"]["labSteps"].length ; i++ ){
+                    //doLabData["labData"]["labSteps"][i]
+                    this.setStepCurrentToBefore(  i );
+                }
+            }
+
+
+        }
 
     </script>
 
@@ -885,19 +937,23 @@
 
             logicController["onDrag"] = function ( data ) {
 
+                
+
+                labDataOp.setEquipPos( data["equipId"] , data["x"] , data["y"] );
+
             };
 
 
             logicController["onMouseDown"] = function (data) {
 
-                //console.log(data);
+
 
 
             };
 
             logicController["onDrop"] = function ( data ) {
 
-                console.log(data);
+
 
             };
 
@@ -948,10 +1004,12 @@
         var itemId = "666";
         var websocket = new Websocket();
         var logicController = {};
-
-
+        var labDataOp = new LabDataOp();
+        var rightBox;
         $(function () {
             getDoLabData();
+            rightBox = new Box( "rightBox" );
+            rightBox.setHeight( window.innerHeight );
 
             // so later we only need to modify the data
             // and put to the labData
@@ -965,29 +1023,55 @@
 
         });
 
+        function onResize() {
+
+
+            rightBox.setHeight( window.innerHeight );
+
+        }
 
     </script>
 
 </head>
 
-<body>
+<body onresize="onResize()">
 
     <div id="working" ></div>
     <div id="generate" class="d-none"></div>
     <div class="d-none" id="leisure"></div>
 
-    <div>
+    <div class="rightBoxClass"  id="rightBox" >
+
+
+        <h1 class="display-4 text-truncate">lab Name</h1>
+
+
+
+<!--        <div class="item-hl bg-success" >Flex Item</div>-->
 
     </div>
 
 
 </body>
 
-<script>
+<style>
+
+    .rightBoxClass{
+
+        position: fixed;
+        display: block;
+        right: 0px;
+        width: 340px;
+
+        float: left;
+        overflow: auto;
+        background: #fbf8ff;
 
 
+    }
 
-</script>
+
+</style>
 
 </html>
 
