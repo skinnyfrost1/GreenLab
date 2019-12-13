@@ -14,9 +14,7 @@ public class DoLab {
 
     private LabData labData = null;
 
-    private int currentStep = 0;
 
-    private boolean isComplete = false;
 
     public DoLab(){
 

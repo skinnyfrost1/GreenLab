@@ -99,34 +99,51 @@
                 cache: false,
                 timeout: 600000,
                 success: function (info) {
-                    // var imageBlobArr =  JSON.parse( info.data );
-                    // for( var i = 0 ; i< imageBlobArr.length ;i++ ){
-                    //     var imageBlobStr = imageBlobArr[i];
-                    //     var imageBlob = JSON.parse(imageBlobStr);
-                    //     var imageBlobId = imageBlob.id;
-                    //     imageStorage.setItem( imageBlobId , imageBlobStr );
-                    // }
-                    //
-                    // labData.__displayLabBoard();
-
-                    //var dolabData =   JSON.parse( info.data );
-
-                    //console.log(dolabData);
-
                     doLabData =   JSON.parse(info.doLabData);
                     labData.setLabData( JSON.stringify(doLabData["labData"]) );
                     labDataOp.initLabData();
-                    labData.displayLabBoard();
-                    // here we need clear out some data
-                    // set all current to before
-
-                    //labData.setLabData( doLabData.labData );
-                    //console.log(doLabData["labData"]);
 
 
+                    // before display the data
+                        // we need use ajax to load all the
+                            // equipment cover Image
 
-                    //labData.setLabData( JSON.stringify(info.labData) );
+                    // now we need push everthing into
+                        // all the equipment cover blob id
 
+
+
+
+
+
+                    var sendData = {};
+                    sendData["labId"] = itemId;
+                    sendData["blobIds"] = labDataOp.getEquipCoverBlobIds();
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/ajax/downloadImages",
+                        data: JSON.stringify(sendData),
+                        dataType: 'json',
+                        cache: false,
+                        timeout: 600000,
+                        success: function (info) {
+                            var imageBlobArr =  JSON.parse( info.data );
+                            for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+                                var imageBlobStr = imageBlobArr[i];
+                                var imageBlob = JSON.parse(imageBlobStr);
+                                var imageBlobId = imageBlob.id;
+                                imageStorage.setItem( imageBlobId , imageBlobStr );
+                            }
+
+                            labData.displayLabBoard();
+
+                            //console.log(info);
+                        },
+                        error: function (e) {
+
+                        }
+                    });
 
                 },
                 error: function (e) {
@@ -150,13 +167,34 @@
 
             }
 
-            //labSteps
+            getEquipCoverBlobIds(){
+
+                // we will see if the content inside is null or not
+
+                var imageBlobIds = [];
+
+                for( var index = 0 ; index < doLabData["labData"]["usedEquipList"].length ; index++ ){
+
+                    if( doLabData["labData"]["usedEquipList"][index]["equipmentDataStr"] == null || doLabData["labData"]["usedEquipList"][index]["equipmentDataStr"] == "" ){
+
+                    }else{
+                       var imageBlobId =  this.getEquipCoverBlobId( index );
+                        imageBlobIds.push( imageBlobId );
+                    }
+                }
+                return imageBlobIds;
+
+            }
+
+            getEquipCoverBlobId( index ){
+                var equipmentDataStr =  JSON.parse(doLabData["labData"]["usedEquipList"][index]["equipmentDataStr"]);
+                return  equipmentDataStr["coverBlobId"];
+            }
 
             setStepCurrentToBefore(  index ){
                 doLabData["labData"]["labSteps"][index][ "current" ]  =  JSON.parse(JSON.stringify( doLabData["labData"]["labSteps"][index][ "before" ]));
                 labData.setLabData( JSON.stringify(doLabData["labData"]) );
             }
-
 
             setEquipPos( index , x , y ){
                  var current =  doLabData["labData"]["labSteps"][ this.getCurrentLabStep( ) ]["current"];
@@ -178,9 +216,12 @@
                         labData.setLabData( JSON.stringify(doLabData["labData"]) );
                     }
                 }
-            }
+            } // this is set image status name
 
             initLabData(){
+
+
+
                 this.setCurrentLabStep(  1 );
                 for( var i = 0 ; i < doLabData["labData"]["labSteps"].length ; i++ ){
                     //doLabData["labData"]["labSteps"][i]
@@ -188,12 +229,146 @@
                 }
             }
 
+            getLabName(){
+
+                //console.log("666");
+                //console.log(doLabData["labData"]["name"]);
+
+                return doLabData["labData"]["name"];
+
+            }
+
+            getLabDescription(){
+
+                //description
+                return doLabData["labData"]["description"];
+
+            }
+
+            getStepInfo( index ){
+
+                return doLabData["labData"]["labSteps"][index]["info"];
+
+            }
+
+            getTotalStepLength(){
+
+                return doLabData["labData"]["labSteps"].length;
+
+            }
+
+            getProgessPercent(){
+                var currentStepIndex =  this.getCurrentLabStep();
+                var totalStepsLength = this.getTotalStepLength();
+                var percent  = (currentStepIndex / totalStepsLength)*100 ;
+                return percent;
+            }
+
+            getEquipmentTitleName( index ){
+                //return doLabData["labData"]
+                var equipmentDataStr =  JSON.parse(doLabData["labData"]["usedEquipList"][index]["equipmentDataStr"]);
+                return equipmentDataStr["name"];
+            } // this is to get
+
+            // now we will look at current
+
+            //
+
+
+            //getProgress
+
+
+        }
+
+        function displayLabPad() {
+
+            // we need follow the
+            // so we will check the data out side in dolabdata
+            // display lab name
+            //labDataOp.getLabName();
+            // display step index
+            // display step info
+            // list all the equipment need to add
+
+            displayPad.setLabName( labDataOp.getLabName() );
+            displayPad.setlabDescription( labDataOp.getLabDescription() );
+
+            
+
+
+
+
+
 
         }
 
     </script>
 
+    <!--  displayPadClass  -->
+    <script>
 
+        class DisplayPad{
+
+            constructor(){
+
+                this.labName = "labName";
+                this.labDescription = "labDescription";
+                this.stepProgressBar = "stepProgressBar";
+                this.stepIndex = "stepIndex";
+                this.stepInfo = "stepInfo";
+
+
+            }
+
+            setLabName( value ){
+
+                document.getElementById( this.labName ).innerText = value;
+
+            }
+
+            setlabDescription( value ){
+
+                document.getElementById( this.labDescription ).innerText = value;
+            }
+
+            setStepName( value ){
+
+                document.getElementById( this.stepIndex ).innerText = "Step "+value;
+            }
+
+            setStepInfo( value ){
+
+                document.getElementById(  this.stepInfo ).innerText = value;
+
+            }
+
+            setProgressBar( value ){
+
+
+
+                document.getElementById( this.stepProgressBar ).innerText = value+" %";
+
+                document.getElementById( this.stepProgressBar ).style.width = value+"%"
+
+            }
+
+            reStartOnClick( ){
+
+                console.log("thnANM");
+
+            }
+
+            nextStepOnClick(){
+
+                console.log("tMKUhnANM");
+
+            }
+
+        }
+
+
+
+    </script>
 
 
     <!-- data section -->
@@ -428,6 +603,8 @@
             // now we need display the whole things
 
             displayLabBoard(){
+
+                displayLabPad();
 
                 var currentStepIndex =  labData.labSteps.currentStepIndex;
                 if( currentStepIndex == -1 ){
@@ -996,7 +1173,7 @@
             __cardHTML(){
                 var ReturnData = "<div class=\"card mb-1 grid-square\"  id=\""+this.imageId+"\" >\n" +
                     "                <img class=\"card-img-top img-fluid grid-photo\" src=\""+this.imageData+"\" alt=\"\" draggable=\"false\">\n" +
-                    "                <div class=\"card-body\">\n" +
+                    "                <div class=\"card-body d-inline-block\">\n" +
 
                     "                    <p class=\"card-title h4 small font-weight-bold\">"+this.imageTitle+"</p>\n" +
                     "                    <p class=\"card-text h5 small\">"+this.imageContent+"</p>\n" +
@@ -1164,6 +1341,7 @@
         var labDataOp = new LabDataOp();
         var rightBox;
         var folderContentBox;
+        var displayPad = new DisplayPad();
         $(function () {
             getDoLabData();
             rightBox = new Box( "rightBox" );
@@ -1206,24 +1384,26 @@
 
 
         <div class="alert alert-primary mt-1 mb-3 display-4 "  >
-            <h1 class="text-truncate text-center" >lab Name</h1>
+            <h1 class="text-truncate text-center" id="labName" >lab Name</h1>
 
+            <hr>
 
+            <h6 id="labDescription" > description </h6>
 
         </div>
 
 
 
         <div class="progress mt-1 mb-3">
-            <div class="progress-bar bg-info progress-bar-striped" style="width:35%;">35%</div>
+            <div class="progress-bar bg-info progress-bar-striped" id="stepProgressBar" style="width:35%;">35%</div>
         </div>
 
 
         <div class="card bg-primary text-white mb-2">
             <div class="card-header">Step Info</div>
             <div class="card-body">
-                <h4 class="card-title">Step 1</h4>
-                <p class="card-text">666</p>
+                <h4 class="card-title" id="stepIndex" >Step 1</h4>
+                <p class="card-text" id="stepInfo" >666</p>
             </div>
         </div>
 
@@ -1233,11 +1413,11 @@
 
         <div class="btn btn-group w-100 mb-2" >
 
-            <div class="btn btn-danger w-50 mr-2" >
+            <div class="btn btn-danger w-50 mr-2" onclick="displayPad.reStartOnClick()" >
                 <i class="fas fa-hourglass-start"></i> Restart step
             </div>
 
-            <div class="btn btn-success w-50">
+            <div class="btn btn-success w-50" onclick="displayPad.nextStepOnClick()" >
 
                 <i class="fas fa-arrow-right"></i> Next Step
 
@@ -1265,6 +1445,8 @@
             var cards = new Cards();
             cards.__creatFakeData();
             cards.__creatFakeData();
+            cards.__creatFakeData();
+
             cards.setHTML();
 
         </script>
@@ -1288,6 +1470,25 @@
         background: #fbf8ff;
         padding: 10px;
 
+    }
+
+    #folderContent .card-text{
+        display: none;
+    }
+
+    #folderContent > .grid-square {
+        width: 100%;
+        height: 73px;
+        display: inline-block;
+        background-color: #ffece3;
+    }
+
+    #folderContent .grid-photo {
+        width: 76px;
+        height: 68px;
+        position: relative;
+        clip: rect(0px,190px,170px,0px);
+        display: inline-block;
     }
 
     #folderContent{
