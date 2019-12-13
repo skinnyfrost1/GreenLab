@@ -287,23 +287,44 @@
             getEquipIdListNeedToAddInThisStep(){
                 var after = this.getCurrentStepAfter();
                 var current = this.getCurrentStepCurrent();
-
-
                 var equiIdList = [];
-
                 for( var i = 0 ; i < after.length ; i++  ){
-
-
-
-
-
+                    var labEquipStatus = after[i];
+                    var booleanIn = false;
+                    for( var b = 0 ; b <  current.length ; b++ ){
+                        if(  labEquipStatus.id == current[b].id ){
+                            booleanIn = true;
+                        }
+                    }
+                    if( booleanIn == false ){
+                        equiIdList.push( i );
+                    }
                 }
-
-
-
+                return equiIdList;
             }
 
 
+
+
+            getInitalStatusNameOfEquipment( index ){
+
+                var imageData = JSON.parse(doLabData["labData"]["usedEquipList"][index]["imageDataStrArr"][0]);
+
+                return imageData.name;
+
+            }
+
+            generateLabEquipStatus( index ){
+
+                var sendData = {};
+                sendData["currentStatus"] = getInitalStatusNameOfEquipment( index);
+                sendData["labEquipDataId"] = index;
+                sendData["x"] = 20;
+                sendData["y"] = 20;
+
+                return sendData;
+
+            }
 
 
             //getProgress
