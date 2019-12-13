@@ -16,7 +16,7 @@ $(document).ready(function () {
     var ws = document.getElementById('workspace').innerHTML;
     var id = "equip_" + equips.length;
     console.log(this.src);
-    ws += '<img class="workspaceEquipment" id="' + id + '" src="'+this.src+'" style="position:absolute">';
+    ws += '<div class="workspaceEquipment" id="' + id + '" ><img src="'+this.src+'" style="position:absolute"><div>';
     document.getElementById('workspace').innerHTML = ws;
     var el = document.getElementById(id);
     el.style.zIndex = equips.length;
