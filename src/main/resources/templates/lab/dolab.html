@@ -163,6 +163,7 @@
             }
 
             getCurrentLabStep(  ){
+
                 return doLabData["labData"]["currentLabStep"];
 
             }
@@ -220,8 +221,6 @@
 
             initLabData(){
 
-
-
                 this.setCurrentLabStep(  1 );
                 for( var i = 0 ; i < doLabData["labData"]["labSteps"].length ; i++ ){
                     //doLabData["labData"]["labSteps"][i]
@@ -270,9 +269,41 @@
                 return equipmentDataStr["name"];
             } // this is to get
 
-            // now we will look at current
+            // now we will look at current and look at after
+                // we need check what equipment still need for this lab
 
-            //
+            // we will then collect the all the nessary info we need and put to cards
+
+
+            getCurrentStepAfter(){
+               return  doLabData["labData"]["labSteps"][ labDataOp.getCurrentLabStep() ]["after"];
+            }
+
+            getCurrentStepCurrent(){
+                return  doLabData["labData"]["labSteps"][ labDataOp.getCurrentLabStep() ]["current"];
+            }
+
+
+            getEquipIdListNeedToAddInThisStep(){
+                var after = this.getCurrentStepAfter();
+                var current = this.getCurrentStepCurrent();
+
+
+                var equiIdList = [];
+
+                for( var i = 0 ; i < after.length ; i++  ){
+
+
+
+
+
+                }
+
+
+
+            }
+
+
 
 
             //getProgress
@@ -293,7 +324,10 @@
             displayPad.setLabName( labDataOp.getLabName() );
             displayPad.setlabDescription( labDataOp.getLabDescription() );
 
-            
+            displayPad.setProgressBar( labDataOp.getProgessPercent() );
+
+            displayPad.setStepName( labDataOp.getCurrentLabStep()+1 );
+            displayPad.setStepInfo( labDataOp.getStepInfo( labDataOp.getCurrentLabStep() ) );
 
 
 
@@ -355,6 +389,13 @@
             reStartOnClick( ){
 
                 console.log("thnANM");
+
+                // we will but all the current to
+
+
+
+
+
 
             }
 
