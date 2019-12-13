@@ -78,7 +78,7 @@
 
     </script>
 
-    <!--  load Data  -->
+    <!--  load Data  getDoLabData() class LabDataOp -->
     <script>
 
         function getDoLabData() {
@@ -110,9 +110,6 @@
 
                     // now we need push everthing into
                         // all the equipment cover blob id
-
-
-
 
 
                     var sendData = {};
@@ -284,14 +281,43 @@
 
 
             getEquipIdListNeedToAddInThisStep(){
+
+
+
                 var after = this.getCurrentStepAfter();
                 var current = this.getCurrentStepCurrent();
+
+                // console.log(after  );
+                // console.log(current  );
+
+                var afterLength = after.length;
+                var currentLength = current.length;
+
                 var equiIdList = [];
-                for( var i = 0 ; i < after.length ; i++  ){
-                    var labEquipStatus = after[i];
+
+
+
+
+                for( var i = 0 ; i < afterLength ; i++  ){
+                    var afterLabEquipStatusId = after[i].labEquipDataId;
                     var booleanIn = false;
-                    for( var b = 0 ; b <  current.length ; b++ ){
-                        if(  labEquipStatus.id == current[b].id ){
+
+                    //console.log( i+"what happened B"  );
+
+                    for( var b = 0 ; b <  currentLength ; b++ ){
+
+                        var currentLabEquipStatusId = current[b].labEquipDataId;
+
+                        // console.log( b+"what happened A______"  );
+                        //
+                        // console.log( afterLabEquipStatusId );
+                        // console.log( currentLabEquipStatusId );
+                        // console.log( b+"what happened A______"  );
+
+                        if(  afterLabEquipStatusId == currentLabEquipStatusId ){
+
+                            //console.log( "what happened C"  );
+
                             booleanIn = true;
                         }
                     }
@@ -299,6 +325,9 @@
                         equiIdList.push( i );
                     }
                 }
+
+                //console.log(equiIdList  );
+
                 return equiIdList;
             }
 
@@ -316,7 +345,7 @@
             generateLabEquipStatus( index ){
 
                 var sendData = {};
-                sendData["currentStatus"] = getInitalStatusNameOfEquipment( index);
+                sendData["currentStatus"] = this.getInitalStatusNameOfEquipment( index);
                 sendData["labEquipDataId"] = index;
                 sendData["x"] = 20;
                 sendData["y"] = 20;
@@ -325,6 +354,14 @@
 
             }
 
+
+            insertIdToCurrent( index ){
+
+                var labEquipStatus = this.generateLabEquipStatus( index );
+
+                doLabData["labData"]["labSteps"][ this.getCurrentLabStep() ]["current"].push( labEquipStatus );
+
+            }
 
             //getProgress
 
@@ -425,16 +462,19 @@
                 // labData.setLabData( JSON.stringify(doLabData["labData"]) );
                 // labData.displayLabBoard();
 
-
-
-
-
+                labDataOp.setStepCurrentToBefore(  labDataOp.getCurrentLabStep() );
+                labData.setLabData( JSON.stringify(doLabData["labData"]) );
+                labData.displayLabBoard();
 
             }
 
             nextStepOnClick(){
 
-                console.log("tMKUhnANM");
+                //console.log("tMKUhnANM");
+
+                labDataOp.setCurrentLabStep(labDataOp.getCurrentLabStep() +1  );
+                labData.setLabData( JSON.stringify(doLabData["labData"]) );
+                labData.displayLabBoard();
 
             }
 
@@ -1198,12 +1238,52 @@
             logicController["onMouseDown"] = function (data) {
 
 
+                //console.log(data);
+
+                var id = data;
+
+                var equipNode ;
+                for( var i  = 0 ; i<  labData.EquipNodeArr.length ;i++  ){
+                    if( id ==  labData.EquipNodeArr[i].id ){
+                        equipNode = labData.EquipNodeArr[i];
+                    }
+                }
+                //var equipNode =  labData.EquipNodeArr[id];
+                var parentNode = equipNode.parentNode;
+                parentNode.removeChild(equipNode);
+                parentNode.append(  equipNode );
 
 
             };
 
             logicController["onDrop"] = function ( data ) {
 
+
+                var dragId = data["dragId"];
+                var dropId = data["dropId"];
+
+                var dragName = data["dragName"];
+                var dropName = data["dropName"];
+
+                if(  dragName != ""  ){
+
+
+                     labDataOp.setEquipName(  dragId , dragName  );
+
+
+                }
+
+                if( dropName != "" ){
+
+
+                    labDataOp.setEquipName(  dropId , dropName  );
+
+
+                }
+
+                labData.setLabData( JSON.stringify(doLabData["labData"]) );
+                labData.displayLabBoard();
+                //console.log( data );
 
 
             };
@@ -1242,7 +1322,7 @@
             // </div>
             // </div>
             __cardHTML(){
-                var ReturnData = "<div class=\"card mb-1 grid-square\"  id=\""+this.imageId+"\" >\n" +
+                var ReturnData = "<div class=\"card mb-1 grid-square\"  onclick='addEquipToBoard(this)'  id=\""+this.imageId+"\" >\n" +
                     "                <img class=\"card-img-top img-fluid grid-photo\" src=\""+this.imageData+"\" alt=\"\" draggable=\"false\">\n" +
                     "                <div class=\"card-body d-inline-block\">\n" +
 
@@ -1303,32 +1383,45 @@
 
                 document.getElementById(this.folderContentId).innerHTML = this.__cardsHTML();
 
-                for( var i = 0 ; i< this.cards.length ; i++ ){
-
-                    var cardId = this.cards[i].imageId;
-
-                    document.getElementById(cardId).onclick = function (evt) {
-
-                        var cardId = evt.path[1].id;
-
-                        //window.open("/equipment/"+cardId , "_blank");
-
-                        console.log( cardId);
-                        console.log( "thn" );
-
-                        //console.log(cardId+"is card Id");
-                        //console.log(evt);
-                    }
-
-                    //console.log( cardId );
-
-
-                }
+                // for( var i = 0 ; i< this.cards.length ; i++ ){
+                //
+                //     var cardId = this.cards[i].imageId;
+                //
+                //     document.getElementById(cardId).onclick = function (evt) {
+                //
+                //         var cardId = evt.path[1].id;
+                //
+                //         //window.open("/equipment/"+cardId , "_blank");
+                //
+                //         console.log( cardId);
+                //         console.log( "thn" );
+                //
+                //         //console.log(cardId+"is card Id");
+                //         //console.log(evt);
+                //     }
+                //
+                //     //console.log( cardId );
+                //
+                //
+                // }
                 //console.log( "this.__cardsHTML()" );
 
             }
         }
 
+
+        function addEquipToBoard(evt){
+
+            var id = evt.id;
+            //console.log( evt.id );
+
+            labDataOp.insertIdToCurrent( id );
+
+            labData.setLabData( JSON.stringify(doLabData["labData"]) );
+            labData.displayLabBoard();
+
+
+        }
 
         // var cards = new Cards();
         // cards.__creatFakeData();
@@ -1415,6 +1508,7 @@
 
             rightBox.setHeight( window.innerHeight );
             folderContentBox.setHeight( window.innerHeight - 450 );
+
         }
 
     </script>
@@ -1427,8 +1521,29 @@
     <div id="generate" class="d-none"></div>
     <div class="d-none" id="leisure"></div>
 
+    <!-- MODAL -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal Title</h5>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus unde veniam harum magnam molestias dignissimos omnis
+                    architecto, quod, obcaecati dolorum debitis dolore porro qui, iusto quo accusantium voluptates pariatur illo.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="rightBoxClass"  id="rightBox" >
 
+        <!-- MODAL TRIGGER -->
+        <button class="btn btn-primary d-none" data-toggle="modal" data-target="#myModal">Launch Modal</button>
 
 
         <div class="alert alert-primary mt-1 mb-3 display-4 "  >
