@@ -9,13 +9,21 @@ $(document).ready(function () {
   let equips = [];            //所有的equipoment的id都会放在这里
   let selected;               //你正在拖动的equip的id
   let associated;             //将要和seleted发生一些什么的equip的id
+  var lab_id = document.getElementById("lab_id").innerHTML;
+  // console.log(lab_id);
+
+  function Equipment (name, maker) {
+    this.name = name;
+    this.maker = maker;
+ }
+
 
 
   //当这个叫but的按钮被按下去以后,就会生成一些图片.
   $(".equipmentContainer").click(function () {
     var ws = document.getElementById('workspace').innerHTML;
     var id = "equip_" + equips.length;
-    console.log(this.src);
+    // console.log(this.src);
     ws += '<div class="workspaceEquipment" id="' + id + '" ><img class="workspaceEquipment_img" id="' + id +'_img" src="'+this.src+'" style="position:absolute"><div>';
     document.getElementById('workspace').innerHTML = ws;
     var imgWidth = 2+$("#" + id+"_img").width();

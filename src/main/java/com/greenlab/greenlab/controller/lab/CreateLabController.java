@@ -124,6 +124,7 @@ public class CreateLabController {
             equipments.add(tempRE);
         }
         model.addAttribute("preparedEquipments",equipments);
+        model.addAttribute("lab",lab);
         return "profCreateLab";
     }
 

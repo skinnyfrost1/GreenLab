@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
@@ -125,6 +126,14 @@
 
             <td>
                 <div class="rightPaneContainer webfont">
+                    <!-- lab id -->
+                    <div class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;"
+                        th:text="${lab.courseId}"></div>
+
+
+
+                    <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;color:#d1d1d1;">
+                        __________________________________</div>
                     <div class=" webfont" style="text-align:left;margin: 1.5em 1em 0.5em 1em;">Select 1:</div>
                     <input type="text" name="courseName" value="" maxlength="24" class="createLabTextfield webfont"
                         placeholder="alcohol lamp" required><br>
@@ -132,6 +141,7 @@
                     <input type="text" name="courseName" value="" maxlength="24" class="createLabTextfield webfont"
                         placeholder="small beaker" required><br>
                     <input type="submit" name="process" value="Process" class="createLabButton">
+
                     <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;color:#d1d1d1;">
                         __________________________________</div>
                     <div class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">Step #1 :</div>
@@ -152,6 +162,14 @@
                     <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;"> </div>
                     <input type="submit" name="finish" value="Finish" class="createLabButton"
                         style="background-color:#326471">
+
+                    
+                    <div class=" webfont" id="lab_id"
+                        style="text-align:left;margin: 0.5em 0em 0.5em 1em; visibility: hidden;" th:text="${lab._id}">
+                    </div>
+
+
+
 
                 </div>
             </td>
