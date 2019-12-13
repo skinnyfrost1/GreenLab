@@ -7,25 +7,56 @@ $(document).ready(function () {
   var lab_id = document.getElementById("lab_id").innerHTML;
   // console.log(lab_id);
 
-  function Equipment (name, maker) {
-    this.name = name;
-    this.maker = maker;
- }
+  function LabEquipment(id, _id, equipmentName, material, blandable, blander, heatable, heater, tempreature, material) {
+    this.id = id;
+    this._id = _id;
+    this.equipmentName = equipmentName;
+    this.material = material;
+    this.blandable = blandable;
+    this.blander = blander;
+    this.heatable = heatable;
+    this.heater = heater;
+    this.tempreature = tempreature;
+    this.material = material;
+  }
 
   //当这个叫but的按钮被按下去以后,就会生成一些图片.
   $(".equipmentContainer").click(function () {
     var ws = document.getElementById('workspace').innerHTML;
+
     var id = "equip_" + equips.length;
     // console.log(this.src);
-    ws += '<div class="workspaceEquipment" id="' + id + '" ><img class="workspaceEquipment_img" id="' + id +'_img" src="'+this.src+'" style="position:absolute"><div>';
+    ws += '<div class="workspaceEquipment" id="' + id + '" ><img class="workspaceEquipment_img" id="' + id + '_img" src="' + this.src + '" style="position:absolute"><div>';
     document.getElementById('workspace').innerHTML = ws;
-    var imgWidth = 2+$("#" + id+"_img").width();
-    var imgHeight = 2+$("#"+ id+"_img").height();
-    $("#"+id).css("width",imgWidth+"px");
-    $("#"+id).css("height",imgHeight+"px");
+    var imgWidth = 2 + $("#" + id + "_img").width();
+    var imgHeight = 2 + $("#" + id + "_img").height();
+    $("#" + id).css("width", imgWidth + "px");
+    $("#" + id).css("height", imgHeight + "px");
     var el = document.getElementById(id);
     el.style.zIndex = equips.length;
     equips.push(id);
+
+
+    //ajax.create a labequipment on server.
+    var equipment_id = this.id;
+    post['equipment_id'] = equipment_id;
+    
+    console.log(equipment_id);
+    $.ajax({
+      type: "POST",
+      contentType: "application/json",
+      url: "/workspace/addequipment/" + lab_id,
+      data: JSON.stringify(post),
+      dataType: 'json',
+      cache: false,
+      timeout: 600000,
+      success: function (data) {
+
+      },
+      error: function (e) {
+        console.log(e);
+      }
+    });
 
     //建立一个mousedown 的 event handler
     $(".workspaceEquipment").mousedown(function (e) {
@@ -67,15 +98,14 @@ $(document).ready(function () {
     return false;//如果不这样，鼠标松开时图片也会随着鼠标的移动而移动
   }
 
-  $(document).mouseup(function (event)
-  {
+  $(document).mouseup(function (event) {
     $(".workspaceEquipment").unbind("mousemove");//当鼠标松开时，删除鼠标移动的处理程序
-    
-    
+
+
     if (selected != null) {
       for (var i = equips.length - 1; i >= 0; i--) {
         if (equips[i] != selected) {
-          var overlap = isOverlap(event,equips[i]);
+          var overlap = isOverlap(event, equips[i]);
           if (overlap == true) {
             doAssociated(equips[i]);
             console.log("overlap!")
@@ -88,7 +118,7 @@ $(document).ready(function () {
     }
   });
 
-    function isOverlap(event, b) {
+  function isOverlap(event, b) {
     var bLeft, bRight, bTop, bBot;
     bLeft = $("#" + b).offset().left;
     bRight = bLeft + $("#" + b).width();
@@ -123,15 +153,15 @@ $(document).ready(function () {
     $("#" + id).css("border", "2px");
     $("#" + id).css("border-style", "dashed");
     $("#" + id).css("border-color", "#378ca3");
-    associated=id;
+    associated = id;
   }
 
   function unAssociated() {
     $("#" + associated).css("border", "");
-    associated=null;
+    associated = null;
   }
 
-  function cleanSelectedAndAssociated(){
+  function cleanSelectedAndAssociated() {
     unSelected();
     unAssociated();
   }
