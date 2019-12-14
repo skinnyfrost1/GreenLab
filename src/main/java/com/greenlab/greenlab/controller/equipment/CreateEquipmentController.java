@@ -71,6 +71,8 @@ public class CreateEquipmentController {
         equipment.setImage(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
         equipmentRepository.save(equipment);
 
+        
+
         // return "profViewEquip";
 
         // debug
