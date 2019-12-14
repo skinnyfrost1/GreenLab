@@ -8,6 +8,7 @@ import lombok.Setter;
 public class AddEquipmentToWorkspaceRequestBody {
 
     private String equipment_id;
-    private String nameInWorkspace;
+    private String htmlid;
+    private String nickname;
 
 }

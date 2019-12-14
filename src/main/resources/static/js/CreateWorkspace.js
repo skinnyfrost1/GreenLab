@@ -2,28 +2,31 @@ $(document).ready(function () {
   var mousex = 0, mousey = 0; //这个..我也不知道是什么,网上找回来的代码原本就有了,要来做拖动用的.
   var divLeft, divTop;        //这个..我也不知道是什么,网上找回来的代码原本就有了,要来做拖动用的.
   let equips = [];            //所有的equipoment的id都会放在这里
+  let equipsData = [];
   let selected;               //你正在拖动的equip的id
   let associated;             //将要和seleted发生一些什么的equip的id
   var lab_id = document.getElementById("lab_id").innerHTML;
-  // console.log(lab_id);
+  console.log("lab_id  = "+lab_id);
 
-  function LabEquipment(id, _id, equipmentName, material, blandable, blander, heatable, heater, tempreature, material) {
-    this.id = id;
-    this._id = _id;
-    this.equipmentName = equipmentName;
+  // function LabEquipment(equipment_id, htmlid, nickname, material, blandable, blander, heatable, heater, tempreature, material) {
+  function LabEquipment(equipment_id, htmlid, nickname, material, blandable, blander, heatable, heater, material) {
+
+    this.equipment_id = equipment_id;
+    this.htmlid = htmlid;
+    this.nickname = nickname;
     this.material = material;
     this.blandable = blandable;
     this.blander = blander;
     this.heatable = heatable;
     this.heater = heater;
-    this.tempreature = tempreature;
+    // this.tempreature = tempreature;
     this.material = material;
+
   }
 
   //当这个叫but的按钮被按下去以后,就会生成一些图片.
   $(".equipmentContainer").click(function () {
     var ws = document.getElementById('workspace').innerHTML;
-
     var id = "equip_" + equips.length;
     // console.log(this.src);
     ws += '<div class="workspaceEquipment" id="' + id + '" ><img class="workspaceEquipment_img" id="' + id + '_img" src="' + this.src + '" style="position:absolute"><div>';
@@ -39,9 +42,12 @@ $(document).ready(function () {
 
     //ajax.create a labequipment on server.
     var equipment_id = this.id;
+    var post = {};
     post['equipment_id'] = equipment_id;
-    
-    console.log(equipment_id);
+    post['htmlid'] = id;
+    post['nickname'] = id;
+
+    console.log(post);
     $.ajax({
       type: "POST",
       contentType: "application/json",
@@ -50,8 +56,27 @@ $(document).ready(function () {
       dataType: 'json',
       cache: false,
       timeout: 600000,
-      success: function (data) {
+      success: function (result) {
+        //id is html id
+        //equipment_id is object id in server
+        console.log(result.message);
+        var data = result.labEquipment;
 
+        equipment_id = data.equipment_id;
+        var htmlid = data.htmlid;
+        var nickname = data.nickname;
+
+        var material = data.material;
+        var blandable = data.blandable;
+        var blander = data.blander;
+        var heatable = data.heatable;
+        var heater = data.heater;
+        // var tempreature = data.tempreature;
+        var material = data.material;
+
+        var labequipment = new LabEquipment(equipment_id, htmlid, nickname, material, blandable, blander, heatable, heater, material);
+        equipsData.push(labequipment);
+        console.log(equipsData);
       },
       error: function (e) {
         console.log(e);
