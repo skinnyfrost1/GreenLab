@@ -23,6 +23,7 @@ public class Equipment {
     private boolean blander;
     private boolean heatable;
     private boolean heater;
+    private boolean solution;
     private Binary image;
 
     // private double tempreature;
@@ -34,7 +35,7 @@ public class Equipment {
     }
 
     public Equipment(String equipmentName, String description, String creator, boolean material, boolean blandable,
-            boolean blander, boolean heatable, boolean heater) {
+            boolean blander, boolean heatable, boolean heater, boolean solution) {
 
         this.equipmentName = equipmentName;
         this.description = description;
@@ -44,6 +45,7 @@ public class Equipment {
         this.blander = blander;
         this.heatable = heatable;
         this.heater = heater;
+        this.solution = solution;
     }
 
     public String getEquipmentName() {
@@ -95,7 +97,7 @@ public class Equipment {
 
     public Equipment clone(){
         Equipment e = new Equipment(this.equipmentName, this.description, this.creator, this.material, this.blandable,
-                this.blander, this.heatable, this.heater);
+                this.blander, this.heatable, this.heater, this.solution);
         e.setImage(this.image);
         return e;
 

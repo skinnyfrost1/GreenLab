@@ -107,6 +107,8 @@ public class CreateLabController {
         List<ResponseEquipment> equipments = new ArrayList<>();
         ResponseEquipment tempRE;
         for (Equipment equipment : preparedEquipment) {
+            if (equipment.isSolution())
+                continue;
             String image = Base64.getEncoder().encodeToString(equipment.getImage().getData());
             image = "data:image/png;base64," + image;
             // System.out.println(image);
