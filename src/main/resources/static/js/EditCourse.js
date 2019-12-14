@@ -14,6 +14,19 @@ $(document).ready(function(e) {
     $("#deleteCourseBtnContainer").show().addClass("show");
     $("#nextEditBtnContainer").show().addClass("show");
 
+    $(".labToAdd").click(function (e) {
+        if (e.target.tagName != 'INPUT') {
+            $(this).find("input").toggleCheckbox();
+            return false;
+        }
+    });
+
+    $(".labExisted").click(function (e) {
+        if (e.target.tagName != 'INPUT') {
+            $(this).find("input").toggleCheckbox();
+            return false;
+        }
+    });
 })
 
 function valthisform() {
@@ -158,4 +171,8 @@ $("#editCourseEditLabs").change(function (e) {
     valthisform()
 })
 
+
+$.fn.toggleCheckbox = function() {
+    this.attr('checked', !this.attr('checked'));
+}
 //})
