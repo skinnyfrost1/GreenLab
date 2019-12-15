@@ -19,6 +19,7 @@ public class Equipment {
     private String description;
     private String creator;
     private boolean material;
+    private String unit;
     private boolean blandable;
     private boolean blander;
     private boolean heatable;
@@ -34,13 +35,14 @@ public class Equipment {
 
     }
 
-    public Equipment(String equipmentName, String description, String creator, boolean material, boolean blandable,
+    public Equipment(String equipmentName, String description, String creator, boolean material, String unit, boolean blandable,
             boolean blander, boolean heatable, boolean heater, boolean solution) {
 
         this.equipmentName = equipmentName;
         this.description = description;
         this.creator = creator;
         this.material = material;
+        this.unit = unit;
         this.blandable = blandable;
         this.blander = blander;
         this.heatable = heatable;
@@ -96,7 +98,7 @@ public class Equipment {
     }
 
     public Equipment clone(){
-        Equipment e = new Equipment(this.equipmentName, this.description, this.creator, this.material, this.blandable,
+        Equipment e = new Equipment(this.equipmentName, this.description, this.creator, this.material, this.unit, this.blandable,
                 this.blander, this.heatable, this.heater, this.solution);
         e.setImage(this.image);
         return e;

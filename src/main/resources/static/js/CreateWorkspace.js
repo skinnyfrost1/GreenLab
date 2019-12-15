@@ -72,9 +72,9 @@ $(document).ready(function () {
         var heatable = data.heatable;
         var heater = data.heater;
         // var tempreature = data.tempreature;
-        var material = data.material;
+        var materials = data.materials;
 
-        var labequipment = new LabEquipment(equipment_id, htmlid, nickname, material, blandable, blander, heatable, heater, material);
+        var labequipment = new LabEquipment(equipment_id, htmlid, nickname, material, blandable, blander, heatable, heater, materials);
         equipsData.push(labequipment);
         console.log(equipsData);
       },
@@ -86,10 +86,11 @@ $(document).ready(function () {
     //建立一个mousedown 的 event handler
     $(".workspaceEquipment").mousedown(function (e) {
       var id = $(this).attr('id'); //获取被点击的图片的id
+      var selectedOrAssociated = "selectedEquipment";
       unAssociated();
       unSelected();
       doSelected(id);
-      showProperties(id);
+      showProperties(id,selectedOrAssociated);
 
       //当鼠标按下某个equipment, 会自动将他放到最顶,所以不会被其他东西盖住. 
       //图片在在第几层是与equips这个array有关, array里面的index是等于equipment在网页上CSS样式的z-index;
@@ -161,14 +162,15 @@ $(document).ready(function () {
     return false
   }
 
-  function showProperties(id) {
+  function showProperties(id,selectedOrAssociated) {
     var nickname;
     var materials;
     for (var i = 0; i < equipsData.length; i++) {
       if (id == equipsData[i].htmlid) {
         nickname = equipsData[i].nickname;
         materials = equipsData[i].materials;
-        $("#selectedEquipment").text(nickname);
+        //selectedEquipment
+        $("#"+selectedOrAssociated).text(nickname);
         break;
       }
     }
@@ -178,20 +180,22 @@ $(document).ready(function () {
         var materialName = materials[i].material;
         var quantity = materials[i].quantity;
         var unit = materials[i].unit;
-        materialsDiv = materialsDiv + '<div>' + materialName + ': ' + quantity + unit + '</div></br>';
+        // materialsDiv = materialsDiv + '<div>' + materialName + ': ' + quantity + unit + '</div></br>';
+        materialsDiv = materialsDiv + materialName + ': ' + quantity + unit+'\n';
+
         // $("#selectedEquipmentMaterials").innerHtml = materialsDiv;
-        $("#selectedEquipmentMaterials").text(materialsDiv);
+        $("#"+selectedOrAssociated+"Materials").text(materialsDiv);
 
       }
     }
-    
-    
   }
 
 
   //
   function unSelected() {
     $("#" + selected).css("border", "");
+    $("#selectedEquipment").text("");
+    $("#selectedEquipmentMaterials").text("");
     selected = null;
   }
 
@@ -204,14 +208,18 @@ $(document).ready(function () {
 
   //
   function doAssociated(id) {
+    associated = id;
     $("#" + id).css("border", "2px");
     $("#" + id).css("border-style", "dashed");
     $("#" + id).css("border-color", "#378ca3");
-    associated = id;
+    var selectedOrAssociated= "associatedEquipment";
+    showProperties(id,selectedOrAssociated);
   }
 
   function unAssociated() {
     $("#" + associated).css("border", "");
+    $("#associatedEquipment").text("");
+    $("#associatedEquipmentMaterials").text("");
     associated = null;
   }
 

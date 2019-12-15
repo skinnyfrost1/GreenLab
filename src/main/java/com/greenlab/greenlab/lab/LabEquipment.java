@@ -39,6 +39,10 @@ public class LabEquipment {
         this.heater = equipment.isHeater();
         // this.tempreature = 37;
         this.materials = new ArrayList<>();
+        if(material){
+            LabMaterials lm = new LabMaterials(equipment.getEquipmentName(),999999,equipment.getUnit());
+            materials.add(lm);
+        }
     }
 
 }

@@ -37,10 +37,10 @@ public class CreateEquipmentController {
     @PostMapping(value = "/equipment/create")
     public String postEquipmentCreate(@RequestParam("equipmentName") String equipmentName,
             @RequestParam("description") String description, @RequestParam("isMaterial") String isMaterialString,
-            @RequestParam("blander") String blanderString, @RequestParam("blandable") String blandableString,
-            @RequestParam("heater") String heaterString, @RequestParam("heatable") String heatableString,
-            @RequestParam("solution") String solutionString, @RequestParam("image") MultipartFile file,
-            HttpServletRequest request, ModelMap model) throws IOException {
+            @RequestParam("unit") String unit, @RequestParam("blander") String blanderString,
+            @RequestParam("blandable") String blandableString, @RequestParam("heater") String heaterString,
+            @RequestParam("heatable") String heatableString, @RequestParam("solution") String solutionString,
+            @RequestParam("image") MultipartFile file, HttpServletRequest request, ModelMap model) throws IOException {
 
         String role = (String) request.getSession().getAttribute("role");
         if (role == null)
@@ -72,7 +72,7 @@ public class CreateEquipmentController {
                 solution = true;
         }
 
-        Equipment equipment = new Equipment(equipmentName, description, creator, material, blandable, blander, heatable,
+        Equipment equipment = new Equipment(equipmentName, description, creator, material, unit, blandable, blander, heatable,
                 heater, solution);
         equipment.setImage(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
         equipmentRepository.save(equipment);
