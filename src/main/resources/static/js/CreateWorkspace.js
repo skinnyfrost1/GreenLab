@@ -6,7 +6,7 @@ $(document).ready(function () {
   let selected;               //你正在拖动的equip的id
   let associated;             //将要和seleted发生一些什么的equip的id
   var lab_id = document.getElementById("lab_id").innerHTML;
-  console.log("lab_id  = "+lab_id);
+  console.log("lab_id  = " + lab_id);
 
   // function LabEquipment(equipment_id, htmlid, nickname, material, blandable, blander, heatable, heater, tempreature, material) {
   function LabEquipment(equipment_id, htmlid, nickname, material, blandable, blander, heatable, heater, materials) {
@@ -161,25 +161,31 @@ $(document).ready(function () {
     return false
   }
 
-  function showProperties(id){
+  function showProperties(id) {
     var nickname;
     var materials;
-    for (var i = 0; i<equipsData.length; i++){
-      if (id == equipsData[i].htmlid){
-        nickname = equipsData.nickname;
-        materials = equipsData.materials;
+    for (var i = 0; i < equipsData.length; i++) {
+      if (id == equipsData[i].htmlid) {
+        nickname = equipsData[i].nickname;
+        materials = equipsData[i].materials;
+        $("#selectedEquipment").text(nickname);
         break;
       }
     }
-    var div = "";
-    for (var i = 0; i<materials.length; i ++){
+    if (materials) {
+      var materialsDiv = "";
+      for (var i = 0; i < materials.length; i++) {
+        var materialName = materials[i].material;
+        var quantity = materials[i].quantity;
+        var unit = materials[i].unit;
+        materialsDiv = materialsDiv + '<div>' + materialName + ': ' + quantity + unit + '</div></br>';
+        // $("#selectedEquipmentMaterials").innerHtml = materialsDiv;
+        $("#selectedEquipmentMaterials").text(materialsDiv);
 
-      var materialName = materials[i].material;
-      var quantity = materials[i].quantity;
-      var unit = materials[i].unit;
-      div = div + '<div class="materials."'
+      }
     }
-    $("#selectedEquipment").innerHtml = 
+    
+    
   }
 
 
