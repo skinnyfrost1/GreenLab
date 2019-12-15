@@ -9,7 +9,7 @@ $(document).ready(function () {
   console.log("lab_id  = "+lab_id);
 
   // function LabEquipment(equipment_id, htmlid, nickname, material, blandable, blander, heatable, heater, tempreature, material) {
-  function LabEquipment(equipment_id, htmlid, nickname, material, blandable, blander, heatable, heater, material) {
+  function LabEquipment(equipment_id, htmlid, nickname, material, blandable, blander, heatable, heater, materials) {
 
     this.equipment_id = equipment_id;
     this.htmlid = htmlid;
@@ -20,7 +20,7 @@ $(document).ready(function () {
     this.heatable = heatable;
     this.heater = heater;
     // this.tempreature = tempreature;
-    this.material = material;
+    this.materials = materials;
 
   }
 
@@ -89,6 +89,7 @@ $(document).ready(function () {
       unAssociated();
       unSelected();
       doSelected(id);
+      showProperties(id);
 
       //当鼠标按下某个equipment, 会自动将他放到最顶,所以不会被其他东西盖住. 
       //图片在在第几层是与equips这个array有关, array里面的index是等于equipment在网页上CSS样式的z-index;
@@ -159,6 +160,28 @@ $(document).ready(function () {
     //   return true;
     return false
   }
+
+  function showProperties(id){
+    var nickname;
+    var materials;
+    for (var i = 0; i<equipsData.length; i++){
+      if (id == equipsData[i].htmlid){
+        nickname = equipsData.nickname;
+        materials = equipsData.materials;
+        break;
+      }
+    }
+    var div = "";
+    for (var i = 0; i<materials.length; i ++){
+
+      var materialName = materials[i].material;
+      var quantity = materials[i].quantity;
+      var unit = materials[i].unit;
+      div = div + '<div class="materials."'
+    }
+    $("#selectedEquipment").innerHtml = 
+  }
+
 
   //
   function unSelected() {
