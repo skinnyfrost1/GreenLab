@@ -5,6 +5,8 @@ $(document).ready(function () {
   let equipsData = [];
   let selected;               //你正在拖动的equip的id
   let associated;             //将要和seleted发生一些什么的equip的id
+  let selectedData;
+  let associatedData;
   var lab_id = document.getElementById("lab_id").innerHTML;
   console.log("lab_id  = " + lab_id);
 
@@ -90,7 +92,7 @@ $(document).ready(function () {
       unAssociated();
       unSelected();
       doSelected(id);
-      showProperties(id,selectedOrAssociated);
+      showProperties(id, selectedOrAssociated);
 
       //当鼠标按下某个equipment, 会自动将他放到最顶,所以不会被其他东西盖住. 
       //图片在在第几层是与equips这个array有关, array里面的index是等于equipment在网页上CSS样式的z-index;
@@ -135,6 +137,7 @@ $(document).ready(function () {
           var overlap = isOverlap(event, equips[i]);
           if (overlap == true) {
             doAssociated(equips[i]);
+            showInteractionForm(selected, equips[i]);
             console.log("overlap!")
             break;
           }
@@ -144,6 +147,64 @@ $(document).ready(function () {
       }
     }
   });
+
+
+
+
+  function showInteractionForm(selected, associated) {
+    var materials;
+    var selectedTitle;
+    var selectedMaterialsHtml = "";
+    var associatedTitle;
+    var associatedMaterialsHtml = "";
+
+    var id = selected;
+    for (var i = 0; i < equipsData.length; i++) {
+      if (id == equipsData[i].htmlid) {
+        associatedTitle = '<div>Get from ' + equipsData[i].nickname + '</div></br>';
+        materials = equipsData[i].materials;
+        break;
+      }
+    }
+    if (materials) {
+      for (var i = 0; i < materials.length; i++) {
+        var materialName = materials[i].material;
+        var unit = materials[i].unit;
+        selectedMaterialsHtml = selectedMaterialsHtml + '<div>' +
+          '<a class="smn" id="smn_' + (i + 1) + '">' + materialName + '</a>' +
+          ':' +
+          '<input id="smq_' + (i + 1) + '" type="number" name="smq' + (i + 1) + '">' +
+          '<a class="smu" id="smu_' + (i + 1) + '">' + unit + '</a>' +
+          '</div></br>';
+      }
+    }
+
+    id = associated
+    for (var i = 0; i < equipsData.length; i++) {
+      if (id == equipsData[i].htmlid) {
+        selectedTitle = '<div>Add to ' + equipsData[i].nickname + '</div></br>';
+        materials = equipsData[i].materials;
+        break;
+      }
+    }
+    if (materials) {
+      for (var i = 0; i < materials.length; i++) {
+        var materialName = materials[i].material;
+        var unit = materials[i].unit;
+        associatedMaterialsHtml = associatedMaterialsHtml + '<div>' +
+          '<a class="amn" id="amn_' + (i + 1) + '">' + materialName + '</a>' +
+          ':' +
+          '<input id="amq_' + (i + 1) + '" type="number" name="amq' + (i + 1) + '">' +
+          '<a class="amu" id="amu_' + (i + 1) + '">' + unit + '</a>' +
+          '</div></br>';
+      }
+    }
+    $('#addToAssociated').html(selectedTitle + selectedMaterialsHtml);
+    $('#getFromAssociated').html(associatedTitle + associatedMaterialsHtml);
+    $("#actionPopUp").css("visibility","visible");
+
+  }
+
 
   function isOverlap(event, b) {
     var bLeft, bRight, bTop, bBot;
@@ -162,15 +223,16 @@ $(document).ready(function () {
     return false
   }
 
-  function showProperties(id,selectedOrAssociated) {
+  function showProperties(id, selectedOrAssociated) {
     var nickname;
     var materials;
     for (var i = 0; i < equipsData.length; i++) {
       if (id == equipsData[i].htmlid) {
         nickname = equipsData[i].nickname;
         materials = equipsData[i].materials;
+        selectedData = equipsData[i];
         //selectedEquipment
-        $("#"+selectedOrAssociated).text(nickname);
+        $("#" + selectedOrAssociated).text(nickname);
         break;
       }
     }
@@ -181,10 +243,10 @@ $(document).ready(function () {
         var quantity = materials[i].quantity;
         var unit = materials[i].unit;
         // materialsDiv = materialsDiv + '<div>' + materialName + ': ' + quantity + unit + '</div></br>';
-        materialsDiv = materialsDiv + materialName + ': ' + quantity + unit+'\n';
+        materialsDiv = materialsDiv + materialName + ': ' + quantity + unit + '\n';
 
         // $("#selectedEquipmentMaterials").innerHtml = materialsDiv;
-        $("#"+selectedOrAssociated+"Materials").text(materialsDiv);
+        $("#" + selectedOrAssociated + "Materials").text(materialsDiv);
 
       }
     }
@@ -212,14 +274,20 @@ $(document).ready(function () {
     $("#" + id).css("border", "2px");
     $("#" + id).css("border-style", "dashed");
     $("#" + id).css("border-color", "#378ca3");
-    var selectedOrAssociated= "associatedEquipment";
-    showProperties(id,selectedOrAssociated);
+    var selectedOrAssociated = "associatedEquipment";
+    showProperties(id, selectedOrAssociated);
   }
 
   function unAssociated() {
     $("#" + associated).css("border", "");
     $("#associatedEquipment").text("");
     $("#associatedEquipmentMaterials").text("");
+    $("#actionPopUp").html('<div id="addToAssociated"></div>' +
+                          '<div id="getFromAssociated"></div>' +
+                          '<div id="interactionButton"></div>');
+    $("#actionPopUp").css("visibility","hidden");
+
+
     associated = null;
   }
 

@@ -54,7 +54,7 @@ public class ViewEquipmentsController {
         ResponseEquipment tempRE;
         for (Equipment equipment : equipments){
             String image = Base64.getEncoder().encodeToString(equipment.getImage().getData());
-            System.out.println(image);
+            // System.out.println(image);
             tempRE = new ResponseEquipment();
             tempRE.set_id(equipment.get_id());
             tempRE.setEquipmentName(equipment.getEquipmentName());
