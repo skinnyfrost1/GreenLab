@@ -26,6 +26,15 @@ console.log("3");
 
 $(document).ready(function(e) {
 
+    $(".createCourseLabSelection").click(function (e) {
+        if (e.target.tagName != 'INPUT') {
+            var checkBoxes = $(this).find('input')
+            checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+            return false;
+        }
+    });
+
+
     $("#addLabBigContainer").hide().removeClass("show");
     console.log("1");
     $("#saveBtnContainer").hide().removeClass("show");
@@ -140,6 +149,7 @@ $(document).ready(function(e) {
                 for(var i=0;i<labNameList.length;i++){
                     console.log("success")
                     htmlStr+=   '            <div class="bigLabContainer" >\n' +
+                                '              <div class="createCourseLabSelection">\n' +
                                 '              <table class="labContainer" >\n' +
                                 '                <col width="30%"/>\n' +
                                 '                <col width="40%"/>\n' +
@@ -149,19 +159,21 @@ $(document).ready(function(e) {
                                 '                        <div>'+labNameList[i]+'</div>\n' +
                                 '                    </td>\n' +
                                 '                    <td>\n' +
-                                '                      <input type="checkbox" id="select' + i + '" name="select" value="'+labNameList[i]+'">'  +
+                                '                      <input class="webfont" type="checkbox" id="select' + i + '" name="select" value="'+labNameList[i]+'">'  +
                                 '                    </td>' +
                                 '                  </tr>\n' +
                                 '                </table>\n' +
+                                '                </div>\n' +
                                 '              </div>\n'
-
                 }
 
+                // CreateCourseLoadLabListener(labNameList.length)
                 $("#addLabPage").append(htmlStr);
                 $("#addLabPage").show().addClass("show");
                 $("#addLabBigContainer").show().addClass("show");
             },
         });
+
 
         //
         // for( var i  = 0 ; i< Object.keys(labs1).length ; i++ ){
@@ -213,3 +225,11 @@ $(document).ready(function(e) {
     //     $("#addLabBtn").toggle();
     // })
 });
+
+// function CreateCourseLoadLabListener(l){
+//
+//     console.log("adding listener")
+//
+//
+// }
+
