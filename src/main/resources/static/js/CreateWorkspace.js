@@ -163,6 +163,8 @@ $(document).ready(function () {
       if (id == equipsData[i].htmlid) {
         associatedTitle = '<div>Get from ' + equipsData[i].nickname + '</div></br>';
         materials = equipsData[i].materials;
+        selectedData = equipsData[i];
+
         break;
       }
     }
@@ -173,7 +175,7 @@ $(document).ready(function () {
         selectedMaterialsHtml = selectedMaterialsHtml + '<div>' +
           '<a class="smn" id="smn_' + (i + 1) + '">' + materialName + '</a>' +
           ':' +
-          '<input id="smq_' + (i + 1) + '" type="number" name="smq' + (i + 1) + '">' +
+          '<input id="smq_' + (i + 1) + '" type="number" name="smq_' + (i + 1) + '">' +
           '<a class="smu" id="smu_' + (i + 1) + '">' + unit + '</a>' +
           '</div></br>';
       }
@@ -184,6 +186,7 @@ $(document).ready(function () {
       if (id == equipsData[i].htmlid) {
         selectedTitle = '<div>Add to ' + equipsData[i].nickname + '</div></br>';
         materials = equipsData[i].materials;
+        associatedData = equipsData[i];
         break;
       }
     }
@@ -194,16 +197,217 @@ $(document).ready(function () {
         associatedMaterialsHtml = associatedMaterialsHtml + '<div>' +
           '<a class="amn" id="amn_' + (i + 1) + '">' + materialName + '</a>' +
           ':' +
-          '<input id="amq_' + (i + 1) + '" type="number" name="amq' + (i + 1) + '">' +
+          '<input id="amq_' + (i + 1) + '" type="number" name="amq_' + (i + 1) + '">' +
           '<a class="amu" id="amu_' + (i + 1) + '">' + unit + '</a>' +
           '</div></br>';
       }
     }
     $('#addToAssociated').html(selectedTitle + selectedMaterialsHtml);
     $('#getFromAssociated').html(associatedTitle + associatedMaterialsHtml);
-    $("#actionPopUp").css("visibility","visible");
+    $("#actionPopUp").css("visibility", "visible");
 
   }
+
+  $("#interactionButton").click(function () {
+    if (!selectedData) {
+      console.log("selectedData = null")
+      return false;
+    }
+    if (!associatedData) {
+      console.log("associatedData = null")
+      return false;
+    }
+
+    var am = associatedData.materials;
+    var amBuffer = cloneMaterials(associatedData.materials);
+    var sm = selectedData.materials;
+    var smBuffer = cloneMaterials(selectedData.materials);
+
+
+    // function recoverMaterials(){
+    //   am = amBackUp;
+    //   sm = smBackUp;
+    // }
+
+    //check if the out going quantity is more then itself.
+    // if (selectedData) {
+    for (var i = 0; i < selectedData.materials.length; i++) {
+      var smq = $('input[name=smq_' + (i + 1) + ']').val();
+      smq = parseFloat(smq);
+      //要注意如果smq input没有输入任何东西的时候,下面这个 if 能否吃到这个case
+      if (!smq) {
+        continue;
+      }
+      //error.
+      if (smq > selectedData.materials[i].quantity) {
+        console.log("smq to large.")
+        console.lob("recover the backup")
+        // recoverMaterials();.
+        break;
+      }
+      var smn = $('#smn_' + (i + 1)).text();
+      var smu = $('#smu_' + (i + 1)).text();
+
+      //if am is empty
+      if (!amBuffer) {
+        amBuffer = [];
+        var temp = {};
+        temp.material = smn;
+        temp.quantity = smq;
+        temp.unit = smu
+        amBuffer.push(temp);
+      }
+      //if am has something 
+      else {
+        var hasSameMaterial = false
+        for (var j = 0; j < amBuffer.length; j++) {
+          console.log("test1");
+          console.log(amBuffer[i].material);
+          console.log(smn);
+          if (amBuffer[i].material == smn) {
+            amBuffer[i].quantity += smq;
+            hasSameMaterial = true;
+            break;
+          }
+        }
+        if (!hasSameMaterial) {
+          var temp = {};
+          temp.material = smn;
+          temp.quantity = smq;
+          temp.unit = smu
+          amBuffer.push(temp);
+        }
+      }
+    }
+    // }
+    //associated object
+    for (var i = 0; i < associatedData.materials.length; i++) {
+      var amq = $('input[name=amq_' + (i + 1) + ']').val();
+      amq = parseFloat(amq);
+      //要注意如果amq input没有输入任何东西的时候,下面这个 if 能否吃到这个case
+      if (!amq) {
+        continue;
+      }
+      //error.
+      if (amq > associatedData.materials[i].quantity) {
+        console.log("amq to large.")
+        console.lob("recover the backup")
+        // recoverMaterials();.
+        break;
+      }
+      var amn = $('#amn_' + (i + 1)).text();
+      var amu = $('#amu_' + (i + 1)).text();
+      //if am is empty
+      if (!smBuffer) {
+        smBuffer = [];
+        var temp = {};
+        temp.material = amn;
+        temp.quantity = amq;
+        temp.unit = amu
+        smBuffer.push(temp);
+      }
+      //if am has something 
+      else {
+        var hasSameMaterial = false
+        for (var j = 0; j < smBuffer.length; j++) {
+          if (smBuffer[i].material == amn) {
+            smBuffer[i].quantity += amq;
+            hasSameMaterial = true;
+            break;
+          }
+        }
+        if (!hasSameMaterial) {
+          var temp = {};
+          temp.material = amn;
+          temp.quantity = amq;
+          temp.unit = amu
+          amBuffer.push(temp);
+        }
+      }
+    }
+
+
+    selectedData.materials = smBuffer;
+    associatedData.materials = amBuffer;
+    showProperties(selected, "selectedEquipment");
+    showProperties(associated, "associatedEquipment")
+
+
+  });
+
+
+
+
+  function cloneMaterials(materials) {
+    var result;
+    if (materials) {
+      result = [];
+      for (var i = 0; i < materials.length; i++) {
+        var m = {};
+        m.material = materials[i].material;
+        m.quantity = materials[i].quantity;
+        m.unit = materials[i].unit;
+        result.push(m);
+      }
+    }
+    return result;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   function isOverlap(event, b) {
@@ -230,7 +434,6 @@ $(document).ready(function () {
       if (id == equipsData[i].htmlid) {
         nickname = equipsData[i].nickname;
         materials = equipsData[i].materials;
-        selectedData = equipsData[i];
         //selectedEquipment
         $("#" + selectedOrAssociated).text(nickname);
         break;
@@ -282,10 +485,9 @@ $(document).ready(function () {
     $("#" + associated).css("border", "");
     $("#associatedEquipment").text("");
     $("#associatedEquipmentMaterials").text("");
-    $("#actionPopUp").html('<div id="addToAssociated"></div>' +
-                          '<div id="getFromAssociated"></div>' +
-                          '<div id="interactionButton"></div>');
-    $("#actionPopUp").css("visibility","hidden");
+    $("#addToAssociated").html("");
+    $("#getFromAssociated").html("");
+    $("#actionPopUp").css("visibility", "hidden");
 
 
     associated = null;
