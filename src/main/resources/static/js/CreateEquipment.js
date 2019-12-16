@@ -24,6 +24,7 @@ $(document).ready(function () {
     }
     else{
       $("#unitText").hide().removeClass("show");
+      $('#textareaName').val('unitDefault');
       $(".isSolutionContainer").show().addClass("show");
     }
   });
