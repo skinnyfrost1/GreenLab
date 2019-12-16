@@ -262,10 +262,11 @@ $(document).ready(function () {
         var hasSameMaterial = false
         for (var j = 0; j < amBuffer.length; j++) {
           console.log("test1");
-          console.log(amBuffer[i].material);
+          console.log(amBuffer[j].material);
           console.log(smn);
-          if (amBuffer[i].material == smn) {
-            amBuffer[i].quantity += smq;
+          if (amBuffer[j].material == smn) {
+            amBuffer[j].quantity += smq;
+            smBuffer[i].quantity -=smq;
             hasSameMaterial = true;
             break;
           }
@@ -310,8 +311,9 @@ $(document).ready(function () {
       else {
         var hasSameMaterial = false
         for (var j = 0; j < smBuffer.length; j++) {
-          if (smBuffer[i].material == amn) {
-            smBuffer[i].quantity += amq;
+          if (smBuffer[j].material == amn) {
+            smBuffer[j].quantity += amq;
+            amBuffer[i].quantity -= amq;
             hasSameMaterial = true;
             break;
           }
