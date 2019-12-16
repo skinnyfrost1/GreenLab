@@ -326,7 +326,6 @@ $(document).ready(function () {
       }
     }
 
-
     selectedData.materials = smBuffer;
     associatedData.materials = amBuffer;
     showProperties(selected, "selectedEquipment");
