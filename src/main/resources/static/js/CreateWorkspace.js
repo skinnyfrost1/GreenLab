@@ -7,6 +7,11 @@ $(document).ready(function () {
   let associated;             //将要和seleted发生一些什么的equip的id
   let selectedData;
   let associatedData;
+  let solutionMaterialsS = [];
+  let solutionMaterialsA = [];
+  let solutionMaterialCounter=1;
+
+
   var lab_id = document.getElementById("lab_id").innerHTML;
   console.log("lab_id  = " + lab_id);
 
@@ -218,12 +223,10 @@ $(document).ready(function () {
       console.log("associatedData = null")
       return false;
     }
-
     var am = associatedData.materials;
     var amBuffer = cloneMaterials(associatedData.materials);
     var sm = selectedData.materials;
     var smBuffer = cloneMaterials(selectedData.materials);
-
 
     //check if the out going quantity is more then itself.
     // if (selectedData) {
@@ -238,19 +241,17 @@ $(document).ready(function () {
       }
       //error.
       if (smq > selectedData.materials[i].quantity) {
-        console.log("Error: You don't have enought "+smn);
-        alert("Error: You don't have enought "+smn);
+        console.log("Error: You don't have enought " + smn);
+        alert("Error: You don't have enought " + smn);
         break;
       }
-      
-
       //if am is empty
       if (!amBuffer) {
         amBuffer = [];
         var temp = {};
         temp.material = smn;
         temp.quantity = smq;
-        smBuffer[i].quantity -=smq;
+        smBuffer[i].quantity -= smq;
         temp.unit = smu
         amBuffer.push(temp);
       }
@@ -263,7 +264,7 @@ $(document).ready(function () {
           console.log(smn);
           if (amBuffer[j].material == smn) {
             amBuffer[j].quantity += smq;
-            smBuffer[i].quantity -=smq;
+            smBuffer[i].quantity -= smq;
             hasSameMaterial = true;
             break;
           }
@@ -273,7 +274,7 @@ $(document).ready(function () {
           temp.material = smn;
           temp.quantity = smq;
           temp.unit = smu
-          smBuffer[i].quantity -=smq;
+          smBuffer[i].quantity -= smq;
           amBuffer.push(temp);
         }
       }
@@ -289,8 +290,8 @@ $(document).ready(function () {
       }
       //error.
       if (amq > associatedData.materials[i].quantity) {
-        console.log("Error: You don't have enought "+amq);
-        alert("Error: You don't have enought "+amq);
+        console.log("Error: You don't have enought " + amq);
+        alert("Error: You don't have enought " + amq);
         break;
       }
       var amn = $('#amn_' + (i + 1)).text();
@@ -334,9 +335,87 @@ $(document).ready(function () {
     $("#interactionButton").css("visibility", "hidden");
 
 
+
+    // $("#solutionS").css("visibility", "visible");
+    // $("#solutionSButton").css("visibility", "visible");
+
+    showSolutionPanel(selectedData);
+
   });
 
+  function showSolutionPanel(selectedData) {
+    //建立一个框架for solution
+    solutionMaterialCounter = 1;
+    var htmlDOM = '<div id="solutionSPart1"></div>'+
+    '<div id="solutionSDetails"></div>'+
+    '<button id="solutionSSubmit" style="visibility:hidden;">Submit</button>';
+    $("#solutionS").html(htmlDOM);
 
+    //第一个yes no 问题
+    htmlDOM = '<div id="solutionSTitle1">Do you want to edit the solution of <a id="solutionSNickname">'+selectedData.nickname+'</a>?</div>' +
+      '<div id="solutionSButton" style="visibility: visible;">' +
+      '<button id="solutionSButton_yes">Yes</button>' +
+      '<button id="solutionSButton_no">no</button>' +
+      '</div>';
+    $("#solutionSPart1").html(htmlDOM);
+
+
+    //如果yes的话 建立下面细节问题
+    $("#solutionSButton_yes").click(function (selectedData) {
+      var solutionSNickname = $("#solutionSNickname").text();
+      $("#solutionSSubmit").css("visibility","visible");
+      $('#solutionSPart1').html("");
+
+      var htmlDOM = ''+
+      '<div id="solutionSTitle2">What <a>'+solutionSNickname+'</a> should contain?</div>'+
+      '<div id="solutionSM"></div>'+
+      '<button id="solutionSMoreBut">Add a new material</button>'+
+      '<button id="solutionSNewLookBut">Choose a new look</button>'+
+      '<div id="solutionSNewLooks"></div>';
+      $('#solutionSDetails').html(htmlDOM);
+
+
+      //增加一条material
+      $("#solutionSMoreBut").click(function(){
+        var solutionSMDOM = $("#solutionSM").html();
+        solutionSMDOM += ''+
+        '<div id="solutionSM_'+solutionMaterialCounter+'"></div>'+
+        '<div id="solutionSMN_'+solutionMaterialCounter+'">Name: <input type="text" name="solutionSMNI_'+solutionMaterialCounter+'"></div>'+
+        '<div id="solutionSMQ_'+solutionMaterialCounter+'">Quantity: <input type="number" name="solutionSMQI_'+solutionMaterialCounter+'"></div>'+
+        '<div id="solutionSMU_'+solutionMaterialCounter+'">Unit: <input type="text" name="solutionSMUI_'+solutionMaterialCounter+'"></div>'+
+        '</br>';
+        $("#solutionSM").html(solutionSMDOM);
+        solutionMaterialCounter++;
+      });
+
+
+
+
+
+
+
+      // $("#solutionSDetails").css("visibility", "visible");
+      // $("#solutionSButton").css("visibility", "hidden");
+      // $("#solutionSM").html("");
+      // $("#solutionSNewLooks").html("");
+    });
+
+
+    $("#solutionSButton_no").click(function () {
+      $("#solutionSSubmit").css("visibility:visible");
+      // $("#solutionSDetails").css("visibility","visible");
+    });
+
+  }
+
+
+
+
+
+
+
+  
+  
 
 
   function cloneMaterials(materials) {
