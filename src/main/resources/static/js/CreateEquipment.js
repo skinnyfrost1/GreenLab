@@ -7,10 +7,27 @@ $(document).ready(function () {
       var FR= new FileReader();
       
       FR.addEventListener("load", function(e) {
-        document.getElementById("img").src       = e.target.result;
+        document.getElementById("img").src= e.target.result;
       }); 
       
       FR.readAsDataURL( this.files[0] );
     }
   }
+
+  $("#unitText").hide().removeClass("show");
+
+  $('.isMaterial').click(function() {
+    if($('#isMaterial_yes').is(':checked')){
+      $("#unitText").show().addClass("show");
+      $('#textareaName').val('');
+      $(".isSolutionContainer").hide().removeClass("show");
+    }
+    else{
+      $("#unitText").hide().removeClass("show");
+      $('#textareaName').val('unitDefault');
+      $(".isSolutionContainer").show().addClass("show");
+    }
+  });
+
+
 });
