@@ -10,7 +10,8 @@ public class Steps{
     private int stepNumber;
     private LabEquipment equipmentA;
     private LabEquipment equipmentB;
-    private LabEquipment solution;
+    private LabEquipment solutionA;
+    private LabEquipment solutionB;
     private String info;
 
 }

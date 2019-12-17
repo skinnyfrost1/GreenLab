@@ -205,6 +205,7 @@ $(document).ready(function () {
     $('#addToAssociated').html(selectedTitle + selectedMaterialsHtml);
     $('#getFromAssociated').html(associatedTitle + associatedMaterialsHtml);
     $("#actionPopUp").css("visibility", "visible");
+    $("#interactionButton").css("visibility", "visible");
 
   }
 
@@ -224,29 +225,24 @@ $(document).ready(function () {
     var smBuffer = cloneMaterials(selectedData.materials);
 
 
-    // function recoverMaterials(){
-    //   am = amBackUp;
-    //   sm = smBackUp;
-    // }
-
     //check if the out going quantity is more then itself.
     // if (selectedData) {
     for (var i = 0; i < selectedData.materials.length; i++) {
       var smq = $('input[name=smq_' + (i + 1) + ']').val();
       smq = parseFloat(smq);
+      var smn = $('#smn_' + (i + 1)).text();
+      var smu = $('#smu_' + (i + 1)).text();
       //要注意如果smq input没有输入任何东西的时候,下面这个 if 能否吃到这个case
       if (!smq) {
         continue;
       }
       //error.
       if (smq > selectedData.materials[i].quantity) {
-        console.log("smq to large.")
-        console.lob("recover the backup")
-        // recoverMaterials();.
+        console.log("Error: You don't have enought "+smn);
+        alert("Error: You don't have enought "+smn);
         break;
       }
-      var smn = $('#smn_' + (i + 1)).text();
-      var smu = $('#smu_' + (i + 1)).text();
+      
 
       //if am is empty
       if (!amBuffer) {
@@ -254,6 +250,7 @@ $(document).ready(function () {
         var temp = {};
         temp.material = smn;
         temp.quantity = smq;
+        smBuffer[i].quantity -=smq;
         temp.unit = smu
         amBuffer.push(temp);
       }
@@ -276,6 +273,7 @@ $(document).ready(function () {
           temp.material = smn;
           temp.quantity = smq;
           temp.unit = smu
+          smBuffer[i].quantity -=smq;
           amBuffer.push(temp);
         }
       }
@@ -291,9 +289,8 @@ $(document).ready(function () {
       }
       //error.
       if (amq > associatedData.materials[i].quantity) {
-        console.log("amq to large.")
-        console.lob("recover the backup")
-        // recoverMaterials();.
+        console.log("Error: You don't have enought "+amq);
+        alert("Error: You don't have enought "+amq);
         break;
       }
       var amn = $('#amn_' + (i + 1)).text();
@@ -304,6 +301,7 @@ $(document).ready(function () {
         var temp = {};
         temp.material = amn;
         temp.quantity = amq;
+        amBuffer[i].quantity -= amq;
         temp.unit = amu
         smBuffer.push(temp);
       }
@@ -322,8 +320,9 @@ $(document).ready(function () {
           var temp = {};
           temp.material = amn;
           temp.quantity = amq;
+          amBuffer[i].quantity -= amq;
           temp.unit = amu
-          amBuffer.push(temp);
+          smBuffer.push(temp);
         }
       }
     }
@@ -332,6 +331,7 @@ $(document).ready(function () {
     associatedData.materials = amBuffer;
     showProperties(selected, "selectedEquipment");
     showProperties(associated, "associatedEquipment")
+    $("#interactionButton").css("visibility", "hidden");
 
 
   });
