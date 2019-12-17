@@ -77,11 +77,11 @@ public class CreateEquipmentController {
         equipment.setImage(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
         equipmentRepository.save(equipment);
 
-        // return "profViewEquip";
+        return "redirect:/equipments";
 
-        // debug
-        model.addAttribute("errormsg", equipment.toString());
-        return "error";
+        // // debug
+        // model.addAttribute("errormsg", equipment.toString());
+        // return "error";
     }
 
 }
