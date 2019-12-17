@@ -166,11 +166,11 @@ $(document).ready(function(e) {
                                 '                </div>\n' +
                                 '              </div>\n'
                 }
-
                 // CreateCourseLoadLabListener(labNameList.length)
                 $("#addLabPage").append(htmlStr);
                 $("#addLabPage").show().addClass("show");
                 $("#addLabBigContainer").show().addClass("show");
+
             },
         });
 
