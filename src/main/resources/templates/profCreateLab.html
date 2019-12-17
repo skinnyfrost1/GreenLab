@@ -117,7 +117,7 @@
       <td>
         <!-- <div class="workspace middlePaneContainer webfont"></div> -->
         <div id="workspace" class="workspace">
-          
+
         </div>
 
       </td>
@@ -148,29 +148,64 @@
           </div>
           <!-- End of Selected Equiopment Properties: -->
           <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;color:#d1d1d1;">
-              __________________________________</div>
+            __________________________________</div>
           <!-- Associate Equiopment Properties -->
           <div class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">
             <div>Associate Equiopment Properties:</div>
             <div id="associatedEquipment" class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">
             </div>
-            <div id="associatedEquipmentMaterials" class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">
-              </div>
+            <div id="associatedEquipmentMaterials" class=" webfont"
+              style="text-align:left;margin: 0.5em 0em 0.5em 1em;">
+            </div>
           </div>
           <!-- End of Associate Equiopment Properties -->
           <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;color:#d1d1d1;">
-              __________________________________</div>
+            __________________________________</div>
+          <!-- Action Popup  -->
 
-              <div id="actionPopUp" class="actionPopUp" style="visibility:hidden;">
-                <div id="addToAssociated"></div>
-                <div id="getFromAssociated"></div>
-                <!-- <div id="interactionButton"> -->
-                  <button id="interactionButton" name="process" class="createLabButton">Process</button>
-                <!-- </div> -->
-                
+          <div id="actionPopUp" class="actionPopUp" style="visibility:hidden;">
+            <div id="addToAssociated"></div>
+            <div id="getFromAssociated"></div>
+            <!-- <div id="interactionButton"> -->
+            <button id="interactionButton" name="process" class="createLabButton">Process</button>
+            <!-- </div> -->
+
+          </div>
+
+          <!-- End of Action Popup  -->
+
+          <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;color:#d1d1d1;">
+            __________________________________</div>
+
+          <!-- Solution S Properties -->
+          <div id="solutionS" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">
+            <div id="solutionSPart1">
+              <div id="solutionSTitle1">Do you want to edit the solution of <a id="solusionSNickname"></a>?</div>
+              <div id="solutionSButton">
+                <button id="solutionSButton_yes">Yes</button>
+                <button id="solutionSButton_no">no</button>
               </div>
-          
+            </div>
+            <div id="solutionSDetails">
+              <div id="solutionSTitle2">What <a id="solusionSNickname"></a> should contain?</div>
+              <div id="solutionSM">
+                <!-- materialname, quantity , unit -->
+                <div id="solutionSM_1">
+                  <div id="solutionSMN_1">Name: <input type="text" name="solutionSMNI_1"></div>
+                  <div id="solutionSMQ_1">Quantity: <input type="number" name="solutionSMQI_1"></div>
+                  <div id="solutionSMU_1">Unit: <input type="text" name="solutionSMUI_1"></div>
+                </div>
+                </br>
+              </div>
+              <button id="solutionSMoreBut">Add a new material</button>
+              <button id="solutionSNewLookBut">Choose a new look</button>
+              <div id="solutionSNewLooks">
+              </div>
+            </div>
+            <button id="solutionSSubmit">Submit</button>
+          </div>
 
+          <!-- End of Solution S Properties -->
           <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;color:#d1d1d1;">
             __________________________________</div>
           <div class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">Step #1 :</div>
