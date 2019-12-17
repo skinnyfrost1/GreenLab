@@ -63,34 +63,6 @@ public class LoginController {
         System.out.println("Email and password not match.");
         return ResponseEntity.ok(result);
     }
-// public String postLogin(@RequestParam(value = "email", required = false) String email,
-    //         @RequestParam(value = "password", required = false) String password,
-    //         @RequestParam(value = "role", required = false) String role, ModelMap model, HttpServletRequest request) {
-    // System.out.println("[post/login]email=" + email + " password=" + password);
-    // User user = userRepository.findByEmail(email);
-    // request.getSession().setAttribute("role",role);
-    // return "redirect:/courses";
-    // if (user != null) {
-    // // check passwor d
-    // String encryptedPassword = PasswordChecker.encryptSHA512(password);
-    // if ((user.getPassword()).equals(encryptedPassword)) {
-    // System.out.println("password correct");
-    // System.out.println(encryptedPassword);
-    //
-    // request.getSession().setAttribute("role",role);
-    // request.getSession().setAttribute("email",email);
-    //
-    // // Todo: Check the role of the user. if stu, return stuviewcourse. if prof,
-    // // return profViewCourse
-    // return "profViewCourse";
-    // } else {
-    // System.out.print("password incorrect");
-    // }
-    // } else {
-    // System.out.println("user = null");
-    // }
-    // return "home";
-    // }
 
     @GetMapping(value = "/logout")
     public String postLogout(ModelMap model, HttpServletRequest request) {

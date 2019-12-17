@@ -126,6 +126,15 @@ a {
     padding: 0em 1em;
 }
 
+.courseContainer .child{
+    display:none;
+}
+
+.courseContainer:hover .child{
+
+    display:block;
+}
+
 .big-button {
     color: white;
     background: #6fb3b8;

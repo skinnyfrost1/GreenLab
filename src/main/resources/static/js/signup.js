@@ -1,13 +1,26 @@
 $(document).ready(function () {
+    var emailFlag = 0;
+    var passwordFlag = 0;
+    var uidFlag = 0;
+    function canSubmit() {
+        if (emailFlag == 0 && passwordFlag == 0 && uidFlag == 0)
+            return true;
+        else
+            return false;
+    }
     $('input[name=confirmPassword],input[name=password]').on("input propertychange", function () {
         var password = $('input[name=password]').val();
         var confirmPassord = $('input[name=confirmPassword]').val();
         if (password == confirmPassord) {
+            passwordFlag = 0;
             $('#confirmPasswordLabel').css("color", "green");
-            $('#submit').attr("disabled", false);
+            if (emailFlag == 0 && passwordFlag == 0 && uidFlag == 0) {
+                $('#submit').attr("disabled", false);
+            }
         }
         else {
             $('#confirmPasswordLabel').css("color", "red");
+            passwordFlag = 1;
             $('#submit').attr("disabled", true);
         }
     });
@@ -28,11 +41,14 @@ $(document).ready(function () {
                 if (isExist == true) {
                     $('#emailExist').html(data['message']);
                     $('#emailExist').css("color", "red");
+                    emailFlag = 1;
                     $('#submit').attr("disabled", true);
 
                 } else {
                     $('#emailExist').html('');
-                    $('#submit').attr("disabled", false);
+                    emailFlag = 0;
+                    if (emailFlag == 0 && passwordFlag == 0 && uidFlag == 0)
+                        $('#submit').attr("disabled", false);
                 }
                 console.log("SUCCESS : ", data);
             },
@@ -41,7 +57,7 @@ $(document).ready(function () {
             }
         });
     });
-    $("#uid").on("input propertychange",function () {
+    $("#uid").on("input propertychange", function () {
         var str = {};
         if ($('uid') != null) {
             str['str'] = $('#uid').val();
@@ -58,10 +74,13 @@ $(document).ready(function () {
                     if (isExist == true) {
                         $('#uidExist').html(data['message']);
                         $('#uidExist').css("color", "red");
+                        uidFlag = 1;
                         $('#submit').attr("disabled", true);
                     } else {
                         $('#uidExist').html('');
-                        $('#submit').attr("disabled", false);
+                        uidFlag = 0;
+                        if (emailFlag == 0 && passwordFlag == 0 && uidFlag == 0)
+                            $('#submit').attr("disabled", false);
                     }
                     console.log("SUCCESS : ", data);
                 },

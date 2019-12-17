@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/index.css}" type="text/css" rel="stylesheet">
-    <link th:href="@{/stylesheet/toggleButton.css}" type="text/css" rel="stylesheet">
-    <link th:href="@{/stylesheet/profCreateCourse.css}" type="text/css" rel="stylesheet">
-
-
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css}"
+    <link th:href="@{/stylesheet/profViewEquip.css}" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <title>profViewCourse</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <title>prof Add Equipment</title>
 </head>
+
 <body>
 <!-- Header Banner -->
 <table class="header webfont semibold">
@@ -27,7 +29,7 @@
                         <div class="logo"></div>
                     </td>
                     <td class="headerCellPadding">
-<!--                        <a href="/index" class="headerSelected">Courses</a>-->
+                        <!--                        <a href="/index" class="headerSelected">Courses</a>-->
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Courses</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
@@ -41,7 +43,7 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <<div class="dropdown-content"><a th:href="@{/labs}">View Labs</a></div>
+                                <div class="dropdown-content"><a th:href="@{/labs}">View Labs</a></div>
                                 <div class="dropdown-content"><a th:href="@{/lab/create}">Create Lab</a></div>
                             </div>
                         </div>
@@ -51,9 +53,9 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Equipments</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
-                              <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
-                              <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
+                                <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
+                                <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
+                                <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
                             </div>
                         </div>
                     </td>
@@ -79,60 +81,32 @@
     </tr>
     </tbody>
 </table>
- <!--  End of tool bar -->
+<!--  End of tool bar -->
 <div style="padding: 4em;"></div>
 <!-- Title -->
-<div class="title webfont">Add an equipment</div>
-<!-- Two containers -->
-<div style="text-align: center;">
-  <!-- Left container -->
-  <div class="createCourseContainer webfont">
-      <div class=" webfont" style="text-align:left; margin: 0.5em 0;" >Equipment Name</div>
-      <input type="text" name="courseName" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="Beaker" required><br>
-      <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Description</div>
-      <textarea type="text" name="courseDescription" value="" maxlength="24" class="createCourseTextArea webfont" placeholder= "A beaker here!" required></textarea><br>
-      <div>
-          <div class="webfont" style=" padding: 2px; text-align: left; ">Heaterable
-              <label class="switch">
-                  <input type="checkbox">
-                  <span class="slider round"></span>
-              </label>
-          </div>
-          <br>
-          <div class="webfont" style=" padding: 2px; text-align: left; ">Holderable
-              <label class="switch">
-                  <input type="checkbox">
-                  <span class="slider round"></span>
-              </label>
-          </div>
-          <br>
-          <div class="webfont" style=" padding: 2px; text-align: left; ">Container
-              <label class="switch">
-                  <input type="checkbox">
-                  <span class="slider round"></span>
-              </label>
-          </div>
-      </div>
+<div class="title webfont">Search Equipments Result</div>
 
 
-  </div>
-  <!-- End of eft Container -->
+<div id="equipmentsContainer" class="" style="text-align:center;">
+<!--    <div style="text-align:center;">-->
+    <div id="numberOfEquipments" th:text="${equipments.size()}" style="display: none;"></div>
+        <div th:each="equipment, iter: ${equipments}">
+            <div class="viewEquipContainer">
+                <div class="webfont" th:text="${equipment.getEquipmentName()}"></div>
+                <img class="imageContainer" th:src="'data:image/png;base64,' + ${equipment.getStringImage()}">
+                <input th:id="'equipSelected_' + ${iter.index}" type="checkbox" th:value="${equipment.get_id()}" name="Equip"><br>
 
-  <!-- Right container-->
-  <div class="createCourseContainer webfont">
-      <div class=" webfont" style="text-align:center;margin: 0.5em 0;">Drag your PNG to here<br><br>
-          <a ><img class="equipmentContainer" src="../static/image/Seperator.png" border="3px"></a>
-
-      </div>
+            </div>
+<!--            <input type="checkbox" name="Equip"><br>-->
+        </div>
 
 
-    </div>
-    <!-- End of right container -->
 </div>
-<!-- End of two containers-->
-<div style="text-align:right;">
-  <input type="submit" value="Save" class="save-button webfont" style="cursor: pointer;margin:1em 7% 3em 0em">
-</div>
+<input type="submit" value="Add" class="big-button webfont" onclick="GetCheckBoxListValues()" style="cursor: pointer;width:10em;margin:0em 10% 0em 0em;float:right;">
 
+<!--<form id='addEquipForm' th:action="@{/equipment/add}" method = "post"></form>-->
+
+<script type="text/javascript" th:src="@{/js/ProfViewSearchEquipments.js}"></script>
 </body>
+
 </html>

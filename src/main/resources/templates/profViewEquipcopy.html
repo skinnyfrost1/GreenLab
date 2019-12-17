@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
+  <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
+  <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
+  <link th:href="@{/stylesheet/index.css}" type="text/css" rel="stylesheet">
+  <link th:href="@{/stylesheet/profViewEquip.css}" type="text/css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+    integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <title>profViewCourse</title>
+</head>
+
+<body>
+  <!-- Header Banner -->
+  <table class="header webfont semibold">
+    <tbody style="padding: 0; margin: 0;">
+      <tr>
+        <!-- Left Part -->
+        <td>
+          <table style="padding: 0; margin: 0;">
+            <tr>
+              <td class="headerCellPadding">
+                <div class="logo"></div>
+              </td>
+              <td class="headerCellPadding">
+                <!--                        <a href="/index" class="headerSelected">Courses</a>-->
+                <div class="dropdown" style="cursor: pointer;">
+                  <span style="color:#eeeeee">Courses</span>
+                  <div class="dropdown_container" style="padding-top: 0.8em;">
+                    <div class="dropdown-content"><a th:href="@{/courses}">View Courses</a></div>
+                    <div class="dropdown-content"><a th:href="@{/course/create}">Create Course</a></div>
+                  </div>
+                </div>
+              </td>
+              <td class="headerCellPadding">
+                <!-- <a href="discover" class="headerUnselected">Labs</a> -->
+                <div class="dropdown" style="cursor: pointer;">
+                  <span style="color:#eeeeee">Labs</span>
+                  <div class="dropdown_container" style="padding-top: 0.8em;">
+                    <div class="dropdown-content"><a th:href="@{/labs}">View Labs</a></div>
+                    <div class="dropdown-content"><a th:href="@{/lab/create}">Create Lab</a></div>
+                  </div>
+                </div>
+              </td>
+              <td class="headerCellPadding">
+                <!-- <a href="search" class="headerUnselected">Equipments</a> -->
+                <div class="dropdown" style="cursor: pointer;">
+                  <span style="color:#eeeeee">Equipments</span>
+                  <div class="dropdown_container" style="padding-top: 0.8em;">
+                    <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
+                    <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
+                    <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <!-- Right Part -->
+        <td style="width: 5em;">
+          <table style="padding: 0; margin: 0; align: right;">
+            <tr style="align: right;">
+              <td class="headerCellPadding">
+                <a href="" class="headerUnselected"><i class='fas fa-user-circle headerIcon'></i></a>
+              </td>
+              <td class="headerCellPadding">
+                <a href="" class="headerUnselected"><i class='fas fa-cog headerIcon'></i></a>
+              </td>
+              <td class="headerCellPadding">
+                <a href="index.html" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!--  End of tool bar -->
+  <div style="padding: 4em;"></div>
+  <!-- Title -->
+  <div class="title webfont">Your Equipments
+    <a href="" class="headerUnselected" style="margin:0em 5em 0em 20em;"><i class='fas fa-trash-alt headerIcon'></i></a>
+  </div>
+  <!-- <table style="width:100%">
+    <col width="33.4%"/>
+    <col width="33.3%"/>
+    <col width="33.3%"/>
+    <tr>
+      <td>
+        <div class="viewEquipContainer"></div>
+      </td>
+      <td>
+        <div class="viewEquipContainer"></div>
+      </td>
+      <td>
+        <div class="viewEquipContainer"></div>
+      </td>
+    </tr>
+  </table> -->
+  <div style="text-align:center;">
+    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Container.png">
+      <br>
+      50 ml beaker
+    </div>
+    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Heater.png">
+      <br>
+      Small alcohol lamp
+    </div>
+    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Timer.png">
+      <br>
+      Timer
+    </div>
+  </div>
+
+  <div style="text-align:center;">
+    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Holder.png">
+      <br>
+      Holder
+    </div>
+    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Measure.png">
+      <br>
+      Measure
+    </div>
+    <div class="viewEquipContainer"><img class="imageContainer" src="../static/image/Seperator.png">
+      <br>
+      Seperator
+    </div>
+  </div>
+
+
+</body>
+
+</html>

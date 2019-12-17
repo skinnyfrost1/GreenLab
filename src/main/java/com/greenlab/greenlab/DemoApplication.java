@@ -25,6 +25,7 @@ public class DemoApplication implements CommandLineRunner {
 	}
 
 
+
 	@Autowired
 	private UserEquipmentRepository userEquipmentRepository;
 
@@ -100,5 +101,6 @@ public class DemoApplication implements CommandLineRunner {
 
 
 	}
+
 
 }

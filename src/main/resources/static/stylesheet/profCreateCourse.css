@@ -85,6 +85,11 @@
     cursor: pointer;
 }
 
+.save-button-disabled{
+    opacity: 0.6;
+    pointer-events: none;
+}
+
 .delete-button {
     color: white;
     background-color:#e65449;    /*background: #269b9b;*/
@@ -102,5 +107,18 @@
     background : #e62e20;
     text-decoration: none;
     /*font-weight: bold;*/
+    cursor: pointer;
+}
+
+.smallIcon, .smallIcon:visited {
+    color: #ffffff;
+    text-decoration: none;
+    cursor: auto;
+    opacity: 1.0;
+}
+
+.smallIcon:hover {
+    color: #218787;
+    text-decoration: none;
     cursor: pointer;
 }

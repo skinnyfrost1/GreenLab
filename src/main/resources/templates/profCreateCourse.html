@@ -11,6 +11,7 @@
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <title>profCreateCourse</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/CreateCourse.js}"></script>
 <!--    <script type="text/javascript" src="../static/js/coursePageButtons.js"></script>-->
 </head>
 <body>
@@ -88,18 +89,18 @@
   <!-- Left container -->
     <div id="inputInfoPage" class="show">
         <div class="createCourseContainer webfont">
-            <div class=" webfont" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
+            <div class=" webfont bold" style="text-align:left; margin: 0.5em 0;" >Course Name</div>
             <input id="courseId" type="text" name="courseId" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="CHE 133" required><br>
-            <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Title</div>
+            <div class=" webfont bold" style="text-align:left; margin: 0.5em 0;">Title</div>
             <input id="courseTitle"type="text" name="courseName" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="General Chemistry Lab 1" required><br>
-            <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Semester</div>
+            <div class=" webfont bold" style="text-align:left; margin: 0.5em 0;">Semester</div>
             <input id="semester"type="text" name="semester" value="" maxlength="24" class="createCourseTextfield webfont" placeholder="Spring 2019" required><br>
-            <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Description</div>
+            <div class=" webfont bold" style="text-align:left; margin: 0.5em 0;">Description</div>
             <textarea id="courseDescription" type="text" name="courseDescription" value="" maxlength="50" class="createCourseTextArea webfont" placeholder= "..." required></textarea><br>
                 <div>
                     <span>
                     <div>
-                    <label for="file" style="margin:0em 5em 0em 0em;">Student Roster</label>
+                    <label for="file" style="margin:0em 5em 0em 0em;font-weight: bold">Student Roster</label>
                     <input type="file" id="file" name="file" value="" accept=".csv" >
                     </div>
                         <!--            <a href="" style = "margin:0em 1em;"> UploadRoster </a>-->
@@ -118,7 +119,7 @@
   <!-- Right container-->
     <div id="addLabBigContainer" onload="addLabBigContainer()" class="show">
         <div class="createCourseContainer webfont">
-            <div class=" webfont" style="text-align:left;margin: 0.5em 0;">Labs
+            <div class=" webfont bold" style="text-align:left;margin: 0.5em 0;">Labs
                 <span>
 <!--            <button type="button" class="show save-button" id="addLabBtn" style="margin:0em 1em 0em 20em;">Add</button>-->
 <!--            <button type="button" class="show save-button" id="confirmAddCourseBtn" style="margin:0em 1em 0em 20em;">Confirm</button>-->
@@ -223,7 +224,8 @@
         </div>
     </span>
 </div>
+    <div class="createCourseLabSelection"></div>
 </form>
-<script type="text/javascript" th:src="@{/js/CreateCourse.js}"></script>
+<!--<script src="/js/CreateCourse.js"></script>-->
 </body>
 </html>

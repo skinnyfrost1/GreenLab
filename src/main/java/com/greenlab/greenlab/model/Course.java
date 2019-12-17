@@ -6,6 +6,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.Getter;
+import lombok.Setter;
+@Getter
+@Setter
 @Document
 public class Course {
 
@@ -17,6 +21,7 @@ public class Course {
     private String courseDescription;
     private String creator;
     private String createDate;
+    @DBRef
     private List<User> students;
     @DBRef
     private List<Lab> labs;
@@ -122,4 +127,11 @@ public class Course {
         this.creator = creator;
     }
 
+    public List<Lab> getLabs() {
+        return labs;
+    }
+
+    public void setLabs(List<Lab> labs) {
+        this.labs = labs;
+    }
 }

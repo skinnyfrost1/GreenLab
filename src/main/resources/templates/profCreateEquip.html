@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
+  <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
+  <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
+  <link th:href="@{/stylesheet/index.css}" type="text/css" rel="stylesheet">
+  <link th:href="@{/stylesheet/toggleButton.css}" type="text/css" rel="stylesheet">
+  <link th:href="@{/stylesheet/profCreateCourse.css}" type="text/css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css}"
+    integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <title>Create Equipment</title>
+
+
+</head>
+
+<body>
+  <!-- Header Banner -->
+  <table class="header webfont semibold">
+    <tbody style="padding: 0; margin: 0;">
+      <tr>
+        <!-- Left Part -->
+        <td>
+          <table style="padding: 0; margin: 0;">
+            <tr>
+              <td class="headerCellPadding">
+                <div class="logo"></div>
+              </td>
+              <td class="headerCellPadding">
+                <!--                        <a href="/index" class="headerSelected">Courses</a>-->
+                <div class="dropdown" style="cursor: pointer;">
+                  <span style="color:#eeeeee">Courses</span>
+                  <div class="dropdown_container" style="padding-top: 0.8em;">
+                    <div class="dropdown-content"><a th:href="@{/courses}">View Courses</a></div>
+                    <div class="dropdown-content"><a th:href="@{/course/create}">Create Course</a></div>
+                  </div>
+                </div>
+              </td>
+              <td class="headerCellPadding">
+                <!-- <a href="discover" class="headerUnselected">Labs</a> -->
+                <div class="dropdown" style="cursor: pointer;">
+                  <span style="color:#eeeeee">Labs</span>
+                  <div class="dropdown_container" style="padding-top: 0.8em;">
+                    <div class="dropdown-content"><a th:href="@{/labs}">View Labs</a>
+                    </div>
+                    <div class="dropdown-content"><a th:href="@{/lab/create}">Create Lab</a></div>
+                  </div>
+                </div>
+              </td>
+              <td class="headerCellPadding">
+                <!-- <a href="search" class="headerUnselected">Equipments</a> -->
+                <div class="dropdown" style="cursor: pointer;">
+                  <span style="color:#eeeeee">Equipments</span>
+                  <div class="dropdown_container" style="padding-top: 0.8em;">
+                    <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
+                    <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
+                    <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <!-- Right Part -->
+        <td style="width: 5em;">
+          <table style="padding: 0; margin: 0; align: right;">
+            <tr style="align: right;">
+              <td class="headerCellPadding">
+                <a href="" class="headerUnselected"><i class='fas fa-user-circle headerIcon'></i></a>
+              </td>
+              <td class="headerCellPadding">
+                <a href="" class="headerUnselected"><i class='fas fa-cog headerIcon'></i></a>
+              </td>
+              <td class="headerCellPadding">
+                <a href="index.html" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!--  End of tool bar -->
+  <div style="padding: 4em;"></div>
+  <!-- Title -->
+  <div class="title webfont">Add an equipment</div>
+  <!-- Two containers -->
+  <!-- <form method="POST" action="/photos/add" enctype="multipart/form-data"></form> -->
+  <form th:action="@{/equipment/create}" method="POST" enctype="multipart/form-data">
+    <div style="text-align: center;">
+      <!-- Left container -->
+      <div class="createCourseContainer webfont">
+        <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Equipment Name</div>
+        <input type="text" name="equipmentName" value="" maxlength="24" class="createCourseTextfield webfont"
+          placeholder="Beaker" required><br>
+        <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Description</div>
+        <textarea type="text" name="description" value="" maxlength="300" class="createCourseTextArea webfont"
+                  placeholder="A beaker here!" required></textarea><br>
+        <div>
+          <div class="isMaterial">
+            <div class="webfont" style=" padding: 2px; text-align: left; ">Is it a material?
+                <input id="isMaterial_yes" type="radio" name="isMaterial" value="yes"> Yes
+                <input id="isMaterial_no" type="radio" name="isMaterial" value="no" checked="checked">No<br />
+            </div>
+          </div>
+          <div class="unitText" id="unitText" >
+            <div class="webfont" style=" padding: 2px; text-align: left; ">Unit:
+              <input id="unit" type="text" name="unit">
+            </div>
+          </div>
+          <div class="webfont" style=" padding: 2px; text-align: left; ">Is it a blander?
+              <input id="blander_yes" type="radio" name="blander" value="yes"> Yes
+              <input id="blander_no" type="radio" name="blander" value="no" checked="checked">No<br />
+          </div>
+
+          <div class="webfont" style=" padding: 2px; text-align: left; ">Is it blandable?
+              <input id="blandable_yes" type="radio" name="blandable" value="yes"> Yes
+              <input id="blandable_no" type="radio" name="blandable" value="no" checked="checked">No<br />
+          </div>
+
+          <div class="webfont" style=" padding: 2px; text-align: left; ">Is it a heater?
+              <input id="heater_yes" type="radio" name="heater" value="yes"> Yes
+              <input id="heater_no" type="radio" name="heater" value="no" checked="checked">No<br />
+          </div>
+
+          <div class="webfont" style=" padding: 2px; text-align: left; ">Is it heaterable
+              <input id="heatable_yes" type="radio" name="heatable" value="yes"> Yes
+              <input id="heatable_no" type="radio" name="heatable" value="no" checked="checked">No<br />
+          </div>
+          <div class="isSolutionContainer" id="isSolutionContainer">
+            <div class="webfont" style=" padding: 2px; text-align: left; ">Is it a solution object?
+                <input id="solution_yes" type="radio" name="solution" value="yes"> Yes
+                <input id="solution" type="radio" name="solution" value="no" checked="checked">No<br />
+            </div>
+          </div>
+          <br>
+
+        </div>
+      </div>
+      <!-- End of eft Container -->
+      <!-- Right container-->
+      <div class="createCourseContainer webfont">
+        <div class=" webfont" style="text-align:center;margin: 0.5em 0;">Please select a image as your equipment.</div>
+        <!-- <input type="file" name="image" accept="image/*" /> -->
+        <input id="image" type="file" name="image" accept="image/png">
+        </br>
+        <img id="img">
+      </div>
+      <!-- End of right container -->
+    </div>
+
+    <!-- End of two containers-->
+    <div style="text-align:right;">
+      <input type="submit" value="Save" class="save-button webfont" style="cursor: pointer;margin:1em 7% 3em 0em">
+    </div>
+  </form>
+  <script type="text/javascript" th:src="@{/js/CreateEquipment.js}"></script>
+</body>
+
+</html>
