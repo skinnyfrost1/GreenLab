@@ -88,11 +88,13 @@ public class EquipmentController {
 
         EquipmentData equipmentData = equipmentDataRepository.getById(equipmentId);
 
+        String emailId = (String) request.getSession().getAttribute("email");
+
         if( equipmentData == null ){
             return "";
         }else{
 
-            UserEquipmentFolder userEquipmentFolder = userEquipmentFolderRepository.findByOwnerAndType( "weixin.tang@stonybrook.edu" , "recent" );
+            UserEquipmentFolder userEquipmentFolder = userEquipmentFolderRepository.findByOwnerAndType( emailId , "recent" );
 
             LinkedList<String> linkedList =  userEquipmentFolder.getItemIdsInFolder();
 
@@ -103,8 +105,15 @@ public class EquipmentController {
             linkedList.add( 0, equipmentData.getId() );
             userEquipmentFolder.setItemIdsInFolder( linkedList );
             userEquipmentFolderRepository.save( userEquipmentFolder );
-            model.addAttribute( "email", "weixin.tang@stonybrook.edu" );
+
+            //String emailId = (String) request.getSession().getAttribute("email");
+
+            model.addAttribute( "email", emailId );
+
             model.addAttribute( "iframeAdress", "/equipmentBoard/"+equipmentId );
+
+
+
             return "lab/equip";
 
         }
@@ -131,7 +140,10 @@ public class EquipmentController {
         //System.out.println( dataStr );
         Map<String,Object> sendData = new HashMap<>();
         sendData.put("success",true);
-        sendData.put("data", "weixin.tang@stonybrook.edu" );
+
+        String emailId = (String) request.getSession().getAttribute("email");
+
+        sendData.put("data", emailId );
         return sendData;
     }
 
@@ -142,16 +154,22 @@ public class EquipmentController {
         //System.out.println( dataStr );
 
         EquipmentData equipmentData = new EquipmentData();
-        equipmentData.setOwnerId( "weixin.tang@stonybrook.edu" );
+
+        String emailId = (String) request.getSession().getAttribute("email");
+
+        equipmentData.setOwnerId( emailId );
         String equipmentId =  equipmentDataRepository.save(equipmentData).getId();
         Query query = new Query();
-        query.addCriteria(Criteria.where("type").is("all").andOperator( Criteria.where("owner").is("weixin.tang@stonybrook.edu") ));
+
+//        String emailId = (String) request.getSession().getAttribute("email");
+
+        query.addCriteria(Criteria.where("type").is("all").andOperator( Criteria.where("owner").is(emailId) ));
 
         UserEquipmentFolder userEquipmentFolder =  mongoTemplate.findOne( query , UserEquipmentFolder.class );
         userEquipmentFolder.getItemIdsInFolder().add(0,equipmentId);
         userEquipmentFolderRepository.save( userEquipmentFolder );
 
-        sendEquipFolder( "weixin.tang@stonybrook.edu" ,   prepareUpdateAll() );
+        sendEquipFolder( emailId ,   prepareUpdateAll() );
 
         Map<String,Object> sendData = new HashMap<>();
         sendData.put("success",true);
@@ -205,7 +223,9 @@ public class EquipmentController {
             messagingTemplate.convertAndSend("/topic/image/" + userId + "/" + sessionId, jsonObject.toString() );
         }else if( jsonObject.get("type").toString().equals("loadFolder") ){
 
-            jsonObject.put("data", prepareAllFolder( "weixin.tang@stonybrook.edu" ) );
+
+
+            jsonObject.put("data", prepareAllFolder( userId ) );
 
             //websocket.sendEquipFolder( userId , jsonObject.toString() );
             sendUnique( userId , sessionId , jsonObject.toString() );
@@ -961,8 +981,30 @@ public class EquipmentController {
             }
             else if( type.equals("duplicateLab") ){
 
+                JSONObject sendData = new JSONObject();
+                sendData.put("type" , "duplicateTheLab" );
+                labData.setId( null );
+                LabData newLabData =  labDataRepository.save( labData );
+                String newLabDataId =  newLabData.getId();
+                sendData.put( "data" , newLabDataId );
+                sendUnique( userId , sessionId , sendData.toString() );
+
             }
             else if( type.equals("deleteLab") ){
+
+                // so here we all need
+                    //
+
+                //System.out.println( "bilibili" );
+
+
+                JSONObject sendData = new JSONObject();
+                sendData.put("type", "deleteTheLab" );
+
+                labDataRepository.removeById( labId );
+
+                sendLabPad( labId , sendData.toString() );
+
 
             }
             else if( type.equals("generateDoLab") ){
@@ -973,8 +1015,7 @@ public class EquipmentController {
 
                 //String labDataStr =   jsonMapper.writeValueAsString( labData );
 
-                DoLab doLab = new DoLab();
-                doLab.setLabData( labData );
+
 //                doLab.setComplete( false );
 //                doLab.setCurrentStep( 0 );
 //                doLab.setMaxStep( labData.getLabSteps().size() );
@@ -982,9 +1023,12 @@ public class EquipmentController {
 //                doLab.setName( labData.getName() );
 //                doLab.setDescription( labData.getDescription() );
 
+                DoLab doLab = new DoLab();
+                doLab.setLabData( labData );
                 doLab = doLabRepository.save( doLab );
-
                 String id =  doLab.getId();
+
+
 
                 //private boolean isComplete ;
                 //private int currentStep  ;
@@ -1512,11 +1556,13 @@ public class EquipmentController {
 
          labDataRepository.save(labData);
 
-         SendRefreshLab( labId , "weixin.tang@stonybrook.edu" );
+         String emailId = (String) request.getSession().getAttribute("email");
+
+         SendRefreshLab( labId , emailId );
 
          Map<String,Object> sendData = new HashMap<>();
          sendData.put("success",true);
-         sendData.put("data", "weixin.tang@stonybrook.edu" );
+         sendData.put("data", emailId );
          return sendData;
      }
 
@@ -1528,14 +1574,19 @@ public class EquipmentController {
     public Object CreateNewLab(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException {
 
 
+        String emailId = (String) request.getSession().getAttribute("email");
+
         LabData labData = new LabData();
-        labData.setOwnerId("weixin.tang@stonybrook.edu");
+        labData.setOwnerId(emailId);
         String labId =  labDataRepository.save(labData).getId();
 
         Map<String,Object> sendData = new HashMap<>();
         sendData.put("success",true);
         sendData.put("labId", labId );
         return sendData;
+
+
+
     }
 
 //    @RequestMapping(value="/ajax/refreshPage" , method = RequestMethod.POST)
@@ -1577,13 +1628,9 @@ public class EquipmentController {
 
         }
 
-
-
         Map<String,Object> sendData = new HashMap<>();
         sendData.put("success",true);
         sendData.put("data", blobDataArr.toString() );
-
-
 
         return sendData;
     }
@@ -1599,7 +1646,6 @@ public class EquipmentController {
         ObjectMapper objectMapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject(reqBody);
 
-
 //        JSONArray blobIdArr = (JSONArray) jsonObject.get("blobIds");
 //
 //        JSONArray EquipDataArr = new JSONArray();
@@ -1613,8 +1659,6 @@ public class EquipmentController {
 //            EquipDataArr.put( imagBlobStr );
 //
 //        }
-
-
 
         Map<String,Object> sendData = new HashMap<>();
         sendData.put("success",true);

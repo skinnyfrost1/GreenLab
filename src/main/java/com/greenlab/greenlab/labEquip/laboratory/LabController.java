@@ -52,8 +52,4 @@ public class LabController {
         return sendData;
     }
 
-
-
-
-
 }

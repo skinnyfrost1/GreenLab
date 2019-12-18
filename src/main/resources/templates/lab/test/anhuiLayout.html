@@ -1,0 +1,447 @@
+
+<!--
+
+// so this page should use anhui's  baisc structure
+
+    // this is professor since only professor can create equipment
+
+        //
+
+
+-->
+
+
+<!-- profViewCourse.html  -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+    <!--  ____________________________  the code below is anhui's work  _____________________________  -->
+    <meta charset="UTF-8">
+    <link href="https://ml4141715.github.io/water/cdn/api/anhui/theme.css" type="text/css" rel="stylesheet">
+    <link href="https://ml4141715.github.io/water/cdn/api/anhui/font.css" type="text/css" rel="stylesheet">
+    <link href="https://ml4141715.github.io/water/cdn/api/anhui/dropdown_menu.css" type="text/css" rel="stylesheet">
+    <link href="/https://ml4141715.github.io/water/cdn/api/anhui/index.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f3f3f3;
+            background-image: url(https://ml4141715.github.io/water/cdn/image/dot-grid.png);
+            margin: 0;
+            min-width: 1000px;
+        }
+        .logo {
+            width: 2.4em;
+            padding: 0;
+            margin: 0;
+            border-radius: 100%;
+            background-image: url(https://ml4141715.github.io/water/cdn/image/anhui/puppy.jpeg);
+            background-position: top center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            height: 2.4em;
+        }
+    </style>
+
+    <!--  ____________________________  my code start from here   _____________________________  -->
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="googlebot" content="noindex">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <link rel="icon" href="https://ml4141715.github.io/water/cdn/image/leaf.png">
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-1.12.4.js"></script>
+    <script src='https://ml4141715.github.io/water/cdn/api/a076d05399.js'></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-ui.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-3.3.1.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/popper.min.js"></script>
+    <!--    <script src="https://ml4141715.github.io/water/cdn/api/bootstrap.min.js"></script>-->
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery.cookie.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/sockjs.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/stomp.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/Sortable.js"></script>
+
+    <link rel="stylesheet" href="https://ml4141715.github.io/water/cdn/api/largeSwitchButton.css">
+
+    <script src="https://ml4141715.github.io/water/cdn/api/react.development.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/react-dom.development.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/babel.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/dropzone.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- box -->
+    <script>
+        class Box{
+            constructor( elementId ){
+                this.elementId = elementId;
+                this.width = 0;
+                this.height = 0;
+            }
+            setWidth( width ){
+                this.width = width;
+                document.getElementById(this.elementId).style.width = this.width+"px";
+            }
+            setHeight( height ){
+                this.height = height;
+                document.getElementById(this.elementId).style.height = this.height+"px";
+            }
+            setLeft( left ){
+                document.getElementById(this.elementId).style.left = left+"px";
+            }
+            setRight( right ){
+                document.getElementById(this.elementId).style.right=right+"px";
+            }
+            getWidth(){
+                return this.width;
+            }
+            getHeight(){
+                return this.height;
+            }
+        }
+    </script>
+
+    <!--  imageStorage  -->
+    <script>
+
+
+        class ImageStorage{
+
+            constructor(){
+                this.imageBlob = {};
+            }
+
+            getItem( key ){
+                return this.imageBlob[key];
+            }
+
+            setItem( key , value ){
+                this.imageBlob[key] = value;
+            }
+
+        }
+
+        // var sendData = {};
+        // sendData["labId"] = itemId;
+        // sendData["blobIds"] = labDataOp.getEquipCoverBlobIds();
+        // $.ajax({
+        //     type: "POST",
+        //     contentType: "application/json",
+        //     url: "/ajax/downloadImages",
+        //     data: JSON.stringify(sendData),
+        //     dataType: 'json',
+        //     cache: false,
+        //     timeout: 600000,
+        //     success: function (info) {
+        //         var imageBlobArr =  JSON.parse( info.data );
+        //         for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+        //             var imageBlobStr = imageBlobArr[i];
+        //             var imageBlob = JSON.parse(imageBlobStr);
+        //             var imageBlobId = imageBlob.id;
+        //             imageStorage.setItem( imageBlobId , imageBlobStr );
+        //         }
+        //
+        //         labData.displayLabBoard();
+        //
+        //         //console.log(info);
+        //     },
+        //     error: function (e) {
+        //
+        //     }
+        // });
+
+    </script>
+
+    <!--  cards  -->
+    <script>
+
+
+
+        class Card{
+            constructor(){
+                this.imageData = null;
+                this.imageTitle = null;
+                this.imageContent = null;
+                this.imageId = null;
+            }
+            __ceateFakeData(){
+                this.imageData = "https://ml4141715.github.io/water/cdn/image/Holder.png";
+                this.imageTitle = "666imageTitle";
+                this.imageContent = "7789imageContent";
+                this.imageId = "675imageId";
+            }
+
+            __cardHTML(){
+                var ReturnData = "<div class=\"card mb-1 grid-square\"  id=\""+this.imageId+"\" >\n" +
+                    "                <img class=\"card-img-top img-fluid grid-photo\" src=\""+this.imageData+"\" alt=\"\" draggable=\"false\">\n" +
+                    "                <div class=\"card-body\">\n" +
+
+                    "                    <p class=\"card-title h4 small font-weight-bold\">"+this.imageTitle+"</p>\n" +
+                    "                    <p class=\"card-text h5 small\">"+this.imageContent+"</p>\n" +
+                    "                </div>\n" +
+                    "            </div>";
+                return ReturnData;
+
+            }
+            getHTML(){
+                return this.__cardHTML();
+            }
+        }
+
+
+        class Cards{
+            constructor(){
+                this.cards = [];
+                this.folderContentId = "folderContent";// 1721
+            }
+            addCard( imageData , imageTitle , imageContent , imageId ){
+                var card = new Card();
+                card.imageContent = imageContent;
+                card.imageTitle = imageTitle;
+                card.imageData = imageData;
+                card.imageId = imageId;
+
+                this.cards.push(card);
+            }
+            clearCards(  ){
+                this.cards = [];
+            }
+            __creatFakeData(){
+                this.addCard( "https://ml4141715.github.io/water/cdn/image/Holder.png" , "imageTitle1" , "imageContent1" , "imageId1" );
+            }
+            __cardsHTML(){
+                var total = "";
+                for( var i = 0 ; i< this.cards.length ; i ++ ){
+                    total = total+ this.cards[i].getHTML();
+                }
+                return total;
+            }
+            setHTML(){
+                document.getElementById(this.folderContentId).innerHTML = this.__cardsHTML();
+                for( var i = 0 ; i< this.cards.length ; i++ ){
+                    var cardId = this.cards[i].imageId;
+                    document.getElementById(cardId).onclick = function (evt) {
+                        var cardId = evt.path[1].id;
+
+                        //window.open("/equipment/"+cardId , "_blank");
+
+                    }
+                }
+            }
+        }
+
+
+    </script>
+
+
+    <!--  onload  -->
+    <script>
+
+        // you need the imageStorage class
+
+        // ajax request image
+
+        // box class
+
+        // cards class
+
+
+        // we need onload function and d-none to get the
+            // userId and
+
+        var box;
+        var cards;
+
+        function onLoad() {
+
+            box = new Box( "contentBox" );
+            box.setHeight( window.innerHeight -250 );
+
+            // here we need do something here
+                //
+
+            // now we
+            cards = new Cards();
+            cards.folderContentId = "contentBox";
+            cards.__creatFakeData();
+            cards.__creatFakeData();
+            cards.__creatFakeData();
+            cards.__creatFakeData();
+            cards.setHTML();
+
+
+        }
+
+        function onResize() {
+
+
+            box.setHeight( window.innerHeight -250 );
+        }
+
+    </script>
+
+    <!--    -->
+
+
+</head>
+<body onload="onLoad()" onresize="onResize()">
+
+<!--  ____________________________  the code below is anhui's tool bar  _____________________________  -->
+
+<!-- Header Banner -->
+<table class="header webfont semibold" style="height: 54px">
+    <tbody style="padding: 0; margin: 0;">
+    <tr>
+        <!-- Left Part -->
+        <td>
+            <table style="padding: 0; margin: 0;">
+                <tr>
+                    <td class="headerCellPadding">
+                        <div class="logo"  ></div>
+                    </td>
+                    <td class="headerCellPadding">
+                        <!--                        <a href="/index" class="headerSelected">Courses</a>-->
+                        <div class="dropdown" style="cursor: pointer;">
+                            <span style="color:#eeeeee">Courses</span>
+                            <div class="dropdown_container" style="padding-top: 0.8em;">
+
+                                <div class="dropdown-content" ><a href="/courses">View Courses</a></div>
+                                <div class="dropdown-content"><a href="/course/create">Create Course</a></div>
+
+                            </div>
+                        </div>
+                    </td>
+                    <td class="headerCellPadding">
+                        <div class="dropdown" style="cursor: pointer;">
+                            <span style="color:#eeeeee">Labs</span>
+                            <div class="dropdown_container" style="padding-top: 0.8em;">
+                                <div class="dropdown-content"><a href="http://google.com">View Labs</a></div>
+                                <div class="dropdown-content"><a href="http://google.com">Create Lab</a></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="headerCellPadding">
+                        <div class="dropdown" style="cursor: pointer;">
+                            <span style="color:#eeeeee">Equipments</span>
+                            <div class="dropdown_container" style="padding-top: 0.8em;">
+                                <div class="dropdown-content"><a href="http://google.com">View Equipment</a></div>
+                                <div class="dropdown-content"><a href="http://google.com">Add Equipment</a></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <!-- Right Part -->
+        <td style="width: 5em;">
+            <table style="padding: 0; margin: 0; align: right;">
+                <tr style="align: right;">
+                    <td class="headerCellPadding">
+                        <a href="" class="headerUnselected"><i class='fas fa-user-circle headerIcon'></i></a>
+                    </td>
+                    <td class="headerCellPadding">
+                        <a href="" class="headerUnselected"><i class='fas fa-cog headerIcon'></i></a>
+                    </td>
+                    <td class="headerCellPadding">
+                        <a href="/logout" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<!--  End of tool bar -->
+<div style="padding: 3em;"></div>
+
+
+<!--  ____________________________  my code start from here   _____________________________  -->
+
+
+
+   <div class="container" id="theContainer">
+
+       <div class="h1" id="boardTitle">666</div>
+
+       <div id="contentBox" class="border border-muted rounded-lg"  >
+        <!--     display something inside of it       -->
+
+
+
+
+
+
+       </div>
+
+
+   </div>
+
+
+<style>
+
+
+    #contentBox{
+
+        /*position: fixed;*/
+        display: block;
+        /*right: 0px;*/
+        /*width: 100%;*/
+
+        /*float: left;*/
+        overflow: auto;
+        /*background: #fbf8ff;*/
+        /*padding: 10px;*/
+
+    }
+
+    /*.grid-photo-center {*/
+    /*    display: block;*/
+    /*    margin-left: auto;*/
+    /*    margin-right: auto;*/
+    /*    !*width: 50%;*!*/
+    /*    width: 247px;*/
+    /*    height: 221px;*/
+    /*    position: relative;*/
+    /*    clip: rect(0px,190px,170px,0px);*/
+    /*}*/
+
+    .grid-photo {
+        width: 190px;
+        height: 170px;
+        position: relative;
+        clip: rect(0px,190px,170px,0px);
+        display: inline-block;
+    }
+
+    .grid-square {
+        width: 190px;
+        height: 250px;
+        display: inline-block;
+        background-color: #ffece3;
+        margin: 10px;
+    }
+
+</style>
+
+
+</body>
+</html>
+

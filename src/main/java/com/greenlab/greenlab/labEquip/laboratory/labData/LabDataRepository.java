@@ -10,7 +10,8 @@ public interface LabDataRepository extends MongoRepository<LabData, String> {
 
     public LabData getById( String id );
 
-    public List<LabData> findByOwnerId( String ownerId );
+    public List<LabData> findAllByOwnerId( String ownerId );
 
+    public void removeById( String id );
 
 }

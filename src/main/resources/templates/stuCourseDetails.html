@@ -1,3 +1,6 @@
+
+<!-- stuCourseDetails.html -->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -38,8 +41,15 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                                <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
-                                <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>
+
+<!--                                <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>-->
+<!--                                <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>-->
+
+
+                                <div class="dropdown-content"><a href="/lab/listItem/ListLabItem.html">View Labs</a></div>
+                                <div class="dropdown-content"><a href="/lab/createJump/labCreateJump.html">Create Lab</a></div>
+
+
                             </div>
                         </div>
                     </td>
@@ -48,9 +58,19 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Equipments</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                                <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
+
+
+<!--                                <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>-->
+<!--                                &lt;!&ndash; <div class="dropdown-content"><a>Search Equipment</a></div> &ndash;&gt;-->
+<!--                                <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>-->
+<!--                            -->
+
+                                <div class="dropdown-content"><a href="/lab/listItem/listEquipItem.html">View Equipment</a></div>
                                 <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
-                                <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
+                                <div class="dropdown-content"><a href="/lab/createJump/equipmentCreateJump.html">Add Equipment</a></div>
+
+
+
                             </div>
                         </div>
                     </td>

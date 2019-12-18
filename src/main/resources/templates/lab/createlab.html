@@ -753,7 +753,44 @@
                 };
 
                 document.getElementById( setOp.generateDoLab ).onclick = function () {
-                    websocket.sendMessage( quickPrepare( "generateDoLab"  ) );
+
+                    //websocket.sendMessage( quickPrepare( "generateDoLab"  ) );
+
+                    // so here we will use ajax to handle this
+
+                    // var sendData = {};
+                    // sendData["labId"] = itemId;
+                    // sendData["blobIds"] = labDataOp.getEquipCoverBlobIds();
+                    // $.ajax({
+                    //     type: "POST",
+                    //     contentType: "application/json",
+                    //     url: "/ajax/downloadImages",
+                    //     data: JSON.stringify(sendData),
+                    //     dataType: 'json',
+                    //     cache: false,
+                    //     timeout: 600000,
+                    //     success: function (info) {
+                    //         var imageBlobArr =  JSON.parse( info.data );
+                    //         for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+                    //             var imageBlobStr = imageBlobArr[i];
+                    //             var imageBlob = JSON.parse(imageBlobStr);
+                    //             var imageBlobId = imageBlob.id;
+                    //             imageStorage.setItem( imageBlobId , imageBlobStr );
+                    //         }
+                    //
+                    //         labData.displayLabBoard();
+                    //
+                    //         //console.log(info);
+                    //     },
+                    //     error: function (e) {
+                    //
+                    //     }
+                    // });
+
+
+
+
+
                 }
 
             }
@@ -1729,6 +1766,13 @@
                     labData.EquipmentData = data;
                     labData.displayAllEquipment();
 
+                };
+
+                receiveProtocal["deleteTheLab"] = function( data ){
+
+                    //console.log("deleteTheLab received");
+
+                    window.location = "/courses" ;
 
                 };
 
@@ -1741,11 +1785,13 @@
 
                 };
 
+                receiveProtocal["duplicateTheLab"] = function(data){
 
+                    window.open( "/editmylab/"+data , '_blank' )
+
+                };
 
                 sendProtocal["labEquipList"] = function ( nodeIds ) {
-
-
 
                     //console.log("nodeIds");
                     //console.log(nodeIds);
@@ -2130,7 +2176,22 @@
                 //sendProtocal["labEquipList"](labData.LabData.labEquipDataList);
                 introductionOp.setNameValue( data.name );
                 introductionOp.setTextArea( data.description );
-                var imageBlob = JSON.parse(imageStorage.getItem(data.coverBlobId));
+
+                var imageBlob;
+                console.log( data.coverBlobId );
+
+                if( data.coverBlobId!= null && data.coverBlobId != "" ){
+
+                    imageBlob = JSON.parse(imageStorage.getItem(data.coverBlobId));
+
+                }else{
+
+                    imageBlob = "";
+
+                }
+
+                //var imageBlob = JSON.parse(imageStorage.getItem(data.coverBlobId));
+
                 introductionOp.setCoverImage( imageBlob.blob );
                 settingOp.setLikeBaseBoolean( data.favourite );
                 settingOp.setShareBaseBoolean( data.shared );
@@ -2462,7 +2523,7 @@
                     success: function (data) {
 
                         //console.log(data);
-                        window.open("/lab/"+data["labId"] , "_blank");
+                        window.open("/editmylab/"+data["labId"] , "_blank");
 
                     },
                     error: function (e) {
@@ -2996,11 +3057,16 @@
         display: block;
         clip: rect(0px,190px,170px,0px);
     }
+
+
+
     /*#feedback { font-size: 1.4em; }*/
     /*#selectable .ui-selecting { background: #FECA40; }*/
     /*#selectable .ui-selected { background: #F39814; color: white; }*/
     /*#selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }*/
     /*#selectable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }*/
+
+
     .operationListButton{
         writing-mode: vertical-lr;
         font-size: 20px;
