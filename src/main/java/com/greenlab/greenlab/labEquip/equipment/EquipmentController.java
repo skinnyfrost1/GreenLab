@@ -1029,6 +1029,11 @@ public class EquipmentController {
                 String id =  doLab.getId();
 
 
+                JSONObject sendData = new JSONObject();
+                sendData.put("type", "generateDoLab" );
+                sendData.put( "data", id );
+
+                sendUnique( userId , sessionId , sendData.toString()  );
 
                 //private boolean isComplete ;
                 //private int currentStep  ;
@@ -1621,10 +1626,20 @@ public class EquipmentController {
         for( int i = 0 ; i<  blobIdArr.length() ; i++ ){
 
            String blobId = blobIdArr.get(i).toString();
-            ImageBlob imageBlob = imageBlobRepository.getById(blobId);
-            String imagBlobStr = objectMapper.writeValueAsString(imageBlob);
-            JSONObject jsonObject1 =new JSONObject(imagBlobStr);
-            blobDataArr.put( imagBlobStr );
+
+           if(blobId.equals("")){
+
+
+
+
+           }else{
+
+               ImageBlob imageBlob = imageBlobRepository.getById(blobId);
+               String imagBlobStr = objectMapper.writeValueAsString(imageBlob);
+               JSONObject jsonObject1 =new JSONObject(imagBlobStr);
+               blobDataArr.put( imagBlobStr );
+
+           }
 
         }
 

@@ -42,9 +42,13 @@ public class LabController {
     @RequestMapping(value="/ajax/dolabData" , method = RequestMethod.POST)
     @ResponseBody
     public Object UploadImage(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException, JsonProcessingException {
-        //System.out.println( reqBody );
+        System.out.println( reqBody );
+
+        JSONObject jsonObject =  new JSONObject( reqBody );
+        String doLoadId = jsonObject.getString( "dolabId" );
+
         ObjectMapper jsonMapper = new ObjectMapper();
-        DoLab doLab =  doLabRepository.getById( "5df2fdafcb6f801e7431a523" );
+        DoLab doLab =  doLabRepository.getById( doLoadId );
         Map<String,Object> sendData = new HashMap<>();
         //sendData.put("success",true);
         sendData.put("doLabData", jsonMapper.writeValueAsString( doLab ) );

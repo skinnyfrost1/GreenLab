@@ -754,7 +754,7 @@
 
                 document.getElementById( setOp.generateDoLab ).onclick = function () {
 
-                    //websocket.sendMessage( quickPrepare( "generateDoLab"  ) );
+                    websocket.sendMessage( quickPrepare( "generateDoLab"  ) );
 
                     // so here we will use ajax to handle this
 
@@ -1741,7 +1741,14 @@
 
             loadSuccess(){
 
+                receiveProtocal["generateDoLab"] = function( data ){
 
+                    //console.log( "receive generate do lab" );
+                    //console.log(data);
+
+                    window.open("/dolab/"+data , '_blank');
+
+                };
 
 
                 receiveProtocal["connectSuccess"] = function (message) {

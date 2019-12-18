@@ -83,7 +83,15 @@
 
         function getDoLabData() {
 
-            var itemId = "5df2f0becb6f801c28bbed84";
+            var pathName = window.location.pathname;
+            var Arr = pathName.split("/");
+            itemId = Arr[2];
+
+            var itemId ; //= "5df2f0becb6f801c28bbed84"
+
+            var pathName = window.location.pathname;
+            var Arr = pathName.split("/");
+            itemId = Arr[2];
 
             var userId = "weixin.tang@stonybrook.edu";
 
@@ -471,6 +479,9 @@
             nextStepOnClick(){
 
                 //console.log("tMKUhnANM");
+
+                document.getElementById("complete").className = "d-none";
+                document.getElementById("success").className = "d-none";
 
                 labDataOp.setCurrentLabStep(labDataOp.getCurrentLabStep() +1  );
                 labData.setLabData( JSON.stringify(doLabData["labData"]) );
@@ -1228,8 +1239,6 @@
 
             logicController["onDrag"] = function ( data ) {
 
-
-
                 labDataOp.setEquipPos( data["equipId"] , data["x"] , data["y"] );
 
             };
@@ -1282,6 +1291,9 @@
                 }
 
                 labData.setLabData( JSON.stringify(doLabData["labData"]) );
+
+                displayStepSuccess();
+
                 labData.displayLabBoard();
                 //console.log( data );
 
@@ -1418,8 +1430,101 @@
             labDataOp.insertIdToCurrent( id );
 
             labData.setLabData( JSON.stringify(doLabData["labData"]) );
+
+
+            // so here we will
+            //console.log( checkStepSuccess() );
+            displayStepSuccess();
+            //console.log();
+
             labData.displayLabBoard();
 
+
+        }
+
+
+
+        function checkStepSuccess() {
+
+            var currentStep =  doLabData["labData"]["currentLabStep"];
+
+            var step = doLabData["labData"]["labSteps"][currentStep ];
+            var current = step["current"];
+            var after = step["after"];
+
+
+            var booleanList = [];
+
+            for( var i = 0 ; i < after.length ; i++  ){
+
+                booleanList.push( false );
+
+
+            }
+
+
+            for( var i = 0 ; i < after.length ; i++ ){
+
+
+                var name = after[i]["currentStatus"];
+                var id = after[i]["labEquipDataId"];
+
+                for( var b = 0 ; b < current.length ; b++ ){
+
+                    var name2 = current[b]["currentStatus"];
+                    var id2 = current[b]["labEquipDataId"];
+
+                    if( name == name2 && id == id2 ){
+
+                        booleanList[id] = true;
+
+                    }
+                }
+            }
+            var booleanReturn = true;
+            for( var i = 0 ; i < booleanList.length ; i++ ){
+                if( booleanList[i] == false ){
+                    booleanReturn = false;
+                }
+            }
+
+            return booleanReturn;
+
+        }
+
+        function displayStepSuccess() {
+
+            if( checkStepSuccess() == true ){
+
+
+                // console.log("")
+
+                // so we need put the success image in the front
+                var currentStep =  doLabData["labData"]["currentLabStep"];
+                if( currentStep ==  (doLabData["labData"]["labSteps"].length - 1)  ){
+
+                    console.log( "display complete" );
+                    // display step success
+
+                    document.getElementById("complete" ).className = "";
+
+                }else{
+
+                    // display complete
+
+                    console.log( "step success" );
+
+
+                    document.getElementById("success" ).className = "";
+
+
+
+                }
+
+
+            }else{
+
+            }
 
         }
 
@@ -1480,7 +1585,7 @@
         var websocket = new Websocket();
         var logicController = {};
         var labDataOp = new LabDataOp();
-        var rightBox;
+        var rightBox ;
         var folderContentBox;
         var displayPad = new DisplayPad();
         $(function () {
@@ -1494,10 +1599,8 @@
             // so later we only need to modify the data
             // and put to the labData
                 // then display it
-
             // so now we need but something in the left side
                 //
-
             // the problem how it should be look like
                 //
 
@@ -1519,7 +1622,11 @@
 
     <div id="working" ></div>
     <div id="generate" class="d-none"></div>
-    <div class="d-none" id="leisure"></div>
+    <div class="" id="leisure" ></div>
+    <div class="d-none" id="complete" ><img src="https://ml4141715.github.io/water/cdn/image/complete.jpg" alt="" style="position: fixed; width: 70%"> </div>
+    <div class="d-none" id="success" ><img src="https://ml4141715.github.io/water/cdn/image/Win.jpg" alt="" style="position: fixed; width: 70%"> </div>
+
+
 
     <!-- MODAL -->
     <div class="modal" id="myModal">
