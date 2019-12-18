@@ -669,12 +669,12 @@ $(document).ready(function () {
 
         //post factory
 
-  //                           (╯°Д°)╯︵ ┻━┻ 
+        //                           (╯°Д°)╯︵ ┻━┻ 
 
-        stepnumber =stepnumber + 1;
+        stepnumber = stepnumber + 1;
         var posting = {};
 
-        
+
 
         ///////////////////////
         // posting['selectedData_htmlid'] = selectedData.htmlid
@@ -683,14 +683,14 @@ $(document).ready(function () {
         var selectedData_material = [];
         var selectedData_quantity = [];
         var selectedData_unit = [];
-        for(var i =0; i<selectedData.materials.length;i++){
+        for (var i = 0; i < selectedData.materials.length; i++) {
           selectedData_material.push(selectedData.materials[i].material);
           selectedData_quantity.push(selectedData.materials[i].quantity);
           selectedData_unit.push(selectedData.materials[i].unit);
         }
-        posting['selectedData_material']=selectedData_material;
-        posting['selectedData_quantity']=selectedData_quantity;
-        posting['selectedData_unit']=selectedData_unit;
+        posting['selectedData_material'] = selectedData_material;
+        posting['selectedData_quantity'] = selectedData_quantity;
+        posting['selectedData_unit'] = selectedData_unit;
 
         /////////////////////////////////
         // posting['associatedData_htmlid'] = associatedData.htmlid
@@ -698,42 +698,42 @@ $(document).ready(function () {
         var associatedData_material = [];
         var associatedData_quantity = [];
         var associatedData_unit = [];
-        for(var i =0; i<associatedData.materials.length;i++){
+        for (var i = 0; i < associatedData.materials.length; i++) {
           associatedData_material.push(associatedData.materials[i].material);
           associatedData_quantity.push(associatedData.materials[i].quantity);
           associatedData_unit.push(associatedData.materials[i].unit);
         }
-        posting['associatedData_material']=associatedData_material;
-        posting['associatedData_quantity']=associatedData_quantity;
-        posting['associatedData_unit']=associatedData_unit;
+        posting['associatedData_material'] = associatedData_material;
+        posting['associatedData_quantity'] = associatedData_quantity;
+        posting['associatedData_unit'] = associatedData_unit;
 
         /////////////////////////////////
         // posting['solutionMaterialsS'] = solutionMaterialsS
         var solutionMaterialsS_material = [];
         var solutionMaterialsS_quantity = [];
         var solutionMaterialsS_unit = [];
-        for(var i =0; i<solutionMaterialsS.length;i++){
+        for (var i = 0; i < solutionMaterialsS.length; i++) {
           solutionMaterialsS_material.push(solutionMaterialsS[i].material);
           solutionMaterialsS_quantity.push(solutionMaterialsS[i].quantity);
           solutionMaterialsS_unit.push(solutionMaterialsS[i].unit);
         }
-        posting['solutionMaterialsS_material']=solutionMaterialsS_material;
-        posting['solutionMaterialsS_quantity']=solutionMaterialsS_quantity;
-        posting['solutionMaterialsS_unit']=solutionMaterialsS_unit;
+        posting['solutionMaterialsS_material'] = solutionMaterialsS_material;
+        posting['solutionMaterialsS_quantity'] = solutionMaterialsS_quantity;
+        posting['solutionMaterialsS_unit'] = solutionMaterialsS_unit;
 
         ///////////////////////////////////////////
         // posting['solutionMaterialsA'] = solutionMaterialsA
         var solutionMaterialsA_material = [];
         var solutionMaterialsA_quantity = [];
         var solutionMaterialsA_unit = [];
-        for(var i =0; i<solutionMaterialsA.length;i++){
+        for (var i = 0; i < solutionMaterialsA.length; i++) {
           solutionMaterialsA_material.push(solutionMaterialsA[i].material);
           solutionMaterialsA_quantity.push(solutionMaterialsA[i].quantity);
           solutionMaterialsA_unit.push(solutionMaterialsA[i].unit);
         }
-        posting['solutionMaterialsA_material']=solutionMaterialsA_material;
-        posting['solutionMaterialsA_quantity']=solutionMaterialsA_quantity;
-        posting['solutionMaterialsA_unit']=solutionMaterialsA_unit;
+        posting['solutionMaterialsA_material'] = solutionMaterialsA_material;
+        posting['solutionMaterialsA_quantity'] = solutionMaterialsA_quantity;
+        posting['solutionMaterialsA_unit'] = solutionMaterialsA_unit;
         posting['newLookS_id'] = NewLookS_id
         posting['newLookA_id'] = NewLookA_id
         posting['stepnumber'] = stepnumber
@@ -750,6 +750,43 @@ $(document).ready(function () {
           timeout: 600000,
           success: function (result) {
             console.log(result)
+            if (result.labEquipS) {
+              selectedData.equipmnet_id = result.labEquipS.equipment_id
+              selectedData.htmlid = result.labEquipS.htmlid;
+              selectedData.nickname = result.labEquipS.nickname;
+              selectedData.material = result.labEquipS.material;
+              selectedData.blandable = result.labEquipS.blandable;
+              selectedData.blander = result.labEquipS.blander;
+              selectedData.heatable = result.labEquipS.heatable;
+              selectedData.heater = result.labEquipS.heater;
+              selectedData.materials = result.labEquipS.materials;
+            }
+            if (result.labEquipA) {
+              associatedData.equipmnet_id = result.labEquipA.equipment_id
+              associatedData.htmlid = result.labEquipA.htmlid;
+              associatedData.nickname = result.labEquipA.nickname;
+              associatedData.material = result.labEquipA.material;
+              associatedData.blandable = result.labEquipA.blandable;
+              associatedData.blander = result.labEquipA.blander;
+              associatedData.heatable = result.labEquipA.heatable;
+              associatedData.heater = result.labEquipA.heater;
+              associatedData.materials = result.labEquipA.materials;
+            }
+            if (result.imageS) {
+              $('#' + selectedData.htmlid + '_img').attr("src", result.imageS);
+              var width = $('#' + selectedData.htmlid + '_img').width() + 2
+              var height = $('#' + selectedData.htmlid + '_img').height() + 2
+              $('#' + selectedData.htmlid).css('width', width + 'px');
+              $('#' + selectedData.htmlid).css('height', height + 'px');
+            }
+            if (result.imageA) {
+              $('#' + associatedData.htmlid + '_img').attr("src", result.imageA);
+              var width = $('#' + associatedData.htmlid + '_img').width() + 2
+              var height = $('#' + associatedData.htmlid + '_img').height() + 2
+              $('#' + associatedData.htmlid).css('width', width + 'px');
+              $('#' + associatedData.htmlid).css('height', height + 'px');
+            }
+
 
 
           },
@@ -764,28 +801,6 @@ $(document).ready(function () {
 
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

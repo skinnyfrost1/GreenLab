@@ -11,7 +11,6 @@ import com.greenlab.greenlab.dto.AddEquipmentToWorkspaceRequestBody;
 import com.greenlab.greenlab.dto.AddEquipmentToWorkspaceResponseBody;
 import com.greenlab.greenlab.dto.AddStepRequestBody;
 import com.greenlab.greenlab.dto.AddStepResponseBody;
-import com.greenlab.greenlab.dto.BooleanResponseBody;
 import com.greenlab.greenlab.dto.NewLooksResponseBody;
 import com.greenlab.greenlab.dto.ResponseEquipment;
 import com.greenlab.greenlab.dto.SingleStringRequestBody;
