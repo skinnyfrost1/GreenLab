@@ -517,7 +517,6 @@ $(document).ready(function () {
       $("#solutionASubmit").css("visibility", "visible");
       $('#solutionAPart1').html("");
 
-
       var htmlDOM = '' +
         '<div id="solutionATitle2">What <a>' + solutionANickname + '</a> should contain?</div>' +
         '<div id="solutionAM"></div>' +
@@ -539,8 +538,6 @@ $(document).ready(function () {
         $("#solutionAM").append(solutionAMDOM);
         solutionMaterialCounter++;
       });
-
-
 
       //read solution requipment
       $('#solutionANewLookBut').click(function () {
@@ -787,8 +784,6 @@ $(document).ready(function () {
               $('#' + associatedData.htmlid).css('height', height + 'px');
             }
 
-
-
           },
           error: function (e) {
           }
@@ -801,9 +796,6 @@ $(document).ready(function () {
 
     }
   }
-
-
-
 
 
 

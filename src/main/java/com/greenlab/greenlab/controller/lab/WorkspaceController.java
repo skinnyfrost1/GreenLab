@@ -216,7 +216,10 @@ public class WorkspaceController {
         if (les != null) {
             System.out.println("NewlookS_id =" + currentStep.getNewLookS_id());
             if (currentStep.getNewLookS_id() == null || currentStep.getNewLookS_id().length() == 0) {
-                if (currentStep.getSolutionMaterialsS() == null) {
+                // if (reqBody.getSolutionMaterialsS_material()== null
+                // ||currentStep.getSolutionMaterialsS() == null) {
+                if (reqBody.getSolutionMaterialsS_material() == null) {
+
                     les = currentStep.getSelectedData();
                 } else {
                     les = currentStep.getSelectedData();
