@@ -34,6 +34,9 @@ public class SignupController {
         // if (request.getSession().getAttribute("email") != null)
         // return "redirect:/courses";
         // else
+
+       System.out.println( "print something here to see what here H" );
+
         return "signUp";
 
     }

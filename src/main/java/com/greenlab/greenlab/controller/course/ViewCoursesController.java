@@ -22,6 +22,9 @@ public class ViewCoursesController {
 
     @GetMapping(value="/courses")
     public String getCourses(ModelMap model, HttpServletRequest request) {
+
+        System.out.println( "courses here" );
+
         if (request.getSession().getAttribute("email")==null){
             return "redirect:/index";
         }

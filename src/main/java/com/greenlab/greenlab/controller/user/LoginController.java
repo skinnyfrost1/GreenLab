@@ -27,10 +27,14 @@ public class LoginController {
 
     @GetMapping(value = {"/index","/login"})
     public String getLogin(ModelMap model, HttpServletRequest request) {
+
         if (request.getSession().getAttribute("email") != null) {
             return "redirect:/courses";
-        } else
+        } else{
             return "index";
+        }
+
+
     }
 
     @PostMapping(value = "/index")
@@ -55,6 +59,15 @@ public class LoginController {
                 request.getSession().setAttribute("email",email);
                 result.setMessage("Success!");
                 result.setBool(true);
+
+
+                //System.out.println(" login success 666 ");
+
+                // so here we need inital user here
+                    // both equipment and lab
+
+
+
                 return ResponseEntity.ok(result);
             }
         }

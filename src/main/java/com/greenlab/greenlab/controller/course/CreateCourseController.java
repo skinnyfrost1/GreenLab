@@ -50,6 +50,9 @@ public class CreateCourseController {
 
     @GetMapping(value = "/course/create")
     public String getCreateCourse(ModelMap model, HttpServletRequest request) {
+
+        System.out.println("create course is here A");
+
         String role = (String) request.getSession().getAttribute("role");
         if (role == null)
             return "redirect:/index";
@@ -69,6 +72,9 @@ public class CreateCourseController {
 //                                   @RequestParam(value = "select", required = false) List<String> lab_IdList,
                                    @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model,
                                    HttpServletRequest request) {
+
+        System.out.println("create course is here B");
+
         String role = (String) request.getSession().getAttribute("role");
         if (role == null)
             return "redirect:/index";

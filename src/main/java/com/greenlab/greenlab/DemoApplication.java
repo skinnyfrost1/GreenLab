@@ -24,8 +24,6 @@ public class DemoApplication implements CommandLineRunner {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-
-
 	@Autowired
 	private UserEquipmentRepository userEquipmentRepository;
 
@@ -66,7 +64,6 @@ public class DemoApplication implements CommandLineRunner {
 
 		if( userEquipment == null ){
 
-
 			LinkedList<String> folderIds = new LinkedList<>();
 			UserEquipmentFolder userEquipmentFolder;
 
@@ -96,9 +93,6 @@ public class DemoApplication implements CommandLineRunner {
 		}else{
 
 		}
-
-
-
 
 	}
 
