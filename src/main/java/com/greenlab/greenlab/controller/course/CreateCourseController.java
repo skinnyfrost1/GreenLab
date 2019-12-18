@@ -110,7 +110,10 @@ public class CreateCourseController {
         List<User> students = new ArrayList<>();
         Course course = new Course(courseId, courseName, semester, courseDescription,createDate,creator,students,labs);
         System.out.println(course.toString());
-        courseRepository.save(course);
+
+
+
+        courseRepository.save(course);                // so the code should be save here
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
