@@ -356,6 +356,8 @@ $(document).ready(function () {
     showProperties(selected, "selectedEquipment");
     showProperties(associated, "associatedEquipment")
     $("#interactionButton").css("visibility", "hidden");
+    $("#addToAssociated").html("");
+    $("#getFromAssociated").html("");
 
 
 
@@ -630,9 +632,11 @@ $(document).ready(function () {
       $("#solutionASubmit").css("visibility", "visible");
       $("#solutionAPart1").html("");
       $("#solutionASubmit").click(function () {
+        $('#solutionA').html('');
         solutionMaterialsA = [];
         NewLookA_id = "";
         setStepInfo();
+        
         //debug 
         console.log("check S data" + NewLookS_id);
         if (!solutionMaterialsS || solutionMaterialsS.length == 0) {
@@ -783,7 +787,7 @@ $(document).ready(function () {
               $('#' + associatedData.htmlid).css('width', width + 'px');
               $('#' + associatedData.htmlid).css('height', height + 'px');
             }
-
+            $("#stepInfo").html("");
           },
           error: function (e) {
           }

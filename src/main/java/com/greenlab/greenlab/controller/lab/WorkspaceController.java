@@ -183,16 +183,33 @@ public class WorkspaceController {
 
         LabEquipment selectedData = labEquipmentFactory(reqBody.getSelectedData(), reqBody.getSelectedData_material(),
                 reqBody.getSelectedData_quantity(), reqBody.getSelectedData_unit());
+        System.out.println(selectedData.toString());
 
         LabEquipment associatedData = labEquipmentFactory(reqBody.getAssociatedData(),
                 reqBody.getAssociatedData_material(), reqBody.getAssociatedData_quantity(),
                 reqBody.getAssociatedData_unit());
+        System.out.println(associatedData.toString());
 
         List<LabMaterials> solutionMaterialsS = labMaterialsFactory(reqBody.getSolutionMaterialsS_material(),
                 reqBody.getSolutionMaterialsS_quantity(), reqBody.getSolutionMaterialsS_unit());
 
+        if (solutionMaterialsS != null || solutionMaterialsS.isEmpty()) {
+            System.out.println("-------------solutionMaterialsS -----------size=" + solutionMaterialsS.size());
+            for (LabMaterials l : solutionMaterialsS) {
+                System.out.println(l);
+            }
+        }
+
         List<LabMaterials> solutionMaterialsA = labMaterialsFactory(reqBody.getSolutionMaterialsA_material(),
                 reqBody.getSolutionMaterialsA_quantity(), reqBody.getSolutionMaterialsA_unit());
+
+        if (solutionMaterialsA != null || solutionMaterialsA.isEmpty()) {
+            System.out.println("--------------solutionMaterialsA -----------size=" + solutionMaterialsA.size());
+
+            for (LabMaterials l : solutionMaterialsA) {
+                System.out.println(l);
+            }
+        }
 
         String _id = reqBody.get_id();
         Lab lab = labRepo.findBy_id(_id);
@@ -216,10 +233,7 @@ public class WorkspaceController {
         if (les != null) {
             System.out.println("NewlookS_id =" + currentStep.getNewLookS_id());
             if (currentStep.getNewLookS_id() == null || currentStep.getNewLookS_id().length() == 0) {
-                // if (reqBody.getSolutionMaterialsS_material()== null
-                // ||currentStep.getSolutionMaterialsS() == null) {
-                if (reqBody.getSolutionMaterialsS_material() == null) {
-
+                if (currentStep.getSolutionMaterialsS() == null || currentStep.getSolutionMaterialsS().size() == 0) {
                     les = currentStep.getSelectedData();
                 } else {
                     les = currentStep.getSelectedData();
@@ -234,7 +248,7 @@ public class WorkspaceController {
                 // System.out.println(imageS);
                 LabEquipment newLookLabEquipment = new LabEquipment(newLookEquipment,
                         currentStep.getSelectedData().getHtmlid(), currentStep.getSelectedData().getNickname());
-                if (currentStep.getSolutionMaterialsS() == null) {
+                if (currentStep.getSolutionMaterialsS() == null || currentStep.getSolutionMaterialsS().size() == 0) {
                     newLookLabEquipment.setMaterials(currentStep.getSelectedData().getMaterials());
                 } else {
                     newLookLabEquipment.setMaterials(currentStep.getSolutionMaterialsS());
@@ -248,7 +262,7 @@ public class WorkspaceController {
         les = findLabEquipmentByHtmlid(labequipments, currentStep.getAssociatedData().getHtmlid());
         if (les != null) {
             if (currentStep.getNewLookA_id() == null || currentStep.getNewLookA_id().length() == 0) {
-                if (currentStep.getSolutionMaterialsA() == null) {
+                if (currentStep.getSolutionMaterialsA() == null || currentStep.getSolutionMaterialsA().size() == 0) {
                     les = currentStep.getAssociatedData();
                 } else {
                     les = currentStep.getAssociatedData();
@@ -260,7 +274,7 @@ public class WorkspaceController {
                 imageA = "data:image/png;base64," + imageA;
                 LabEquipment newLookLabEquipment = new LabEquipment(newLookEquipment,
                         currentStep.getAssociatedData().getHtmlid(), currentStep.getAssociatedData().getNickname());
-                if (currentStep.getSolutionMaterialsA() == null) {
+                if (currentStep.getSolutionMaterialsA() == null || currentStep.getSolutionMaterialsA().size() == 0) {
                     newLookLabEquipment.setMaterials(currentStep.getAssociatedData().getMaterials());
                 } else {
                     newLookLabEquipment.setMaterials(currentStep.getSolutionMaterialsA());
