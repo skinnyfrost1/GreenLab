@@ -86,45 +86,59 @@ public class CreateLabController {
         labName = labName.replaceAll(" ", "");
         labName = labName.toUpperCase();
         // String id = courseId + labName + creator;
-        // Lab lab = new Lab(id, courseId, labName, labDiscription, creator, preparedEquipment);
+        // Lab lab = new Lab(id, courseId, labName, labDiscription, creator,
+        // preparedEquipment);
         Lab lab = new Lab(courseId, labName, labDiscription, creator, preparedEquipment);
         labRepository.save(lab);
-        System.out.println("lab.getId="+lab.get_id());
-        return "redirect:/lab/create/workspace/"+lab.get_id();
+        System.out.println("lab.getId=" + lab.get_id());
+        return "redirect:/lab/create/workspace/" + lab.get_id();
     }
 
     @GetMapping(value = "/lab/create/workspace/{_id}")
     public String getLabCreateWorkspace(@PathVariable String _id, HttpServletRequest request, ModelMap model) {
         if (request.getSession().getAttribute("email") == null)
             return "redirect:/login";
-        if (!request.getSession().getAttribute("role").equals("professor")){
+        if (!request.getSession().getAttribute("role").equals("professor")) {
             return "redirect:/login";
         }
 
-        System.out.println("[GET]create/workspace/"+_id);
+        System.out.println("[GET]create/workspace/" + _id);
         Lab lab = labRepository.findBy_id(_id);
-        List<Equipment> preparedEquipment = lab.getPreparedEquipment();
-        List<ResponseEquipment> equipments = new ArrayList<>();
-        ResponseEquipment tempRE;
-        for (Equipment equipment : preparedEquipment) {
-            String image = Base64.getEncoder().encodeToString(equipment.getImage().getData());
-            image = "data:image/png;base64," + image;
-            // System.out.println(image);
-            tempRE = new ResponseEquipment();
-            tempRE.set_id(equipment.get_id());
-            tempRE.setEquipmentName(equipment.getEquipmentName());
-            tempRE.setDescription(equipment.getDescription());
-            tempRE.setCreator(equipment.getCreator());
-            tempRE.setMaterial(equipment.isMaterial());
-            tempRE.setBlandable(equipment.isBlandable());
-            tempRE.setBlander(equipment.isBlander());
-            tempRE.setHeatable(equipment.isHeater());
-            tempRE.setHeatable(equipment.isHeatable());
-            tempRE.setImage(image);
-            equipments.add(tempRE);
+        if (lab != null) {
+            List<Equipment> preparedEquipment = lab.getPreparedEquipment();
+            List<ResponseEquipment> equipments = new ArrayList<>();
+            ResponseEquipment tempRE;
+            if (preparedEquipment != null) {
+                for (Equipment equipment : preparedEquipment) {
+                    if (equipment.isSolution())
+                        continue;
+                    String image = Base64.getEncoder().encodeToString(equipment.getImage().getData());
+                    image = "data:image/png;base64," + image;
+                    // System.out.println(image);
+                    tempRE = new ResponseEquipment();
+                    tempRE.set_id(equipment.get_id());
+                    tempRE.setEquipmentName(equipment.getEquipmentName());
+                    tempRE.setDescription(equipment.getDescription());
+                    tempRE.setCreator(equipment.getCreator());
+                    tempRE.setMaterial(equipment.isMaterial());
+                    tempRE.setBlandable(equipment.isBlandable());
+                    tempRE.setBlander(equipment.isBlander());
+                    tempRE.setHeatable(equipment.isHeater());
+                    tempRE.setHeatable(equipment.isHeatable());
+                    tempRE.setImage(image);
+                    equipments.add(tempRE);
+                }
+            }
+            model.addAttribute("preparedEquipments", equipments);
+            model.addAttribute("lab", lab);
+            return "profCreateLab";
         }
-        model.addAttribute("preparedEquipments",equipments);
-        return "profCreateLab";
+        else{
+            model.addAttribute("errormsg","can't find the lab"+_id);
+            return "error";
+        }
+
+        
     }
 
 }

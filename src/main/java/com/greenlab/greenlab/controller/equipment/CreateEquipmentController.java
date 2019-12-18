@@ -37,8 +37,9 @@ public class CreateEquipmentController {
     @PostMapping(value = "/equipment/create")
     public String postEquipmentCreate(@RequestParam("equipmentName") String equipmentName,
             @RequestParam("description") String description, @RequestParam("isMaterial") String isMaterialString,
-            @RequestParam("blander") String blanderString, @RequestParam("blandable") String blandableString,
-            @RequestParam("heater") String heaterString, @RequestParam("heatable") String heatableString,
+            @RequestParam("unit") String unit, @RequestParam("blander") String blanderString,
+            @RequestParam("blandable") String blandableString, @RequestParam("heater") String heaterString,
+            @RequestParam("heatable") String heatableString, @RequestParam("solution") String solutionString,
             @RequestParam("image") MultipartFile file, HttpServletRequest request, ModelMap model) throws IOException {
 
         String role = (String) request.getSession().getAttribute("role");
@@ -54,28 +55,33 @@ public class CreateEquipmentController {
         Boolean blander = false;
         Boolean heatable = false;
         Boolean heater = false;
+        Boolean solution = false;
 
         if (isMaterialString.equals("yes"))
-        material = true;
-        if (blandableString.equals("yes"))
-        blandable = true;
-        if (blanderString.equals("yes"))
-        blander = true;
-        if (heatableString.equals("yes"))
-        heatable = true;
-        if (heaterString.equals("yes"))
-        heater = true;
+            material = true;
+        else {
+            if (blandableString.equals("yes"))
+                blandable = true;
+            if (blanderString.equals("yes"))
+                blander = true;
+            if (heatableString.equals("yes"))
+                heatable = true;
+            if (heaterString.equals("yes"))
+                heater = true;
+            if (solutionString.equals("yes"))
+                solution = true;
+        }
 
-        Equipment equipment = new Equipment(equipmentName, description, creator, material, blandable, blander,
-                heatable, heater);
+        Equipment equipment = new Equipment(equipmentName, description, creator, material, unit, blandable, blander, heatable,
+                heater, solution);
         equipment.setImage(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
         equipmentRepository.save(equipment);
 
-        // return "profViewEquip";
+        return "redirect:/equipments";
 
-        // debug
-        model.addAttribute("errormsg", equipment.toString());
-        return "error";
+        // // debug
+        // model.addAttribute("errormsg", equipment.toString());
+        // return "error";
     }
 
 }

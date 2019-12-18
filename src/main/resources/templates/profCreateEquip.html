@@ -101,13 +101,19 @@
           placeholder="Beaker" required><br>
         <div class=" webfont" style="text-align:left; margin: 0.5em 0;">Description</div>
         <textarea type="text" name="description" value="" maxlength="300" class="createCourseTextArea webfont"
-          placeholder="A beaker here!" required></textarea><br>
+                  placeholder="A beaker here!" required></textarea><br>
         <div>
-          <div class="webfont" style=" padding: 2px; text-align: left; ">Is it a material?
-              <input id="isMaterial_yes" type="radio" name="isMaterial" value="yes"> Yes
-              <input id="isMaterial_no" type="radio" name="isMaterial" value="no" checked="checked">No<br />
+          <div class="isMaterial">
+            <div class="webfont" style=" padding: 2px; text-align: left; ">Is it a material?
+                <input id="isMaterial_yes" type="radio" name="isMaterial" value="yes"> Yes
+                <input id="isMaterial_no" type="radio" name="isMaterial" value="no" checked="checked">No<br />
+            </div>
           </div>
-
+          <div class="unitText" id="unitText" >
+            <div class="webfont" style=" padding: 2px; text-align: left; ">Unit:
+              <input id="unit" type="text" name="unit">
+            </div>
+          </div>
           <div class="webfont" style=" padding: 2px; text-align: left; ">Is it a blander?
               <input id="blander_yes" type="radio" name="blander" value="yes"> Yes
               <input id="blander_no" type="radio" name="blander" value="no" checked="checked">No<br />
@@ -126,6 +132,12 @@
           <div class="webfont" style=" padding: 2px; text-align: left; ">Is it heaterable
               <input id="heatable_yes" type="radio" name="heatable" value="yes"> Yes
               <input id="heatable_no" type="radio" name="heatable" value="no" checked="checked">No<br />
+          </div>
+          <div class="isSolutionContainer" id="isSolutionContainer">
+            <div class="webfont" style=" padding: 2px; text-align: left; ">Is it a solution object?
+                <input id="solution_yes" type="radio" name="solution" value="yes"> Yes
+                <input id="solution" type="radio" name="solution" value="no" checked="checked">No<br />
+            </div>
           </div>
           <br>
 

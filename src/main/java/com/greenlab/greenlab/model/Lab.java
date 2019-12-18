@@ -3,6 +3,7 @@ package com.greenlab.greenlab.model;
 import java.util.List;
 
 import com.greenlab.greenlab.lab.LabEquipment;
+import com.greenlab.greenlab.lab.Step;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -26,8 +27,8 @@ public class Lab {
     private String stepObjectId;
     @DBRef
     private List<Equipment> preparedEquipment; // equipments which the professor pick to use in the lab.
-    private List<LabEquipment> equipmentInLab; // equipments that have been created in Lab.
-    // private List<Steps> steps;
+    private List<LabEquipment> equipmentsInLab; // equipments that have been created in Lab.
+    private List<Step> steps;
 
     private Boolean doneWorkSpace;
 
