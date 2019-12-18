@@ -39,7 +39,7 @@
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
                                 <div class="dropdown-content"><a th:href="@{/courses}">View Labs</a></div>
-                                <div class="dropdown-content"><a th:href="">Do Lab</a></div>
+<!--                                <div class="dropdown-content"><a th:href="">Do Lab</a></div>-->
                             </div>
                         </div>
                     </td>
@@ -106,7 +106,7 @@
                             <div class="webfont" th:text="'[ ' + ${course.semester} + ' ]'"></div>
                         </td>
                         <td class="courseCellPadding">
-                            <div class="webfont">Lab 01</div>
+                            <div class="webfont" th:text="${lab.getLabName()}"></div>
                         </td>
 
                     </tr>
@@ -125,6 +125,6 @@
 <!--    <div style="text-align:right;">-->
 <!--    </div>-->
 <!-- </form> -->
-<form id='deleteForm' th:action="@{/courses/drop}" method = "post"></form>
+<form id='deleteForm' th:action="@{/course/drop}" method = "post"></form>
 </body>
 </html>
