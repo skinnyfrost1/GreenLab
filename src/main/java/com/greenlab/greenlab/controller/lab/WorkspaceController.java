@@ -9,12 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.greenlab.greenlab.dto.AddEquipmentToWorkspaceRequestBody;
 import com.greenlab.greenlab.dto.AddEquipmentToWorkspaceResponseBody;
+import com.greenlab.greenlab.dto.AddStepRequestBody;
 import com.greenlab.greenlab.dto.AddStepResponseBody;
 import com.greenlab.greenlab.dto.BooleanResponseBody;
 import com.greenlab.greenlab.dto.NewLooksResponseBody;
 import com.greenlab.greenlab.dto.ResponseEquipment;
 import com.greenlab.greenlab.dto.SingleStringRequestBody;
 import com.greenlab.greenlab.lab.LabEquipment;
+import com.greenlab.greenlab.lab.LabMaterials;
 import com.greenlab.greenlab.lab.Step;
 import com.greenlab.greenlab.model.Equipment;
 import com.greenlab.greenlab.model.Lab;
@@ -138,9 +140,34 @@ public class WorkspaceController {
     }
 
     @PostMapping("/lab/create/workspace/addstep/")
-    public ResponseEntity<?> postLabCreateWorkspaceAddstep(@RequestBody Step reqBody, HttpServletRequest request,
-            Errors errors) {
+    public ResponseEntity<?> postLabCreateWorkspaceAddstep(@RequestBody AddStepRequestBody reqBody,
+            HttpServletRequest request, Errors errors) {
+
         AddStepResponseBody result = new AddStepResponseBody();
+
+        // -----------------begin of debug------------------------------
+        // System.out.println("_id=" + reqBody.get_id());
+        // System.out.println("NewLookS_id= " + reqBody.getNewLookS_id());
+        // System.out.println("NewLookA_id= " + reqBody.getNewLookA_id());
+        // System.out.println("StepNumber= " + reqBody.getStepnumber());
+        // System.out.println("hint = " + reqBody.getHint());
+        // for (Integer i : reqBody.getSelectedData_quantity()){
+        // System.out.println(i);
+        // }
+
+        // if (reqBody.getSelectedData().isMaterial()){
+        // System.out.println("htmlid="+reqBody.getSelectedData().getHtmlid());
+        // }
+
+        // if (reqBody.getSelectedData().isMaterial()){
+        // System.out.println("yes!!material!!");
+        // }
+        // if (reqBody.getSelectedData_htmlid()==null){
+        // System.out.println("htmlid=null");
+        // }
+        // else System.out.println("htmlid="+reqBody.getSelectedData_htmlid());
+
+        // -----------------end of debug ------------------------------
         if (errors.hasErrors()) {
             result.setMessage(
                     errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
@@ -154,6 +181,20 @@ public class WorkspaceController {
             result.setMessage("Only Professor can add equipment to lab.");
             return ResponseEntity.badRequest().body(result);
         }
+
+        LabEquipment selectedData = labEquipmentFactory(reqBody.getSelectedData(), reqBody.getSelectedData_material(),
+                reqBody.getSelectedData_quantity(), reqBody.getSelectedData_unit());
+
+        LabEquipment associatedData = labEquipmentFactory(reqBody.getAssociatedData(),
+                reqBody.getAssociatedData_material(), reqBody.getAssociatedData_quantity(),
+                reqBody.getAssociatedData_unit());
+
+        List<LabMaterials> solutionMaterialsS = labMaterialsFactory(reqBody.getSolutionMaterialsS_material(),
+                reqBody.getSolutionMaterialsS_quantity(), reqBody.getSolutionMaterialsS_unit());
+
+        List<LabMaterials> solutionMaterialsA = labMaterialsFactory(reqBody.getSolutionMaterialsA_material(),
+                reqBody.getSolutionMaterialsA_quantity(), reqBody.getSolutionMaterialsA_unit());
+
         String _id = reqBody.get_id();
         Lab lab = labRepo.findBy_id(_id);
         List<Step> steps = lab.getSteps();
@@ -161,72 +202,71 @@ public class WorkspaceController {
         if (steps == null) {
             steps = new ArrayList<>();
         }
-        steps.add(reqBody);
+        Step currentStep = new Step(selectedData, associatedData, solutionMaterialsS, solutionMaterialsA,
+                reqBody.getNewLookS_id(), reqBody.getNewLookA_id(), reqBody.getStepnumber(), reqBody.getHint());
+        steps.add(currentStep);
 
         LabEquipment labEquipS = null;
         LabEquipment labEquipA = null;
-        String imageS =null;
+        String imageS = null;
         String imageA = null;
 
-
         List<LabEquipment> labequipments = lab.getEquipmentsInLab();
-        //processing SlectedData
-        LabEquipment les = findLabEquipmentByHtmlid(labequipments, reqBody.getSelectedData().getHtmlid());
+        // // processing SlectedData
+        LabEquipment les = findLabEquipmentByHtmlid(labequipments, currentStep.getSelectedData().getHtmlid());
         if (les != null) {
-            if (reqBody.getNewLookS_id() == null || reqBody.getNewLookS_id().length() == 0) {
-                if (reqBody.getSolutionMaterialsS() == null) {
-                    les = reqBody.getSelectedData();
+            System.out.println("NewlookS_id =" + currentStep.getNewLookS_id());
+            if (currentStep.getNewLookS_id() == null || currentStep.getNewLookS_id().length() == 0) {
+                if (currentStep.getSolutionMaterialsS() == null) {
+                    les = currentStep.getSelectedData();
                 } else {
-                    les = reqBody.getSelectedData();
-                    les.setMaterials(reqBody.getSolutionMaterialsS());
+                    les = currentStep.getSelectedData();
+                    les.setMaterials(currentStep.getSolutionMaterialsS());
                 }
-            } 
-            //new picture. 
+            }
+            // new picture.
             else {
-                Equipment newLookEquipment = equipRepo.findBy_id(reqBody.getNewLookS_id());
+                Equipment newLookEquipment = equipRepo.findBy_id(currentStep.getNewLookS_id());
                 imageS = Base64.getEncoder().encodeToString(newLookEquipment.getImage().getData());
                 imageS = "data:image/png;base64," + imageS;
+                // System.out.println(imageS);
                 LabEquipment newLookLabEquipment = new LabEquipment(newLookEquipment,
-                        reqBody.getSelectedData().getHtmlid(), reqBody.getSelectedData().getNickname());
-                if (reqBody.getSolutionMaterialsS() == null) {
-                    newLookLabEquipment.setMaterials(reqBody.getSelectedData().getMaterials());
+                        currentStep.getSelectedData().getHtmlid(), currentStep.getSelectedData().getNickname());
+                if (currentStep.getSolutionMaterialsS() == null) {
+                    newLookLabEquipment.setMaterials(currentStep.getSelectedData().getMaterials());
                 } else {
-                    newLookLabEquipment.setMaterials(reqBody.getSolutionMaterialsS());
+                    newLookLabEquipment.setMaterials(currentStep.getSolutionMaterialsS());
                 }
                 les.copy(newLookLabEquipment);
             }
-            labEquipS =les;
+            labEquipS = les;
         }
 
-        //Processing AssociatedData
-        les = findLabEquipmentByHtmlid(labequipments, reqBody.getAssociatedData().getHtmlid());
+        // // Processing AssociatedData
+        les = findLabEquipmentByHtmlid(labequipments, currentStep.getAssociatedData().getHtmlid());
         if (les != null) {
-            if (reqBody.getNewLookA_id() == null || reqBody.getNewLookA_id().length() == 0) {
-                if (reqBody.getSolutionMaterialsA() == null) {
-                    les = reqBody.getAssociatedData();
+            if (currentStep.getNewLookA_id() == null || currentStep.getNewLookA_id().length() == 0) {
+                if (currentStep.getSolutionMaterialsA() == null) {
+                    les = currentStep.getAssociatedData();
                 } else {
-                    les = reqBody.getAssociatedData();
-                    les.setMaterials(reqBody.getSolutionMaterialsA());
+                    les = currentStep.getAssociatedData();
+                    les.setMaterials(currentStep.getSolutionMaterialsA());
                 }
-            }
-            else{
-                Equipment newLookEquipment = equipRepo.findBy_id(reqBody.getNewLookA_id());
+            } else {
+                Equipment newLookEquipment = equipRepo.findBy_id(currentStep.getNewLookA_id());
                 imageA = Base64.getEncoder().encodeToString(newLookEquipment.getImage().getData());
                 imageA = "data:image/png;base64," + imageA;
                 LabEquipment newLookLabEquipment = new LabEquipment(newLookEquipment,
-                        reqBody.getAssociatedData().getHtmlid(), reqBody.getAssociatedData().getNickname());
-                if (reqBody.getSolutionMaterialsA() == null) {
-                    newLookLabEquipment.setMaterials(reqBody.getAssociatedData().getMaterials());
+                        currentStep.getAssociatedData().getHtmlid(), currentStep.getAssociatedData().getNickname());
+                if (currentStep.getSolutionMaterialsA() == null) {
+                    newLookLabEquipment.setMaterials(currentStep.getAssociatedData().getMaterials());
                 } else {
-                    newLookLabEquipment.setMaterials(reqBody.getSolutionMaterialsA());
+                    newLookLabEquipment.setMaterials(currentStep.getSolutionMaterialsA());
                 }
                 les.copy(newLookLabEquipment);
             }
-            labEquipA =les;
+            labEquipA = les;
         }
-
-
-
 
         labRepo.save(lab);
         result.setLabEquipS(labEquipS);
@@ -234,9 +274,7 @@ public class WorkspaceController {
         result.setImageS(imageS);
         result.setImageA(imageA);
         result.setMessage("Success!");
-
         return ResponseEntity.ok(result);
-
     }
 
     public LabEquipment findLabEquipmentByHtmlid(List<LabEquipment> labEquipments, String htmlid) {
@@ -246,5 +284,38 @@ public class WorkspaceController {
             }
         }
         return null;
+    }
+
+    public LabEquipment labEquipmentFactory(LabEquipment selectedData, List<String> material, List<Integer> quantity,
+            List<String> unit) {
+        LabEquipment le = new LabEquipment();
+        le.setEquipment_id(selectedData.getEquipment_id());
+        le.setHtmlid(selectedData.getHtmlid());
+        le.setNickname(selectedData.getNickname());
+        le.setMaterial(selectedData.isMaterial());
+        le.setBlandable(selectedData.isBlandable());
+        le.setBlander(selectedData.isBlander());
+        le.setHeatable(selectedData.isHeatable());
+        le.setHeater(selectedData.isHeater());
+
+        LabMaterials buffer;
+        List<LabMaterials> materials = new ArrayList<>();
+        for (int i = 0; i < material.size(); i++) {
+            buffer = new LabMaterials(material.get(i), quantity.get(i), unit.get(i));
+            materials.add(buffer);
+        }
+        le.setMaterials(materials);
+        return le;
+
+    }
+
+    public List<LabMaterials> labMaterialsFactory(List<String> material, List<Integer> quantity, List<String> unit) {
+        LabMaterials buffer;
+        List<LabMaterials> materials = new ArrayList<>();
+        for (int i = 0; i < material.size(); i++) {
+            buffer = new LabMaterials(material.get(i), quantity.get(i), unit.get(i));
+            materials.add(buffer);
+        }
+        return materials;
     }
 }

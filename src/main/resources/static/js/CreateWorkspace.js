@@ -1,8 +1,8 @@
- //(╯°Д°)╯︵ ┻━┻
+//(╯°Д°)╯︵ ┻━┻
 $(document).ready(function () {
   var mousex = 0, mousey = 0; //这个..我也不知道是什么,网上找回来的代码原本就有了,要来做拖动用的.
   var divLeft, divTop;        //这个..我也不知道是什么,网上找回来的代码原本就有了,要来做拖动用的.
-  
+
   let equips = [];            //所有的equipoment的id都会放在这里
   let equipsData = [];
   let selected;               //你正在拖动的equip的id
@@ -19,10 +19,10 @@ $(document).ready(function () {
   let hint;
 
 
-  
 
 
-  
+
+
   //(╯°Д°)╯︵ ┻━┻
 
   let solutionMaterialCounter = 1;
@@ -657,60 +657,112 @@ $(document).ready(function () {
       // $("#solutionADetails").css("visibility","visible");
     });
 
-    function setStepInfo(){ 
-      var htmlDOM = 'Write a hint for this step.</br>'+
-      '<input type="text" id = "stepInfoInput" name="stepInfoInput"></br>'+
-      '<button id="stepInfoSubmit">Submit</button> '
+    function setStepInfo() {
+      var htmlDOM = 'Write a hint for this step.</br>' +
+        '<input type="text" id = "stepInfoInput" name="stepInfoInput"></br>' +
+        '<button id="stepInfoSubmit">Submit</button> '
       $("#stepInfo").html(htmlDOM);
-      $('#stepInfoSubmit').click(function (){
+      $('#stepInfoSubmit').click(function () {
         hint = $('input[name=stepInfoInput]').val();
-        console.log("hint="+hint);
-        addStep();
-      });
-    }
-    function addStep(){
-      stepnumber+=1;
+        console.log("hint=" + hint);
+        //post step
 
-      var posting ={};
-      posting['selectedData']=selectedData;
-      posting['associatedData'] = associatedData
-      posting['solutionMaterialsS'] = solutionMaterialsS 
-      posting['solutionMaterialsA ']=solutionMaterialsA
-      posting['NewLookS_id'] =NewLookS_id
-      posting['NewLookA_id'] =NewLookA_id
-      posting['stepnumber'] =stepnumber
-      posting['hint'] =hint;
-      posting['_id'] = lab_id;
+        //post factory
 
-      $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: "/lab/create/workspace/addstep/",
-        data: JSON.stringify(posting),
-        dataType: 'json',
-        cache: false,
-        timeout: 600000,
-        success: function (result) {
-          console.log(result)
-          
+  //                           (╯°Д°)╯︵ ┻━┻ 
 
-        },
-        error: function (e) {
+        stepnumber =stepnumber + 1;
+        var posting = {};
+
+        
+
+        ///////////////////////
+        // posting['selectedData_htmlid'] = selectedData.htmlid
+        posting['selectedData'] = selectedData
+
+        var selectedData_material = [];
+        var selectedData_quantity = [];
+        var selectedData_unit = [];
+        for(var i =0; i<selectedData.materials.length;i++){
+          selectedData_material.push(selectedData.materials[i].material);
+          selectedData_quantity.push(selectedData.materials[i].quantity);
+          selectedData_unit.push(selectedData.materials[i].unit);
         }
+        posting['selectedData_material']=selectedData_material;
+        posting['selectedData_quantity']=selectedData_quantity;
+        posting['selectedData_unit']=selectedData_unit;
+
+        /////////////////////////////////
+        // posting['associatedData_htmlid'] = associatedData.htmlid
+        posting['associatedData'] = associatedData
+        var associatedData_material = [];
+        var associatedData_quantity = [];
+        var associatedData_unit = [];
+        for(var i =0; i<associatedData.materials.length;i++){
+          associatedData_material.push(associatedData.materials[i].material);
+          associatedData_quantity.push(associatedData.materials[i].quantity);
+          associatedData_unit.push(associatedData.materials[i].unit);
+        }
+        posting['associatedData_material']=associatedData_material;
+        posting['associatedData_quantity']=associatedData_quantity;
+        posting['associatedData_unit']=associatedData_unit;
+
+        /////////////////////////////////
+        // posting['solutionMaterialsS'] = solutionMaterialsS
+        var solutionMaterialsS_material = [];
+        var solutionMaterialsS_quantity = [];
+        var solutionMaterialsS_unit = [];
+        for(var i =0; i<solutionMaterialsS.length;i++){
+          solutionMaterialsS_material.push(solutionMaterialsS[i].material);
+          solutionMaterialsS_quantity.push(solutionMaterialsS[i].quantity);
+          solutionMaterialsS_unit.push(solutionMaterialsS[i].unit);
+        }
+        posting['solutionMaterialsS_material']=solutionMaterialsS_material;
+        posting['solutionMaterialsS_quantity']=solutionMaterialsS_quantity;
+        posting['solutionMaterialsS_unit']=solutionMaterialsS_unit;
+
+        ///////////////////////////////////////////
+        // posting['solutionMaterialsA'] = solutionMaterialsA
+        var solutionMaterialsA_material = [];
+        var solutionMaterialsA_quantity = [];
+        var solutionMaterialsA_unit = [];
+        for(var i =0; i<solutionMaterialsA.length;i++){
+          solutionMaterialsA_material.push(solutionMaterialsA[i].material);
+          solutionMaterialsA_quantity.push(solutionMaterialsA[i].quantity);
+          solutionMaterialsA_unit.push(solutionMaterialsA[i].unit);
+        }
+        posting['solutionMaterialsA_material']=solutionMaterialsA_material;
+        posting['solutionMaterialsA_quantity']=solutionMaterialsA_quantity;
+        posting['solutionMaterialsA_unit']=solutionMaterialsA_unit;
+        posting['newLookS_id'] = NewLookS_id
+        posting['newLookA_id'] = NewLookA_id
+        posting['stepnumber'] = stepnumber
+        posting['hint'] = hint;
+        posting['_id'] = lab_id;
+
+        $.ajax({
+          type: "POST",
+          contentType: "application/json",
+          url: "/lab/create/workspace/addstep/",
+          data: JSON.stringify(posting),
+          dataType: 'json',
+          cache: false,
+          timeout: 600000,
+          success: function (result) {
+            console.log(result)
+
+
+          },
+          error: function (e) {
+          }
+        });
+
+        // addStep();
       });
-
-
-
-
-
-
-
-
-   
+    }
+    function addStep() {
 
     }
-
-
   }
 
 
@@ -836,5 +888,5 @@ $(document).ready(function () {
     unSelected();
     unAssociated();
   }
-   //(╯°Д°)╯︵ ┻━┻
+  //(╯°Д°)╯︵ ┻━┻
 });
