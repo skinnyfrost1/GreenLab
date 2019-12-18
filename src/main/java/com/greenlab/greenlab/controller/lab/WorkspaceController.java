@@ -138,7 +138,7 @@ public class WorkspaceController {
     }
 
     @PostMapping("/lab/create/workspace/addstep/")
-    public ResponseEntity<?> postLabCreateWorkspaceAddstep(@RequestBody Step step, HttpServletRequest request,
+    public ResponseEntity<?> postLabCreateWorkspaceAddstep(@RequestBody Step reqBody, HttpServletRequest request,
             Errors errors) {
         AddStepResponseBody result = new AddStepResponseBody();
         if (errors.hasErrors()) {
@@ -154,42 +154,78 @@ public class WorkspaceController {
             result.setMessage("Only Professor can add equipment to lab.");
             return ResponseEntity.badRequest().body(result);
         }
-        String _id = step.get_id();
+        String _id = reqBody.get_id();
         Lab lab = labRepo.findBy_id(_id);
         List<Step> steps = lab.getSteps();
         // create a new List.
         if (steps == null) {
             steps = new ArrayList<>();
         }
-        steps.add(step);
+        steps.add(reqBody);
 
-        Equipment equipS = equipRepo.findBy_id(step.getNewLookS_id());
-        String htmlid = step.getSelectedData().getHtmlid();
-        String nickname = step.getSelectedData().getNickname();
-        LabEquipment labEquipS = new LabEquipment(equipS, htmlid, nickname);
-        String imageS = Base64.getEncoder().encodeToString(equipS.getImage().getData());
-                imageS = "data:image/png;base64," + imageS;
+        LabEquipment labEquipS = null;
+        LabEquipment labEquipA = null;
+        String imageS =null;
+        String imageA = null;
 
-        Equipment equipA = equipRepo.findBy_id(step.getNewLookA_id());
-        htmlid = step.getAssociatedData().getHtmlid();
-        nickname = step.getAssociatedData().getNickname();
-        LabEquipment labEquipA = new LabEquipment(equipA, htmlid, nickname);
-        String imageA = Base64.getEncoder().encodeToString(equipA.getImage().getData());
-                imageA = "data:image/png;base64," + imageA;
 
         List<LabEquipment> labequipments = lab.getEquipmentsInLab();
-        if (labequipments != null) {
-            for (LabEquipment les : labequipments) {
-                if (les.getHtmlid().equals(labEquipS.getHtmlid())) {
-                    les.copy(labEquipS);
+        //processing SlectedData
+        LabEquipment les = findLabEquipmentByHtmlid(labequipments, reqBody.getSelectedData().getHtmlid());
+        if (les != null) {
+            if (reqBody.getNewLookS_id() == null || reqBody.getNewLookS_id().length() == 0) {
+                if (reqBody.getSolutionMaterialsS() == null) {
+                    les = reqBody.getSelectedData();
+                } else {
+                    les = reqBody.getSelectedData();
+                    les.setMaterials(reqBody.getSolutionMaterialsS());
                 }
-            }
-            for (LabEquipment lea : labequipments) {
-                if (lea.getHtmlid().equals(labEquipA.getHtmlid())) {
-                    lea.copy(labEquipA);
+            } 
+            //new picture. 
+            else {
+                Equipment newLookEquipment = equipRepo.findBy_id(reqBody.getNewLookS_id());
+                imageS = Base64.getEncoder().encodeToString(newLookEquipment.getImage().getData());
+                imageS = "data:image/png;base64," + imageS;
+                LabEquipment newLookLabEquipment = new LabEquipment(newLookEquipment,
+                        reqBody.getSelectedData().getHtmlid(), reqBody.getSelectedData().getNickname());
+                if (reqBody.getSolutionMaterialsS() == null) {
+                    newLookLabEquipment.setMaterials(reqBody.getSelectedData().getMaterials());
+                } else {
+                    newLookLabEquipment.setMaterials(reqBody.getSolutionMaterialsS());
                 }
+                les.copy(newLookLabEquipment);
             }
+            labEquipS =les;
         }
+
+        //Processing AssociatedData
+        les = findLabEquipmentByHtmlid(labequipments, reqBody.getAssociatedData().getHtmlid());
+        if (les != null) {
+            if (reqBody.getNewLookA_id() == null || reqBody.getNewLookA_id().length() == 0) {
+                if (reqBody.getSolutionMaterialsA() == null) {
+                    les = reqBody.getAssociatedData();
+                } else {
+                    les = reqBody.getAssociatedData();
+                    les.setMaterials(reqBody.getSolutionMaterialsA());
+                }
+            }
+            else{
+                Equipment newLookEquipment = equipRepo.findBy_id(reqBody.getNewLookA_id());
+                imageA = Base64.getEncoder().encodeToString(newLookEquipment.getImage().getData());
+                imageA = "data:image/png;base64," + imageA;
+                LabEquipment newLookLabEquipment = new LabEquipment(newLookEquipment,
+                        reqBody.getAssociatedData().getHtmlid(), reqBody.getAssociatedData().getNickname());
+                if (reqBody.getSolutionMaterialsA() == null) {
+                    newLookLabEquipment.setMaterials(reqBody.getAssociatedData().getMaterials());
+                } else {
+                    newLookLabEquipment.setMaterials(reqBody.getSolutionMaterialsA());
+                }
+                les.copy(newLookLabEquipment);
+            }
+            labEquipA =les;
+        }
+
+
 
 
         labRepo.save(lab);
@@ -201,5 +237,14 @@ public class WorkspaceController {
 
         return ResponseEntity.ok(result);
 
+    }
+
+    public LabEquipment findLabEquipmentByHtmlid(List<LabEquipment> labEquipments, String htmlid) {
+        for (LabEquipment l : labEquipments) {
+            if (l.getHtmlid().equals(htmlid)) {
+                return l;
+            }
+        }
+        return null;
     }
 }
