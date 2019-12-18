@@ -39,10 +39,31 @@ public class LabEquipment {
         this.heater = equipment.isHeater();
         // this.tempreature = 37;
         this.materials = new ArrayList<>();
-        if(material){
-            LabMaterials lm = new LabMaterials(equipment.getEquipmentName(),999999,equipment.getUnit());
+        if (material) {
+            LabMaterials lm = new LabMaterials(equipment.getEquipmentName(), 999999, equipment.getUnit());
             materials.add(lm);
         }
+    }
+
+    public void copy(LabEquipment le) {
+        this.equipment_id = le.getEquipment_id();
+        this.htmlid = le.getHtmlid();
+        this.nickname = le.getNickname();
+        this.material = le.isMaterial();
+        this.blandable = le.isBlandable();
+        this.blander = le.isBlander();
+        this.heatable = le.isHeatable();
+        this.heater = le.isHeater();
+        // private double tempreature;
+        List<LabMaterials> lms = new ArrayList<>();
+        if (le.materials!=null){
+            for (LabMaterials lm : le.getMaterials()){
+                LabMaterials buffer = new LabMaterials(lm.getMaterial(),lm.getQuantity(),lm.getUnit());
+                lms.add(buffer);
+            }
+        }
+        this.materials = lms;
+
     }
 
 }

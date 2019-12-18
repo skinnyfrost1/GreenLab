@@ -655,22 +655,18 @@ $(document).ready(function () {
         }
       })
       // $("#solutionADetails").css("visibility","visible");
-
-
     });
 
-    function setStepInfo(){
+    function setStepInfo(){ 
       var htmlDOM = 'Write a hint for this step.</br>'+
-      '<input type="text" id = "stepInfoInput" name="stepInfoInput">'+
-      '<button id="stepInfoSubmit"> '
-      $("#stepInfo").append(htmlDOM);
-
+      '<input type="text" id = "stepInfoInput" name="stepInfoInput"></br>'+
+      '<button id="stepInfoSubmit">Submit</button> '
+      $("#stepInfo").html(htmlDOM);
       $('#stepInfoSubmit').click(function (){
-        hint = $('input[name=stepInfoInput]').var();
+        hint = $('input[name=stepInfoInput]').val();
+        console.log("hint="+hint);
         addStep();
-
       });
-
     }
     function addStep(){
       stepnumber+=1;
@@ -680,11 +676,11 @@ $(document).ready(function () {
       posting['associatedData'] = associatedData
       posting['solutionMaterialsS'] = solutionMaterialsS 
       posting['solutionMaterialsA ']=solutionMaterialsA
-      posting['solutionEquipments'] =solutionEquipments
       posting['NewLookS_id'] =NewLookS_id
       posting['NewLookA_id'] =NewLookA_id
       posting['stepnumber'] =stepnumber
-      posting['hint'] =hint
+      posting['hint'] =hint;
+      posting['_id'] = lab_id;
 
       $.ajax({
         type: "POST",
@@ -695,7 +691,8 @@ $(document).ready(function () {
         cache: false,
         timeout: 600000,
         success: function (result) {
-          console.log(result.message)
+          console.log(result)
+          
 
         },
         error: function (e) {

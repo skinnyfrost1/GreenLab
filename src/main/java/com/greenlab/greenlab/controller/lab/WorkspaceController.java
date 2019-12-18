@@ -9,10 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.greenlab.greenlab.dto.AddEquipmentToWorkspaceRequestBody;
 import com.greenlab.greenlab.dto.AddEquipmentToWorkspaceResponseBody;
+import com.greenlab.greenlab.dto.AddStepResponseBody;
+import com.greenlab.greenlab.dto.BooleanResponseBody;
 import com.greenlab.greenlab.dto.NewLooksResponseBody;
 import com.greenlab.greenlab.dto.ResponseEquipment;
 import com.greenlab.greenlab.dto.SingleStringRequestBody;
 import com.greenlab.greenlab.lab.LabEquipment;
+import com.greenlab.greenlab.lab.Step;
 import com.greenlab.greenlab.model.Equipment;
 import com.greenlab.greenlab.model.Lab;
 import com.greenlab.greenlab.repository.EquipmentRepository;
@@ -20,14 +23,11 @@ import com.greenlab.greenlab.repository.LabRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jca.cci.connection.SingleConnectionFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-
 
 @Controller
 public class WorkspaceController {
@@ -81,8 +81,9 @@ public class WorkspaceController {
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping(value="/lab/create/workspace/getnewlooks")
-    public ResponseEntity<?> getMethodName(@RequestBody SingleStringRequestBody reqBody, HttpServletRequest request, Errors errors) {
+    @PostMapping(value = "/lab/create/workspace/getnewlooks")
+    public ResponseEntity<?> getMethodName(@RequestBody SingleStringRequestBody reqBody, HttpServletRequest request,
+            Errors errors) {
         NewLooksResponseBody result = new NewLooksResponseBody();
         if (errors.hasErrors()) {
             result.setMessage(
@@ -101,10 +102,10 @@ public class WorkspaceController {
         Lab lab = labRepo.findBy_id(_id);
         List<Equipment> preparedEquipments = lab.getPreparedEquipment();
         List<Equipment> solutionEquipments = new ArrayList<>();
-        for (Equipment equipment : preparedEquipments){
-            if (equipment.isSolution()){
+        for (Equipment equipment : preparedEquipments) {
+            if (equipment.isSolution()) {
                 solutionEquipments.add(equipment);
-                System.out.println("length of equiopment="+solutionEquipments.size());
+                System.out.println("length of equiopment=" + solutionEquipments.size());
             }
         }
 
@@ -135,6 +136,70 @@ public class WorkspaceController {
         result.setResEquipments(equipments);
         return ResponseEntity.ok(result);
     }
-       
-    
+
+    @PostMapping("/lab/create/workspace/addstep/")
+    public ResponseEntity<?> postLabCreateWorkspaceAddstep(@RequestBody Step step, HttpServletRequest request,
+            Errors errors) {
+        AddStepResponseBody result = new AddStepResponseBody();
+        if (errors.hasErrors()) {
+            result.setMessage(
+                    errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
+            return ResponseEntity.badRequest().body(result);
+        }
+        if (request.getSession().getAttribute("email") == null) {
+            result.setMessage("Please Login.");
+            return ResponseEntity.badRequest().body(result);
+        }
+        if (!request.getSession().getAttribute("role").equals("professor")) {
+            result.setMessage("Only Professor can add equipment to lab.");
+            return ResponseEntity.badRequest().body(result);
+        }
+        String _id = step.get_id();
+        Lab lab = labRepo.findBy_id(_id);
+        List<Step> steps = lab.getSteps();
+        // create a new List.
+        if (steps == null) {
+            steps = new ArrayList<>();
+        }
+        steps.add(step);
+
+        Equipment equipS = equipRepo.findBy_id(step.getNewLookS_id());
+        String htmlid = step.getSelectedData().getHtmlid();
+        String nickname = step.getSelectedData().getNickname();
+        LabEquipment labEquipS = new LabEquipment(equipS, htmlid, nickname);
+        String imageS = Base64.getEncoder().encodeToString(equipS.getImage().getData());
+                imageS = "data:image/png;base64," + imageS;
+
+        Equipment equipA = equipRepo.findBy_id(step.getNewLookA_id());
+        htmlid = step.getAssociatedData().getHtmlid();
+        nickname = step.getAssociatedData().getNickname();
+        LabEquipment labEquipA = new LabEquipment(equipA, htmlid, nickname);
+        String imageA = Base64.getEncoder().encodeToString(equipA.getImage().getData());
+                imageA = "data:image/png;base64," + imageA;
+
+        List<LabEquipment> labequipments = lab.getEquipmentsInLab();
+        if (labequipments != null) {
+            for (LabEquipment les : labequipments) {
+                if (les.getHtmlid().equals(labEquipS.getHtmlid())) {
+                    les.copy(labEquipS);
+                }
+            }
+            for (LabEquipment lea : labequipments) {
+                if (lea.getHtmlid().equals(labEquipA.getHtmlid())) {
+                    lea.copy(labEquipA);
+                }
+            }
+        }
+
+
+        labRepo.save(lab);
+        result.setLabEquipS(labEquipS);
+        result.setLabEquipA(labEquipA);
+        result.setImageS(imageS);
+        result.setImageA(imageA);
+        result.setMessage("Success!");
+
+        return ResponseEntity.ok(result);
+
+    }
 }
