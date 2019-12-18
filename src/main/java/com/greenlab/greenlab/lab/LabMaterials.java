@@ -20,4 +20,14 @@ public class LabMaterials {
         this.quantity = quantity;
         this.unit = unit;
     }
+
+
+    @Override
+    public String toString(){
+        String str = "<material="+material;
+        str+= "   quantity="+quantity;
+        str+= "   unit="+unit;
+        str+=">";
+        return str;
+    }
 }

@@ -53,9 +53,9 @@
                 <div class="dropdown" style="cursor: pointer;">
                   <span style="color:#eeeeee">Equipments</span>
                   <div class="dropdown_container" style="padding-top: 0.8em;">
-                    <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
-                    <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
-                    <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
+                    <div class="dropdown-content"><a th:href="@{/equipments}">View Equipment</a></div>
+                    <div class="dropdown-content"><a th:href="@{/equipment/create}">Add Equipment</a></div>
+                    <div class="dropdown-content"><a th:href="@{/equipment/search}">Search Equipment</a></div>
                   </div>
                 </div>
               </td>
@@ -67,13 +67,7 @@
           <table style="padding: 0; margin: 0; align: right;">
             <tr style="align: right;">
               <td class="headerCellPadding">
-                <a href="" class="headerUnselected"><i class='fas fa-user-circle headerIcon'></i></a>
-              </td>
-              <td class="headerCellPadding">
-                <a href="" class="headerUnselected"><i class='fas fa-cog headerIcon'></i></a>
-              </td>
-              <td class="headerCellPadding">
-                <a href="index.html" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>
+                <a th:href="@{/logout}" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>
               </td>
             </tr>
           </table>
@@ -85,7 +79,7 @@
   <div style="padding: 4em;"></div>
   <!-- Title -->
   <div class="title webfont">Your Equipments
-    <a href="" class="headerUnselected" style="margin:0em 5em 0em 20em;"><i class='fas fa-trash-alt headerIcon'></i></a>
+    <a href="" class="headerUnselected" style="margin:0em 5em 0em 23em;"><i class='fas fa-trash-alt headerIcon'></i></a>
   </div>
  
 
