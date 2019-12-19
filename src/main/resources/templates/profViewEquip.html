@@ -81,15 +81,66 @@
   <div class="title webfont">Your Equipments
     <a href="" class="headerUnselected" style="margin:0em 5em 0em 23em;"><i class='fas fa-trash-alt headerIcon'></i></a>
   </div>
- 
+
+
+<!--  <form th:action="@{/equipment/delete}" method = "post" enctype="multipart/form-data">-->
+<!--    <div style="text-align: center;">-->
+<!--        &lt;!&ndash; right container &ndash;&gt;-->
+<!--        <div class="createCourseContainer webfont">-->
+<!--          <div class=" webfont bold" style="text-align:left;margin: 0.5em 0;">Equipments To Add-->
+<!--            <span>-->
+<!--                        <a href="" class="" style="margin:0em 1em 0em 20em;"></i></a>-->
+<!--                </span>-->
+<!--          </div>-->
+<!--          &lt;!&ndash; one lab &ndash;&gt;-->
+<!--          &lt;!&ndash; loop &ndash;&gt;-->
+<!--          <input id='testNameHidden' type='hidden' value='default' name='createLabEquipSelected'>-->
+<!--          <div th:each="equip: ${equipments}"class="bigLabContainer">-->
+<!--            <div class="createLabInfoPicture">-->
+<!--              <table class="labContainer" >-->
+<!--                <col width="30%"/>-->
+<!--                <col width="40%"/>-->
+<!--                <col width="30%"/>-->
+<!--                &lt;!&ndash; <col width="20%"/> &ndash;&gt;-->
+<!--                &lt;!&ndash; <tbody style="padding: 0; margin: 0;"> &ndash;&gt;-->
+<!--                <tr>-->
+<!--                  <td class="courseCellPadding">-->
+<!--                    <div class="equipment viewEquipContainer">-->
+<!--                      <img th:attr="src=@{${equip.image}}" style="width:80px;height:80px">-->
+<!--                    </div>-->
+<!--                  </td>-->
+<!--                  <td class="courseCellPadding">-->
+<!--                    <div class="webfont" th:text="${equip.equipmentName}"></div>-->
+<!--                  </td>-->
+<!--                  <td class="courseCellPadding">-->
+<!--                    &lt;!&ndash;                            <div class="checkBoxDiv">&ndash;&gt;-->
+<!--                    <input class="webfont" name="createLabEquipSelected" type="checkbox" th:value="${equip._id}"></input>-->
+<!--                    &lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--                  </td>-->
+<!--                </tr>-->
+<!--              </table>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      &lt;!&ndash; End of right Container &ndash;&gt;-->
+<!--      <div>-->
+<!--        <input type="submit" class="show save-button" value="Next" style="margin:0em 10% 0em 0em;float:right;">-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </form>-->
+
+
+
 
   <div id="equipmentsContainer" class="" style="text-align:center;">
-    
-    
+
+
 
   </div>
 
-  <script type="text/javascript" th:src="@{/js/ProfViewEquipment.js}"></script>
 </body>
+<script type="text/javascript" th:src="@{/js/ProfViewEquipment.js}"></script>
 
 </html>
