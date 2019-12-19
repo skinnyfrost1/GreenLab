@@ -25,10 +25,12 @@ public class Lab {
     private String labDescription;
     private String creator;
     private String stepObjectId;
-    @DBRef
-    private List<Equipment> preparedEquipment; // equipments which the professor pick to use in the lab.
     private List<LabEquipment> equipmentsInLab; // equipments that have been created in Lab.
     private List<Step> steps;
+
+
+    @DBRef
+    private List<Equipment> preparedEquipment; // equipments which the professor pick to use in the lab.
 
     private Boolean doneWorkSpace;
 
