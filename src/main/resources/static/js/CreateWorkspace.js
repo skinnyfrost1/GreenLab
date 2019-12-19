@@ -412,10 +412,11 @@ $(document).ready(function () {
         '<button id="solutionSNewLookBut">Choose a new look</button>' +
         '<div id="solutionSNewLooks"></div>' ;
       $('#solutionSDetails').html(htmlDOM);
-
+      $("#solutionSLessBut").css("visibility", "hidden");
       //增加一条material
       $("#solutionSMoreBut").click(function () {
         // var solutionSMDOM = $("#solutionSM").html();
+        $("#solutionSLessBut").css("visibility", "visible");
         var solutionSMDOM = '' +
             '<div id="solutionGroup_' + solutionMaterialCounter + '">material ' + solutionMaterialCounter + '</br>' +
             '<div id="solutionSM_' + solutionMaterialCounter + '"></div>' +
@@ -432,6 +433,9 @@ $(document).ready(function () {
         solutionMaterialCounter--;
 
         $("#solutionGroup_"+solutionMaterialCounter).remove();
+        if(solutionMaterialCounter == 0){
+          $("#solutionSLessBut").css("visibility", "hidden");
+        }
       });
 
       //read solution requipment
@@ -733,6 +737,10 @@ $(document).ready(function () {
       $('#stepInfoSubmit').click(function () {
         hint = $('input[name=stepInfoInput]').val();
         console.log("hint=" + hint);
+        if(hint == ""){
+          alert("Hint cannot be empty!")
+        }
+        else{
         //post step
 
         //post factory
@@ -865,6 +873,7 @@ $(document).ready(function () {
         });
 
         // addStep();
+        }
       });
     }
     function addStep() {
