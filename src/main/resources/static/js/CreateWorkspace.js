@@ -385,14 +385,14 @@ $(document).ready(function () {
     solutionMaterialsS = [];
     var htmlDOM = '<div id="solutionSPart1"></div>' +
       '<div id="solutionSDetails"></div>' +
-      '<button id="solutionSSubmit" style="visibility:hidden;">Next</button>';
+      '<button id="solutionSSubmit" class="createLabButton" style="visibility:hidden;">Next</button>';
     $("#solutionS").html(htmlDOM);
 
     //第一个yes no 问题
     htmlDOM = '<div id="solutionSTitle1">Do you want to edit the solution of <a id="solutionSNickname">' + selectedData.nickname + '</a>?</div>' +
       '<div id="solutionSButton" style="visibility: visible;">' +
-      '<button id="solutionSButton_yes">Yes</button>' +
-      '<button id="solutionSButton_no">no</button>' +
+      '<button id="solutionSButton_yes" class="createLabButton" >Yes</button>' +
+      '<button id="solutionSButton_no" class="createLabButton">no</button>' +
       '</div>';
     $("#solutionSPart1").html(htmlDOM);
 
@@ -412,10 +412,11 @@ $(document).ready(function () {
         '<button id="solutionSNewLookBut">Choose a new look</button>' +
         '<div id="solutionSNewLooks"></div>' ;
       $('#solutionSDetails').html(htmlDOM);
-
+      $("#solutionSLessBut").css("visibility", "hidden");
       //增加一条material
       $("#solutionSMoreBut").click(function () {
         // var solutionSMDOM = $("#solutionSM").html();
+        $("#solutionSLessBut").css("visibility", "visible");
         var solutionSMDOM = '' +
             '<div id="solutionGroup_' + solutionMaterialCounter + '">material ' + solutionMaterialCounter + '</br>' +
             '<div id="solutionSM_' + solutionMaterialCounter + '"></div>' +
@@ -432,6 +433,9 @@ $(document).ready(function () {
         solutionMaterialCounter--;
 
         $("#solutionGroup_"+solutionMaterialCounter).remove();
+        if(solutionMaterialCounter == 0){
+          $("#solutionSLessBut").css("visibility", "hidden");
+        }
       });
 
       //read solution requipment
@@ -478,6 +482,7 @@ $(document).ready(function () {
 
       $("#solutionSSubmit").click(function () {
         // solutionSSubmit
+        var isEmptyExist = false
         NewLookS_id = $('input[name=Newlook_id]:checked').val()
         for (var i = 1; i < solutionMaterialCounter; i++) {
           var ssmn = $('input[name=solutionSMNI_' + i + ']').val();
@@ -487,18 +492,21 @@ $(document).ready(function () {
             alert("Material name can not be empty.");
             $('#solutionSMN_' + i).css("color", "red");
             solutionMaterialsS = [];
+            isEmptyExist =true
             break;
           }
           if (!ssmq) {
             alert("Quantity can not be empty.");
             $('#solutionSMQ_' + i).css("color", "red");
             solutionMaterialsS = [];
+            isEmptyExist =true
             break;
           }
           if (!ssmu) {
             alert("Unit can not be empty.");
             $('#solutionSMU_' + i).css("color", "red");
             solutionMaterialsS = [];
+            isEmptyExist =true
             break;
           }
           var ssm = new Material(ssmn, ssmq, ssmu);
@@ -507,8 +515,15 @@ $(document).ready(function () {
         }
         console.log("newlooks_id" + NewLookS_id);
         console.log("solutionMaterialsS=" + solutionMaterialsS);
-        $("#solutionS").html("");
-        showSolutionPanel2();
+
+        if(isEmptyExist){
+          alert("Infomation cannot be empty!");
+        }
+        else{
+          $("#solutionS").html("");
+          showSolutionPanel2();
+        }
+
       });
     });
     $("#solutionSButton_no").click(function () {
@@ -574,7 +589,7 @@ $(document).ready(function () {
 
       //read solution requipment
       $('#solutionANewLookBut').click(function () {
-
+        $("#giveUpNewlookABut").remove()
         var posting = {};
         posting['str'] = lab_id;
         $.ajax({
@@ -587,7 +602,7 @@ $(document).ready(function () {
           timeout: 600000,
           success: function (result) {
             var htmlDOM = "";
-            $("#giveUpNewlookABut").remove()
+
 
             solutionEquipments = result.resEquipments;
             for (var i = 0; i < solutionEquipments.length; i++) {
@@ -620,6 +635,7 @@ $(document).ready(function () {
 
       $("#solutionASubmit").click(function () {
         // solutionASubmit
+        var isEmptyExist = false
         NewLookA_id = $('input[name=Newlook_id]:checked').val()
         for (var i = 1; i < solutionMaterialCounter; i++) {
           var samn = $('input[name=solutionAMNI_' + i + ']').val();
@@ -629,28 +645,39 @@ $(document).ready(function () {
             alert("Material name can not be empty.");
             $('#solutionAMN_' + i).css("color", "red");
             solutionMaterialsA = [];
+            isEmptyExist = true
             break;
           }
           if (!samq) {
             alert("Quantity can not be empty.");
             $('#solutionSMQ_' + i).css("color", "red");
             solutionMaterialsA = [];
+            isEmptyExist = true
             break;
           }
           if (!samu) {
             alert("Unit can not be empty.");
             $('#solutionSMU_' + i).css("color", "red");
             solutionMaterialsA = [];
+            isEmptyExist = true
             break;
           }
           var asm = new Material(samn, samq, samu);
           solutionMaterialsA.push(asm);
           console.log("ssmn=" + samn)
         }
+
         console.log("newlooks_id" + NewLookA_id);
         console.log("solutionMaterialsA=" + solutionMaterialsA);
-        $("#solutionA").html("");
-        setStepInfo();
+
+        if(isEmptyExist){
+          alert("Infomation cannot be empty!");
+        }
+        else{
+          $("#solutionA").html("");
+          setStepInfo();
+        }
+
         //debug 
         console.log("check S data" + NewLookS_id);
         if (!solutionMaterialsS || solutionMaterialsS.length == 0) {
@@ -710,6 +737,10 @@ $(document).ready(function () {
       $('#stepInfoSubmit').click(function () {
         hint = $('input[name=stepInfoInput]').val();
         console.log("hint=" + hint);
+        if(hint == ""){
+          alert("Hint cannot be empty!")
+        }
+        else{
         //post step
 
         //post factory
@@ -842,6 +873,7 @@ $(document).ready(function () {
         });
 
         // addStep();
+        }
       });
     }
     function addStep() {
