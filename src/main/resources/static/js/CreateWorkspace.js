@@ -396,7 +396,8 @@ $(document).ready(function () {
       var htmlDOM = '' +
         '<div id="solutionSTitle2">What <a>' + solutionSNickname + '</a> should contain?</div>' +
         '<div id="solutionSM"></div>' +
-        '<button id="solutionSMoreBut">Add a new material</button>' +
+          '<button id="solutionSMoreBut">Add a new material</button>' +
+          '<button id="solutionSLessBut">Remove a material</button>' +
         '<button id="solutionSNewLookBut">Choose a new look</button>' +
         '<div id="solutionSNewLooks"></div>';
       $('#solutionSDetails').html(htmlDOM);
@@ -405,14 +406,23 @@ $(document).ready(function () {
       $("#solutionSMoreBut").click(function () {
         // var solutionSMDOM = $("#solutionSM").html();
         var solutionSMDOM = '' +
-          '<div id="solutionSM_' + solutionMaterialCounter + '"></div>' +
+            '<div id="solutionGroup_' + solutionMaterialCounter + '">material ' + solutionMaterialCounter + '</br>' +
+            '<div id="solutionSM_' + solutionMaterialCounter + '"></div>' +
           '<div id="solutionSMN_' + solutionMaterialCounter + '">Name: <input type="text" name="solutionSMNI_' + solutionMaterialCounter + '" required></div>' +
           '<div id="solutionSMQ_' + solutionMaterialCounter + '">Quantity: <input type="number" name="solutionSMQI_' + solutionMaterialCounter + '" required></div>' +
           '<div id="solutionSMU_' + solutionMaterialCounter + '">Unit: <input type="text" name="solutionSMUI_' + solutionMaterialCounter + '" required></div>' +
-          '</br>';
+          '</br>' + '</div>';
         $("#solutionSM").append(solutionSMDOM);
         solutionMaterialCounter++;
       });
+
+      $("#solutionSLessBut").click(function () {
+        // var solutionSMDOM = $("#solutionSM").html();
+        solutionMaterialCounter--;
+
+        $("#solutionGroup_"+solutionMaterialCounter).remove();
+      });
+
       //read solution requipment
       $('#solutionSNewLookBut').click(function () {
         var posting = {};
