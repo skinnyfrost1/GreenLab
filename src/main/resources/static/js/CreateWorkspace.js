@@ -478,6 +478,7 @@ $(document).ready(function () {
 
       $("#solutionSSubmit").click(function () {
         // solutionSSubmit
+        var isEmptyExist = false
         NewLookS_id = $('input[name=Newlook_id]:checked').val()
         for (var i = 1; i < solutionMaterialCounter; i++) {
           var ssmn = $('input[name=solutionSMNI_' + i + ']').val();
@@ -487,18 +488,21 @@ $(document).ready(function () {
             alert("Material name can not be empty.");
             $('#solutionSMN_' + i).css("color", "red");
             solutionMaterialsS = [];
+            isEmptyExist =true
             break;
           }
           if (!ssmq) {
             alert("Quantity can not be empty.");
             $('#solutionSMQ_' + i).css("color", "red");
             solutionMaterialsS = [];
+            isEmptyExist =true
             break;
           }
           if (!ssmu) {
             alert("Unit can not be empty.");
             $('#solutionSMU_' + i).css("color", "red");
             solutionMaterialsS = [];
+            isEmptyExist =true
             break;
           }
           var ssm = new Material(ssmn, ssmq, ssmu);
@@ -507,8 +511,15 @@ $(document).ready(function () {
         }
         console.log("newlooks_id" + NewLookS_id);
         console.log("solutionMaterialsS=" + solutionMaterialsS);
-        $("#solutionS").html("");
-        showSolutionPanel2();
+
+        if(isEmptyExist){
+          alert("Infomation cannot be empty!");
+        }
+        else{
+          $("#solutionS").html("");
+          showSolutionPanel2();
+        }
+
       });
     });
     $("#solutionSButton_no").click(function () {
@@ -574,7 +585,7 @@ $(document).ready(function () {
 
       //read solution requipment
       $('#solutionANewLookBut').click(function () {
-
+        $("#giveUpNewlookABut").remove()
         var posting = {};
         posting['str'] = lab_id;
         $.ajax({
@@ -587,7 +598,7 @@ $(document).ready(function () {
           timeout: 600000,
           success: function (result) {
             var htmlDOM = "";
-            $("#giveUpNewlookABut").remove()
+
 
             solutionEquipments = result.resEquipments;
             for (var i = 0; i < solutionEquipments.length; i++) {
@@ -620,6 +631,7 @@ $(document).ready(function () {
 
       $("#solutionASubmit").click(function () {
         // solutionASubmit
+        var isEmptyExist = false
         NewLookA_id = $('input[name=Newlook_id]:checked').val()
         for (var i = 1; i < solutionMaterialCounter; i++) {
           var samn = $('input[name=solutionAMNI_' + i + ']').val();
@@ -629,28 +641,39 @@ $(document).ready(function () {
             alert("Material name can not be empty.");
             $('#solutionAMN_' + i).css("color", "red");
             solutionMaterialsA = [];
+            isEmptyExist = true
             break;
           }
           if (!samq) {
             alert("Quantity can not be empty.");
             $('#solutionSMQ_' + i).css("color", "red");
             solutionMaterialsA = [];
+            isEmptyExist = true
             break;
           }
           if (!samu) {
             alert("Unit can not be empty.");
             $('#solutionSMU_' + i).css("color", "red");
             solutionMaterialsA = [];
+            isEmptyExist = true
             break;
           }
           var asm = new Material(samn, samq, samu);
           solutionMaterialsA.push(asm);
           console.log("ssmn=" + samn)
         }
+
         console.log("newlooks_id" + NewLookA_id);
         console.log("solutionMaterialsA=" + solutionMaterialsA);
-        $("#solutionA").html("");
-        setStepInfo();
+
+        if(isEmptyExist){
+          alert("Infomation cannot be empty!");
+        }
+        else{
+          $("#solutionA").html("");
+          setStepInfo();
+        }
+
         //debug 
         console.log("check S data" + NewLookS_id);
         if (!solutionMaterialsS || solutionMaterialsS.length == 0) {
