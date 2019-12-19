@@ -148,3 +148,8 @@
     opacity: 0.6;
     pointer-events: none;
 }
+
+input.largerCheckbox {
+    width: 20px;
+    height: 20px;
+}

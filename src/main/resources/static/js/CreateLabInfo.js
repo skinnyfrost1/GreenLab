@@ -1,12 +1,19 @@
 
 $(document).ready(function () {
-    $(".bigLabContainer").click(function (e) {
+    $(".createLabInfoPicture").click(function (e) {
         if (e.target.tagName != 'INPUT') {
             var checkBoxes = $(this).find('input')
             checkBoxes.prop("checked", !checkBoxes.prop("checked"));
             return false;
         }
     });
+
+    // $(".bigLabContainer").click(function (e) {
+    //     if (e.target.tagName != 'INPUT') {
+    //         $(this).find("input").toggleCheckbox();
+    //         return false;
+    //     }
+    // });
     // $('.equipsToAdd').on('click', function(){
     //     var checkbox = $(this).children('input[type="checkbox"]');
     //     console.log(checkbox)
