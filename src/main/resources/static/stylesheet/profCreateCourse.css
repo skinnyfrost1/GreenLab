@@ -122,3 +122,34 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.nt-button {
+    color: white;
+    background: #6fb3b8;
+    /*background: #269b9b;*/
+    border: none;
+    width:10em;
+    /*margin-left: 100px;*/
+    /*letter-spacing: 1.5px;*/
+    font-size: 1em;
+    font-weight: 500;
+    border-radius: 3px;
+    padding: 10px 0;
+}
+
+.nt-button:hover {
+    background: #269b9b;
+    text-decoration: none;
+    /*font-weight: bold;*/
+    cursor: pointer;
+}
+
+.nt-button-disabled{
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+input.largerCheckbox {
+    width: 20px;
+    height: 20px;
+}

@@ -245,8 +245,12 @@ $(document).ready(function () {
     }
     if (!associatedData) {
       console.log("associatedData = null")
-      return false;
+      return false; 
     }
+    $("#workspace").css("pointer-events","none");
+    $("#verticalMenu").css("pointer-events","none");
+
+
     var am = associatedData.materials;
     var amBuffer = cloneMaterials(associatedData.materials);
     var sm = selectedData.materials;
@@ -403,25 +407,36 @@ $(document).ready(function () {
       var htmlDOM = '' +
         '<div id="solutionSTitle2">What <a>' + solutionSNickname + '</a> should contain?</div>' +
         '<div id="solutionSM"></div>' +
-        '<button id="solutionSMoreBut">Add a new material</button>' +
+          '<button id="solutionSMoreBut">Add a new material</button>' +
+          '<button id="solutionSLessBut">Remove a material</button>' +
         '<button id="solutionSNewLookBut">Choose a new look</button>' +
-        '<div id="solutionSNewLooks"></div>';
+        '<div id="solutionSNewLooks"></div>' ;
       $('#solutionSDetails').html(htmlDOM);
 
       //增加一条material
       $("#solutionSMoreBut").click(function () {
         // var solutionSMDOM = $("#solutionSM").html();
         var solutionSMDOM = '' +
-          '<div id="solutionSM_' + solutionMaterialCounter + '"></div>' +
+            '<div id="solutionGroup_' + solutionMaterialCounter + '">material ' + solutionMaterialCounter + '</br>' +
+            '<div id="solutionSM_' + solutionMaterialCounter + '"></div>' +
           '<div id="solutionSMN_' + solutionMaterialCounter + '">Name: <input type="text" name="solutionSMNI_' + solutionMaterialCounter + '" required></div>' +
           '<div id="solutionSMQ_' + solutionMaterialCounter + '">Quantity: <input type="number" name="solutionSMQI_' + solutionMaterialCounter + '" required></div>' +
           '<div id="solutionSMU_' + solutionMaterialCounter + '">Unit: <input type="text" name="solutionSMUI_' + solutionMaterialCounter + '" required></div>' +
-          '</br>';
+          '</br>' + '</div>';
         $("#solutionSM").append(solutionSMDOM);
         solutionMaterialCounter++;
       });
+
+      $("#solutionSLessBut").click(function () {
+        // var solutionSMDOM = $("#solutionSM").html();
+        solutionMaterialCounter--;
+
+        $("#solutionGroup_"+solutionMaterialCounter).remove();
+      });
+
       //read solution requipment
       $('#solutionSNewLookBut').click(function () {
+        $("#giveUpNewlookSBut").remove()
         var posting = {};
         posting['str'] = lab_id;
         $.ajax({
@@ -444,8 +459,17 @@ $(document).ready(function () {
                 '<input type="radio" name="Newlook_id" value="' + solutionEquipments[i]._id + '">' +
                 '</div></br>';
             }
+            htmlDOM += '<button id="giveUpNewlookSBut">Give up new look</button></br>'
             $("#solutionSNewLooks").html(htmlDOM);
             $("#solutionSNewLookBut").css("visibility", "hidden");
+
+            $("#giveUpNewlookSBut").click(function(){
+              $("#solutionSNewLooks").empty()
+              $("#solutionSNewLookBut").css("visibility", "visible");
+              $("#giveUpNewlookSBut").css("visibility", "hidden");
+            })
+
+
           },
           error: function (e) {
           }
@@ -529,7 +553,7 @@ $(document).ready(function () {
       var htmlDOM = '' +
         '<div id="solutionATitle2">What <a>' + solutionANickname + '</a> should contain?</div>' +
         '<div id="solutionAM"></div>' +
-        '<button id="solutionAMoreBut">Add a new material</button>' +
+        '<button id="solutionAMoreBut">Add a new material</button></br>' +
         '<button id="solutionANewLookBut">Choose a new look</button>' +
         '<div id="solutionANewLooks"></div>';
       $('#solutionADetails').html(htmlDOM);
@@ -550,6 +574,7 @@ $(document).ready(function () {
 
       //read solution requipment
       $('#solutionANewLookBut').click(function () {
+
         var posting = {};
         posting['str'] = lab_id;
         $.ajax({
@@ -561,10 +586,12 @@ $(document).ready(function () {
           cache: false,
           timeout: 600000,
           success: function (result) {
-            console.log(result.message);
             var htmlDOM = "";
+            $("#giveUpNewlookABut").remove()
+
             solutionEquipments = result.resEquipments;
             for (var i = 0; i < solutionEquipments.length; i++) {
+              // console.log("ajjjjjjjjjjjjjjjjjjjjjjjjjjjjjj")
               htmlDOM += '' +
                 '<div id="solutionNewLook_' + i + '">' +
                 '<img src="' + solutionEquipments[i].image + '" style="width:80px; height:80px">' +
@@ -572,8 +599,18 @@ $(document).ready(function () {
                 '<input type="radio" name="Newlook_id" value="' + solutionEquipments[i]._id + '">' +
                 '</div></br>';
             }
+            
+
+            htmlDOM += '<button id="giveUpNewlookABut">Give up new look</button></br>'
+
             $("#solutionANewLooks").html(htmlDOM);
             $("#solutionANewLookBut").css("visibility", "hidden");
+
+            $("#giveUpNewlookABut").click(function(){
+              $("#solutionANewLooks").empty()
+              $("#solutionANewLookBut").css("visibility", "visible");
+              $("#giveUpNewlookABut").css("visibility", "hidden");
+            })
           },
           error: function (e) {
           }
@@ -795,8 +832,12 @@ $(document).ready(function () {
               $('#' + associatedData.htmlid).css('height', height + 'px');
             }
             $("#stepInfo").html("");
+            $("#stepNumber").text("Step Number"+ stepnumber);
+            $("#workspace").css("pointer-events","auto");
+            $("#verticalMenu").css("pointer-events","auto");
           },
           error: function (e) {
+            stepnumber -= 1;
           }
         });
 
@@ -864,7 +905,6 @@ $(document).ready(function () {
         materialsDiv = materialsDiv + materialName + ': ' + quantity + unit + '\n';
         // $("#selectedEquipmentMaterials").innerHtml = materialsDiv;
         $("#" + selectedOrAssociated + "Materials").text(materialsDiv);
-
       }
     }
   }

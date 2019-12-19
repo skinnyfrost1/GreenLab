@@ -25,7 +25,7 @@ public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping(value = {"/index","/login"})
+    @GetMapping(value = {"/","/index","/login"})
     public String getLogin(ModelMap model, HttpServletRequest request) {
         if (request.getSession().getAttribute("email") != null) {
             return "redirect:/courses";

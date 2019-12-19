@@ -56,9 +56,9 @@ public class LabEquipment {
         this.heater = le.isHeater();
         // private double tempreature;
         List<LabMaterials> lms = new ArrayList<>();
-        if (le.materials!=null){
-            for (LabMaterials lm : le.getMaterials()){
-                LabMaterials buffer = new LabMaterials(lm.getMaterial(),lm.getQuantity(),lm.getUnit());
+        if (le.materials != null) {
+            for (LabMaterials lm : le.getMaterials()) {
+                LabMaterials buffer = new LabMaterials(lm.getMaterial(), lm.getQuantity(), lm.getUnit());
                 lms.add(buffer);
             }
         }
@@ -66,13 +66,33 @@ public class LabEquipment {
 
     }
 
+    public LabEquipment deepClone(){
+        LabEquipment clone = new LabEquipment();
+        clone.setEquipment_id(this.equipment_id);
+        clone.setHtmlid(this. htmlid);
+        clone.setNickname(this.nickname);
+        clone.setMaterial(this.material);
+        clone.setBlandable(this.blandable);
+        clone.setBlander(this.blander);
+        clone.setHeatable(this.heatable);
+        clone.setHeater(this.heater);
+        List<LabMaterials> lst = new ArrayList<>();
+        LabMaterials buffer;
+        for(LabMaterials l : this.materials){
+            buffer = l.deepClone();
+            lst.add(buffer);
+        }
+        clone.setMaterials(lst);
+        return clone;
+    }
+
     @Override
-    public String toString(){
-        String str = "{equipment_id="+this.equipment_id;
-        str+= "  htmlid="+this.htmlid;
-        str+= "  nickname="+this.nickname;
-        for (LabMaterials lm : this.materials){
-            str+="\n"+lm.toString();
+    public String toString() {
+        String str = "{equipment_id=" + this.equipment_id;
+        str += "  htmlid=" + this.htmlid;
+        str += "  nickname=" + this.nickname;
+        for (LabMaterials lm : this.materials) {
+            str += "\n" + lm.toString();
         }
         str += "}";
         return str;

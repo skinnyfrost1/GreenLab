@@ -30,4 +30,12 @@ public class LabMaterials {
         str+=">";
         return str;
     }
+
+    public LabMaterials deepClone(){
+        LabMaterials deepClone = new LabMaterials();
+        deepClone.setMaterial(this.material);
+        deepClone.setQuantity(this.quantity);
+        deepClone.setUnit(this.unit);
+        return deepClone;
+    }
 }
