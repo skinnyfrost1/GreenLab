@@ -45,9 +45,9 @@
                             </div>
                         </div>
                     </td>
-                    <td class="headerCellPadding">
+                    <td class="headerCellPadding" th:if="${role == 'professor'}">
                         <!-- <a href="search" class="headerUnselected">Equipments</a> -->
-                        <div class="dropdown" style="cursor: pointer;" th:if="${role == 'professor'}">
+                        <div class="dropdown" style="cursor: pointer;" >
                             <span style="color:#eeeeee">Equipments</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
                                 <div class="dropdown-content"><a th:href="@{/equipments}">View Equipment</a></div>

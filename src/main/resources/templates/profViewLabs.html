@@ -79,7 +79,7 @@
   <!-- one course -->
   <!-- loop -->
     <div th:each="lab:${labs}" class="notVeryBigContainer" >
-<!--        <div th:if="${role=='professor'}"><a th:href="'/course/edit?id=' +${course.get_id()}">-->
+        <div ><a th:href="'/lab/create/workspace/' +${lab.get_id()}">
             <table class="courseContainer" >
                 <col width="40%"/>
 <!--                <col width="25%"/>-->
@@ -96,6 +96,8 @@
 
             </table>
 <!--        </a>-->
+        </a>
+        </div>
     </div>
   <!-- Loop ends here -->
   <!-- one course -->
