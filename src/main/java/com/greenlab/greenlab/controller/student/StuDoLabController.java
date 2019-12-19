@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.greenlab.greenlab.dto.AddEquipmentToWorkspaceRequestBody;
 import com.greenlab.greenlab.dto.AddEquipmentToWorkspaceResponseBody;
 import com.greenlab.greenlab.dto.ResponseEquipment;
-import com.greenlab.greenlab.dto.SingleStringRequestBody;
+import com.greenlab.greenlab.dto.StepHintRequestBody;
 import com.greenlab.greenlab.dto.StepHintResponseBody;
 import com.greenlab.greenlab.lab.LabEquipment;
 import com.greenlab.greenlab.lab.Step;
@@ -166,9 +166,9 @@ public class StuDoLabController {
     }
 
     @PostMapping("/workspace/stu/getstepinfo/{_id}")
-    public ResponseEntity<?> postWorkspaceStuGetstepinfo(@PathVariable String _id, Errors errors,
-            HttpServletRequest request, @RequestBody SingleStringRequestBody reqBody) {
-        System.out.println("/workspace/stu/getstepinfo/" + _id);
+    public ResponseEntity<?> postWorkspaceStuGetstepinfo(@PathVariable String _id,
+    @RequestBody StepHintRequestBody requestBody, HttpServletRequest request, Errors errors) {
+        System.out.println("----------------/workspace/stu/getstepinfo/" + _id);
         StepHintResponseBody result = new StepHintResponseBody();
         if (errors.hasErrors()) {
             result.setMessage(
@@ -186,13 +186,15 @@ public class StuDoLabController {
         String email = (String) request.getSession().getAttribute("email");
         Lab lab = findDoingLabByEmailAnd_id(email, _id);
         if (lab != null) {
-            int stepnumber = Integer.parseInt(reqBody.getStr());
+            int stepnumber = requestBody.getStepnumber();
+            stepnumber--;
             Step step = lab.getSteps().get(stepnumber);
             String hint = step.getHint();
             result.setHint(hint);
             result.setMessage("!Success");
-            return ResponseEntity.ok("");
+            return ResponseEntity.ok(result);
         } else
+            System.out.println("can't find lab");
             return ResponseEntity.badRequest().body("error");
     }
 

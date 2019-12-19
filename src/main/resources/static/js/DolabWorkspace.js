@@ -35,7 +35,7 @@ $(document).ready(function () {
 
     function updateStepInfo(){
         var post = {}
-        post['str']=''+stepnumber;
+        post['stepnumber']=''+stepnumber;
         $.ajax({
             type: "POST",
             contentType: "application/json",
