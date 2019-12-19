@@ -13,6 +13,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link th:href="@{/stylesheet/profCreateCourse.css}" type="text/css" rel="stylesheet">
   <title>View Equipments</title>
 </head>
 
@@ -77,10 +78,11 @@
   </table>
   <!--  End of tool bar -->
   <div style="padding: 4em;"></div>
+
+  <div class="title webfont">Equipments</div>
   <!-- Title -->
-  <div class="title webfont">Your Equipments
-    <a href="" class="headerUnselected" style="margin:0em 5em 0em 23em;"><i class='fas fa-trash-alt headerIcon'></i></a>
-  </div>
+  <div style="text-align: center;">
+<!--  <div class="labMenuContainer webfont">-->
 
 
 <!--  <form th:action="@{/equipment/delete}" method = "post" enctype="multipart/form-data">-->
@@ -131,15 +133,13 @@
 <!--    </div>-->
 <!--  </form>-->
 
-
-
-
-  <div id="equipmentsContainer" class="" style="text-align:center;">
+  <div id="equipmentsContainer" class="labMenuContainer webfont" style="text-align:center;">
 
 
 
   </div>
-
+  </div>
+<!--  </div>-->
 </body>
 <script type="text/javascript" th:src="@{/js/ProfViewEquipment.js}"></script>
 
