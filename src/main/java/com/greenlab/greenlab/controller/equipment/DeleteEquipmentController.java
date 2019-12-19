@@ -31,77 +31,100 @@ public class DeleteEquipmentController {
     private LabRepository labRepository;
 
 
-    @GetMapping(value = "/equipment/delete")
-    public String getEquipmentCreate(HttpServletRequest request, ModelMap model) {
-        String role = (String) request.getSession().getAttribute("role");
-        if (role == null)
-            return "redirect:/index";
-        if (!role.equals("professor")) {
-            model.addAttribute("errormsg", "Only professors can create new courses");
-            return "error";
-        }
-        if (request.getSession().getAttribute("email") == null)
-            return "redirect:/login";
-
-
-        String creator = (String) request.getSession().getAttribute("email");
-        List<Equipment> equipments = equipmentRepository.findByCreator(creator);
-        List<ResponseEquipment> responseEquipments = new ArrayList<>();
-        ResponseEquipment tempRE;
-        for (Equipment equipment : equipments) {
-            String image = Base64.getEncoder().encodeToString(equipment.getImage().getData());
-            image = "data:image/png;base64," + image;
-            // System.out.println(image);
-            tempRE = new ResponseEquipment();
-            tempRE.set_id(equipment.get_id());
-            tempRE.setEquipmentName(equipment.getEquipmentName());
-            tempRE.setDescription(equipment.getDescription());
-            tempRE.setCreator(equipment.getCreator());
-            tempRE.setMaterial(equipment.isMaterial());
-            tempRE.setBlandable(equipment.isBlandable());
-            tempRE.setBlander(equipment.isBlander());
-            tempRE.setHeatable(equipment.isHeater());
-            tempRE.setHeatable(equipment.isHeatable());
-            tempRE.setImage(image);
-            responseEquipments.add(tempRE);
-        }
-
-        model.addAttribute("equipments", responseEquipments);
-
-        return "profDeleteEquipment";
-    }
+//    @GetMapping(value = "/equipment/delete")
+//    public String getEquipmentCreate(HttpServletRequest request, ModelMap model) {
+//        String role = (String) request.getSession().getAttribute("role");
+//        if (role == null)
+//            return "redirect:/index";
+//        if (!role.equals("professor")) {
+//            model.addAttribute("errormsg", "Only professors can create new courses");
+//            return "error";
+//        }
+//        if (request.getSession().getAttribute("email") == null)
+//            return "redirect:/login";
+//
+//
+//        String creator = (String) request.getSession().getAttribute("email");
+//        List<Equipment> equipments = equipmentRepository.findByCreator(creator);
+//        List<ResponseEquipment> responseEquipments = new ArrayList<>();
+//        ResponseEquipment tempRE;
+//        for (Equipment equipment : equipments) {
+//            String image = Base64.getEncoder().encodeToString(equipment.getImage().getData());
+//            image = "data:image/png;base64," + image;
+//            // System.out.println(image);
+//            tempRE = new ResponseEquipment();
+//            tempRE.set_id(equipment.get_id());
+//            tempRE.setEquipmentName(equipment.getEquipmentName());
+//            tempRE.setDescription(equipment.getDescription());
+//            tempRE.setCreator(equipment.getCreator());
+//            tempRE.setMaterial(equipment.isMaterial());
+//            tempRE.setBlandable(equipment.isBlandable());
+//            tempRE.setBlander(equipment.isBlander());
+//            tempRE.setHeatable(equipment.isHeater());
+//            tempRE.setHeatable(equipment.isHeatable());
+//            tempRE.setImage(image);
+//            responseEquipments.add(tempRE);
+//        }
+//
+//        model.addAttribute("equipments", responseEquipments);
+//
+//        return "profDeleteEquipment";
+//    }
 
     @PostMapping(value = "/equipment/delete")
-    public String postCreateLabInfo(@RequestParam(value = "courseId") String courseId,
-                                    @RequestParam(value = "labName") String labName,
-                                    @RequestParam(value = "labDescription") String labDiscription,
-                                    @RequestParam(value = "createLabEquipSelected") List<String> createLabEquipSelected, ModelMap model,
+    public String postCreateLabInfo(@RequestParam(value = "viewEquipmentsList") List<String> equiplist,
                                     HttpServletRequest request) {
         if (request.getSession().getAttribute("email") == null)
             return "redirect:/login";
         if (!request.getSession().getAttribute("role").equals("professor"))
             return "redirect:/login";
 
-        List<Equipment> preparedEquipment = new ArrayList<>();
-        for (String str : createLabEquipSelected) {
+        System.out.println("fkyou1");
+
+        //
+        List<Equipment> equipments = new ArrayList<>();
+        for (String str : equiplist) {
+            System.out.println(str);
+//            prof1@greenlab.edu
+
             Equipment equipment = equipmentRepository.findBy_id(str);
             if (equipment != null) {
-                preparedEquipment.add(equipment);
+                equipments.add(equipment);
+                System.out.println("fkyou3");
+
             }
         }
-        String creator = (String) request.getSession().getAttribute("email");
-        courseId = courseId.replaceAll(" ", "");
-        courseId = courseId.toUpperCase();
-        labName = labName.replaceAll(" ", "");
-        labName = labName.toUpperCase();
-        // String id = courseId + labName + creator;
-        // Lab lab = new Lab(id, courseId, labName, labDiscription, creator,
-        // preparedEquipment);
-        Lab lab = new Lab(courseId, labName, labDiscription, creator, preparedEquipment);
-        labRepository.save(lab);
-        System.out.println("lab.getId=" + lab.get_id());
-        return "redirect:/lab/create/workspace/" + lab.get_id();
+
+        for (Equipment equip : equipments) {
+            System.out.println("fkyou4");
+            equipmentRepository.delete(equip);
+        }
+        return "redirect:/equipments";
+
     }
+        //
+
+//
+//        List<Equipment> preparedEquipment = new ArrayList<>();
+//        for (String str : createLabEquipSelected) {
+//            Equipment equipment = equipmentRepository.findBy_id(str);
+//            if (equipment != null) {
+//                preparedEquipment.add(equipment);
+//            }
+//        }
+//        String creator = (String) request.getSession().getAttribute("email");
+//        courseId = courseId.replaceAll(" ", "");
+//        courseId = courseId.toUpperCase();
+//        labName = labName.replaceAll(" ", "");
+//        labName = labName.toUpperCase();
+//        // String id = courseId + labName + creator;
+//        // Lab lab = new Lab(id, courseId, labName, labDiscription, creator,
+//        // preparedEquipment);
+//        Lab lab = new Lab(courseId, labName, labDiscription, creator, preparedEquipment);
+//        labRepository.save(lab);
+//        System.out.println("lab.getId=" + lab.get_id());
+//        return "redirect:/lab/create/workspace/" + lab.get_id();
+//    }
 //    @PostMapping(value = "/equipment/create")
 //    public String postEquipmentCreate(@RequestParam("equipmentName") String equipmentName,
 //                                      @RequestParam("description") String description, @RequestParam("isMaterial") String isMaterialString,

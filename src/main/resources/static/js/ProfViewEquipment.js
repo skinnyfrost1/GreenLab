@@ -43,7 +43,8 @@ $(document).ready(function () {
             '                                </td>\n' +
             '                                <td class="courseCellPadding">\n' +
             '                                    <!--                            <div class="checkBoxDiv">-->\n' +
-            '                                    <input class="webfont" name="createLabEquipSelected" type="checkbox" id="' + _id + '"  style="width:20px;height:20px"></input>\n' +
+            '                                    <input class="webfont" name="viewEquipmentsList" type="checkbox"\n' +
+            '                                          value="' + _id + '" id="' + _id + '" style="width:20px;height:20px"></input>\n' +
             '                                    <!--                            </div>-->\n' +
             '                                </td>\n' +
             '                            </tr>\n' +
@@ -51,7 +52,13 @@ $(document).ready(function () {
             '                    </div>\n' +
             '                    </div>'
 
-
+        $(".bigLabContainer").click(function (e) {
+          if (e.target.tagName != 'INPUT') {
+            var checkBoxes = $(this).find('input')
+            checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+            return false;
+          }
+        });
 
 
 
@@ -59,6 +66,12 @@ $(document).ready(function () {
     },
     error: function (e) {
 
+    }
+  });
+
+  $("#equipDelete").click(function(){
+    if (confirm("Do you really want to delete these items?")){
+      $('form#deleteForm').submit();
     }
   });
 
