@@ -193,7 +193,7 @@ public class WorkspaceController {
         List<LabMaterials> solutionMaterialsS = labMaterialsFactory(reqBody.getSolutionMaterialsS_material(),
                 reqBody.getSolutionMaterialsS_quantity(), reqBody.getSolutionMaterialsS_unit());
 
-        if (solutionMaterialsS != null || solutionMaterialsS.isEmpty()) {
+        if (solutionMaterialsS != null) {
             System.out.println("-------------solutionMaterialsS -----------size=" + solutionMaterialsS.size());
             for (LabMaterials l : solutionMaterialsS) {
                 System.out.println(l);
@@ -203,7 +203,7 @@ public class WorkspaceController {
         List<LabMaterials> solutionMaterialsA = labMaterialsFactory(reqBody.getSolutionMaterialsA_material(),
                 reqBody.getSolutionMaterialsA_quantity(), reqBody.getSolutionMaterialsA_unit());
 
-        if (solutionMaterialsA != null || solutionMaterialsA.isEmpty()) {
+        if (solutionMaterialsA != null) {
             System.out.println("--------------solutionMaterialsA -----------size=" + solutionMaterialsA.size());
 
             for (LabMaterials l : solutionMaterialsA) {
@@ -216,7 +216,9 @@ public class WorkspaceController {
         List<Step> steps = lab.getSteps();
         // create a new List.
         if (steps == null) {
+            System.out.println("Create a new step list");
             steps = new ArrayList<>();
+            lab.setSteps(steps);
         }
         Step currentStep = new Step(selectedData, associatedData, solutionMaterialsS, solutionMaterialsA,
                 reqBody.getNewLookS_id(), reqBody.getNewLookA_id(), reqBody.getStepnumber(), reqBody.getHint());
@@ -234,9 +236,9 @@ public class WorkspaceController {
             System.out.println("NewlookS_id =" + currentStep.getNewLookS_id());
             if (currentStep.getNewLookS_id() == null || currentStep.getNewLookS_id().length() == 0) {
                 if (currentStep.getSolutionMaterialsS() == null || currentStep.getSolutionMaterialsS().size() == 0) {
-                    les = currentStep.getSelectedData();
+                    les.setMaterials(currentStep.getSelectedData().getMaterials());
                 } else {
-                    les = currentStep.getSelectedData();
+                    // les = currentStep.getSelectedData();
                     les.setMaterials(currentStep.getSolutionMaterialsS());
                 }
             }
@@ -259,14 +261,14 @@ public class WorkspaceController {
         }
 
         // // Processing AssociatedData
-        les = findLabEquipmentByHtmlid(labequipments, currentStep.getAssociatedData().getHtmlid());
-        if (les != null) {
+        LabEquipment lea = findLabEquipmentByHtmlid(labequipments, currentStep.getAssociatedData().getHtmlid());
+        if (lea != null) {
             if (currentStep.getNewLookA_id() == null || currentStep.getNewLookA_id().length() == 0) {
                 if (currentStep.getSolutionMaterialsA() == null || currentStep.getSolutionMaterialsA().size() == 0) {
-                    les = currentStep.getAssociatedData();
+                    lea.setMaterials(currentStep.getAssociatedData().getMaterials());
                 } else {
-                    les = currentStep.getAssociatedData();
-                    les.setMaterials(currentStep.getSolutionMaterialsA());
+                    // lea = currentStep.getAssociatedData();
+                    lea.setMaterials(currentStep.getSolutionMaterialsA());
                 }
             } else {
                 Equipment newLookEquipment = equipRepo.findBy_id(currentStep.getNewLookA_id());
@@ -279,9 +281,9 @@ public class WorkspaceController {
                 } else {
                     newLookLabEquipment.setMaterials(currentStep.getSolutionMaterialsA());
                 }
-                les.copy(newLookLabEquipment);
+                lea.copy(newLookLabEquipment);
             }
-            labEquipA = les;
+            labEquipA = lea;
         }
 
         labRepo.save(lab);

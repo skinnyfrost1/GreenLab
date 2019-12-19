@@ -5,6 +5,8 @@ $(document).ready(function () {
 
   let equips = [];            //所有的equipoment的id都会放在这里
   let equipsData = [];
+  let stepnumber = 0;
+
   let selected;               //你正在拖动的equip的id
   let associated;             //将要和seleted发生一些什么的equip的id
 
@@ -15,7 +17,6 @@ $(document).ready(function () {
   let solutionEquipments = [];
   let NewLookS_id;
   let NewLookA_id;
-  let stepnumber = 0;
   let hint;
 
 
@@ -266,7 +267,10 @@ $(document).ready(function () {
       if (smq > selectedData.materials[i].quantity) {
         console.log("Error: You don't have enought " + smn);
         alert("Error: You don't have enought " + smn);
-        break;
+        $('#addToAssociated').html('');
+        $('#getFromAssociated').html('');
+        $('#interactionButton').css('visibility','hidden');
+        return false;
       }
       //if am is empty
       if (!amBuffer) {
@@ -313,9 +317,12 @@ $(document).ready(function () {
       }
       //error.
       if (amq > associatedData.materials[i].quantity) {
-        console.log("Error: You don't have enought " + amq);
-        alert("Error: You don't have enought " + amq);
-        break;
+        console.log("Error: You don't have enought " + amn);
+        alert("Error: You don't have enought " + amn);
+        $('#addToAssociated').html('');
+        $('#getFromAssociated').html('');
+        $('#interactionButton').css('visibility','hidden');
+        return false;
       }
       var amn = $('#amn_' + (i + 1)).text();
       var amu = $('#amu_' + (i + 1)).text();
