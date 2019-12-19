@@ -1,5 +1,6 @@
 package com.greenlab.greenlab.lab;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -36,5 +37,35 @@ public class Step {
         this.newLookA_id = newLookA_id;
         this.stepnumber = stepnumber;
         this.hint = hint;
+    }
+
+
+    public Step deepClone(){
+        Step clone = new Step();
+        clone.set_id(this._id);
+        clone.setNewLookA_id(this.newLookA_id);
+        clone.setNewLookS_id(this.newLookS_id);
+        clone.setStepnumber(this.stepnumber);
+        clone.setHint(this.hint);
+        clone.setSelectedData(this.selectedData.deepClone());
+        clone.setAssociatedData(this.associatedData.deepClone());
+        List<LabEquipment> les =new ArrayList<>();
+        for (LabEquipment l : equipmentsInLab){
+            les.add(l.deepClone());
+        }
+        clone.setEquipmentsInLab(les);
+
+        List<LabMaterials> lms = new ArrayList<>();
+        for (LabMaterials lm: solutionMaterialsS){
+            lms.add(lm.deepClone());
+        }
+        clone.setSolutionMaterialsS(lms);
+
+        List<LabMaterials> lma = new ArrayList<>();
+        for (LabMaterials lm: solutionMaterialsA){
+            lma.add(lm.deepClone());
+        }
+        clone.setSolutionMaterialsA(lma);
+        return clone;
     }
 }

@@ -245,8 +245,12 @@ $(document).ready(function () {
     }
     if (!associatedData) {
       console.log("associatedData = null")
-      return false;
+      return false; 
     }
+    $("#workspace").css("pointer-events","none");
+    $("#verticalMenu").css("pointer-events","none");
+
+
     var am = associatedData.materials;
     var amBuffer = cloneMaterials(associatedData.materials);
     var sm = selectedData.materials;
@@ -828,8 +832,12 @@ $(document).ready(function () {
               $('#' + associatedData.htmlid).css('height', height + 'px');
             }
             $("#stepInfo").html("");
+            $("#stepNumber").text("Step Number"+ stepnumber);
+            $("#workspace").css("pointer-events","auto");
+            $("#verticalMenu").css("pointer-events","auto");
           },
           error: function (e) {
+            stepnumber -= 1;
           }
         });
 
@@ -897,7 +905,6 @@ $(document).ready(function () {
         materialsDiv = materialsDiv + materialName + ': ' + quantity + unit + '\n';
         // $("#selectedEquipmentMaterials").innerHtml = materialsDiv;
         $("#" + selectedOrAssociated + "Materials").text(materialsDiv);
-
       }
     }
   }

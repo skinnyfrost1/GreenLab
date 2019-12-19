@@ -15,7 +15,7 @@ $(document).ready(function () {
     let solutionEquipments = [];
     let NewLookS_id;
     let NewLookA_id;
-    let stepnumber = 0;
+    let stepnumber = 1;
     let hint;
 
 
@@ -30,6 +30,41 @@ $(document).ready(function () {
 
     var lab_id = document.getElementById("lab_id").innerHTML;
     console.log("lab_id  = " + lab_id);
+    updateStepInfo();
+
+
+    function updateStepInfo(){
+        var post = {}
+        post['stepnumber']=''+stepnumber;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/workspace/stu/getstepinfo/" + lab_id,
+            data: JSON.stringify(post),
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            success: function (result) {
+
+                console.log(result.message)
+                console.log(result.hint)
+                var htmlDOM = ""+
+                '<div>You are In step '+stepnumber+'</div></br>'+
+                '<a>'+result.hint+'</a></br>';
+                
+                $("#stepInfo").html(htmlDOM);
+               
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    }
+
+
+
+
+
 
     // function LabEquipment(equipment_id, htmlid, nickname, material, blandable, blander, heatable, heater, tempreature, material) {
     function LabEquipment(equipment_id, htmlid, nickname, material, blandable, blander, heatable, heater, materials) {
@@ -81,7 +116,7 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/workspace/addequipment/" + lab_id,
+            url: "/workspace/stuaddequipment/" + lab_id,
             data: JSON.stringify(post),
             dataType: 'json',
             cache: false,
@@ -672,7 +707,7 @@ $(document).ready(function () {
 
                 //                           (╯°Д°)╯︵ ┻━┻
 
-                stepnumber = stepnumber + 1;
+                
                 var posting = {};
 
 
@@ -750,6 +785,7 @@ $(document).ready(function () {
                     cache: false,
                     timeout: 600000,
                     success: function (result) {
+                        stepnumber = stepnumber + 1;
                         console.log(result)
                         if (result.labEquipS) {
                             selectedData.equipmnet_id = result.labEquipS.equipment_id
