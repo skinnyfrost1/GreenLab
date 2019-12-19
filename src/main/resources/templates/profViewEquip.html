@@ -77,9 +77,13 @@
     </tbody>
   </table>
   <!--  End of tool bar -->
+  <form th:action="@{/equipment/delete}" method = "post" enctype="multipart/form-data">
+
   <div style="padding: 4em;"></div>
 
-  <div class="title webfont">Equipments</div>
+  <div class="title webfont">Equipments
+<!--    <a href="" class="headerUnselected" style="margin:0em 5em 0em 20em;"><i class='fas fa-trash-alt headerIcon'></i></a>-->
+  </div>
   <!-- Title -->
   <div style="text-align: center;">
 <!--  <div class="labMenuContainer webfont">-->
@@ -139,7 +143,13 @@
 
   </div>
   </div>
+  <div id="deleteCourseBtnContainer" class="show">
+    <input form="deleteForm" name="courseObjectId" th:value="${course._id}" hidden/>
+    <input form="deleteForm" type="submit" value="Delete" class="delete-button webfont" style="float:left;margin:0.5em 8% 2em 8%;">
+  </div>
+  </form>
 <!--  </div>-->
+  <form id='deleteForm' th:action="@{/course/delete}" method = "post"></form>
 </body>
 <script type="text/javascript" th:src="@{/js/ProfViewEquipment.js}"></script>
 
