@@ -66,4 +66,16 @@ public class LabEquipment {
 
     }
 
+    @Override
+    public String toString(){
+        String str = "{equipment_id="+this.equipment_id;
+        str+= "  htmlid="+this.htmlid;
+        str+= "  nickname="+this.nickname;
+        for (LabMaterials lm : this.materials){
+            str+="\n"+lm.toString();
+        }
+        str += "}";
+        return str;
+    }
+
 }

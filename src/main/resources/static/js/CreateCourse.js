@@ -166,11 +166,17 @@ $(document).ready(function(e) {
                                 '                </div>\n' +
                                 '              </div>\n'
                 }
-
                 // CreateCourseLoadLabListener(labNameList.length)
                 $("#addLabPage").append(htmlStr);
                 $("#addLabPage").show().addClass("show");
                 $("#addLabBigContainer").show().addClass("show");
+                $(".createCourseLabSelection").click(function (e) {
+                    if (e.target.tagName != 'INPUT') {
+                        var checkBoxes = $(this).find('input')
+                        checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+                        return false;
+                    }
+                });
             },
         });
 
