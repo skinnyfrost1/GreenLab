@@ -285,7 +285,8 @@ public class WorkspaceController {
             }
             labEquipA = lea;
         }
-
+        
+        currentStep.setEquipmentsInLab(labequipments);
         labRepo.save(lab);
         result.setLabEquipS(labEquipS);
         result.setLabEquipA(labEquipA);

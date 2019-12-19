@@ -10,6 +10,7 @@ import lombok.Setter;
 public class Step {
 
     private String _id;
+    private List<LabEquipment> equipmentsInLab;
     private LabEquipment selectedData;
     private LabEquipment associatedData;
     private List<LabMaterials> solutionMaterialsS;
@@ -26,6 +27,7 @@ public class Step {
     public Step(LabEquipment selectedData, LabEquipment associatedData, List<LabMaterials> solutionMaterialsS,
             List<LabMaterials> solutionMaterialsA, String newLookS_id, String newLookA_id, int stepnumber,
             String hint) {
+        // this.equipmentsInLab = equipmentsInLab;
         this.selectedData = selectedData;
         this.associatedData = associatedData;
         this.solutionMaterialsS = solutionMaterialsS;
