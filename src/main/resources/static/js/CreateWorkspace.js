@@ -385,14 +385,14 @@ $(document).ready(function () {
     solutionMaterialsS = [];
     var htmlDOM = '<div id="solutionSPart1"></div>' +
       '<div id="solutionSDetails"></div>' +
-      '<button id="solutionSSubmit" style="visibility:hidden;">Next</button>';
+      '<button id="solutionSSubmit" class="createLabButton" style="visibility:hidden;">Next</button>';
     $("#solutionS").html(htmlDOM);
 
     //第一个yes no 问题
     htmlDOM = '<div id="solutionSTitle1">Do you want to edit the solution of <a id="solutionSNickname">' + selectedData.nickname + '</a>?</div>' +
       '<div id="solutionSButton" style="visibility: visible;">' +
-      '<button id="solutionSButton_yes">Yes</button>' +
-      '<button id="solutionSButton_no">no</button>' +
+      '<button id="solutionSButton_yes" class="createLabButton" >Yes</button>' +
+      '<button id="solutionSButton_no" class="createLabButton">no</button>' +
       '</div>';
     $("#solutionSPart1").html(htmlDOM);
 
