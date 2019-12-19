@@ -81,7 +81,7 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/workspace/addequipment/" + lab_id,
+            url: "/studentdolab/workspace/addequipment/" + lab_id,
             data: JSON.stringify(post),
             dataType: 'json',
             cache: false,

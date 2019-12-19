@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import com.greenlab.greenlab.dto.ResponseEquipment;
 import com.greenlab.greenlab.model.Equipment;
 import com.greenlab.greenlab.model.Lab;
+import com.greenlab.greenlab.model.StuLab;
 import com.greenlab.greenlab.repository.LabRepository;
+import com.greenlab.greenlab.repository.StuLabRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,9 +20,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-public class StuDoLabController{
+public class StuDoLabController {
     @Autowired
     private LabRepository labRepository;
+
+    @Autowired
+    private StuLabRepository stuLabRepo;
 
     @GetMapping(value = "/lab/dolab/workspace/{_id}")
     public String getLabCreateWorkspace(@PathVariable String _id, HttpServletRequest request, ModelMap model) {
@@ -29,10 +34,32 @@ public class StuDoLabController{
         if (!request.getSession().getAttribute("role").equals("student")) {
             return "redirect:/login";
         }
-
-        System.out.println("[GET]create/workspace/" + _id);
-        Lab lab = labRepository.findBy_id(_id);
+        String email = (String) request.getSession().getAttribute("email");
+        System.out.println("[GET]/lab/dolab/workspace/" + _id);
+        StuLab sl = stuLabRepo.findByStudentEmail(email);
+        List<Lab> doingLabs = sl.getDoingLabs();
+        List<Lab> enrolledLabs= sl.getEnrolledLabs();
+        Lab lab = null;
+        for (Lab l : doingLabs) {
+            if (l.get_id().equals(_id)) {
+                lab = l;
+                break;
+            }
+        }
+        if (lab==null){
+            for (Lab l : enrolledLabs){
+                if (l.get_id().equals(_id)){
+                    lab = l.deepClone();
+                    doingLabs.add(lab);
+                    stuLabRepo.save(sl);
+                    break;
+                }
+            }
+        }
         if (lab != null) {
+
+            sl.getDoingLabs().add(lab);
+
             List<Equipment> preparedEquipment = lab.getPreparedEquipment();
             List<ResponseEquipment> equipments = new ArrayList<>();
             ResponseEquipment tempRE;
@@ -59,12 +86,11 @@ public class StuDoLabController{
             }
             model.addAttribute("preparedEquipments", equipments);
             model.addAttribute("lab", lab);
-            return "profCreateLab";
-        }
-        else{
-            model.addAttribute("errormsg","can't find the lab"+_id);
+            return "studentDoLab";
+        } else {
+            model.addAttribute("errormsg", "can't find the lab" + _id);
             return "error";
         }
     }
-    
+
 }
