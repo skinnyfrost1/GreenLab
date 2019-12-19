@@ -27,6 +27,16 @@ $(document).ready(function(e) {
             return false;
         }
     });
+
+    $("#courseDeleteBtn").click(function(){
+        if (confirm("Do you really want to delete this course?")){
+            $('form#deleteForm').submit();
+        }
+    });
+
+
+
+
 })
 
 function valthisform() {

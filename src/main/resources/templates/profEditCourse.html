@@ -258,7 +258,8 @@
 
         <div id="deleteCourseBtnContainer" class="show">
             <input form="deleteForm" name="courseObjectId" th:value="${course._id}" hidden/>
-            <input form="deleteForm" type="submit" value="Delete" class="delete-button webfont" style="float:left;margin:0.5em 8% 2em 8%;">
+            <input type="button" value="Delete" id="courseDeleteBtn" class="delete-button webfont" style="float:left;margin:0.5em 8% 2em 8%;">
+<!--            <input type="button" class="show delete-button" id="equipDelete" value="Delete" style="margin:0em 0em 0em 10%;float:left;"></input>-->
         </div>
 
         <div id="submitEditBtnContainer" class="show">
