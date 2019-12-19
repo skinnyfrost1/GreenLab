@@ -205,7 +205,7 @@ public class EditCourseController {
         course.setStudents(students);
         courseRepository.save(course);
         System.out.println(courseId + " " + studentEmail);
-        StuCourse stuCourse = stuCourseRepository.findByCourseIdAndStudentEmail(courseId, studentEmail);
+        StuCourse stuCourse = stuCourseRepository.findByCourseObjectIdAndStudentEmail(course.get_id(), studentEmail);
         System.out.println(stuCourse.toString());
         List<Lab> labs = labRepository.findByCourseId(courseId);
         stuCourseRepository.delete(stuCourse);
@@ -239,7 +239,7 @@ public class EditCourseController {
                         String stuID = columns[2];
                         if (userRepository.findByUid(stuID) != null) {
                             User student = userRepository.findByUid(stuID);
-                            if (stuCourseRepository.findByCourseIdAndStudentEmail(courseId,
+                            if (stuCourseRepository.findByCourseObjectIdAndStudentEmail(course.get_id(),
                                     student.getEmail()) != null) {
                                 continue;
                             }

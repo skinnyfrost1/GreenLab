@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link th:href="@{/stylesheet/theme.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
@@ -10,7 +11,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <title>profCreateLabInfo</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
     <!--    <script type="text/javascript" src="../static/js/coursePageButtons.js"></script>-->
 </head>
 <body>
@@ -50,9 +51,9 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Equipments</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                                <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
-                                <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
-                                <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
+                                <div class="dropdown-content"><a th:href="@{/equipments}">View Equipment</a></div>
+                                <div class="dropdown-content"><a th:href="@{/equipment/create}">Add Equipment</a></div>
+                                <div class="dropdown-content"><a th:href="@{/equipment/search}">Search Equipment</a></div>
                             </div>
                         </div>
                     </td>
@@ -116,28 +117,30 @@
                 <!-- loop -->
                 <input id='testNameHidden' type='hidden' value='default' name='createLabEquipSelected'>
                 <div th:each="equip: ${equipments}"class="bigLabContainer">
-                    <table class="labContainer" >
-                        <col width="30%"/>
-                        <col width="40%"/>
-                        <col width="30%"/>
-                        <!-- <col width="20%"/> -->
-                        <!-- <tbody style="padding: 0; margin: 0;"> -->
-                        <tr>
-                            <td class="courseCellPadding">
-                                <div class="equipment viewEquipContainer">
-                                    <img th:attr="src=@{${equip.image}}" style="width:80px;height:80px">
-                                </div>
-                            </td>
-                            <td class="courseCellPadding">
-                                <div class="webfont" th:text="${equip.equipmentName}"></div>
-                            </td>
-                            <td class="courseCellPadding">
-                                <!--                            <div class="checkBoxDiv">-->
-                                <input class="webfont" name="createLabEquipSelected" type="checkbox" th:value="${equip._id}"></input>
-                                <!--                            </div>-->
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="createLabInfoPicture">
+                        <table class="labContainer" >
+                            <col width="30%"/>
+                            <col width="40%"/>
+                            <col width="30%"/>
+                            <!-- <col width="20%"/> -->
+                            <!-- <tbody style="padding: 0; margin: 0;"> -->
+                            <tr>
+                                <td class="courseCellPadding">
+                                    <div class="equipment viewEquipContainer">
+                                        <img th:attr="src=@{${equip.image}}" style="width:80px;height:80px">
+                                    </div>
+                                </td>
+                                <td class="courseCellPadding">
+                                    <div class="webfont" th:text="${equip.equipmentName}"></div>
+                                </td>
+                                <td class="courseCellPadding">
+                                    <!--                            <div class="checkBoxDiv">-->
+                                    <input class="webfont" name="createLabEquipSelected" type="checkbox" th:value="${equip._id}"></input>
+                                    <!--                            </div>-->
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -150,4 +153,5 @@
 </form>
 <script src="/js/CreateLabInfo.js"></script>
 </body>
+<script src="/js/CreateLabInfo.js"></script>
 </html>

@@ -50,7 +50,7 @@ public class StuEnrollCourseController{
             students.add(student);
             course.setStudents(students);
         }
-        if(stuCourseRepository.findByCourseIdAndStudentEmail(course.getCourseId(),student.getEmail()) != null){
+        if(stuCourseRepository.findByCourseObjectIdAndStudentEmail(courseSelected,student.getEmail()) != null){
             return "redirect:/courses";
         }
         StuCourse stuCourse = new StuCourse(courseSelected,email,course.getCourseId());

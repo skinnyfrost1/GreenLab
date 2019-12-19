@@ -54,10 +54,9 @@
                 <div class="dropdown" style="cursor: pointer;">
                   <span style="color:#eeeeee">Equipments</span>
                   <div class="dropdown_container" style="padding-top: 0.8em;">
-                    <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a>
-                    </div>
-                    <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
-                    <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a>
+                      <div class="dropdown-content"><a th:href="@{/equipments}">View Equipment</a></div>
+                      <div class="dropdown-content"><a th:href="@{/equipment/create}">Add Equipment</a></div>
+                      <div class="dropdown-content"><a th:href="@{/equipment/search}">Search Equipment</a></div>
                     </div>
                   </div>
                 </div>
@@ -117,7 +116,7 @@
       <td>
         <!-- <div class="workspace middlePaneContainer webfont"></div> -->
         <div id="workspace" class="workspace">
-          
+
         </div>
 
       </td>
@@ -148,41 +147,51 @@
           </div>
           <!-- End of Selected Equiopment Properties: -->
           <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;color:#d1d1d1;">
-              __________________________________</div>
+            __________________________________</div>
           <!-- Associate Equiopment Properties -->
           <div class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">
             <div>Associate Equiopment Properties:</div>
             <div id="associatedEquipment" class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">
             </div>
-            <div id="associatedEquipmentMaterials" class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">
-              </div>
+            <div id="associatedEquipmentMaterials" class=" webfont"
+              style="text-align:left;margin: 0.5em 0em 0.5em 1em;">
+            </div>
           </div>
           <!-- End of Associate Equiopment Properties -->
           <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;color:#d1d1d1;">
-              __________________________________</div>
+            __________________________________</div>
+          <!-- Action Popup  -->
 
-              <div id="actionPopUp" class="actionPopUp" style="visibility:hidden;">
-                <div id="addToAssociated"></div>
-                <div id="getFromAssociated"></div>
-                <div id="interactionButton"></div>
-              </div>
-          <input type="submit" name="process" value="Process" class="createLabButton">
+          <div id="actionPopUp" class="actionPopUp" style="visibility:hidden;">
+            <div id="addToAssociated"></div>
+            <div id="getFromAssociated"></div>
+            <!-- <div id="interactionButton"> -->
+            <button id="interactionButton" name="process" class="createLabButton">Process</button>
+            <!-- </div> -->
+
+          </div>
+          <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;color:#d1d1d1;">
+            __________________________________</div>
+          <!-- End of Action Popup  -->
+          <!-- Solution Properties -->
+
+
+          <div id="solutionS" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">
+          </div>
+            
+          <div id="solutionA" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">
+          </div>
 
           <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;color:#d1d1d1;">
             __________________________________</div>
-          <div class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">Step #1 :</div>
-          <div class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">Add alcohol lamp</div>
-          <div class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">Step #2 :</div>
-          <div class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">Add small beaker</div>
-          <div class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">Step #3 :</div>
-          <div class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">Add 10ml NaOH into small
-            beaker</div>
-          <div class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">Step #4 :</div>
-          <div class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;">Alcohol lamp heats small
-            beaker</div>
-          <div class="" style="text-align:left;margin: 4em 0em 0.5em 1em;"></div>
 
-          <div class="processStatusLabel">Success!</div>
+          <!-- End of Solution S Properties -->
+          <!-- start of steps -->
+
+          <div id="stepInfo" class=" webfont" style="text-align:left;margin: 0.5em 0em 0.5em 1em;"></div>
+          
+
+          <!-- <div class="processStatusLabel">Success!</div> -->
           <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;color:#d1d1d1;">
             __________________________________</div>
           <div class=" webfont" style="text-align:left;margin: 0em 0em 0.5em 1em;"> </div>
@@ -192,7 +201,7 @@
           <div class=" webfont" id="lab_id" style="text-align:left;margin: 0.5em 0em 0.5em 1em; visibility: hidden;"
             th:text="${lab._id}">
           </div>
-
+          
 
           <div class="show">
           </div>

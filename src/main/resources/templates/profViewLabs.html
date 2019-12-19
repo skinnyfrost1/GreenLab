@@ -37,8 +37,8 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Labs</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewLabs.html">View Labs</a></div>
-                              <div class="dropdown-content"><a href="profCreateLab.html">Create Lab</a></div>
+                                <div class="dropdown-content"><a th:href="@{/labs}">View Labs</a></div>
+                                <div class="dropdown-content"><a th:href="@{/lab/create}">Create Lab</a></div>
                             </div>
                         </div>
                     </td>
@@ -47,9 +47,9 @@
                         <div class="dropdown" style="cursor: pointer;">
                             <span style="color:#eeeeee">Equipments</span>
                             <div class="dropdown_container" style="padding-top: 0.8em;">
-                              <div class="dropdown-content"><a href="profViewEquip.html">View Equipment</a></div>
-                              <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
-                              <div class="dropdown-content"><a href="profAddEquip.html">Add Equipment</a></div>
+                                <div class="dropdown-content"><a th:href="@{/equipments}">View Equipment</a></div>
+                                <div class="dropdown-content"><a th:href="@{/equipment/create}">Add Equipment</a></div>
+                                <div class="dropdown-content"><a th:href="@{/equipment/search}">Search Equipment</a></div>
                             </div>
                         </div>
                     </td>
@@ -60,14 +60,9 @@
         <td style="width: 5em;">
             <table style="padding: 0; margin: 0; align: right;">
                 <tr style="align: right;">
+
                     <td class="headerCellPadding">
-                        <a href="" class="headerUnselected"><i class='fas fa-user-circle headerIcon'></i></a>
-                    </td>
-                    <td class="headerCellPadding">
-                        <a href="" class="headerUnselected"><i class='fas fa-cog headerIcon'></i></a>
-                    </td>
-                    <td class="headerCellPadding">
-                        <a href="index.html" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>
+                        <a th:href="@{/logout}" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>
                     </td>
                 </tr>
             </table>
@@ -85,56 +80,26 @@
 <div class="bigContainer webfont">
   <!-- one course -->
   <!-- loop -->
-  <div class="notVeryBigContainer" >
-    <table class="courseContainer" onclick="window.location.href = 'profViewStudentUnderLab.html';">
-      <col width="15%"/>
-      <col width="25%"/>
-      <col width="60%"/>
-      <!-- <col width="20%"/> -->
-      <!-- <tbody style="padding: 0; margin: 0;"> -->
-        <tr>
-          <td class="courseCellPadding">
-              <div>BIO 201</div>
-          </td>
-          <td class="courseCellPadding">
-            <div class="webfont">Lab 01</div>
-          </td>
-          <td class="courseCellPadding">
-            <div class="webfont">Organism to Ecosystems</div>
-          </td>
-          <!-- <td class="courseCellPadding" style="text-align: right;">
-            <a href="" class=""><i class='fas fa-pen headerIcon'></i></a>
-            &nbsp;&nbsp;&nbsp;
-            <a href="" class=""><i class='fas fa-trash headerIcon'></i></a>
-          </td> -->
-        </tr>
-      <!-- </tbody> -->
-    </table>
-  </div>
-  <!-- Loop ends here -->
-  <!-- one course -->
-  <div class="notVeryBigContainer" onclick="window.location.href = 'index.html';">
+    <div th:each="lab:${labs}" class="notVeryBigContainer" >
+<!--        <div th:if="${role=='professor'}"><a th:href="'/course/edit?id=' +${course.get_id()}">-->
+            <table class="courseContainer" >
+                <col width="40%"/>
+<!--                <col width="25%"/>-->
+                <col width="60%"/>
+                <!-- <col width="20%"/> -->
+                <!-- <tbody style="padding: 0; margin: 0;"> -->
+                <tr >
+                    <td class="courseCellPadding">
+                        <div class="webfont" th:text="${lab.getCourseId()}"></div>
+                    </td>
+                    <td class="courseCellPadding" th:text="${lab.getLabName()}" />
+<!--                    <td class="courseCellPadding" th:text="" />-->
+                </tr>
 
-    <table class="courseContainer">
-      <col width="15%"/>
-      <col width="25%"/>
-      <col width="60%"/>
-      <!-- <tbody style="padding: 0; margin: 0;"> -->
-        <tr>
-          <td class="courseCellPadding">
-              <!-- <a href="" class="webfont">BIO 201</a> -->
-              <div  class="webfont">BIO 202</div>
-          </td>
-          <td class="courseCellPadding">
-            <div class="webfont">Lab 01</div>
-          </td>
-          <td class="courseCellPadding">
-            <div class="webfont">Molecular and Cellular Biology</div>
-          </td>
-        </tr>
-      <!-- </tbody> -->
-    </table>
-  </div>
+            </table>
+<!--        </a>-->
+    </div>
+  <!-- Loop ends here -->
   <!-- one course -->
     <div class="show">
     </div>
