@@ -92,6 +92,7 @@
             <!-- one lab -->
             <!-- loop -->
             <div th:each="lab: ${labs}" class="bigLabContainer" >
+                <a th:href="'/lab/dolab/workspace/' +${lab.get_id()}">
                 <table class="labContainer" >
                     <col width="30%"/>
                     <col width="40%"/>
@@ -111,7 +112,7 @@
 
                     </tr>
                 </table>
-
+                </a>
             </div>
         </div>
         <!-- End of right container -->
