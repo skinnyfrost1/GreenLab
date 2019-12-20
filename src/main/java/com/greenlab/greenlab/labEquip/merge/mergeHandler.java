@@ -164,7 +164,7 @@ public class mergeHandler {
 
         System.out.println( "__emailId is :"+emailId );
 
-        List<EquipmentData> equipmentDataList =  equipmentDataRepository.findAllByOwnerId("666");
+        List<EquipmentData> equipmentDataList =  equipmentDataRepository.findAllByShared( true );
 
 
         JSONArray jsonArray = new JSONArray();
@@ -181,6 +181,41 @@ public class mergeHandler {
         return sendData;
 
     }
+
+
+    @RequestMapping(value="/ajax/searchLabs" , method = RequestMethod.POST)
+    @ResponseBody
+    public Object listSearchLabs(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException, JsonProcessingException {
+
+
+        System.out.println( reqBody );
+
+        ObjectMapper jsonMapper = new ObjectMapper();
+
+        String emailId = (String) request.getSession().getAttribute("email");
+
+//        UserEquipmentFolder userEquipmentFolder =  userEquipmentFolderRepository.findByOwnerAndType( emailId , "all" );
+//
+//        List<String> list =  userEquipmentFolder.getItemIdsInFolder()
+//
+//        for( int i = 0 ; i < list.size() ; i++ ){
+//}
+
+        List<LabData> equipmentDataList =  labDataRepository.findAllByOwnerId( emailId );
+
+
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put( jsonMapper.writeValueAsString( equipmentDataList )  );
+
+
+
+        Map<String,Object> sendData = new HashMap<>();
+        //sendData.put("allEquipmentData",  );
+        sendData.put( "data", jsonArray.toString() );
+        return sendData;
+
+    }
+
 
 }
 
