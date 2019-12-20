@@ -2,6 +2,7 @@ package com.greenlab.greenlab.controller.student;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.greenlab.greenlab.labEquip.laboratory.labData.DoLab;
 import com.greenlab.greenlab.model.Course;
 import com.greenlab.greenlab.model.Lab;
 import com.greenlab.greenlab.repository.CourseRepository;
@@ -23,7 +24,7 @@ public class StuCourseDetailsController {
     public String getCoursesDetails(ModelMap model, @RequestParam(value = "id") String id, HttpServletRequest request) {
         Course course = courseRepository.findBy_id(id);
         String role = (String) request.getSession().getAttribute("role");
-        List<Lab> labs = course.getLabs();
+        List<DoLab> labs = course.getDoLabs();
         model.addAttribute("role", role);
         model.addAttribute("course", course);
         model.addAttribute("labs", labs);

@@ -144,6 +144,7 @@ $(document).ready(function(e) {
             success: function (data) {
                 console.log("data is "+data)
                 labNameList = data['labNameList']
+                lab_IdList = data['lab_IdList']
                 console.log("lab name list is "+labNameList)
                 console.log("its size is "+labNameList.length)
                 for(var i=0;i<labNameList.length;i++){
@@ -159,7 +160,7 @@ $(document).ready(function(e) {
                                 '                        <div>'+labNameList[i]+'</div>\n' +
                                 '                    </td>\n' +
                                 '                    <td>\n' +
-                                '                      <input class="webfont" type="checkbox" id="select' + i + '" name="select" value="'+labNameList[i]+'">'  +
+                                '                      <input class="webfont" type="checkbox" id="select' + i + '" name="select" value="'+lab_IdList[i]+'">'  +
                                 '                    </td>' +
                                 '                  </tr>\n' +
                                 '                </table>\n' +

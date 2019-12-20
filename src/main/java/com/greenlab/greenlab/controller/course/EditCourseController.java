@@ -18,6 +18,8 @@ import com.greenlab.greenlab.dto.LabMenuRequestBody;
 import com.greenlab.greenlab.dto.LabNameAndId;
 import com.greenlab.greenlab.dto.MultiStringRequestBody;
 import com.greenlab.greenlab.dto.SingleStringRequestBody;
+import com.greenlab.greenlab.labEquip.laboratory.labData.DoLab;
+import com.greenlab.greenlab.labEquip.laboratory.labData.DoLabRepository;
 import com.greenlab.greenlab.model.Course;
 import com.greenlab.greenlab.model.Lab;
 import com.greenlab.greenlab.model.StuCourse;
@@ -50,6 +52,8 @@ public class EditCourseController {
     @Autowired
     private LabRepository labRepository;
     @Autowired
+    private DoLabRepository doLabRepository;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private StuCourseRepository stuCourseRepository;
@@ -58,18 +62,19 @@ public class EditCourseController {
     public String getCreateCourse(ModelMap model, @RequestParam(value = "id") String id, HttpServletRequest request) {
         if (request.getSession().getAttribute("email") == null)
             return "redirect:/login";
+            String email = (String) request.getSession().getAttribute("email");
         String role = (String) request.getSession().getAttribute("role");
         System.out.println(role);
         Course course = courseRepository.findBy_id(id);
         model.addAttribute("course", course);
         model.addAttribute("role", role);
-        List<Lab> templabs = course.getLabs();
-        List<Lab> temprestLabs = labRepository.findByCourseId(course.getCourseId());
+        List<DoLab> templabs = course.getDoLabs();
+        List<DoLab> temprestLabs = doLabRepository.getAllByCreator(email);
         System.out.println("restLab.size() = " + temprestLabs.size());
 
         if (templabs != null) {
-            for (Lab lab : templabs) {
-                for (Lab rLab : temprestLabs) {
+            for (DoLab lab : templabs) {
+                for (DoLab rLab : temprestLabs) {
                     if (lab.get_id().equals(rLab.get_id())) {
                         temprestLabs.remove(rLab);
                         break;
@@ -82,13 +87,13 @@ public class EditCourseController {
 
         LabNameAndId buffer;
         if (templabs != null) {
-            for (Lab lab : templabs) {
+            for (DoLab lab : templabs) {
                 buffer = new LabNameAndId(lab.get_id(), lab.getLabName());
                 labs.add(buffer);
             }
         }
         if (temprestLabs != null) {
-            for (Lab lab : temprestLabs) {
+            for (DoLab lab : temprestLabs) {
                 buffer = new LabNameAndId(lab.get_id(), lab.getLabName());
                 restLabs.add(buffer);
             }
@@ -116,9 +121,9 @@ public class EditCourseController {
             HttpServletRequest request) {
 
         // String creator = (String) request.getSession().getAttribute("email");
-        List<Lab> labs = new ArrayList<>();
+        List<DoLab> labs = new ArrayList<>();
         for (String id : editLabSelected) {
-            Lab temp = labRepository.findBy_id(id);
+            DoLab temp = doLabRepository.getBy_id(id);
 
 
             if (temp != null)
@@ -138,7 +143,7 @@ public class EditCourseController {
         course.setCourseName(courseName);
         course.setSemester(semester);
         course.setCourseDescription(courseDescription);
-        course.setLabs(labs);
+        course.setDoLabs(labs);
         courseRepository.save(course);
         return "redirect:/courses";
     }
@@ -159,10 +164,10 @@ public class EditCourseController {
         List<String> labObjIds = reqBody.getStrs();
 
         Course course = courseRepository.findBy_id(courseObjectId);
-        List<Lab> labs = course.getLabs();
+        List<DoLab> labs = course.getDoLabs();
 
         for (String s : labObjIds) {
-            for (Lab l : labs) {
+            for (DoLab l : labs) {
                 if (l.get_id().equals(s)) {
                     message = message + l.getLabName() + "\n";
                     labs.remove(l);
@@ -207,7 +212,7 @@ public class EditCourseController {
         System.out.println(courseId + " " + studentEmail);
         StuCourse stuCourse = stuCourseRepository.findByCourseObjectIdAndStudentEmail(course.get_id(), studentEmail);
         System.out.println(stuCourse.toString());
-        List<Lab> labs = labRepository.findByCourseId(courseId);
+        // List<DoLab> labs = doLabRepository.getAllByCreator(email);
         stuCourseRepository.delete(stuCourse);
         // request.getSession().setAttribute("labs", labs);
         model.addAttribute("students", students);
@@ -303,19 +308,19 @@ public class EditCourseController {
         }
         String courseObjectId = reqBody.getStr();
         Course course = courseRepository.findBy_id(courseObjectId);
-        List<Lab> labs = course.getLabs();
+        List<DoLab> labs = course.getDoLabs();
 
         String courseId = course.getCourseId();
         String creator = (String) request.getSession().getAttribute("email");
-        List<Lab> labmenu = labRepository.findByCourseIdAndCreator(courseId, creator);
+        List<DoLab> labmenu = doLabRepository.getAllByCreator(creator);
 
-        for (Lab l : labs) {
+        for (DoLab l : labs) {
             if (labmenu.contains(l)) {
                 labmenu.remove(l);
             }
         }
         List<String> labNameList = new ArrayList<>();
-        for (Lab l : labmenu) {
+        for (DoLab l : labmenu) {
             labNameList.add("[\"" + l.getLabName() + "\", \"" + l.get_id() + "\"]");
         }
         return ResponseEntity.ok(result);

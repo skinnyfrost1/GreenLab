@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DoLabRepository extends MongoRepository<DoLab, String> {
 
-    public DoLab getById(String id);
+    public DoLab getBy_id(String _id);
 
     public List<DoLab> getAllByCreator(String creator );
 

@@ -39,4 +39,28 @@ public class AddStepRequestBody {
     private int stepnumber;
     private String hint;
 
+    @Override
+    public String toString() {
+        return "AddStepRequestBody{" +
+                "_id='" + _id + '\'' +
+                ", selectedData=" + selectedData +
+                ", selectedData_material=" + selectedData_material +
+                ", selectedData_quantity=" + selectedData_quantity +
+                ", selectedData_unit=" + selectedData_unit +
+                ", associatedData=" + associatedData +
+                ", associatedData_material=" + associatedData_material +
+                ", associatedData_quantity=" + associatedData_quantity +
+                ", associatedData_unit=" + associatedData_unit +
+                ", solutionMaterialsS_material=" + solutionMaterialsS_material +
+                ", solutionMaterialsS_quantity=" + solutionMaterialsS_quantity +
+                ", solutionMaterialsS_unit=" + solutionMaterialsS_unit +
+                ", solutionMaterialsA_material=" + solutionMaterialsA_material +
+                ", solutionMaterialsA_quantity=" + solutionMaterialsA_quantity +
+                ", solutionMaterialsA_unit=" + solutionMaterialsA_unit +
+                ", NewLookS_id='" + NewLookS_id + '\'' +
+                ", NewLookA_id='" + NewLookA_id + '\'' +
+                ", stepnumber=" + stepnumber +
+                ", hint='" + hint + '\'' +
+                '}';
+    }
 }

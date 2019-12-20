@@ -29,6 +29,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class WorkspaceController {
@@ -139,10 +140,16 @@ public class WorkspaceController {
     }
 
     @PostMapping("/lab/create/workspace/addstep/")
-    public ResponseEntity<?> postLabCreateWorkspaceAddstep(@RequestBody AddStepRequestBody reqBody,
+    public ResponseEntity<?> postLabCreateWorkspaceAddstep(
+            @RequestBody AddStepRequestBody reqBody,
             HttpServletRequest request, Errors errors) {
 
-        AddStepResponseBody result = new AddStepResponseBody();
+
+            System.out.println("\n\n\n");
+            System.out.println(reqBody.toString());
+            System.out.println("\n\n\n");
+
+            AddStepResponseBody result = new AddStepResponseBody();
 
         // -----------------begin of debug------------------------------
         // System.out.println("_id=" + reqBody.get_id());

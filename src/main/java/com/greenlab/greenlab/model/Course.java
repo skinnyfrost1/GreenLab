@@ -2,6 +2,8 @@ package com.greenlab.greenlab.model;
 
 import java.util.List;
 
+import com.greenlab.greenlab.labEquip.laboratory.labData.DoLab;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -25,13 +27,29 @@ public class Course {
     private List<User> students;
     @DBRef
     private List<Lab> labs;
+    @DBRef
+    private List<DoLab> doLabs;
+
+
 
     public Course() {
 
     }
 
-    public Course(String courseId, String courseName, String semester, String courseDescription, String createDate, String creator,
-            List<User> students, List<Lab> labs) {
+    // public Course(String courseId, String courseName, String semester, String courseDescription, String createDate, String creator,
+    //         List<User> students, List<Lab> labs) {
+    //     this.courseId = courseId;
+    //     this.courseName = courseName;
+    //     this.semester=semester;
+    //     this.courseDescription = courseDescription;
+    //     this.creator = creator;
+    //     this.createDate = createDate;
+    //     this.students = students;
+    //     this.labs = labs;
+    // }
+
+    public Course (String courseId, String courseName, String semester, String courseDescription, String createDate, String creator,
+            List<User> students , List<DoLab> doLabs) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.semester=semester;
@@ -39,8 +57,9 @@ public class Course {
         this.creator = creator;
         this.createDate = createDate;
         this.students = students;
-        this.labs = labs;
+        this.doLabs = doLabs;
     }
+
 
     public Course(String courseId, String courseName, String semester, String courseDescription, String createDate, String creator,
             List<User> students) {
@@ -127,11 +146,11 @@ public class Course {
         this.creator = creator;
     }
 
-    public List<Lab> getLabs() {
-        return labs;
-    }
+    // public List<Lab> getLabs() {
+    //     return labs;
+    // }
 
-    public void setLabs(List<Lab> labs) {
-        this.labs = labs;
-    }
+    // public void setLabs(List<Lab> labs) {
+    //     this.labs = labs;
+    // }
 }
