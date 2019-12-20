@@ -1,5 +1,6 @@
 package com.greenlab.greenlab.controller.user;
 
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,12 +8,21 @@ import javax.validation.Valid;
 
 import com.greenlab.greenlab.dto.BooleanResponseBody;
 import com.greenlab.greenlab.dto.LoginRequestBody;
+import com.greenlab.greenlab.labEquip.equipment.equipmentData.ImageData.ImageDataRepository;
+import com.greenlab.greenlab.labEquip.equipment.equipmentData.equipmentData.EquipmentDataRepository;
+import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.UserEquipment;
+import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.UserEquipmentFolder;
+import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.UserEquipmentFolderRepository;
+import com.greenlab.greenlab.labEquip.equipment.equipmentData.userEquipment.UserEquipmentRepository;
+import com.greenlab.greenlab.labEquip.framework.imageBlob.ImageBlobRepository;
 import com.greenlab.greenlab.miscellaneous.PasswordChecker;
 import com.greenlab.greenlab.model.User;
 import com.greenlab.greenlab.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
@@ -55,6 +65,10 @@ public class LoginController {
                 request.getSession().setAttribute("email",email);
                 result.setMessage("Success!");
                 result.setBool(true);
+
+                String theUniqueId = user.getEmail();
+                createOneUser( theUniqueId );
+
                 return ResponseEntity.ok(result);
             }
         }
@@ -70,5 +84,67 @@ public class LoginController {
         request.getSession().removeAttribute("role");
         return "index";
     }
+
+    @Autowired
+    private UserEquipmentRepository userEquipmentRepository;
+
+    @Autowired
+    private UserEquipmentFolderRepository userEquipmentFolderRepository;
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    public EquipmentDataRepository equipmentDataRepository;
+
+    @Autowired
+    public ImageDataRepository imageDataRepository;
+
+    @Autowired
+    private ImageBlobRepository imageBlobRepository;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    public void createOneUser( String emailAddress ){
+
+        String defaultUser = emailAddress;
+
+        UserEquipment userEquipment =  userEquipmentRepository.findByUserId(  defaultUser  );
+
+        if( userEquipment == null ){
+
+            LinkedList<String> folderIds = new LinkedList<>();
+            UserEquipmentFolder userEquipmentFolder;
+
+            userEquipmentFolder = new UserEquipmentFolder();
+            userEquipmentFolder.setType("all");
+            userEquipmentFolder.setOwner(emailAddress);
+            folderIds.add(userEquipmentFolderRepository.save(userEquipmentFolder).getUserFolderId());
+            userEquipmentFolder = new UserEquipmentFolder();
+            userEquipmentFolder.setType("share");
+            userEquipmentFolder.setOwner(emailAddress);
+            folderIds.add(userEquipmentFolderRepository.save(userEquipmentFolder).getUserFolderId());
+            userEquipmentFolder = new UserEquipmentFolder();
+            userEquipmentFolder.setType("favourite");
+            userEquipmentFolder.setOwner(emailAddress);
+            folderIds.add(userEquipmentFolderRepository.save(userEquipmentFolder).getUserFolderId());
+
+
+            userEquipmentFolder = new UserEquipmentFolder();
+            userEquipmentFolder.setType("recent");
+            userEquipmentFolder.setOwner(emailAddress);
+            folderIds.add(userEquipmentFolderRepository.save(userEquipmentFolder).getUserFolderId());
+            userEquipment = new UserEquipment();
+            userEquipment.setUserId(emailAddress);
+            userEquipment.setFolderIds(folderIds);
+            userEquipmentRepository.save(userEquipment);
+
+        }else{
+
+        }
+
+    }
+
 
 }
