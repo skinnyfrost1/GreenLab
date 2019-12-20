@@ -13,7 +13,9 @@ public class DoLab {
 
     private LabData labData = null;
 
+    private String creator = null;
 
+    private String courseId  ;   //cse308
 
     public DoLab(){
 
