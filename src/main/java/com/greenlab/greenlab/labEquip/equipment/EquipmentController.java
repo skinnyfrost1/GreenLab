@@ -1024,7 +1024,7 @@ public class EquipmentController {
                 doLab.setCreator( userId );
                 doLab.setLabName( labData.getName() );
                 doLab = doLabRepository.save( doLab );
-                String id =  doLab.getId();
+                String id =  doLab.get_id();
 
 
                 JSONObject sendData = new JSONObject();
