@@ -14,17 +14,17 @@ import lombok.Setter;
 @Setter
 @Document
 public class StuLab{
-    @Id
-    String _id; 
-    String studentEmail;
-    @DBRef
-    List<Lab> enrolledLabs;
-    List<Lab> doingLabs;
+    // @Id
+    // String _id; 
+    // String studentEmail;
+    // @DBRef
+    // List<Lab> enrolledLabs;
+    // List<Lab> doingLabs;
 
 
 
-    public StuLab(){
-        this.enrolledLabs = new ArrayList<>();
-        this.doingLabs = new ArrayList<>();
-    }
+    // public StuLab(){
+    //     this.enrolledLabs = new ArrayList<>();
+    //     this.doingLabs = new ArrayList<>();
+    // }
 }

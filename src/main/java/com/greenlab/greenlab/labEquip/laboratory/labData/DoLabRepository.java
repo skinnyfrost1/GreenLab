@@ -12,6 +12,9 @@ public interface DoLabRepository extends MongoRepository<DoLab, String> {
 
     public List<DoLab> getAllByCreator(String creator );
 
+    public List<DoLab> findAllByCreatorAndCourseId(String creator, String courseId);
+
+    
 }
 
 

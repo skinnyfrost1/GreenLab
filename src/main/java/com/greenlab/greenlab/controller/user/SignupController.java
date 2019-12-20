@@ -4,21 +4,20 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
+import org.springframework.ui.ModelMap;
 import com.greenlab.greenlab.dto.BooleanResponseBody;
 import com.greenlab.greenlab.dto.CheckEmailRequestBody;
 import com.greenlab.greenlab.dto.CheckEmailResponseBody;
 import com.greenlab.greenlab.dto.SingleStringRequestBody;
 import com.greenlab.greenlab.miscellaneous.PasswordChecker;
-import com.greenlab.greenlab.model.StuLab;
+// import com.greenlab.greenlab.model.StuLab;
 import com.greenlab.greenlab.model.User;
-import com.greenlab.greenlab.repository.StuLabRepository;
+// import com.greenlab.greenlab.repository.StuLabRepository;
 import com.greenlab.greenlab.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +30,7 @@ public class SignupController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private StuLabRepository stuLabRepo;
+    // private StuLabRepository stuLabRepo;
 
     @GetMapping(value = "/signup")
     public String getLogin(ModelMap model, HttpServletRequest request) {
@@ -70,9 +69,9 @@ public class SignupController {
         password = PasswordChecker.encryptSHA512(password);
         user = new User(uid, email, password, firstname, lastname, role);
         userRepository.save(user);
-        StuLab sl = new StuLab();
-        sl.setStudentEmail(email);
-        stuLabRepo.save(sl);
+        // StuLab sl = new StuLab();
+        // sl.setStudentEmail(email);
+        // stuLabRepo.save(sl);
         return "redirect:/courses";
     }
 
