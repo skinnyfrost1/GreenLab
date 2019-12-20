@@ -146,11 +146,11 @@ public class Course {
         this.creator = creator;
     }
 
-    public List<Lab> getLabs() {
-        return labs;
-    }
+    // public List<Lab> getLabs() {
+    //     return labs;
+    // }
 
-    public void setLabs(List<Lab> labs) {
-        this.labs = labs;
-    }
+    // public void setLabs(List<Lab> labs) {
+    //     this.labs = labs;
+    // }
 }
