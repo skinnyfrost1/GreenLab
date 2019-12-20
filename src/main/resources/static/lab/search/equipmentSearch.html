@@ -241,7 +241,7 @@
                     document.getElementById(cardId).onclick = function (evt) {
                         var cardId = evt.path[1].id;
 
-                        window.open("/equipment/"+cardId , "_blank");
+                        //window.open("/equipment/"+cardId , "_blank");
 
                     }
                 }
@@ -309,7 +309,6 @@
                             blobIds.push( imageBlob );
                         }
 
-
                     }
 
                     console.log( blobIds );
@@ -317,8 +316,6 @@
                     if( blobIds.length == 0 ){
 
                         displayBoard();
-
-
 
                     }else{
 
@@ -382,6 +379,58 @@
             // cards.setHTML();
 
 
+            //ui-selectee ui-selected
+
+            document.getElementById("addEquipment").onclick = function () {
+
+                var selectedIds = [];
+
+                var nodes = document.getElementById("contentBox").childNodes;
+
+                for( var i = 0 ; i< nodes.length ; i++ ){
+
+                   var className =  nodes[i]["className"] ;
+                   var id =  nodes[i]["id"] ;
+                   if( className.includes("ui-selected") ){
+                       selectedIds.push( id );
+                   }
+                   //selectedIds.push(id);
+                }
+
+                var sendData = {};
+                sendData["labId"] = "itemId";
+                sendData["blobIds"] = selectedIds;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "/ajax/selectedEquipmentIds",
+                    data: JSON.stringify(sendData),
+                    dataType: 'json',
+                    cache: false,
+                    timeout: 600000,
+                    success: function (info) {
+                        // var imageBlobArr =  JSON.parse( info.data );
+                        // for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+                        //     var imageBlobStr = imageBlobArr[i];
+                        //     var imageBlob = JSON.parse(imageBlobStr);
+                        //     var imageBlobId = imageBlob.id;
+                        //     imageStorage.setItem( imageBlobId , imageBlobStr );
+                        // }
+                        //
+                        // labData.displayLabBoard();
+
+                        console.log(info);
+                    },
+                    error: function (e) {
+
+                    }
+                });
+
+                //console.log("print something here");
+
+            }
+
+
         }
 
 
@@ -442,6 +491,10 @@
 
             box.setHeight( window.innerHeight -250 );
         }
+
+        $( function() {
+            $( "#contentBox" ).selectable();
+        } );
 
     </script>
 
@@ -536,7 +589,23 @@
 
 <div class="container" id="theContainer">
 
-    <div class="h1" id="boardTitle">All Equipment List</div>
+    <div class="h1" id="boardTitle">
+
+    </div>
+
+
+    <div class="row">
+        <div class="h1 col-sm-6 col-md-8 col-lg-9 col-xl-10" >
+
+                <span>Find Equipment</span>
+
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2" >
+
+            <span class="btn btn-info mb-1 btn-md" id="addEquipment" ><i class="fas fa-plus"></i> Add Equipment</span>
+
+        </div>
+    </div>
 
     <div id="contentBox" class="border border-muted rounded-lg"  >
         <!--     display something inside of it       -->
@@ -553,6 +622,12 @@
 
 
 <style>
+
+    #feedback { font-size: 1.4em; }
+    #contentBox .ui-selecting { background: #d2fed5; }
+    #contentBox .ui-selected { background: #bdf3b8; color: white; }
+    /*#contentBox { list-style-type: none; margin: 0; padding: 0; width: 60%; }*/
+    /*#contentBox li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }*/
 
 
     #contentBox{
