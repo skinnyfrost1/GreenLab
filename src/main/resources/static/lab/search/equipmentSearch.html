@@ -506,86 +506,143 @@
 
 <!--  ____________________________  the code below is anhui's tool bar  _____________________________  -->
 
-<!-- Header Banner -->
-<table class="header webfont semibold" style="height: 54px">
-    <tbody style="padding: 0; margin: 0;">
-    <tr>
-        <!-- Left Part -->
-        <td>
-            <table style="padding: 0; margin: 0;">
-                <tr>
-                    <td class="headerCellPadding">
-                        <div class="logo"  ></div>
-                    </td>
-                    <td class="headerCellPadding">
-                        <!--                        <a href="/index" class="headerSelected">Courses</a>-->
-                        <div class="dropdown" style="cursor: pointer;">
-                            <span style="color:#eeeeee">Courses</span>
-                            <div class="dropdown_container" style="padding-top: 0.8em;">
+<!--&lt;!&ndash; Header Banner &ndash;&gt;-->
+<!--<table class="header webfont semibold" style="height: 54px">-->
+<!--    <tbody style="padding: 0; margin: 0;">-->
+<!--    <tr>-->
+<!--        &lt;!&ndash; Left Part &ndash;&gt;-->
+<!--        <td>-->
+<!--            <table style="padding: 0; margin: 0;">-->
+<!--                <tr>-->
+<!--                    <td class="headerCellPadding">-->
+<!--                        <div class="logo"  ></div>-->
+<!--                    </td>-->
+<!--                    <td class="headerCellPadding">-->
+<!--                        &lt;!&ndash;                        <a href="/index" class="headerSelected">Courses</a>&ndash;&gt;-->
+<!--                        <div class="dropdown" style="cursor: pointer;">-->
+<!--                            <span style="color:#eeeeee">Courses</span>-->
+<!--                            <div class="dropdown_container" style="padding-top: 0.8em;">-->
 
-                                <div class="dropdown-content" ><a href="/courses">View Courses</a></div>
-                                <div class="dropdown-content"><a href="/course/create">Create Course</a></div>
+<!--                                <div class="dropdown-content" ><a href="/courses">View Courses</a></div>-->
+<!--                                <div class="dropdown-content"><a href="/course/create">Create Course</a></div>-->
 
-                            </div>
-                        </div>
-                    </td>
-                    <td class="headerCellPadding">
-                        <div class="dropdown" style="cursor: pointer;">
-                            <span style="color:#eeeeee">Labs</span>
-                            <div class="dropdown_container" style="padding-top: 0.8em;">
-
-
-                                <div class="dropdown-content"><a href="/lab/listItem/ListLabItem.html">View Labs</a></div>
-                                <div class="dropdown-content"><a href="/lab/createJump/labCreateJump.html">Create Lab</a></div>
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </td>-->
+<!--                    <td class="headerCellPadding">-->
+<!--                        <div class="dropdown" style="cursor: pointer;">-->
+<!--                            <span style="color:#eeeeee">Labs</span>-->
+<!--                            <div class="dropdown_container" style="padding-top: 0.8em;">-->
 
 
-
-                            </div>
-                        </div>
-                    </td>
-                    <td class="headerCellPadding">
-                        <div class="dropdown" style="cursor: pointer;">
-                            <span style="color:#eeeeee">Equipments</span>
-                            <div class="dropdown_container" style="padding-top: 0.8em;">
+<!--                                <div class="dropdown-content"><a href="/lab/listItem/ListLabItem.html">View Labs</a></div>-->
+<!--                                <div class="dropdown-content"><a href="/lab/createJump/labCreateJump.html">Create Lab</a></div>-->
 
 
-                                <div class="dropdown-content"><a href="/lab/listItem/listEquipItem.html">View Equipment</a></div>
-                                <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
-                                <div class="dropdown-content"><a href="/lab/createJump/equipmentCreateJump.html">Add Equipment</a></div>
+
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </td>-->
+<!--                    <td class="headerCellPadding">-->
+<!--                        <div class="dropdown" style="cursor: pointer;">-->
+<!--                            <span style="color:#eeeeee">Equipments</span>-->
+<!--                            <div class="dropdown_container" style="padding-top: 0.8em;">-->
 
 
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <!-- Right Part -->
-        <td style="width: 5em;">
-            <table style="padding: 0; margin: 0; align: right;">
-                <tr style="align: right;">
-                    <td class="headerCellPadding">
-                        <a href="" class="headerUnselected"><i class='fas fa-user-circle headerIcon'></i></a>
-                    </td>
-                    <td class="headerCellPadding">
-                        <a href="" class="headerUnselected"><i class='fas fa-cog headerIcon'></i></a>
-                    </td>
-                    <td class="headerCellPadding">
-                        <a href="/logout" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<!--  End of tool bar -->
-<div style="padding: 3em;"></div>
+<!--                                <div class="dropdown-content"><a href="/lab/listItem/listEquipItem.html">View Equipment</a></div>-->
+<!--                                &lt;!&ndash; <div class="dropdown-content"><a>Search Equipment</a></div> &ndash;&gt;-->
+<!--                                <div class="dropdown-content"><a href="/lab/createJump/equipmentCreateJump.html">Add Equipment</a></div>-->
+
+
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </table>-->
+<!--        </td>-->
+<!--        &lt;!&ndash; Right Part &ndash;&gt;-->
+<!--        <td style="width: 5em;">-->
+<!--            <table style="padding: 0; margin: 0; align: right;">-->
+<!--                <tr style="align: right;">-->
+<!--                    <td class="headerCellPadding">-->
+<!--                        <a href="" class="headerUnselected"><i class='fas fa-user-circle headerIcon'></i></a>-->
+<!--                    </td>-->
+<!--                    <td class="headerCellPadding">-->
+<!--                        <a href="" class="headerUnselected"><i class='fas fa-cog headerIcon'></i></a>-->
+<!--                    </td>-->
+<!--                    <td class="headerCellPadding">-->
+<!--                        <a href="/logout" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </table>-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--</table>-->
+<!--&lt;!&ndash;  End of tool bar &ndash;&gt;-->
+<!--<div style="padding: 3em;"></div>-->
 
 
 <!--  ____________________________  my code start from here   _____________________________  -->
 
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0">
+    <div class="container">
+        <a href="/" class="navbar-brand font-italic text-capitalize">
+            <i class='fas fa-leaf'></i>
+            Green Lab</a>
 
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/courses"><i class="fab fa-discourse"></i> Course </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lab/listItem/ListLabItem.html"><i class="fas fa-vials"></i> Lab </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lab/listItem/listEquipItem.html"><i class="fas fa-flask"></i> Equipment </a>
+                </li>
+
+            </ul>
+
+            <div class="btn form-inline my-2 my-lg-0 text-white">
+
+                <i class="fas fa-sign-out-alt"></i> logout
+
+            </div>
+
+        </div>
+
+    </div>
+</nav>
+<nav class="navbar navbar-expand-sm navbar-dark bg-success  text-white p-0">
+    <div class="container">
+        <a href="/lab/listItem/listEquipItem.html" class="navbar-brand font-italic text-capitalize">
+            <i class="fas fa-vials"></i>
+            equipment
+        </a>
+
+        <div class="collapse navbar-collapse" id="">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lab/createJump/equipmentCreateJump.html"><i class="fas fa-plus"></i> new equipment </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lab/search/equipmentSearch.html"><i class="fas fa-search"></i> find equipment </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+        </ul>
+    </div>
+</nav>
+
+<div style="padding: 1em;"></div>
 
 <div class="container" id="theContainer">
 

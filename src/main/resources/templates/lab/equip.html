@@ -2860,86 +2860,66 @@
 </head>
 
 <body onload="onLoad()" onresize="onResize()"  onclick="test()">
+
+
+
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0">
     <div class="container">
         <a href="/" class="navbar-brand font-italic text-capitalize">
             <i class='fas fa-leaf'></i>
             Green Lab</a>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item dropdown mr-3">
-                <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" th:text="${email}">
-                    <i class="fas fa-user"></i> Welcome Green User
-                </a>
-                <div class="dropdown-menu">
-                    <!--                    <a href="editProfile.html" class="dropdown-item">         th:text="${email}"-->
-                    <!--                        <i class="fas fa-user-circle"></i> Profile-->
-                    <!--                    </a>-->
-                    <a href="/equipment" class="dropdown-item">
-                        <i class="fas fa-cog"></i> lab
-                    </a>
-                    <!--                    <a href="login.html" class="dropdown-item">-->
-                    <!--                        <i class="fas fa-user-times"></i> Logout-->
-                    <!--                    </a>-->
-                </div>
 
-            </li>
-            <!--            <li class="nav-item">-->
-            <!--                -->
-            <!--            </li>-->
-        </ul>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/courses"><i class="fab fa-discourse"></i> Course </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lab/listItem/ListLabItem.html"><i class="fas fa-vials"></i> Lab </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lab/listItem/listEquipItem.html"><i class="fas fa-flask"></i> Equipment </a>
+                </li>
+
+            </ul>
+
+            <div class="btn form-inline my-2 my-lg-0 text-white">
+
+                <i class="fas fa-sign-out-alt"></i> logout
+
+            </div>
+
+        </div>
+
     </div>
 </nav>
-<nav class="navbar navbar-expand-sm navbar-dark bg-success text-white p-0">
+<nav class="navbar navbar-expand-sm navbar-dark bg-success  text-white p-0">
     <div class="container">
-        <a href="" class="navbar-brand font-italic text-capitalize">
-            <i class='fa fa-flask'></i>
+        <a href="/lab/listItem/listEquipItem.html" class="navbar-brand font-italic text-capitalize">
+            <i class="fas fa-vials"></i>
+            equipment
+        </a>
 
-            equipment</a>
+        <div class="collapse navbar-collapse" id="">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lab/createJump/equipmentCreateJump.html"><i class="fas fa-plus"></i> new equipment </a>
+                </li>
 
-        <!--        <div class="navbar-nav ml-auto">-->
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lab/search/equipmentSearch.html"><i class="fas fa-search"></i> find equipment </a>
+                </li>
 
-        <!--            <div><i class="fas fa-paw"></i> drag board mode</div>-->
-        <!--            <div><i class="fa fa-flask"></i> hide equipment panel</div>-->
-        <!--            <div><i class="fas fa-window-restore"></i> hide control panel</div>-->
+            </ul>
 
-        <!--        </div>-->
+        </div>
 
-        <ul class="navbar-nav ml-auto d-none">
-            <div class="mt-2 mr-3" style="" id="centerBoardId">
-                <i class="far fa-dot-circle"></i>
-            </div>
-
-            <div class="mt-2 mr-3" style="" id="dragBoardId">
-                <!--                <span ><i class="fas fa-paw"></i></span>-->
-                <i class="fas fa-mouse-pointer"></i>
-            </div>
-            <div class="mt-2 mr-3" style="" >
-                <i class="fas fa-sync-alt" id="syncId"></i>
-            </div>
-            <li class="nav-item dropdown mr-3">
-                <a  class="nav-link dropdown-toggle" data-toggle="dropdown">
-                    <i class="fas fa-folder-open"></i> window setting
-                </a>
-                <div class="dropdown-menu">
-                    <!--                    <a href="" class="dropdown-item">-->
-                    <!--                        <i class="fas fa-paw"></i><span id="dragBoardId" > drag board mode</span>-->
-                    <!--                    </a>-->
-                    <a  class="dropdown-item" id="equipmentFolderHideId">
-                        <i class="fa fa-flask"></i> equipment panel <i class="fas fa-eye-slash"></i>
-                    </a>
-                    <a  class="dropdown-item text-capitalize" id="controlPaneHideId" >
-                        <i class="fas fa-window-restore"></i><span  > control panel <i class="fas fa-eye-slash"></i> </span>
-                    </a>
-                </div>
-            </li>
-            <!--            <li class="nav-item">-->
-            <!--                <a href="login.html" class="nav-link">-->
-            <!--                    <i class="fas fa-window-restore"></i> my course-->
-            <!--            <i class="fas fa-eye"></i>  <i class="fas fa-eye-slash"></i>   control panel <i class="far fa-eye"></i> </a>-->
-            <!--            </li>-->
         </ul>
     </div>
 </nav>
+
 
 
 

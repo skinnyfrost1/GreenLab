@@ -2575,49 +2575,72 @@
 
     </script>
 
-
+    <!--  now need to replace the toolbar  -->
 
 </head>
 
 <body onload="onLoad()" onresize="onResize()" >
 
-
-
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0 ">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0">
     <div class="container">
         <a href="/" class="navbar-brand font-italic text-capitalize">
             <i class='fas fa-leaf'></i>
             Green Lab</a>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item dropdown mr-3">
-                <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" >
-                    <i class="fas fa-user"></i> Welcome Green User
-                </a>
-                <div class="dropdown-menu">
 
-                    <a href="/equipment" class="dropdown-item">
-                        <i class="fas fa-cog"></i> lab
-                    </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/courses"><i class="fab fa-discourse"></i> Course </a>
+                </li>
 
-                </div>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lab/listItem/ListLabItem.html"><i class="fas fa-vials"></i> Lab </a>
+                </li>
 
-            </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lab/listItem/listEquipItem.html"><i class="fas fa-flask"></i> Equipment </a>
+                </li>
 
-        </ul>
+            </ul>
+
+            <div class="btn form-inline my-2 my-lg-0 text-white">
+
+                <a href="/logout" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a> logout
+
+            </div>
+
+        </div>
+
     </div>
 </nav>
-<nav class="navbar navbar-expand-sm navbar-dark bg-info  text-white p-0 ">
+<nav class="navbar navbar-expand-sm navbar-dark bg-info  text-white p-0">
     <div class="container">
-        <a href="" class="navbar-brand font-italic text-capitalize">
-            <i class='fa fa-flask'></i>
+        <a href="/lab/listItem/ListLabItem.html" class="navbar-brand font-italic text-capitalize">
+            <i class="fas fa-vials"></i>
 
             lab
         </a>
 
 
+        <div class="collapse navbar-collapse" id="">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lab/createJump/labCreateJump.html"><i class="fas fa-plus"></i> new lab </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lab/search/labSearch.html"><i class="fas fa-search"></i> find lab </a>
+                </li>
+
+            </ul>
+
+        </div>
+
         </ul>
     </div>
 </nav>
+
+
 
 
 <div id="equipmentBody">
