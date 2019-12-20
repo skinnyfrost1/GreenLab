@@ -1,3 +1,5 @@
+
+
 package com.greenlab.greenlab.labEquip.laboratory.labData;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
