@@ -164,7 +164,7 @@ public class mergeHandler {
 
         System.out.println( "__emailId is :"+emailId );
 
-        List<EquipmentData> equipmentDataList =  equipmentDataRepository.findAllByOwnerId("666")
+        List<EquipmentData> equipmentDataList =  equipmentDataRepository.findAllByOwnerId("666");
 
 
         JSONArray jsonArray = new JSONArray();
