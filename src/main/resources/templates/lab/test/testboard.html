@@ -1,0 +1,177 @@
+
+
+
+<html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="googlebot" content="noindex">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="icon" href="https://ml4141715.github.io/water/cdn/image/leaf.png">
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-1.12.4.js"></script>
+    <script src='https://ml4141715.github.io/water/cdn/api/a076d05399.js'></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-ui.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-3.3.1.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/popper.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery.cookie.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/sockjs.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/stomp.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/Sortable.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/react.development.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/react-dom.development.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/babel.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/dropzone.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+    <script>
+        $( function() {
+            $( window ).resize(function() {
+                var width = window.innerWidth;
+                var height = window.innerHeight;
+                $( "body" ).width( width );
+                $( "body" ).height(height);
+            });
+        });
+        var flask0 = "flask_ps_0.png";
+        var flask1 = "flask_ps_1.png";
+        var heater = "heater_ps_1.png";
+
+        var workingDiv = "working";
+        var generateDiv = "generate";
+        var leisureDiv = "leisure";
+
+        class Status{  // here will only one status
+            constructor(){
+                this.id = null;  // this should combine equip id and
+                this.src = null;
+            }
+
+            __getHTML(){
+                return "<img id='"+this.id+"' src='"+this.src+"' ondrag='onDrag(this)' onmousedown='onMouseDown(this)' style='position: fixed;' >";
+            }
+
+            getNode(){
+                var generate = document.getElementById(generateDiv);
+                generate.innerHTML = this.__getHTML();
+                $( "#"+this.id ).draggable();
+                $( "#"+this.id ).droppable({
+                    drop: function( event, ui ) {
+                        onDrop( event.target.id , ui.draggable["0"].id );
+                    }
+                });
+
+
+
+                // console.log( generate.childNodes );
+                var node = generate.childNodes[0];
+
+                generate.removeChild( node );
+
+                console.log( generate.childNodes );
+
+                return node;
+            }
+
+        }
+
+        function onMouseDown( evt ) {
+            console.log(evt.id);
+            var parentNode = evt.parentNode;
+            parentNode.removeChild(evt);
+            parentNode.append(  evt );
+        }
+
+        function onDrag( evt ) {
+
+            console.log(evt.id);
+
+            console.log("x pos is:"+evt.style.left+" y pos is"+evt.style.top );
+
+        }
+
+        function onDrop( idTo,  idFrom  ){
+
+            console.log("idFrom"+idFrom);  // the one you drag
+            console.log( "idTo"+idTo );  // the one uder it
+
+            document.getElementById(idTo).src = heater;
+
+        }
+
+        $(function () {
+
+            //var equipment = new Equipment();
+
+            var status = new Status();
+            status.id = "bilibili";
+            status.src = flask0;
+            var node = status.getNode();
+            document.getElementById(workingDiv).append(node);
+
+
+            console.log(document.getElementById(workingDiv));
+        });
+
+        $(function () {
+
+            var status = new Status();
+            status.id = "apple";
+            status.src = flask1;
+            var node = status.getNode();
+            document.getElementById(workingDiv).append(node);
+
+        });
+
+        $(function () {
+
+            var status = new Status();
+            status.id = "uig";
+            status.src = flask1;
+            var node = status.getNode();
+            document.getElementById(workingDiv).append(node);
+
+        });
+
+    </script>
+
+</head>
+
+
+<body>
+
+<!--<div class="btn btn-primary" onclick="console.log('6666')">666</div>-->
+
+<!---->
+
+<!--<img id="2" src="https://ml4141715.github.io/water/cdn/image/Canula.png" onmousedown="onMouseDown(this)" ondrag="onDrag(this)" style="position: fixed;" alt="">-->
+
+<!--<img src="flask_ps_0.png" alt="">  onmousedown="onMouseDown(this)" ondrag="onDrag(this)" -->
+
+    <div id="working" >
+
+    </div>
+
+
+    <div id="generate" class="d-none">
+
+    </div>
+
+    <div class="d-none" id="leisure">
+
+    </div>
+
+</body>
+
+</html>

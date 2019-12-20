@@ -1,0 +1,1382 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--header value 786013  exceeds configured buffer size limit 65536-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="googlebot" content="noindex">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <link rel="icon" href="https://ml4141715.github.io/water/cdn/image/leaf.png">
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-1.12.4.js"></script>
+    <script src='https://ml4141715.github.io/water/cdn/api/a076d05399.js'></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-ui.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-3.3.1.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/popper.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery.cookie.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/sockjs.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/stomp.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/Sortable.js"></script>
+    <link rel="stylesheet" href="https://ml4141715.github.io/water/cdn/api/largeSwitchButton.css">
+    <script src="https://ml4141715.github.io/water/cdn/api/react.development.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/react-dom.development.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/babel.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/dropzone.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!--    websocket connection-->
+    <script>
+
+        class Websocket{
+
+            constructor(){
+
+                this.userId = null;      // need set from outside
+                this.itemId = null; // need set from outside
+
+                this.websocketId = null; // ok
+
+                this.receiveMessage = null;  // need set from outside
+                this.socket = null;
+                this.stompClient = null;
+
+                this.sendMessage = null;
+
+                this.subscribeType = null
+
+                this.connectBroken = null; // this is function handle connection broken
+                //this.websocket = new Websocket();
+                this.self = null;
+
+                this.loadBoolean = false;
+            }
+
+
+            setWebsocketId( ){
+                var websocket = this.self;
+                var url = websocket.stompClient.ws._transport.url;
+                var urlArr = url.split("/");
+                var webSessionId =  urlArr[urlArr.length-2 ];
+                websocket.websocketId = webSessionId;
+            }
+
+
+            __subscribeUnique(){
+
+                // this is combination of userid and websocketid
+
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/image/"
+                    +websocket.userId
+                    +"/"
+                    +websocket.websocketId , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeEquipmentFolder(){
+
+                // this is userId only
+
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/equipment/folder/"
+                    +websocket.userId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeEquipmentPad(){  // the item here is equipment id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/equipment/pad/"
+                    +websocket.itemId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeEquipmentBoard(){  // the item here is equipment id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/equipment/board/"
+                    +websocket.itemId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeEquipFind(){  // the item here is lab id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/equipment/find"
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeLabFolder(){
+
+                // this is userId only
+
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/lab/folder/"
+                    +websocket.userId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeLabPad(){  // the item here is lab id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/lab/pad/"
+                    +websocket.itemId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeLabBoard(){  // the item here is lab id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/lab/board/"
+                    +websocket.itemId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeLabFind(){  // the item here is lab id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/lab/find"
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            subscribeCreateEquipment(){
+
+                var websocket = this.self;
+                websocket.__subscribeEquipmentFolder();
+                websocket.__subscribeEquipmentPad();
+                websocket.__subscribeUnique();
+
+            }
+
+            subscribeShareEquipment(){
+
+                var websocket = this.self;
+                websocket.__subscribeEquipmentFolder();
+                websocket.__subscribeUnique();
+
+            }
+
+            subscribeFindEquipment(){
+
+                var websocket = this.self;
+                websocket.__subscribeEquipFind();
+                websocket.__subscribeUnique();
+                websocket.__subscribeEquipmentFolder();
+
+            }
+
+            subscribeBoardEquipment(){
+                var websocket = this.self;
+                websocket.__subscribeEquipmentBoard();
+                websocket.__subscribeUnique();
+            }
+
+
+            //_______________________________________
+            subscribeMyLab(){
+                var websocket = this.self;
+                websocket.__subscribeLabFolder();
+                websocket.__subscribeUnique();
+            }
+
+            subscribeCreateLab(){
+                var websocket = this.self;
+                websocket.__subscribeLabFolder();
+                websocket.__subscribeLabPad();
+                websocket.__subscribeUnique();
+            }
+
+            subscribeFindLab(){
+                var websocket = this.self;
+                websocket.__subscribeLabFind();
+                websocket.__subscribeUnique();
+                websocket.__subscribeLabFolder();
+            }
+
+            subscribeBoardLab(){
+                var websocket = this.self;
+                websocket.__subscribeLabBoard();
+                websocket.__subscribeUnique();
+            }
+            //_______________________________________
+
+            __sendEquipmentFrontMessage( message ){
+                var websocket = this.self;
+                websocket.stompClient.send( "/app/equipment/front/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+            }
+
+            __sendEquipmentBackMessage( message ){
+                var websocket = this.self;
+                websocket.stompClient.send( "/app/equipment/back/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+            }
+
+            __sendLabFrontMessage( message ){
+                var websocket = this.self;
+                websocket.stompClient.send( "/app/lab/front/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+            }
+
+            __sendLabBackMessage( message ){
+                var websocket = this.self;
+                websocket.stompClient.send( "/app/lab/back/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+            }
+
+            // sendMessage( message ){
+            //
+            //     var websocket = this.self;
+            //     websocket.sendMessage( message );
+            //
+            // }
+
+            connect(  ){
+                //var websocket = new Websocket();
+                //websocket.
+                var websocket = this.self;
+                websocket.socket = new SockJS('/landon-stomp-chat');
+                websocket.stompClient = Stomp.over(websocket.socket);
+                websocket.stompClient.debug = null;
+                websocket.stompClient.connect({}, function (frame) {
+                    websocket.setWebsocketId();
+                    websocket.subscribeType();
+                    var sendData = {"type":"connectSuccess"}
+                    websocket.sendMessage(JSON.stringify(sendData));
+                }, function (message) {
+                    websocket.connectBroken();
+                } );
+
+            }
+
+
+        }
+
+        function quickPrepare( type, data ) {
+            var sendData = {};
+            sendData["type"] = type;
+            sendData["websocketId"] = websocket.websocketId;
+            sendData["userId"] = websocket.userId;
+            if( itemId != null ){
+                sendData["itemId"] = itemId;
+            }
+            if(data!=null){
+                sendData["data"] = data;
+            }
+            return  JSON.stringify(sendData);
+        }
+
+        //var BooleanVar = false;
+        //_______________________ the code below teach you how to use the api ______________
+        //when you send information don't forget include itemId inside the message
+        //
+
+        // websocket = new Websocket();
+        // websocket.userId = "666";
+        // websocket.itemId=  "777";
+        // websocket.receiveMessage = function (message){
+        //     console.log(message);
+        // } ;
+        // websocket.connectBroken = function ( ){
+        //
+        //     console.log("connection broken");
+        //
+        // };
+        // websocket.self = websocket;
+        // websocket.subscribeType = websocket.subscribeCreateEquipment; // you need set the subscribe type
+        // websocket.sendMessage = websocket.__sendEquipmentFrontMessage;
+        // websocket.connect();
+
+        // @MessageMapping("/equipment/front/{userId}/{sessionId}")
+        // public void handleEquipmentFront( @DestinationVariable String userId ,  @DestinationVariable String sessionId , String message) throws JSONException {
+        //
+        //
+        //     System.out.println( message+"__"+ userId +"__"+ sessionId);
+        //
+        //
+        // }
+
+        // @Configuration
+        // @EnableWebSocketMessageBroker
+        // public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+        //
+        //     @Override
+        //     public void registerStompEndpoints(StompEndpointRegistry registry) {
+        //     registry.addEndpoint("/landon-stomp-chat").withSockJS();
+        // }
+        //
+        // @Override
+        // public void configureMessageBroker(MessageBrokerRegistry config) {
+        //     config.enableSimpleBroker("/topic","/user", "/queue");
+        //     //config.enableSimpleBroker("/user/queue/specific-user");
+        //     config.setApplicationDestinationPrefixes("/app");
+        //     config.setUserDestinationPrefix("/user/");
+        //     //config.enableSimpleBroker("/queue");
+        //     //config.enableSimpleBroker("/queue","/topic");
+        // }
+        //
+        // }
+
+
+        class Ajax{
+
+            constructor(){
+
+                this.sendAddress = null;
+                this.handle = null;
+                this.self = null;
+            }
+
+            sendAjax( message ){
+                var ajax = this.self;
+                $.post(
+                    ajax.sendAddress,
+                    {"data": message },
+                    function(response){
+                        if(response.success){
+                            ajax.handle( response.data );
+                        }
+                    },
+                    "json"
+                );
+            }
+        }
+        //ajax/requestId
+        //_______________________    ajax use tutorial      ____________________
+
+
+        // var ajax = new Ajax();
+        // ajax.sendAddress ="ajax/requestId";
+        // ajax.handle = function ( message ) {
+        //     console.log( message );
+        // }
+        // ajax.self = ajax;
+        // ajax.sendAjax("666");
+
+
+
+        // @RequestMapping(value="/ajax/requestId" , method = RequestMethod.POST)
+        // @ResponseBody
+        // public Object SignupSumbit(HttpServletRequest request) throws JSONException {
+        //
+        //     String dataStr = request.getParameter("data");
+        //
+        //     System.out.println( dataStr );
+        //
+        //     Map<String,Object> sendData = new HashMap<>();
+        //     sendData.put("success",true);
+        //     sendData.put("data", "weixin.tang@stonybrook.edu" );
+        //     return sendData;
+        // }
+
+        function connect(){
+
+            var ajax = new Ajax();
+            ajax.sendAddress ="/ajax/requestId";
+            ajax.handle = function ( message ) {
+                //console.log( message );
+                websocket = new Websocket();
+                websocket.userId = message;
+                websocket.itemId=  itemId;
+                websocket.receiveMessage = function (message){
+                    var obj = JSON.parse(message);
+                    receiveProtocal[obj.type]( obj.data );
+                    //console.log(message);
+                } ;
+                websocket.connectBroken = function ( ){
+
+                    //console.log("connection broken");
+                    setTimeout( connect , 1000 );
+                };
+                websocket.self = websocket;
+                websocket.subscribeType = websocket.subscribeBoardLab; // you need set the subscribe type
+                websocket.sendMessage = websocket.__sendLabBackMessage;
+                websocket.connect();
+
+            };
+            ajax.self = ajax;
+            ajax.sendAjax(itemId);
+
+        }
+
+    </script>
+    <!-- data section -->
+    <script>
+        class LabImageStatus{
+
+            constructor(){
+                this.name = null;
+                this.sendTextArr = null;
+                this.imageblobId = null;
+            }
+
+            setName( name ){
+                this.name = name;
+            }
+            setSendTextArr( sendTextArr ){
+                this.sendTextArr = sendTextArr;
+            }
+            setImageBlobId( imageblobId ){
+                this.imageblobId = imageblobId;
+            }
+
+            getName(){
+                return this.name;
+            }
+            getSendTextArr(){
+                return this.sendTextArr;
+            }
+            getImageblobId(){
+                return this.imageblobId;
+            }
+
+        }
+
+        class LabEquipData{
+
+            constructor(){
+                this.id = null;
+                this.imageStatusArr = [];
+            }
+
+            addImageStatus( name,  sendTextArr , imageblobId ){
+                var imageStatus = new LabImageStatus();
+                imageStatus.setName(name);
+                imageStatus.setSendTextArr( sendTextArr );
+                imageStatus.setImageBlobId( imageblobId );
+                this.imageStatusArr.push( imageStatus );
+            }
+            getLabImageStatusByIndex( index ){
+                return this.imageStatusArr[index];
+            }
+            getLabImageStatusArr(){
+                return this.imageStatusArr;
+            }
+            getLabImageStatusByName( name ){
+                for( var i = 0 ; i< this.imageStatusArr.length ; i++ ){
+                    var labImageStatus =  this.imageStatusArr[i] ;
+                    //labImageStatus = new LabImageStatus();
+                    if( name ==  labImageStatus.getName() ){
+                        return  labImageStatus;
+                    }
+                }
+                return null;
+            }
+            setId( id ){
+                this.id = id;
+            }
+            getId( ){
+                return this.id;
+            }
+            clearImageStatusArr(){
+                this.imageStatusArr = [];
+            }
+
+        }
+
+        class LabEquipStatus{
+            constructor(){
+                // private int labEquipDataId;
+                // private String currentStatus;
+                // private int x;
+                // private int y;
+                this.labEquipDataId = null;
+                this.currentStatus = null;
+                this.x = null;
+                this.y = null;
+            }
+            // getX(){
+            //     return this.x;
+            // }
+            // setX( x ){
+            //     this.x = x;
+            // }
+            // getY(){
+            //     return this.y;
+            // }
+            // setY( y ){
+            //     this.y = y;
+            // }
+            //
+            // setCurrentStatus( currentStatus ){
+            //     this.currentStatus = currentStatus;
+            // }
+            // setLabEquipDataId( labEquipDataId ){
+            //     this.labEquipDataId = labEquipDataId;
+            // }
+            // getCurrentStatus(){
+            //     return this.currentStatus;
+            // }
+            // getLabEquipDataId(){
+            //     return this.labEquipDataId;
+            // }
+        }
+
+        class Step{
+
+            constructor(){
+                this.before = null;
+                this.current = null;
+                this.after = null;
+            }
+
+            getBefore(){
+                return this.before;
+            }
+            getCurrent(){
+                return this.current;
+            }
+            getAfter(){
+                return this.after;
+            }
+
+            setBefore(before){
+                this.before = before;
+            }
+            setCurrent( current ){
+                this.current =current;
+            }
+            setAfter( after ){
+                this.after = after;
+            }
+
+        }
+        class LabSteps{
+
+            constructor(){
+                this.currentStepIndex = null;
+                this.steps = [];
+            }
+
+            setCurrentStepIndex( index ){
+                this.currentStepIndex = index;
+            }
+            getCurrentStepIndex(){
+                return this.currentStepIndex;
+            }
+            clearSteps(){
+                this.steps = [];
+            }
+            addStep( step ){
+                this.steps.push(step);
+            }
+            getStepByIndex( index ){
+                return this.steps[ index ];
+            }
+            getCurrentStep( ){
+                return this.getStepByIndex( this.currentStepIndex );
+            }
+
+        }
+        class LabData{
+
+            constructor(){
+                this.EquipmentDataArr = [ ];
+                this.labSteps = null;
+
+                this.EquipNodeArr = [];
+
+            }
+            addEquipmentData( equipmentData ){
+                this.EquipmentDataArr.push( equipmentData );
+            }
+            getEquipmentDataByIndex( index ){
+                return this.EquipmentDataArr[index];
+            }
+            clearEquipmentData(){
+                this.EquipmentDataArr = [];
+            }
+            getLabSteps(){
+                return this.labSteps;
+            }
+            setLabData( data ){
+                this.EquipmentDataArr = [];
+                var labData = JSON.parse(data);
+                var usedEquipList = labData.usedEquipList;
+                for( var i = 0 ; i < usedEquipList.length ; i++ ){
+
+                    var labEquipData = new LabEquipData();
+                    labEquipData.setId(i);
+                    //labEquipData.clearImageStatusArr();
+                    var equipPackStr =  usedEquipList[i];
+                    //var  equipmentData = JSON.parse(equipPackStr.equipmentDataStr);
+                    //console.log(equipmentData);
+                    var  imageDataStrArr =  equipPackStr.imageDataStrArr ;
+
+                    if( imageDataStrArr!= null ){
+                        for( var b = 0 ; b < imageDataStrArr.length ; b++ ){
+                            var imageData = JSON.parse(imageDataStrArr[b]);
+                            //console.log(imageData);
+                            labEquipData.addImageStatus(  imageData.name , imageData.sendText , imageData.blobId ) //name,  sendTextArr , imageblobId
+                        }
+                    }
+
+                    this.EquipmentDataArr.push( labEquipData );
+                }
+
+
+                var steps = labData.labSteps;
+                var currentLabStepIndex = labData.currentLabStep;
+                var labSteps = new LabSteps();
+                labSteps.setCurrentStepIndex( currentLabStepIndex );
+                for( var i = 0 ; i < steps.length ; i++ ){
+                    var step = new Step();
+                    step.setAfter( steps[i].after );
+                    step.setBefore( steps[i].before );
+                    step.setCurrent( steps[i].current );
+                    labSteps.addStep( step );
+                }
+                this.labSteps = labSteps;
+            }
+
+            // now we need display the whole things
+
+            displayLabBoard(){
+
+                var currentStepIndex =  labData.labSteps.currentStepIndex;
+                if( currentStepIndex == -1 ){
+
+
+                   //var childNodes = document.getElementById(workingDiv).childNodes;
+
+                    document.getElementById(workingDiv).innerHTML = "";
+
+
+                }else{
+
+                    var nodeLength = this.EquipNodeArr.length;
+                    var equipLength = this.EquipmentDataArr.length;
+                    var imageBlobArr = [];
+                    if( nodeLength  < equipLength  ){
+                        for( var i = nodeLength ; i < equipLength ; i++ ){
+                            //var labEquipData = new LabEquipData();
+                            var labEquipData = this.EquipmentDataArr[i];
+                            for( var b = 0 ; b <  labEquipData.getLabImageStatusArr().length ; b++ ){
+                                var labImageStatus = labEquipData.getLabImageStatusByIndex( b );
+                                //labImageStatus = new LabImageStatus();
+                                var imageblobId = labImageStatus.getImageblobId();
+                                var imageBlob =  imageStorage.getItem( imageblobId );
+                                if( imageBlob == null ){
+                                    imageBlobArr.push( imageblobId );
+                                }
+                            }
+                        }
+
+                    }
+
+                    if( imageBlobArr.length != 0 ){
+                        var sendData = {};
+                        sendData["labId"] = itemId;
+                        sendData["blobIds"] = imageBlobArr;
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json",
+                            url: "/ajax/downloadImages",
+                            data: JSON.stringify(sendData),
+                            dataType: 'json',
+                            cache: false,
+                            timeout: 600000,
+                            success: function (info) {
+                                var imageBlobArr =  JSON.parse( info.data );
+                                for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+                                    var imageBlobStr = imageBlobArr[i];
+                                    var imageBlob = JSON.parse(imageBlobStr);
+                                    var imageBlobId = imageBlob.id;
+                                    imageStorage.setItem( imageBlobId , imageBlobStr );
+                                }
+
+                                labData.__displayLabBoard();
+
+                                //console.log(info);
+                            },
+                            error: function (e) {
+
+                            }
+                        });
+                    }else{
+                        //console.log("777");
+                        labData.__displayLabBoard();
+
+                    }
+
+                }
+
+
+
+            }
+
+            __displayLabBoard(){
+
+                //console.log("666UUU");
+                var nodeLength = this.EquipNodeArr.length;
+                var equipLength = this.EquipmentDataArr.length;
+                //if( nodeLength  < equipLength  ){
+                    for( var i = 0 ; i < equipLength ; i++ ) {
+                        var labEquipData = this.EquipmentDataArr[i];
+                        //labEquipData = new LabEquipData();
+
+
+
+                        var labImageStatus = labEquipData.getLabImageStatusByIndex(0);
+
+                        if( labImageStatus != null ){
+
+                            var BooleanInside  = false;
+
+                            for( var b = 0 ; b < nodeLength ; b++ ){
+
+                                var node = this.EquipNodeArr[b];
+                                if( i == node.id ){
+
+                                    BooleanInside = true;
+                                    break;
+                                }
+
+                            }
+
+
+                            if( BooleanInside == false ){
+                                //labImageStatus = new LabImageStatus();
+                                //labImageStatus.getImageblobId()
+                                var equipNode = new EquipNode();
+
+                                //console.log("labImageStatus.getImageblobId()")
+                                //console.log( labImageStatus.getImageblobId() );
+                                //equipNode.src = JSON.parse(imageStorage.getItem(labImageStatus.getImageblobId())).blob;
+
+                                equipNode.id = i;
+                                equipNode.name = labImageStatus.getName();
+                                equipNode.sendText = JSON.stringify(labImageStatus.getSendTextArr());
+                                equipNode.src = JSON.parse(imageStorage.getItem( labImageStatus.getImageblobId() )).blob;
+                                var theNode =  equipNode.getNode();
+                                this.EquipNodeArr.push(theNode);
+                            }
+
+
+
+                        }
+
+
+                        //document.getElementById("working").append( theNode );
+                    }
+                //}
+
+                // now we have all the node
+
+                var childNodes =  document.getElementById(workingDiv).childNodes;
+
+                var labSteps =  this.labSteps;
+                //labSteps = new LabSteps();
+                var step = labSteps.getCurrentStep();
+                //step = new Step();
+                var current =  step.getCurrent();
+
+                // first remove the node from html
+
+
+               // console.log(childNodes.length);
+
+                var markNodeToRemove = [];
+
+                for( var i = 0 ; i < childNodes.length ; i++  ){
+                    var nodeInHTM = childNodes[i];
+
+                    //console.log("print C");
+
+                    // console.log(nodeInHTM);
+                    var id = nodeInHTM.id;
+                    var inCurrentBool = false;
+                    for( var b = 0 ; b < current.length ; b++  ){
+                        // here we will hide the node
+                        if( current[b].labEquipDataId == id ){
+
+                            //console.log("print A");
+
+                            inCurrentBool = true;
+                        }
+                        //document.getElementById(workingDiv).removeChild( nodeInHTM  );
+                    }
+                    if( inCurrentBool == false ){
+                        //console.log("what happened A");
+
+                        //console.log("print B");
+                        //console.log(nodeInHTM);
+                        //document.getElementById(workingDiv).removeChild( nodeInHTM  );
+
+                        markNodeToRemove.push( nodeInHTM );
+
+                    }
+                }
+
+                for( var i  = 0 ; i < markNodeToRemove.length ; i++ ){
+
+                    document.getElementById(workingDiv).removeChild( markNodeToRemove[i]  );
+
+                }
+
+                //console.log("the current is ");
+                //console.log( current );
+
+                for( var i = 0 ; i< current.length ; i++  ){
+
+
+
+                    //var labEquipStatus =  new LabEquipStatus();
+                    var labEquipStatus = current[i];
+
+                    var currentStatus =  labEquipStatus.currentStatus;
+                    var labEquipDataId = labEquipStatus.labEquipDataId;
+                    var x = labEquipStatus.x;
+                    var y = labEquipStatus.y;
+
+                    // here we will check if it's inside html
+                    // if not we will remove from html
+
+                    var inCurrentBool = false;
+                    for( var b = 0 ; b < childNodes.length ; b++ ){
+                        if( labEquipDataId == childNodes[b].id ){
+
+                            setEquipNode(  childNodes[b] ,  x, y , currentStatus    );
+
+                            inCurrentBool = true;
+                        }
+                    }
+
+                    if( inCurrentBool == false ){
+                        //console.log("seems didn't go here");
+                        //console.log("what happened B");
+                        for( var b = 0 ; b <  this.EquipNodeArr.length ; b++ ){
+                            var equipNode =   this.EquipNodeArr[b];
+                            if( equipNode.id == labEquipDataId){
+                                document.getElementById(workingDiv).append( equipNode );
+
+                                setEquipNode(  equipNode ,  x, y , currentStatus    );
+
+                            }
+                        }
+                    }
+                    // if( this.EquipNodeArr[labEquipDataId] != null ){
+                    //
+                    //     this.EquipNodeArr[labEquipDataId].style.left = x+"px";
+                    //     this.EquipNodeArr[labEquipDataId].style.top = y+"px";
+                    //     if( this.EquipNodeArr[labEquipDataId].name != currentStatus ){
+                    //         this.EquipNodeArr[labEquipDataId].name = currentStatus;
+                    //         //this.EquipNodeArr[labEquipDataId].name = currentStatus;
+                    //         var equipmentData = this.getEquipmentDataByIndex( labEquipDataId  );
+                    //         var imageStatus = equipmentData.getLabImageStatusByName( currentStatus );
+                    //         var sendtextArr = imageStatus.getSendTextArr();
+                    //         this.EquipNodeArr[labEquipDataId].sendtext = JSON.stringify( sendtextArr );
+                    //
+                    //         //console.log("imageStatus.getImageblobId()  the wrong ");
+                    //         //console.log(imageStatus.getImageblobId());
+                    //
+                    //         this.EquipNodeArr[labEquipDataId].src = JSON.parse(imageStorage.getItem( imageStatus.getImageblobId() )).blob;
+                    //
+                    //     }
+                    //
+                    // }
+
+                }
+
+            }
+
+        }
+
+        function setEquipNode(  equipNode,  x, y , currentStatus    ) {
+
+            equipNode.style.left = x+"px";
+            equipNode.style.top = y+"px";
+            if( equipNode.name != currentStatus ){
+                equipNode.name = currentStatus;
+                //this.EquipNodeArr[labEquipDataId].name = currentStatus;
+                //var labData = new LabData();
+                //labData.getEquipmentDataByIndex()
+
+                var equipmentData = labData.getEquipmentDataByIndex( equipNode.id );
+                var imageStatus = equipmentData.getLabImageStatusByName( currentStatus );
+                var sendtextArr = imageStatus.getSendTextArr();
+                equipNode.sendtext = JSON.stringify( sendtextArr );
+                equipNode.src = JSON.parse(imageStorage.getItem( imageStatus.getImageblobId() )).blob;
+            }
+
+        }
+
+        //labEquipData.getLabImageStatusArr()
+        //labEquipData.getLabImageStatusByIndex( i );
+        // var equipNode = new EquipNode();
+        // equipNode.id = i;
+        // equipNode.src =
+        //this.EquipNodeArr.push();
+
+        // var step = new Step();
+        // var labData = new LabData();
+        // var labSteps = new LabSteps();
+        // var labEquipData = new LabEquipData();
+        // var LabImageStatus = new LabImageStatus();
+
+        class ImageStorage{
+
+            constructor(){
+                this.imageBlob = {};
+            }
+
+            getItem( key ){
+                return this.imageBlob[key];
+            }
+
+            setItem( key , value ){
+                this.imageBlob[key] = value;
+            }
+
+        }
+    </script>
+
+<!--  configuration  -->
+    <script>
+        class Configuration{
+            constructor(){
+                this.refresh();
+            }
+            refresh(){
+                receiveProtocal["connectSuccess"] = function (message) {
+                    sendProtocal["refreshBoard"]();
+                };
+                sendProtocal["refreshBoard"] = function(){
+                    websocket.sendMessage( quickPrepare( "refreshBoard" ) );
+                };
+                receiveProtocal["refreshBoard"] = function (data) {
+                    labData.setLabData( data );
+                    labData.displayLabBoard();
+                };
+
+                receiveProtocal["refreshBoardExceptSelf"] = function (data) {
+
+                    //console.log(data);
+                    //data.labData
+
+                    if( websocket.websocketId != data.websocketId ){
+
+                        var receiveTimeStamp =  data.timeStamp;
+
+                        //console.log(receiveTimeStamp);
+                        // var a =  new Date(receiveTimeStamp);
+                        //console.log("print something here anyway");
+
+                        if( receiveTimeStamp > timeStamp ){
+                            labData.setLabData( data.labData );
+                            labData.displayLabBoard();
+                            timeStamp = receiveTimeStamp;
+                        }
+                    }
+                };
+
+                receiveProtocal["onMouseDown"] = function (id) {
+
+                    //console.log("mouse down 666");
+                    var equipNode ;
+                    for( var i  = 0 ; i<  labData.EquipNodeArr.length ;i++  ){
+                       if( id ==  labData.EquipNodeArr[i].id ){
+                           equipNode = labData.EquipNodeArr[i];
+                       }
+                    }
+
+                    //var equipNode =  labData.EquipNodeArr[id];
+                    var parentNode = equipNode.parentNode;
+                    parentNode.removeChild(equipNode);
+                    parentNode.append(  equipNode );
+
+                };
+
+            }
+        }
+
+        var timeStamp =  0 ;
+
+    </script>
+
+    <script>
+
+        var itemId;
+        var websocket;
+        var imageStorage;
+        var sendProtocal = {};
+        var receiveProtocal = {};
+        var configuration ;
+        var labData ;//= new LabData();
+
+        function onLoad() {
+
+            labData = new LabData();
+            imageStorage = new ImageStorage();
+            var pathName = window.location.pathname;
+            var Arr = pathName.split("/");
+            itemId = Arr[2];
+            configuration = new Configuration();
+            connect();
+
+        }
+
+        // function onResize() {
+        //     var width = window.innerWidth;
+        //     var height = window.innerHeight;
+        //
+        //     document.getElementsByName("body")[0].style.width =width+"px";
+        //     document.getElementsByName("body")[0].style.height =height+"px";
+        //
+        //
+        // }
+
+        $( function() {
+
+            $( window ).resize(function() {
+                var width = window.innerWidth;
+                var height = window.innerHeight;
+                $( "body" ).width( width );
+                $( "body" ).height(height);
+            });
+        });
+
+        // here we will add all jquery
+            // click
+                // drag and drop
+        // $( function() {
+        //     $( "#draggable" ).draggable();
+        //     $( "#droppable" ).droppable({
+        //         drop: function( event, ui ) {
+        //             $( this )
+        //                 .addClass( "ui-state-highlight" )
+        //                 .find( "p" )
+        //                 .html( "Dropped!" );
+        //         }
+        //     });
+        // } );
+
+        // I have get the id before
+                // console.log(ui  );
+                // console.log( ui.draggable["0"].id );
+                // //console.log(event.target.id );
+                // console.log(event.clientX );
+                // console.log(event.clientY );
+
+        /*
+
+        var sendData = {};
+        sendData["labId"] = itemId;
+        sendData["blobIds"] = imageblobSet;
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/ajax/downloadImages",
+            data: JSON.stringify(sendData),
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            success: function (info) {
+
+                var imageBlobArr =  JSON.parse( info.data );
+
+                for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+                    var imageBlobStr = imageBlobArr[i];
+
+                    var imageBlob = JSON.parse(imageBlobStr);
+
+                    var imageBlobId = imageBlob.id;
+
+                    imageStorage.setItem( imageBlobId , imageBlobStr );
+                }
+
+                //var imageBlob =  JSON.parse( info.data );
+                //imageStorage.setItem( imageBlob.id , info.data );
+                labData.__displayAllEquipment();
+
+                //console.log(info);
+            },
+            error: function (e) {
+
+
+
+            }
+        });
+
+        */
+    </script>
+
+    <script>
+
+        var workingDiv = "working";
+        var generateDiv = "generate";
+        var leisureDiv = "leisure";
+
+        class EquipNode{  // here will only one status
+            constructor(){
+                this.id = null;  // this should combine equip id and
+                this.src = null;
+                this.name = null;
+                this.sendText = null;
+            }
+
+            __getHTML(){
+                return "<img id='"+this.id+"' sendText='"+this.sendText+"' name='"+this.name+"' src='"+this.src+"' onmouseleave='onMouseLeave(this)' ondrag='onDrag(this)' onmouseup='onMouseUp(this)' onmousedown='onMouseDown(event)' style='position: fixed;' >";
+            }
+
+            getNode(){
+                var generate = document.getElementById(generateDiv);
+                generate.innerHTML = this.__getHTML();
+                $( "#"+this.id ).draggable();
+                $( "#"+this.id ).droppable({
+                    drop: function( event, ui ) {
+                        onDrop( event.target.id , ui.draggable["0"].id );
+                    }
+                });
+
+                // console.log( generate.childNodes );
+                var node = generate.childNodes[0];
+                generate.removeChild( node );
+                //console.log( generate.childNodes );
+                return node;
+            }
+
+        }
+
+        function onMouseDown( event ) {
+            //console.log(evt.id);
+
+            var id = event.target.id;
+            var shiftKey = event.shiftKey;
+
+            if(shiftKey == false  ){
+                websocket.sendMessage( quickPrepare( "onMouseDown" , id ) );
+            }else{
+
+                //console.log("remove this equipment");
+                websocket.sendMessage( quickPrepare( "removeEquipFromBoard" , id ) );
+            }
+
+            //console.log(event.target.id);
+
+            //
+
+        }
+
+        function onMouseLeave(evt ){
+
+            //console.log("mouse leave detected");
+
+        }
+
+        function onMouseUp( evt ) {
+
+            //console.log("mouse up detected");
+
+        }
+
+        function onDrag( evt ) {
+
+            //console.log(evt.id);
+            //console.log("x pos is:"+evt.style.left+" y pos is"+evt.style.top );
+
+            var sendData = {};
+            sendData["x"] = (evt.style.left).substr( 0 , evt.style.left.length -2 );
+            sendData["y"] = (evt.style.top).substr( 0 , evt.style.top.length -2 );
+            sendData["equipId"] = evt.id;
+            var d = new Date();
+            var n = d.getTime();
+            sendData["timeStamp"] = n;
+            //sendData["websocketId"] = websocket.websocketId;
+            websocket.sendMessage(quickPrepare( "onDrag" ,  sendData  ));
+
+        }
+
+        function onDrop( idTo,  idFrom  ){
+
+            //console.log("idFrom"+idFrom);  // the one you drag
+            //console.log( "idTo"+idTo );  // the one uder it
+
+            //document.getElementById(idTo).src = heater;
+
+            var sendData = {};
+            sendData["dragId"] = idFrom;
+            sendData["dropId"] = idTo;
+
+            // now the login handle in the front side
+                // what we need to do
+                    // tell the back side
+            // we is the correct name
+                // ok
+
+            //labData = new LabData();
+            // var labEquipData =   labData.getEquipmentDataByIndex( idFrom )
+            // labEquipData = new LabEquipData();
+            // labEquipData.getLabImageStatusByName()
+
+            var labSteps =  labData.getLabSteps();
+            //labSteps = new LabSteps();
+
+
+            var step =  labSteps.getCurrentStep();
+
+            //var step =  labSteps.getStepByIndex(0);
+
+            var current = step.getCurrent();
+
+            var fromName = null;
+            var toName = null;
+
+            for( var i = 0 ;i< current.length ; i++ ){
+                var labEquipStatus =current[i];
+                //labEquipStatus =  new LabEquipStatus();
+                if( labEquipStatus.labEquipDataId == idFrom ){
+                    fromName = labEquipStatus.currentStatus;
+                }else if( labEquipStatus.labEquipDataId == idTo ){
+                    toName = labEquipStatus.currentStatus;
+                }
+            }
+
+            //console.log(fromName);
+            //console.log(toName);
+
+            var equipFrom =  labData.getEquipmentDataByIndex( idFrom );
+            var fromlabImageStatus =   equipFrom.getLabImageStatusByName( fromName );
+            var fromSendTextArr = fromlabImageStatus.getSendTextArr();
+
+            //console.log("fromSendTextArr");
+            //console.log(fromSendTextArr);
+
+            var equipTo =  labData.getEquipmentDataByIndex( idTo );
+            var tolabImageStatus =   equipTo.getLabImageStatusByName( toName );
+            var toSendTextArr = tolabImageStatus.getSendTextArr();
+
+            //console.log( "toSendTextArr" );
+            //console.log( toSendTextArr );
+
+            // so for each from
+                // we will look at to
+
+            var changeFrom = "";
+            var changeTo = "";
+
+            for( var  i = 0 ; i< fromSendTextArr.length ; i++ ){
+                var iter =fromSendTextArr[i];
+                if( equipTo.getLabImageStatusByName( iter )!= null ){
+                    changeTo = iter;
+                    break;
+                }
+            }
+
+            //console.log(equipFrom.getLabImageStatusByName("onfire"));
+
+            for( var  i = 0 ; i< toSendTextArr.length ; i++ ){
+                var iter =toSendTextArr[i];
+                if( equipFrom.getLabImageStatusByName( iter )!= null ){
+
+
+
+                    changeFrom = iter;
+                    break;
+                }
+            }
+
+            sendData["dragName"] = changeFrom;
+            sendData["dropName"] = changeTo;
+
+            // for each to we will look at from
+
+
+            //sendData["timeStamp"] = (new Date()).getTime();
+            websocket.sendMessage(quickPrepare( "onDrop" ,  sendData  ));
+
+        }
+
+
+    </script>
+
+</head>
+
+<body onload="onLoad()"  >
+
+
+    <div id="working" ></div>
+    <div id="generate" class="d-none"></div>
+    <div class="d-none" id="leisure"></div>
+
+</body>
+
+</html>
+
+

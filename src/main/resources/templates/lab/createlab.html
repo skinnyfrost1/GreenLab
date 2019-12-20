@@ -1,0 +1,3204 @@
+
+<!--header value 786013  exceeds configured buffer size limit 65536-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+
+    <!--  ____________________________  the code below is anhui's work  _____________________________  -->
+    <meta charset="UTF-8">
+    <link href="https://ml4141715.github.io/water/cdn/api/anhui/theme.css" type="text/css" rel="stylesheet">
+    <link href="https://ml4141715.github.io/water/cdn/api/anhui/font.css" type="text/css" rel="stylesheet">
+    <link href="https://ml4141715.github.io/water/cdn/api/anhui/dropdown_menu.css" type="text/css" rel="stylesheet">
+    <link href="https://ml4141715.github.io/water/cdn/api/anhui/index.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f3f3f3;
+            background-image: url(https://ml4141715.github.io/water/cdn/image/dot-grid.png);
+            margin: 0;
+            min-width: 1000px;
+        }
+        .logo {
+            width: 2.4em;
+            padding: 0;
+            margin: 0;
+            border-radius: 100%;
+            background-image: url(https://ml4141715.github.io/water/cdn/image/anhui/puppy.jpeg);
+            background-position: top center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            height: 2.4em;
+        }
+    </style>
+
+    <!--  ____________________________  the code above is anhui's work  _____________________________  -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="googlebot" content="noindex">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <link rel="icon" href="https://ml4141715.github.io/water/cdn/image/leaf.png">
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-1.12.4.js"></script>
+    <script src='https://ml4141715.github.io/water/cdn/api/a076d05399.js'></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-ui.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-3.3.1.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/popper.min.js"></script>
+    <!--    <script src="https://ml4141715.github.io/water/cdn/api/bootstrap.min.js"></script>-->
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery.cookie.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/sockjs.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/stomp.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/Sortable.js"></script>
+
+    <link rel="stylesheet" href="https://ml4141715.github.io/water/cdn/api/largeSwitchButton.css">
+
+    <script src="https://ml4141715.github.io/water/cdn/api/react.development.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/react-dom.development.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/babel.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/dropzone.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!--    TheWindow-->
+    <script >
+
+        class Box{
+            constructor( elementId ){
+                this.elementId = elementId;
+                this.width = 0;
+                this.height = 0;
+            }
+            setWidth( width ){
+                this.width = width;
+                document.getElementById(this.elementId).style.width = this.width+"px";
+            }
+            setHeight( height ){
+                this.height = height;
+                document.getElementById(this.elementId).style.height = this.height+"px";
+            }
+            setLeft( left ){
+                document.getElementById(this.elementId).style.left = left+"px";
+            }
+            setRight( right ){
+                document.getElementById(this.elementId).style.right=right+"px";
+            }
+            getWidth(){
+                return this.width;
+            }
+            getHeight(){
+                return this.height;
+            }
+        }
+
+
+
+    </script>
+    <!--    websocket connection-->
+    <script>
+
+       class Websocket{
+
+           constructor(){
+
+               this.userId = null;      // need set from outside
+               this.itemId = null; // need set from outside
+
+               this.websocketId = null; // ok
+
+               this.receiveMessage = null;  // need set from outside
+               this.socket = null;
+               this.stompClient = null;
+
+               this.sendMessage = null;
+
+               this.subscribeType = null
+
+               this.connectBroken = null; // this is function handle connection broken
+               //this.websocket = new Websocket();
+               this.self = null;
+
+               this.loadBoolean = false;
+           }
+
+
+           setWebsocketId( ){
+               var websocket = this.self;
+               var url = websocket.stompClient.ws._transport.url;
+               var urlArr = url.split("/");
+               var webSessionId =  urlArr[urlArr.length-2 ];
+               websocket.websocketId = webSessionId;
+           }
+
+
+           __subscribeUnique(){
+
+               // this is combination of userid and websocketid
+
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/image/"
+                   +websocket.userId
+                   +"/"
+                   +websocket.websocketId , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeEquipmentFolder(){
+
+               // this is userId only
+
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/equipment/folder/"
+                   +websocket.userId
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeEquipmentPad(){  // the item here is equipment id
+
+               // this is equipmentId only
+               // once it broadcast
+               // other user who work on this equipment can do operation on it
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/equipment/pad/"
+                   +websocket.itemId
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeEquipmentBoard(){  // the item here is equipment id
+
+               // this is equipmentId only
+               // once it broadcast
+               // other user who work on this equipment can do operation on it
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/equipment/board/"
+                   +websocket.itemId
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeEquipFind(){  // the item here is lab id
+
+               // this is equipmentId only
+               // once it broadcast
+               // other user who work on this equipment can do operation on it
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/equipment/find"
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeLabFolder(){
+
+               // this is userId only
+
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/lab/folder/"
+                   +websocket.userId
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeLabPad(){  // the item here is lab id
+
+               // this is equipmentId only
+               // once it broadcast
+               // other user who work on this equipment can do operation on it
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/lab/pad/"
+                   +websocket.itemId
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeLabBoard(){  // the item here is lab id
+
+               // this is equipmentId only
+               // once it broadcast
+               // other user who work on this equipment can do operation on it
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/lab/board/"
+                   +websocket.itemId
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           __subscribeLabFind(){  // the item here is lab id
+
+               // this is equipmentId only
+               // once it broadcast
+               // other user who work on this equipment can do operation on it
+               var websocket = this.self;
+               websocket.stompClient.subscribe(
+                   "/topic/lab/find"
+                   , function (message) {
+                       websocket.receiveMessage(message.body);
+                   }
+               );
+           }
+
+           subscribeCreateEquipment(){
+
+               var websocket = this.self;
+               websocket.__subscribeEquipmentFolder();
+               websocket.__subscribeEquipmentPad();
+               websocket.__subscribeUnique();
+
+           }
+
+           subscribeShareEquipment(){
+
+               var websocket = this.self;
+               websocket.__subscribeEquipmentFolder();
+               websocket.__subscribeUnique();
+
+           }
+
+           subscribeFindEquipment(){
+
+               var websocket = this.self;
+               websocket.__subscribeEquipFind();
+               websocket.__subscribeUnique();
+               websocket.__subscribeEquipmentFolder();
+
+           }
+
+           subscribeBoardEquipment(){
+               var websocket = this.self;
+               websocket.__subscribeEquipmentBoard();
+               websocket.__subscribeUnique();
+           }
+
+
+           //_______________________________________
+           subscribeMyLab(){
+               var websocket = this.self;
+               websocket.__subscribeLabFolder();
+               websocket.__subscribeUnique();
+           }
+
+           subscribeCreateLab(){
+               var websocket = this.self;
+               websocket.__subscribeLabFolder();
+               websocket.__subscribeLabPad();
+               websocket.__subscribeUnique();
+           }
+
+           subscribeFindLab(){
+               var websocket = this.self;
+               websocket.__subscribeLabFind();
+               websocket.__subscribeUnique();
+               websocket.__subscribeLabFolder();
+           }
+
+           subscribeBoardLab(){
+               var websocket = this.self;
+               websocket.__subscribeLabBoard();
+               websocket.__subscribeUnique();
+           }
+           //_______________________________________
+
+           __sendEquipmentFrontMessage( message ){
+               var websocket = this.self;
+               websocket.stompClient.send( "/app/equipment/front/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+           }
+
+           __sendEquipmentBackMessage( message ){
+               var websocket = this.self;
+               websocket.stompClient.send( "/app/equipment/back/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+           }
+
+           __sendLabFrontMessage( message ){
+               var websocket = this.self;
+               websocket.stompClient.send( "/app/lab/front/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+           }
+
+           __sendLabBackMessage( message ){
+               var websocket = this.self;
+               websocket.stompClient.send( "/app/lab/back/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+           }
+
+           // sendMessage( message ){
+           //
+           //     var websocket = this.self;
+           //     websocket.sendMessage( message );
+           //
+           // }
+
+           connect(  ){
+               //var websocket = new Websocket();
+               //websocket.
+               var websocket = this.self;
+               websocket.socket = new SockJS('/landon-stomp-chat');
+               websocket.stompClient = Stomp.over(websocket.socket);
+               websocket.stompClient.debug = null;
+               websocket.stompClient.connect({}, function (frame) {
+                   websocket.setWebsocketId();
+                   websocket.subscribeType();
+                   var sendData = {"type":"connectSuccess"}
+                   websocket.sendMessage(JSON.stringify(sendData));
+               }, function (message) {
+                   websocket.connectBroken();
+               } );
+
+           }
+
+
+       }
+
+       function quickPrepare( type, data ) {
+           var sendData = {};
+           sendData["type"] = type;
+           sendData["websocketId"] = websocket.websocketId;
+           sendData["userId"] = websocket.userId;
+           if( itemId != null ){
+               sendData["itemId"] = itemId;
+           }
+           if(data!=null){
+               sendData["data"] = data;
+           }
+           return  JSON.stringify(sendData);
+       }
+
+       //var BooleanVar = false;
+       //_______________________ the code below teach you how to use the api ______________
+       //when you send information don't forget include itemId inside the message
+       //
+
+       // websocket = new Websocket();
+       // websocket.userId = "666";
+       // websocket.itemId=  "777";
+       // websocket.receiveMessage = function (message){
+       //     console.log(message);
+       // } ;
+       // websocket.connectBroken = function ( ){
+       //
+       //     console.log("connection broken");
+       //
+       // };
+       // websocket.self = websocket;
+       // websocket.subscribeType = websocket.subscribeCreateEquipment; // you need set the subscribe type
+       // websocket.sendMessage = websocket.__sendEquipmentFrontMessage;
+       // websocket.connect();
+
+       // @MessageMapping("/equipment/front/{userId}/{sessionId}")
+       // public void handleEquipmentFront( @DestinationVariable String userId ,  @DestinationVariable String sessionId , String message) throws JSONException {
+       //
+       //
+       //     System.out.println( message+"__"+ userId +"__"+ sessionId);
+       //
+       //
+       // }
+
+       // @Configuration
+       // @EnableWebSocketMessageBroker
+       // public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+       //
+       //     @Override
+       //     public void registerStompEndpoints(StompEndpointRegistry registry) {
+       //     registry.addEndpoint("/landon-stomp-chat").withSockJS();
+       // }
+       //
+       // @Override
+       // public void configureMessageBroker(MessageBrokerRegistry config) {
+       //     config.enableSimpleBroker("/topic","/user", "/queue");
+       //     //config.enableSimpleBroker("/user/queue/specific-user");
+       //     config.setApplicationDestinationPrefixes("/app");
+       //     config.setUserDestinationPrefix("/user/");
+       //     //config.enableSimpleBroker("/queue");
+       //     //config.enableSimpleBroker("/queue","/topic");
+       // }
+       //
+       // }
+
+
+       class Ajax{
+
+           constructor(){
+
+               this.sendAddress = null;
+               this.handle = null;
+               this.self = null;
+           }
+
+           sendAjax( message ){
+               var ajax = this.self;
+               $.post(
+                   ajax.sendAddress,
+                   {"data": message },
+                   function(response){
+                       if(response.success){
+                           ajax.handle( response.data );
+                       }
+                   },
+                   "json"
+               );
+           }
+       }
+       //ajax/requestId
+       //_______________________    ajax use tutorial      ____________________
+
+
+       // var ajax = new Ajax();
+       // ajax.sendAddress ="ajax/requestId";
+       // ajax.handle = function ( message ) {
+       //     console.log( message );
+       // }
+       // ajax.self = ajax;
+       // ajax.sendAjax("666");
+
+
+
+       // @RequestMapping(value="/ajax/requestId" , method = RequestMethod.POST)
+       // @ResponseBody
+       // public Object SignupSumbit(HttpServletRequest request) throws JSONException {
+       //
+       //     String dataStr = request.getParameter("data");
+       //
+       //     System.out.println( dataStr );
+       //
+       //     Map<String,Object> sendData = new HashMap<>();
+       //     sendData.put("success",true);
+       //     sendData.put("data", "weixin.tang@stonybrook.edu" );
+       //     return sendData;
+       // }
+
+
+   </script>
+    <!--  lab operation section  -->
+    <script >
+
+
+        class EquipmentOperationSection{
+            constructor(){
+                this.imageId = "operationImageSection";
+                this.editId = "operationEditSection";
+                this.areaId = "operationAreaSection";
+                this.addId = "operationAddSection";
+                // this.self = null;
+            }
+            setActive( Id ){
+
+                document.getElementById(Id).className="nav-link text-muted active";
+                //console.log( Id.slice(9) );
+                // we also need active the body content
+                document.getElementById(Id.slice(9)).className = "card-body";
+            }
+            setInactive( Id ){
+                document.getElementById(Id).className="nav-link text-muted";
+                //console.log( Id.slice(9) );
+                document.getElementById(Id.slice(9)).className = "card-body d-none";
+            }
+            getIds(){
+                return [this.imageId, this.editId, this.areaId,  this.addId ];
+            }
+            clearActive(){
+                for( var i = 0 ; i< this.getIds().length ; i++ ){
+                    this.setInactive(  this.getIds()[i] );
+                }
+            }
+            setIndexActive( index ){
+                this.clearActive();
+                this.setActive( this.getIds()[index] );
+            }
+            // ativeAllButton(){
+            //
+            //     document.getElementById(this.imageId).onclick =
+            //
+            // }
+            getActiveFunctions(){
+                return [ this.activeImage ,this.activeEdit , this.activeArea, this.activeAdd ]
+            }
+            activeImage(){
+                //console.log("??12");
+                document.getElementById("equipList").className = "w-100 h-100 border border-primary rounded";
+                document.getElementById("drawing").className = "w-100 h-100 border border-primary rounded d-none ";
+                document.getElementById("folderContent").className = "card-rows";
+                this.clearActive();
+                this.setActive( this.imageId );
+            }
+            activeAdd(){
+                //console.log("??2");
+                this.clearActive();
+                this.setActive( this.addId );
+            }
+            activeArea(){
+
+
+                //console.log("??");
+
+                this.clearActive();
+                this.setActive( this.areaId );
+            }
+            activeEdit(){
+
+                document.getElementById("equipList").className = "w-100 h-100 border border-primary rounded d-none";
+                document.getElementById("drawing").className = "w-100 h-100 border border-primary rounded";
+                document.getElementById("folderContent").className = "card-rows hideTrashBin";
+                this.clearActive();
+                this.setActive( this.editId );
+            }
+            activeAllButton( self ){
+                //self = new EquipmentOperationSection();
+                document.getElementById( self.imageId ).onclick = function () {
+                    self.activeImage();
+                };
+                document.getElementById( self.editId ).onclick = function () {
+                    self.activeEdit();
+                };
+                document.getElementById(self.areaId).onclick = function () {
+                    self.activeArea();
+                };
+                document.getElementById(self.addId).onclick = function () {
+                    self.activeAdd();
+                };
+            }
+        }
+
+        class ImageOp{
+            constructor(){
+                this.equipmentNameInputId = "equipmentNameInput";
+                this.equipmentDescriptionId = "equipmentDescription";
+                this.coverImageId = "coverImageId";
+                this.coverImageUploadId = "myfile";
+                this.self = null;
+
+
+            }
+            getNameValue(){
+                return document.getElementById(this.equipmentNameInputId).value;
+            }
+            setNameValue( value ){
+                document.getElementById(this.equipmentNameInputId).value = value;
+            }
+            getTextArea(){
+                return document.getElementById(this.equipmentDescriptionId).value;
+            }
+            setTextArea( value ){
+                document.getElementById( this.equipmentDescriptionId ).value = value;
+            }
+
+            setCoverImage( value ){
+
+                //<img src='' class='grid-photo-center' style='background-color: aquamarine' alt=''>
+                // <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA
+                // AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+                // 9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
+
+                document.getElementById( this.coverImageId ).innerHTML = "<img src='"+value+"' class='grid-photo-center' style='background-color: aquamarine' alt=''>";
+
+            }
+
+            handleNameInput( name ){
+                sendProtocal["labName"](name);
+            }
+
+            handleTextAreaInput( description ){
+                sendProtocal["labDescription"](description);
+            }
+
+            handleImageInput( ImageData ){
+                sendProtocal["uploadLabCoverImage"]( ImageData );
+
+            }
+
+            activeAll(){
+                var imageOp = this.self;
+                document.getElementById(imageOp.equipmentNameInputId).oninput = function () {
+
+                    imageOp.handleNameInput( imageOp.getNameValue() );
+                };
+
+                document.getElementById(imageOp.equipmentDescriptionId).oninput = function () {
+                    imageOp.handleTextAreaInput( imageOp.getTextArea() );
+                };
+
+                document.getElementById(imageOp.coverImageUploadId).oninput = async function (evt) {
+                    var file = evt.target.files[0];
+                    var ImageData = (await toBase64(file));
+                    imageOp.handleImageInput( ImageData );
+                }
+            }
+
+        }
+
+        class SetOp{
+
+            constructor(){
+
+                // actually we don't have do right now
+
+                // we need get id here
+
+                // so work on chemistry then back to here
+
+                this.likeEquipment = "likeEquipment";
+                this.shareEquipment = "shareEquipment";
+                this.createDuplicate = "createDuplicate";
+                this.deleteEquipment = "deleteEquipment";
+                this.generateDoLab = "generateDoLab";
+                this.self = null;
+            }
+
+
+            setLikeBaseBoolean( booleanValue ){
+                if( booleanValue == true ){
+                    this.setDisLike();
+                }else{
+                    this.setLike();
+                }
+            }
+
+            setShareBaseBoolean( booleanValue ){
+                if( booleanValue == true ){
+                    this.setNoShare();
+                }else{
+                    this.setShare();
+                }
+            }
+
+            setLike(){
+                //document.getElementById(this.likeEquipment).innerHTML = "<i class='fas fa-heart'></i> Like Equip";
+                document.getElementById(this.likeEquipment).className = "btn btn-lg h2 d-block btn-outline-danger text-capitalize";
+
+            }
+
+            setDisLike(){
+                //document.getElementById(this.likeEquipment).innerHTML = "<i class='fas fa-heart'></i> DisLike Equip";
+                document.getElementById(this.likeEquipment).className = "btn btn-lg h2 d-block btn-danger text-capitalize";
+            }
+
+            setShare(){
+                document.getElementById(this.shareEquipment).className =   "btn btn-lg h2 d-block btn-outline-success text-capitalize";
+            }
+
+            setNoShare(){
+                document.getElementById(this.shareEquipment).className =   "btn btn-lg h2 d-block btn-success text-capitalize";
+            }
+
+            isLike(){
+                if( document.getElementById(this.likeEquipment).className == "btn btn-lg h2 d-block btn-outline-danger text-capitalize" ){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+
+            // true means have not share and want to share
+            isShare(){
+                if( document.getElementById(this.shareEquipment).className == "btn btn-lg h2 d-block btn-outline-success text-capitalize" ){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+
+            handleLike( boolean ){
+
+                //
+                //console.log(boolean);
+                //equipmentData.currentEquipmentData.currentImageIds
+                //var currentImageId = equipmentData.currentEquipmentData.currentImageIds;
+
+                sendProtocal["likeLab"](   boolean );
+
+            }
+
+            handleShare( boolean ){
+
+                //var currentImageId = equipmentData.currentEquipmentData.currentImageIds;
+                //console.log(boolean);
+                sendProtocal["shareLab"](   boolean);
+            }
+
+            handleDelete(){
+
+                //var currentImageId = equipmentData.currentEquipmentData.currentImageIds;
+
+                sendProtocal["deleteLab"]( );
+
+            }
+
+            handleDuplicate(){
+
+                //var currentImageId = equipmentData.currentEquipmentData.currentImageIds;
+
+                sendProtocal["duplicateLab"](  );
+
+            }
+
+            activeAll(){
+
+                var setOp = this.self;
+                document.getElementById( setOp.likeEquipment ).onclick = function () {
+                    setOp.handleLike( setOp.isLike() );
+                };
+
+                document.getElementById( setOp.shareEquipment ).onclick = function () {
+                    setOp.handleShare( setOp.isShare() );
+                };
+
+                document.getElementById( setOp.createDuplicate ).onclick =function () {
+                    setOp.handleDuplicate();
+                };
+
+                document.getElementById( setOp.deleteEquipment ).onclick =function () {
+                    setOp.handleDelete();
+                };
+
+                document.getElementById( setOp.generateDoLab ).onclick = function () {
+
+                    websocket.sendMessage( quickPrepare( "generateDoLab"  ) );
+
+                    // so here we will use ajax to handle this
+
+                    // var sendData = {};
+                    // sendData["labId"] = itemId;
+                    // sendData["blobIds"] = labDataOp.getEquipCoverBlobIds();
+                    // $.ajax({
+                    //     type: "POST",
+                    //     contentType: "application/json",
+                    //     url: "/ajax/downloadImages",
+                    //     data: JSON.stringify(sendData),
+                    //     dataType: 'json',
+                    //     cache: false,
+                    //     timeout: 600000,
+                    //     success: function (info) {
+                    //         var imageBlobArr =  JSON.parse( info.data );
+                    //         for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+                    //             var imageBlobStr = imageBlobArr[i];
+                    //             var imageBlob = JSON.parse(imageBlobStr);
+                    //             var imageBlobId = imageBlob.id;
+                    //             imageStorage.setItem( imageBlobId , imageBlobStr );
+                    //         }
+                    //
+                    //         labData.displayLabBoard();
+                    //
+                    //         //console.log(info);
+                    //     },
+                    //     error: function (e) {
+                    //
+                    //     }
+                    // });
+
+
+
+
+
+                }
+
+            }
+
+
+
+
+        }
+
+        class StepOp{
+
+            constructor(){
+
+                this.newStepId = "newStep";
+                this.removeLastStep = "removeLastStep";
+
+            }
+
+            activeAll(){
+
+                $( "#"+this.newStepId ).click(function() {
+
+                    //console.log("123A");
+
+                    var labdata = labData.LabData;
+                    var labSteps = labdata.labSteps;
+
+                    if( labSteps.length == 0 ){
+
+
+                        websocket.sendMessage( quickPrepare( "newStep" ) );
+                    }else{
+
+
+                        var lastStep = labSteps[labSteps.length-1];
+                        var after = lastStep.after;
+                        if( after.length == 0 ){
+
+                        }else{
+
+                            websocket.sendMessage( quickPrepare( "newStep" ) );
+
+                        }
+
+                    }
+
+
+
+                });
+
+                $( "#"+this.removeLastStep ).click(function() {
+
+                    //console.log("123AB");
+
+                    //console.log(labData);
+
+                    var labdata = labData.LabData;
+
+                    //console.log(labdata);
+
+                    var labSteps = labdata.labSteps;
+                    if( labSteps.length > 0 ){
+                        websocket.sendMessage( quickPrepare("removeLastStep") );
+                    }
+
+                });
+
+
+
+
+            }
+
+            __getBtnGroup(  ){
+                // <div class="btn btn-group">
+                //     <div class="btn btn-info mr-2">
+                //         <i class="far fa-save"></i> Before
+                //     </div>
+                //
+                //     <div class="btn btn-success mr-2">
+                //         <i class="far fa-save"></i> Save
+                //     </div>
+                //
+                //     <div class="btn btn-primary">
+                //         <i class="far fa-save"></i> End
+                //     </div>
+                // </div>
+
+                 var str;
+                //
+                // if( boolean == true ){
+                //
+                //     str = "<div class=\"btn btn-group w-100\">\n" +
+                //         "                                <div class=\"btn btn-info mr-2 w-33\" onclick='beforeStepClick(this)'>\n" +
+                //         "                                    <i class=\"far fa-save\"></i> Before\n" +
+                //         "                                </div>\n" +
+                //         "\n" +
+                //         "                                <div class=\"btn btn-success mr-2 w-33\" onclick='SaveStepClick(this)'>\n" +
+                //         "                                    <i class=\"far fa-save\"></i> Save\n" +
+                //         "                                </div>\n" +
+                //         "\n" +
+                //         "                                <div class=\"btn btn-primary w-33\" onclick='EndStepClick(this)'>\n" +
+                //         "                                    <i class=\"far fa-save\"></i> End\n" +
+                //         "                                </div>\n" +
+                //         "                            </div>";
+                //
+                // }else if( boolean ==false ){
+                //
+                //     str = "<div class=\"btn btn-group w-100\">\n" +
+                //         "                                <div class=\"btn btn-info mr-2 w-50\" onclick='beforeStepClick(this)'>\n" +
+                //         "                                    <i class=\"far fa-save\"></i> Before\n" +
+                //         "                                </div>\n" +
+                //         "                                <div class=\"btn btn-primary w-50\" onclick='EndStepClick(this)'>\n" +
+                //         "                                    <i class=\"far fa-save\"></i> End\n" +
+                //         "                                </div>\n" +
+                //         "                            </div>";
+                //
+                // }
+
+
+                str = " <div class=\"btn btn-group w-100\">\n" +
+                    "                                <div class=\"btn btn-warning mr-2 w-50\" onclick='saveBefore(this)' >\n" +
+                    "                                    <i class=\"far fa-save\"></i> Before\n" +
+                    "                                </div>\n" +
+                    "\n" +
+                    "                                <div class=\"btn btn-danger w-50\" onclick='saveEnd(this)'>\n" +
+                    "                                    <i class=\"far fa-save\"></i> End\n" +
+                    "                                </div>\n" +
+                    "                            </div>\n" +
+                    "\n" +
+                    "                            <div class=\"btn btn-group w-100\"  >\n" +
+                    "                                <div class=\"btn btn-success mr-2 w-50\" onclick='displayBefore(this)'>\n" +
+                    "                                    <i class=\"fas fa-tv\"></i> Before\n" +
+                    "                                </div>\n" +
+                    "\n" +
+                    "                                <div class=\"btn btn-primary w-50\" onclick='displayEnd(this)'>\n" +
+                    "                                    <i class=\"fas fa-tv\"></i> The End\n" +
+                    "                                </div>\n" +
+                    "                            </div>\n" +
+                    "\n" +
+                    "                            <div class=\"btn btn-group w-100\">\n" +
+                    "                                <div class=\"btn btn-info mr-2 w-90\" onclick='insertStepBelow(this)'>\n" +
+                    "                                    <i class=\"fas fa-plus\"></i> Insert Step Below\n" +
+                    "                                </div>\n" +
+                    "\n" +
+                    "                                <div class=\"btn btn-dark w-10\" onclick='removeThisStep(this)'>\n" +
+                    "                                    <i class=\"fas fa-dumpster-fire\"></i>\n" +
+                    "                                </div>\n" +
+                    "                            </div>";
+
+
+
+                return str;
+            }
+
+            __getInputGroup( content , contentId){
+                // <div class="input-group mb-3">
+                //     <div class="input-group-prepend">
+                //         <span class="input-group-text">info:</span>
+                //     </div>
+                //     <input class="form-control" type="text" placeholder="step description">
+                // </div>
+                var Str = " <div class=\"input-group mb-3\">\n" +
+                    "                    <div class=\"input-group-prepend\">\n" +
+                    "                        <span class=\"input-group-text\">info:</span>\n" +
+                    "                    </div>\n" +
+                    "                    <input class=\"form-control\" id='"+contentId+"' oninput='infoStepInput(this)' value='"+content+"' type=\"text\" placeholder=\"step description\">\n" +
+                    "                </div>";
+                return Str;
+            }
+
+            __getCard( id , stepName , content , booleanShow ){
+                //
+                // <div class="card">
+                //         <div class="card-header" id="headingOne">
+                //             <h2 class="mb-0">
+                //                 <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                //                     Step 1
+                //                 </button>
+                //             </h2>
+                //         </div>
+                //
+                //         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                //             <div class="card-body">
+                //
+                //                 <div class="input-group mb-3">
+                //                     <div class="input-group-prepend">
+                //                         <span class="input-group-text">info:</span>
+                //                     </div>
+                //                     <input class="form-control" type="text" placeholder="step description">
+                //                 </div>
+                //
+                //
+                //
+                //                 <div class="btn btn-group">
+                //                     <div class="btn btn-info mr-2">
+                //                         <i class="far fa-save"></i> Before
+                //                     </div>
+                //
+                //                     <div class="btn btn-success mr-2">
+                //                         <i class="far fa-save"></i> Save
+                //                     </div>
+                //
+                //                     <div class="btn btn-primary">
+                //                         <i class="far fa-save"></i> End
+                //                     </div>
+                //                 </div>
+                //
+                //             </div>
+                //         </div>
+                //     </div>
+                //
+                // <div class="card">
+                //     <div class="card-header" id="headingOne">
+                //         <h2 class="mb-0">
+                //             <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                //                 Step 1
+                //             </button>
+                //         </h2>
+                //     </div>
+                //
+                //     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                //         <div class="card-body">
+                //
+                //
+                //         </div>
+                //     </div>
+                // </div>
+                // here need two different id
+                // collapseId
+                // cardheadId
+
+                //var id = "1";
+                var headId = id+"_head";
+                var bodyId = id+"_body";
+                var contentId = id+"_content";
+
+                var collapseCodition ;
+                if( booleanShow == true ){
+                    collapseCodition = "show";
+                }else{
+                    collapseCodition = "";
+                }
+
+                /*
+                var Str = "<div class=\"card\">\n" +
+                    "                    <div class=\"card-header\" id=\""+headId+"\">\n" +
+                    "                        <h2 class=\"mb-0\">\n" +
+                    "                            <button class=\"btn btn-link\" onclick='expandStep(this)' type=\"button\" data-toggle=\"collapse\" data-target=\"#"+bodyId+"\" aria-expanded=\"true\" aria-controls=\""+bodyId+"\">\n" +
+                    "                                "+stepName+"\n" +
+                    "                            </button>\n" +
+                    "                        </h2>\n" +
+                    "                    </div>\n" +
+                    "\n" +
+                    "                    <div id=\""+bodyId+"\" class=\"collapse "+collapseCodition+"\" aria-labelledby=\""+headId+"\" data-parent=\"#accordionExample\">\n" +
+                    "                        <div class=\"card-body\">\n" +
+                    "\n" +this.__getInputGroup( content , contentId )+
+                    "\n" +this.__getBtnGroup(  )+
+                    "                        </div>\n" +
+                    "                    </div>\n" +
+                    "                </div>";
+                */
+
+                var Str = "<div class=\"card\">\n" +
+                    "                    <div class=\"card-header\" id=\""+headId+"\">\n" +
+                    "                        <h2 class=\"mb-0\">\n" +
+                    "                            <button class=\"btn btn-link\" onclick='expandStep(this)' type=\"button\" data-toggle=\"collapse\" aria-expanded=\"true\" aria-controls=\""+bodyId+"\">\n" +
+                    "                                "+stepName+"\n" +
+                    "                            </button>\n" +
+                    "                        </h2>\n" +
+                    "                    </div>\n" +
+                    "\n" +
+                    "                    <div id=\""+bodyId+"\" class=\"collapse "+collapseCodition+"\" aria-labelledby=\""+headId+"\" data-parent=\"#accordionExample\">\n" +
+                    "                        <div class=\"card-body\">\n" +
+                    "\n" +this.__getInputGroup( content , contentId )+
+                    "\n" +this.__getBtnGroup(  )+
+                    "                        </div>\n" +
+                    "                    </div>\n" +
+                    "                </div>";
+
+                /*
+                    <div class="card">
+                        <div class="card-header" id="headingThree">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Step 3
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                            <div class="card-body">
+                                888
+                            </div>
+                        </div>
+                    </div>
+                 */
+
+                return Str;
+
+            }
+
+        }
+
+
+        function getStepInfoById( id ){
+            var contentId = id+"_content";
+            var value = document.getElementById( contentId ).value;
+
+            //console.log(value);
+
+        }
+
+        function setStepInfoById( id , value){
+
+            var contentId = id+"_content";
+            document.getElementById( contentId ).value = value;
+
+        }
+
+        // $(function () {
+        //
+        //     var stepOp = new StepOp();
+        //     document.getElementById("accordionExample").innerHTML = stepOp.__getCard("1", "Step 1" , true , "666" , true )+stepOp.__getCard("2", "Step 2", false , "777", false );
+        //     setStepInfoById( "1" , "123");
+        //     getStepInfoById( "1" );
+        //
+        // });
+
+        function expandStep(evt) {
+
+            var idB = evt.parentNode.parentNode.id;
+            var idArr = idB.split("_");
+            var id = idArr[0];
+
+            // this is set the current step
+
+            websocket.sendMessage( quickPrepare( "expandStep" , id ) );
+            //console.log(id);
+
+        }
+        function getIdFromEvt( evt ) {
+            var idB = evt.parentNode.parentNode.parentNode.id;
+            var idArr = idB.split("_");
+            var id = idArr[0];
+            return id;
+        }
+        function infoStepInput( evt ) {
+
+            //console.log(evt.parentNode.parentNode.parentNode.id);
+            var id = getIdFromEvt( evt );
+
+            //console.log( id );
+            var sendData = {};
+            sendData["id"] = id;
+            sendData["info"] = evt.value;
+            //console.log(JSON.stringify(sendData));
+            websocket.sendMessage(quickPrepare( "stepInfo" , sendData ));
+
+        }
+        function saveBefore( evt ) {
+
+            var id = getIdFromEvt( evt );
+            //console.log(evt.parentNode.parentNode.parentNode);
+            //console.log(id);
+            //console.log( "saveBefore" );
+            websocket.sendMessage( quickPrepare( "saveBefore" , id ) );
+        }
+        function saveEnd( evt ) {
+            var id = getIdFromEvt( evt );
+            //console.log(id);
+            //console.log( "saveEnd" );
+            websocket.sendMessage( quickPrepare( "saveEnd" , id ) );
+        }
+        function displayBefore(evt) {
+            var id = getIdFromEvt( evt );
+            //console.log(id);
+            //console.log( "displayBefore" );
+            websocket.sendMessage( quickPrepare( "displayBefore" , id ) );
+        }
+        function displayEnd( evt ){
+            var id = getIdFromEvt( evt );
+            //console.log(id);
+
+            //console.log( "displayEnd" );
+            websocket.sendMessage( quickPrepare( "displayEnd" , id ) );
+        }
+        function insertStepBelow(evt){
+
+            var id = getIdFromEvt( evt );
+            //console.log(id);
+            //console.log( "insertStepBelow" );
+            // now we need check the current step is saved
+            // if not saved --> click
+             var afterlength =  labData.LabData.labSteps[id].after.length;
+             if( afterlength != 0 ){
+                 websocket.sendMessage( quickPrepare( "insertStepBelow" , id ) );
+
+             }
+
+
+
+        }
+        function removeThisStep(evt){
+            var id = getIdFromEvt( evt );
+            //console.log(id);
+
+            //console.log( "removeThisStep" );
+            websocket.sendMessage( quickPrepare( "removeThisStep" , id ) );
+        }
+
+        //
+        // function beforeStepClick( evt ) {
+        //
+        //     var id = getIdFromEvt( evt );
+        //     //console.log( id );
+        //     websocket.sendMessage(quickPrepare( "stepBefore" , id ));
+        //     //console.log(getIdFromEvt( evt ));
+        // }
+        //
+        // function SaveStepClick( evt ) {
+        //     var id = getIdFromEvt( evt );
+        //     //console.log(evt);
+        //     //console.log( "what happened here??" );
+        //     websocket.sendMessage(quickPrepare( "stepSave" , id ));
+        // }
+        //
+        // function EndStepClick( evt ) {
+        //     var id = getIdFromEvt( evt );
+        //     //console.log(evt);
+        //     //console.log( id );
+        //     //console.log( "what happened here??666" );
+        //     websocket.sendMessage(quickPrepare( "stepAfter" , id ));
+        //
+        // }
+
+    </script>
+    <!--  labJS/FolderMin.js-->
+    <script >
+
+        class FolderMin{
+            constructor(){
+                // we don't need save value here
+                this.folderMin = "minFolder";
+                //this.manageFolderJumpAddress = "#123";
+                this.folderNames = ["1", "2", "3"];
+                this.folderIds = ["id1","id2", "id3"];
+                this.self = null;
+            }
+            // we need create a folder by name
+            // we need
+            //sortable3
+            setFolderNames( folderNames , folderIds ){
+                this.folderNames = folderNames;
+                this.folderIds = folderIds;
+                this.__refresh();
+            }
+            setSelf( self ){
+                this.self = self;
+            }
+            // those three function we need change the herf
+            // so it can jump to some where
+            // __getDivideLine(){
+            //     //<div class='dropdown-divider'></div>
+            //     //<div class="dropdown-divider"></div>
+            //     return "<div class=\"dropdown-divider\"></div>";
+            // }
+            //
+            // __getMangaeFolder(){
+            //     //<a class="dropdown-item" href="#"><i class="fas fa-folder"></i>&nbsp;&nbsp;Mangae Folders</a>
+            //     //<a class='dropdown-item' href='#'><i class='fas fa-folder'></i>&nbsp;&nbsp;Mangae Folders</a>
+            //     return "<a class=\"dropdown-item\" href=\""+this.manageFolderJumpAddress+"\"><i class=\"fas fa-folder\"></i>&nbsp;&nbsp;Mangae Folders</a>";
+            // }
+            //
+            //
+            //
+            // __getButtomHTML(){
+            //     return this.getDivideLine()+this.getMangaeFolder();
+            // }
+            // getDynamicItem(){
+            //     // <div class='input-group bg-light dropdown-item' style='border: 0px'>
+            //     //         <input type='text' style='border: 0px' class='form-control bg-light text-dark text-truncate font-weight-normal' value='folder 1'>
+            //     //         <div class='input-group-append bg-light' style='border: 0px'>
+            //     //         <span class='input-group-text bg-light' style='border: 0px'><i class='fas fa-minus'></i></span>
+            //     //     </div>
+            //     //     </div>
+            //
+            //
+            //     var ReturnData = " <div class='input-group bg-light dropdown-item' style='border: 0px'>\n" +
+            //         "                <input type='text' style='border: 0px' class='form-control bg-light text-dark text-truncate font-weight-normal' value='folder 1'>\n" +
+            //         "                <div class='input-group-append bg-light' style='border: 0px'>\n" +
+            //         "                <span class='input-group-text bg-light' style='border: 0px'><i class='fas fa-minus'></i></span>\n" +
+            //         "            </div>\n" +
+            //         "            </div>";
+            //
+            //
+            //
+            //     return
+            // }
+            // we need register on click function
+            // so this just call the same function
+            __getStaticItem( folderName , folderId ){
+                //<div class="dropdown-item"><p class="d-inline">Folder 2</div>
+                //<div class='dropdown-item'><p class='d-inline'>Folder 2</div>
+                var ClassName = "dropdown-item text-truncate";
+                // var OnClick = "function () {   }"
+                return "<div class='"+ClassName+"' id='"+folderId+"' >"+folderName+"</div>";
+            }
+            __getAllHTML(  ){
+                var total = "";
+                for( var i = 0 ; i < this.folderNames.length ; i++ ){
+                    //folderNames[i]
+                    total = total+this.__getStaticItem( this.folderNames[i] , this.folderIds[i] );
+                }
+                //total = total + this.getButtomHTML();
+                return total;
+            }
+            __setHTML(){
+                document.getElementById(this.folderMin).innerHTML = this.__getAllHTML();
+            }
+            __activeButton(){
+                var self = this.self;
+                document.getElementById(this.folderMin).onchange = function () {
+                    //console.log("print something first");
+                    // good it dose work
+                    //
+                    // the function don't change it self
+                    // instead it read all the data and send to back side
+                    // document.getElementById(folderMin.folderMin).childNodes.forEach(
+                    //
+                    //     function(item){
+                    //
+                    //         //console.log(item);
+                    //
+                    //         console.log(item);
+                    //
+                    //
+                    //     }
+                    //
+                    //
+                    // )
+                    //console.log(  document.getElementById(folderMin.folderMin).children[0].id );
+                    //console.log( document.getElementById(folderMin.folderMin).childNodes[0] );
+                    // so we need writ  a function get the id
+                    // so it will start the id with id=" or id='
+                    var folderNode =  document.getElementById(folderMin.folderMin).children;
+                    var folderIds = [];
+                    for( var i = 0 ; i < folderNode.length ; i++ ){
+                        folderIds.push( folderNode[i].id );
+                    }
+                    // we will send to message prepare
+                    //console.log(folderIds);
+                }
+                for( var i = 0 ; i < this.folderIds.length ; i ++ ){
+                    document.getElementById(this.folderIds[i]).onclick = function () {
+                        //console.log("666");
+                        //console.log(self.getDivideLine());
+                    }
+                }
+                //document.getElementById(this.folderMin).
+            }
+            __refresh(){
+                this.__setHTML();
+                this.__activeButton()
+            }
+        }
+
+        //___________________________________________
+
+        // the description below is how to use
+        // this javascript class
+
+        /*
+
+                    folderMin = new FolderMin();
+                    folderMin.__refresh();
+
+                    there is a problem
+                        // it lack of icon
+                        // so we could now the icon
+                     we don't focus on this
+                        this time
+
+                    // so we will do this later
+
+         */
+
+    </script>
+    <!--  folderContent  -->
+    <script >
+
+        var max = 0;
+
+        $( function() {
+
+
+            // $("#folderContent").change(function () {
+            //
+            //     //alert( "Handler for .change() called." );
+            //     console.log("666");
+            //
+            //
+            //
+            //
+            // });
+
+            // $('#folderContent').bind("DOMSubtreeModified",function(){
+            //    // alert('changed');
+            //     //console.log("626");
+            //     //console.log( document.getElementById("folderContent").children[0].id );
+            //     // if( boolean == false ){
+            //     //     boolean = true;
+            //     // }else{
+            //     //     boolean =false;
+            //         //console.log("1______");
+            //     //console.log("2______");
+            //     //}
+            //
+            //     // so we will put all those things
+            //     var nodeIds =[];
+            //     var nodes = document.getElementById("folderContent").children;
+            //     for( var i = 0 ; i < nodes.length ; i++ ){
+            //         var node = nodes[i];
+            //         nodeIds.push( node.id );
+            //         //console.log( node.id );
+            //     }
+            //
+            //     if( nodeIds.length > max ){
+            //
+            //         sendProtocal["labEquipList"]( nodeIds );
+            //
+            //         max = nodeIds.length;
+            //     }else if( nodeIds.length == max ){
+            //
+            //         sendProtocal["labEquipList"]( nodeIds );
+            //
+            //     }
+            //
+            //
+            //
+            //
+            // });
+
+            // $( "#folderContent" ).mouseup(function() {
+            //     console.log("636");
+            // });
+
+            new Sortable(document.getElementById("middleBoard"), {
+                group: 'shared',
+                animation: 150,
+                sort: false // To disable sorting: set sort to false
+            });
+            //
+            new Sortable(document.getElementById("folderContent"), {
+                group: 'shared2',
+                animation: 150,
+                sort: false
+            });
+
+            // $('[data-toggle="tooltip"]').tooltip();
+
+        });
+
+        function cardsClick( evt ) {
+            //console.log( "node.id" );
+
+            //console.log(evt.parentNode.id);
+
+
+            if(  evt.parentNode.id == "middleBoard"){
+
+
+                var nodeIds =[];
+                nodeIds.push(evt.id);
+                var nodes = document.getElementById("folderContent").children;
+                for( var i = 0 ; i < nodes.length ; i++ ){
+                    var node = nodes[i];
+                    nodeIds.push( node.id );
+                    //console.log( node.id );
+                }
+                sendProtocal["labEquipList"]( nodeIds );
+
+            }else if( evt.parentNode.id == "folderContent" ){
+
+                // if( evt.parentNode.className == "card-rows hideTrashBin" ){
+                //
+                //
+                //     console.log( "6788hb" );
+                //
+                // }
+
+                //console.log( "6788hb" );
+                // console.log( evt.parentNode.class );
+                //console.log( evt.parentNode.className );
+
+                if( evt.parentNode.className == "card-rows hideTrashBin" ){
+
+                    //console.log( "node.id waht happened here B?");
+                    // there are still something need to do here
+                        // we need check the step if it's not null
+                            // or the current step is point to a valid step
+
+                    //console.log( labData );
+
+                    var LabData = labData.LabData;
+                    var labSteps = LabData.labSteps;
+                    var currentLabStep = LabData.currentLabStep;
+
+
+
+                    if( labSteps.length != 0 ){
+
+                        //console.log( "node.id waht happened here C?");
+
+                        if( currentLabStep >= 0 && currentLabStep < labSteps.length ){
+
+                            //console.log( "node.id waht happened hereD");
+
+                            var id = evt.id;
+                            var parenNode = evt.parentNode;
+                            parenNode.removeChild(evt);
+                            sendLabEquipList();
+
+                            // var id = evt.id;
+                            // var parenNode = evt.parentNode;
+                            // parenNode.removeChild(evt);
+                            //
+                            // var nodeIds =[];
+                            // var nodes = document.getElementById("folderContent").children;
+                            // for( var i = 0 ; i < nodes.length ; i++ ){
+                            //     var node = nodes[i];
+                            //     nodeIds.push( node.id );
+                            //     //console.log( node.id );
+                            // }
+                            //
+                            // if( nodeIds.length == 0 ){
+                            //
+                            //     websocket.sendMessage(quickPrepare( "clearLabEquipList" ));
+                            //
+                            // }else{
+                            //
+                            //     sendProtocal["labEquipList"]( nodeIds );
+                            //
+                            // }
+                            //console.log( "node.id waht happened here?");
+
+                            //setTimeout(100)
+
+                            setTimeout(function(){ sendProtocal["addEquipToBoard"](id); }, 100);
+
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        class Card{
+            constructor(){
+                this.imageData = null;
+                this.imageTitle = null;
+                this.imageContent = null;
+                this.imageId = null;
+            }
+            __ceateFakeData(){
+                this.imageData = "https://ml4141715.github.io/water/cdn/image/Holder.png";
+                this.imageTitle = "666imageTitle";
+                this.imageContent = "7789imageContent";
+                this.imageId = "675imageId";
+            }
+            // we will add some button here
+            // so what we will add
+            // favorite
+            // duplicate
+            // delete
+            // <div class="card mb-1 grid-square">
+            //         <img class="card-img-top img-fluid grid-photo" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="" draggable="false">
+            //         <div class="card-body">
+            //         <p class="card-title h4 small font-weight-bold">Holder</p>
+            //         <p class="card-text h5 small">Author: Homelander </p>
+            // </div>
+            // </div>
+            __cardHTML(){
+                var ReturnData = "<div class=\"card mb-1 grid-square\"  id=\""+this.imageId+"\" >\n" +
+                    "                <img class=\"card-img-top img-fluid grid-photo\" src=\""+this.imageData+"\" alt=\"\" draggable=\"false\">\n" +
+                    "                <div class=\"card-body\">\n" +
+
+                    "                    <p class=\"card-title h4 small font-weight-bold\">"+this.imageTitle+"</p>\n" +
+                    "                    <p class=\"card-text h5 small\">"+this.imageContent+"</p>\n" +
+                    "                </div>\n" +
+                    "            </div>";
+                return ReturnData;
+
+                // var ReturnData = "<div class='btn btn-muted' id='"+this.imageId+"'><img class></div>"
+                //
+                // return ReturnData;
+            }
+
+            __cardWithTrashBin(){
+
+                var ReturnData = "<div class=\"card mb-1 grid-square\"  id=\""+this.imageId+"\" onclick='cardsClick(this)'>\n" +
+                    "                <img class=\"card-img-top img-fluid grid-photo\" src=\""+this.imageData+"\" alt=\"\" draggable=\"false\">\n" +
+                    "                <div class=\"card-body\">\n" +
+
+                    "                    <p class=\"card-title h4 small font-weight-bold\" ><span onclick='deleteEquipmentFromLab(this)'><i class='fas fa-trash'></i> </span>"+this.imageTitle+"</p>\n" +
+                    "                    <p class=\"card-text h5 small\">"+this.imageContent+"</p>\n" +
+                    "                </div>\n" +
+                    "            </div>";
+
+                return ReturnData;
+
+            }
+
+
+            getHTML(){
+                return this.__cardWithTrashBin();
+                //return this.__cardHTML();
+            }
+        }
+
+        function deleteEquipmentFromLab( evt ){
+
+            var equip = evt.parentNode.parentNode.parentNode;
+
+            var folderContent = equip.parentNode;
+
+
+            folderContent.removeChild( equip );
+
+
+            var nodeIds =[];
+            var nodes = document.getElementById("folderContent").children;
+            for( var i = 0 ; i < nodes.length ; i++ ){
+                var node = nodes[i];
+                nodeIds.push( node.id );
+                //console.log( node.id );
+            }
+            sendProtocal["labEquipList"]( nodeIds );
+
+        }
+
+        function sendLabEquipList() {
+
+            var nodeIds =[];
+            var nodes = document.getElementById("folderContent").children;
+            for( var i = 0 ; i < nodes.length ; i++ ){
+                var node = nodes[i];
+                nodeIds.push( node.id );
+                //console.log( node.id );
+            }
+            sendProtocal["labEquipList"]( nodeIds );
+
+        }
+
+        class Cards{
+            constructor(){
+                this.cards = [];
+                this.folderContentId = "folderContent";// 1721
+            }
+            addCard( imageData , imageTitle , imageContent , imageId ){
+                var card = new Card();
+                card.imageContent = imageContent;
+                card.imageTitle = imageTitle;
+                card.imageData = imageData;
+                card.imageId = imageId;
+
+                this.cards.push(card);
+            }
+            clearCards(  ){
+                this.cards = [];
+            }
+            __creatFakeData(){
+
+
+                this.addCard( "https://ml4141715.github.io/water/cdn/image/Holder.png" , "imageTitle1" , "imageContent1" , "imageId1" );
+                // this.addCard( "https://ml4141715.github.io/water/cdn/image/Holder.png" , "imageTitle1" , "imageContent1" , "imageId1" );
+                // this.addCard( "https://ml4141715.github.io/water/cdn/image/Holder.png" , "imageTitle1" , "imageContent1" , "imageId1" );
+                // this.addCard( "https://ml4141715.github.io/water/cdn/image/Holder.png" , "imageTitle1" , "imageContent1" , "imageId1" );
+                // //console.log(this.cards[0].getHTML());
+            }
+            __cardsHTML(){
+                var total = "";
+                for( var i = 0 ; i< this.cards.length ; i ++ ){
+                    total = total+ this.cards[i].getHTML();
+                    //console.log(this.cards[i].getHTML());
+                }
+                //console.log(total);
+                return total;
+            }
+            setHTML(){
+                // console.log( "this.__cardsHTML()" );
+                // console.log( this.__cardsHTML() );
+                //console.log( "this.__cardsHTML()" );
+
+                document.getElementById(this.folderContentId).innerHTML = this.__cardsHTML();
+
+                // for( var i = 0 ; i< this.cards.length ; i++ ){
+                //
+                //     var cardId = this.cards[i].imageId;
+                //
+                //     document.getElementById(cardId).onclick = function (evt) {
+                //
+                //         var cardId = evt.path[1].id;
+                //
+                //         window.open("/equipment/"+cardId , "_blank");
+                //
+                //         //console.log(cardId+"is card Id");
+                //         //console.log(evt);
+                //     }
+                //
+                //     //console.log( cardId );
+                //
+                //
+                // }
+                //console.log( "this.__cardsHTML()" );
+
+            }
+        }
+
+        // var cards = new Cards();
+        // cards.__creatFakeData();
+        // cards.setHTML();
+
+        //________________________ the description below is how to use this js class_______________________
+
+        //var cards = new Cards();
+        // cards.__creatFakeData();
+        // cards.__creatFakeData();
+        // cards.__creatFakeData();
+        // cards.setHTML();
+
+    </script>
+    <!--Configuration-->
+    <script>
+
+        class Configuration{
+
+            constructor(){
+
+                this.introductionSection();
+                this.loadSuccess();
+                this.settingSection();
+                this.stepSection();
+
+            }
+
+            loadSuccess(){
+
+                receiveProtocal["generateDoLab"] = function( data ){
+
+                    //console.log( "receive generate do lab" );
+                    //console.log(data);
+
+                    window.open("/dolab/"+data , '_blank');
+
+                };
+
+
+                receiveProtocal["connectSuccess"] = function (message) {
+                    sendProtocal["refreshLab"]();
+                    sendProtocal["refreshAllEquipment"]();
+                    sendProtocal["labEquipList"]();
+                };
+
+                sendProtocal["refreshLab"] = function () {
+                    websocket.sendMessage(quickPrepare("refreshLab"));
+                };
+
+                sendProtocal["refreshAllEquipment"] = function(){
+
+                    websocket.sendMessage( quickPrepare("refreshAllEquipment") );
+
+                };
+
+                receiveProtocal["refreshAllEquipment"] = function( data ){
+
+                    //console.log(data);
+                    labData.EquipmentData = data;
+                    labData.displayAllEquipment();
+
+                };
+
+                receiveProtocal["deleteTheLab"] = function( data ){
+
+                    //console.log("deleteTheLab received");
+
+                    window.location = "/courses" ;
+
+                };
+
+                receiveProtocal["refreshLab"] = function ( data ) {
+
+                    //console.log(data);
+                    labData.LabData = data;
+                    //labData = new LabData();
+                    labData.displayLab();
+
+                };
+
+                receiveProtocal["duplicateTheLab"] = function(data){
+
+                    window.open( "/editmylab/"+data , '_blank' )
+
+                };
+
+                sendProtocal["labEquipList"] = function ( nodeIds ) {
+
+                    //console.log("nodeIds");
+                    //console.log(nodeIds);
+                    websocket.sendMessage(quickPrepare( "labEquipList", nodeIds ));
+
+                };
+
+                receiveProtocal["labEquipList"] = function ( equips ) {
+
+                    //console.log(equips);
+
+                    labData.folderContentEquip = equips;
+                    labData.displayFolderConetnt();
+
+                }
+
+
+            }
+
+            introductionSection(){
+
+                sendProtocal["labName"] = function (name) {
+
+                    //console.log(name);
+                    // quick prepare contain lab id
+                    websocket.sendMessage( quickPrepare( "labName" , name  ) );
+                };
+
+                sendProtocal["labDescription"] = function (description) {
+
+                    websocket.sendMessage( quickPrepare( "labDescription" , description ) );
+
+                };
+
+                sendProtocal["uploadLabCoverImage"] = function (imageData) {
+
+                    // here will using ajax
+                    // using ajax to send to server side
+
+                    
+                    var sendData = {};
+                    sendData["labId"] = itemId;
+                    sendData["coverImageData"] = imageData;
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/ajax/uploadImage",
+                        data: JSON.stringify(sendData),
+                        dataType: 'json',
+                        cache: false,
+                        timeout: 600000,
+                        success: function (data) {
+
+                           //console.log(data);
+
+                        },
+                        error: function (e) {
+
+
+
+                        }
+                    });
+
+
+                };
+
+                receiveProtocal["downLoadImages"] = function () {
+
+                    // server side send through websocket
+                        // here to request using ajax
+                            // ok
+                    // tell everyone to doanload the images
+
+
+                };
+
+            }
+
+            settingSection(){
+
+
+                sendProtocal["shareLab"] = function (   boolean ) {
+
+
+                    //console.log( boolean );
+                    websocket.sendMessage( quickPrepare( "shareLab" , boolean ) );
+
+                };
+
+                sendProtocal["likeLab"] = function (   boolean ) {
+
+                    websocket.sendMessage( quickPrepare( "likeLab" , boolean ) );
+
+                };
+
+                sendProtocal["deleteLab"] = function (   ) {
+
+                    websocket.sendMessage( quickPrepare( "deleteLab" ) );
+
+                };
+
+                sendProtocal["duplicateLab"] = function (  ) {
+
+                    websocket.sendMessage( quickPrepare( "duplicateLab" ) );
+
+                };
+
+                receiveProtocal["deleteLab"] = function ( equipmentId ) {
+
+                    //console.log("delete it A");
+
+                    window.location.href = "/lab/"+itemId;
+
+                };
+
+
+
+            }
+
+            stepSection(){
+
+                sendProtocal["addEquipToBoard"] = function(id){
+
+
+                    //console.log(id);
+                    websocket.sendMessage( quickPrepare( "addEquipToBoard", id ) );
+
+                };
+
+                //stepInfo
+
+                receiveProtocal["stepInfo"] = function (data) {
+
+                    //console.log(data);
+
+                    var id = data.id;
+                    var info = data.info;
+
+                    
+
+                };
+
+            }
+
+        }
+
+    </script>
+    <!--  lab Data  -->
+    <script>
+
+
+        class ImageStorage{
+
+            constructor(){
+                this.imageBlob = {};
+            }
+
+            getItem( key ){
+                return this.imageBlob[key];
+            }
+
+            setItem( key , value ){
+                this.imageBlob[key] = value;
+            }
+
+        }
+
+        class LabData{
+
+            constructor(){
+
+                this.LabData = null;
+
+                this.EquipmentData = null;
+
+                this.folderContentEquip = null;
+                // so we need added equipment to the lab
+                // so also need lab name
+                // lab into
+                // lab blob id
+
+                // we need step
+                    //
+            }
+
+            displayFolderConetnt(){
+
+                var equips =  this.folderContentEquip;
+
+                var imageblobSet = [];
+                for( var i = 0 ; i <  equips.length ; i++  ){
+
+                    var equip = JSON.parse(equips[i]);
+
+                    //console.log(equip);
+                    var imageblob = imageStorage.getItem( equip.coverBlobId );
+                    if( imageblob == null ){
+                        imageblobSet.push(  equip.coverBlobId );
+                    }
+
+                }
+
+                if( imageblobSet.length != 0 ){
+
+                    var sendData = {};
+                    sendData["labId"] = itemId;
+                    sendData["blobIds"] = imageblobSet;
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/ajax/downloadImages",
+                        data: JSON.stringify(sendData),
+                        dataType: 'json',
+                        cache: false,
+                        timeout: 600000,
+                        success: function (info) {
+                            var imageBlobArr =  JSON.parse( info.data );
+                            for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+                                var imageBlobStr = imageBlobArr[i];
+                                var imageBlob = JSON.parse(imageBlobStr);
+                                var imageBlobId = imageBlob.id;
+                                imageStorage.setItem( imageBlobId , imageBlobStr );
+                            }
+
+                            //var imageBlob =  JSON.parse( info.data );
+                            //imageStorage.setItem( imageBlob.id , info.data );
+                            //labData.__displayAllEquipment();
+                            labData.__displayFolderConetnt();
+
+
+
+                            //console.log(info);
+                        },
+                        error: function (e) {
+
+
+
+                        }
+                    });
+
+
+                }else{
+
+                    labData.__displayFolderConetnt();
+
+                }
+
+
+
+                //cards.addCard(  )
+
+            }
+
+            __displayFolderConetnt(){
+
+                var equips = this.folderContentEquip;
+                var cards = new Cards();
+                cards.folderContentId = "folderContent";
+
+
+
+                for( var i = 0 ; i <  equips.length ; i++  ) {
+
+                    var equipmentData = JSON.parse(equips[i]);
+
+                    //console.log("66g");
+                    //console.log(equip);
+                    //imageStorage.getItem(equip.coverBlobId)
+                    var blob;
+
+                    if(equipmentData.coverBlobId!=""){
+
+                        var imageBlob = JSON.parse(imageStorage.getItem( equipmentData.coverBlobId ));
+
+                        blob = imageBlob.blob;
+
+                    }else{
+
+                        blob = "";
+
+                    }
+
+                    //cards.addCard(  "https://ml4141715.github.io/water/cdn/image/Holder.png" , "equipmentData.name ", "equipmentData.description" , "equipmentData.id" );
+                    cards.addCard( blob , equipmentData.name+"&nbsp" , equipmentData.description+"&nbsp" , equipmentData.id );
+
+
+
+
+                }
+
+                cards.setHTML();
+            }
+
+            displayLab(){
+
+                // coverBlobId: ""
+                // description: "222"
+                // favourite: true
+                // id: "5de1e3d65c9835c587c68dc9"
+                // name: "1111"
+                // ownerId: "weixin.tang@stonybrook.edu"
+                // shared: false
+
+                // introductionOp = new ImageOp();
+                // introductionOp.setNameValue( data.name );
+                // introductionOp.setTextArea( data.description );
+                // introductionOp.
+
+                // settingOp = new SetOp();
+                // settingOp.setLikeBaseBoolean( data.favourite );
+                // settingOp.setShareBaseBoolean( data.shared );
+
+                // var coverBlobId = this.LabData.coverBlobId;
+                // var imageBlob = imageStorage.getItem(coverBlobId);
+                // if( imageBlob == null ){
+                //
+                //     //
+                //
+                // }
+
+
+
+                var data = this.LabData;
+
+                if(data.coverBlobId == ""  ){
+
+                    this.__displayLab();
+
+                }else if(imageStorage.getItem(data.coverBlobId) != null){
+
+                    this.__displayLab();
+
+                }else{
+                    // here we use ajax to get
+
+
+
+
+                    var sendData = {};
+                    sendData["labId"] = itemId;
+                    sendData["blobIds"] = [data.coverBlobId];
+
+                    //console.log(sendData);
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/ajax/downloadImages",
+                        data: JSON.stringify(sendData),
+                        dataType: 'json',
+                        cache: false,
+                        timeout: 600000,
+                        success: function (info) {
+
+                           var imageBlobArr =  JSON.parse( info.data );
+                            var imageBlobStr = imageBlobArr[0];
+                            var imageBlob = JSON.parse(imageBlobStr);
+                            var imageBlobId = imageBlob.id;
+                            imageStorage.setItem( imageBlobId , imageBlobStr );
+                            labData.__displayLab();
+
+
+                        },
+                        error: function (e) {
+
+
+
+                        }
+                    });
+
+
+                }
+
+
+
+            }
+
+            __displayLab(){
+
+                var data = this.LabData;
+                //sendProtocal["labEquipList"](labData.LabData.labEquipDataList);
+                introductionOp.setNameValue( data.name );
+                introductionOp.setTextArea( data.description );
+
+                var imageBlob;
+                console.log( data.coverBlobId );
+
+                if( data.coverBlobId!= null && data.coverBlobId != "" ){
+
+                    imageBlob = JSON.parse(imageStorage.getItem(data.coverBlobId));
+
+                }else{
+
+                    imageBlob = "";
+
+                }
+
+                //var imageBlob = JSON.parse(imageStorage.getItem(data.coverBlobId));
+
+                introductionOp.setCoverImage( imageBlob.blob );
+                settingOp.setLikeBaseBoolean( data.favourite );
+                settingOp.setShareBaseBoolean( data.shared );
+
+                // so here we need
+
+                //console.log(data);
+
+                var steps = data.labSteps;
+                var stepsLength = steps.length;
+                var currentLabStep = data.currentLabStep;
+
+                // the problem how do I set which one is open which one is not
+                //var stepOp = new StepOp();
+                //stepOp.__getCard()
+
+                var total = "";
+                for( var i = 0 ; i< stepsLength ; i++ ){
+                    var step = steps[i];
+                    var showBoolean;
+                    var saveBoolean;
+                    var info = "";
+                    if( currentLabStep == i ){
+                        showBoolean = true;
+                    }else{
+                        showBoolean = false;
+                    }
+                    if( i == stepsLength-1 ){
+                        saveBoolean = true;
+                    }else{
+                        saveBoolean = false;
+                    }
+                    if( step.info != null ){
+                        info = step.info;
+                    }
+                    total = total + stepOp.__getCard(i, "Step "+(i+1) , info , showBoolean );
+
+                }
+                document.getElementById("accordionExample").innerHTML = total;
+
+
+
+            }
+
+            displayAllEquipment(){
+
+            //0
+                // coverBlobId: "5de015015c9835a27b197c03"
+                // currentImageIds: "5de069bb7d553616da7ced1c"
+                // description: "6666"
+                // favourite: false
+                // id: "5de00ab55c9835a27b197c00"
+                // imageIds: (2) ["5de069b57d553616da7ced1a", "5de069bb7d553616da7ced1c"]
+                // name: "wwww"
+                // originalPos: null
+                // ownerId: "weixin.tang@stonybrook.edu"
+                // shared: false
+
+                var imageblobSet = [];
+
+                for(  var i = 0 ; i<  this.EquipmentData.length ; i++ ){
+                    var equipmentData = this.EquipmentData[i];
+
+                    var imageBlobId = equipmentData.coverBlobId;
+
+                    if( imageBlobId != "" ){
+                        var imageBlob = imageStorage.getItem( imageBlobId );
+
+                        if( imageBlob == null){
+                            imageblobSet.push( imageBlobId );
+                        }
+                    }
+
+                }
+
+                //console.log( this.EquipmentData );
+
+                //console.log(  imageblobSet  );
+
+                if( imageblobSet.length != 0 ){
+
+                    var sendData = {};
+                    sendData["labId"] = itemId;
+                    sendData["blobIds"] = imageblobSet;
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/ajax/downloadImages",
+                        data: JSON.stringify(sendData),
+                        dataType: 'json',
+                        cache: false,
+                        timeout: 600000,
+                        success: function (info) {
+
+                            var imageBlobArr =  JSON.parse( info.data );
+
+                            for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+                                var imageBlobStr = imageBlobArr[i];
+
+                                var imageBlob = JSON.parse(imageBlobStr);
+
+                                var imageBlobId = imageBlob.id;
+
+                                imageStorage.setItem( imageBlobId , imageBlobStr );
+                            }
+
+                            //var imageBlob =  JSON.parse( info.data );
+                            //imageStorage.setItem( imageBlob.id , info.data );
+                            labData.__displayAllEquipment();
+
+                            //console.log(info);
+                        },
+                        error: function (e) {
+
+
+
+                        }
+                    });
+
+                    // var imageBlobArr =  JSON.parse( info.data );
+                    // //imageStorage.setItem( imageBlob.id , info.data );
+                    // //console.log(imageBlob[0]);
+                    // //labData.__displayLab();
+                    // var imageBlobStr = imageBlobArr[0];
+                    // var imageBlob = JSON.parse(imageBlobStr);
+                    // var imageBlobId = imageBlob.id;
+                    // imageStorage.setItem( imageBlobId , imageBlobStr );
+                    // labData.__displayLab();
+
+                }else{
+
+                    this.__displayAllEquipment();
+
+                }
+
+
+
+
+            }
+
+            __displayAllEquipment(){
+
+                var cards = new Cards();
+                cards.folderContentId = "middleBoard";
+                for(  var i = 0 ; i<  this.EquipmentData.length ; i++ ){
+
+                    var equipmentData = this.EquipmentData[i];
+
+                    //var imageBlob = JSON.parse(imageStorage.getItem( equipmentData.coverBlobId ));
+
+                    var blob;
+
+                    if(equipmentData.coverBlobId!=""){
+
+                        var imageBlob = JSON.parse(imageStorage.getItem( equipmentData.coverBlobId ));
+
+                        blob = imageBlob.blob;
+
+                    }else{
+
+                        blob = "";
+
+                    }
+
+                    //cards.addCard(  "https://ml4141715.github.io/water/cdn/image/Holder.png" , "equipmentData.name ", "equipmentData.description" , "equipmentData.id" );
+                     cards.addCard( blob , equipmentData.name+"&nbsp" , equipmentData.description+"&nbsp" , equipmentData.id );
+                    //console.log(equipmentData);
+
+                }
+
+                cards.setHTML();
+
+                // here we need use jquery to get mouse down on
+
+                // for(  var i = 0 ; i<  this.EquipmentData.length ; i++ ){
+                //     var equipmentData = this.EquipmentData[i];
+                //
+                //     // $( "#"+equipmentData.id ).click(function( evt ) {
+                //     //     console.log( evt.currentTarget.id );
+                //     // });
+                //
+                //     $( "#"+equipmentData.id ).mouseup(function( evt ) {
+                //         // alert( "Handler for .mousedown() called." );
+                //
+                //         console.log( evt.currentTarget.id );
+                //
+                //     });
+                //
+                // }
+
+
+            }
+
+        }
+
+    </script>
+
+
+    <title>Green Lab</title>
+
+    <!--    onLoad-->
+    <script>
+
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        function onResize() {
+
+            middleBox.setWidth( window.innerWidth - 630 );
+            middleBox.setHeight(  window.innerHeight - 81 );
+            leftCardsBox.setHeight(window.innerHeight -(81));
+            assistantBox.setHeight(window.innerHeight -(81));
+            equipOpBox.setHeight(window.innerHeight -(81));
+            folderContentBox.setHeight(window.innerHeight -(81));
+        }
+
+
+        function connect(){
+
+            var ajax = new Ajax();
+            ajax.sendAddress ="/ajax/requestId";
+            ajax.handle = function ( message ) {
+                //console.log( message );
+                websocket = new Websocket();
+                websocket.userId = message;
+                websocket.itemId=  itemId;
+                websocket.receiveMessage = function (message){
+                    var obj = JSON.parse(message);
+                    receiveProtocal[obj.type]( obj.data );
+                } ;
+                websocket.connectBroken = function ( ){
+
+                    //console.log("connection broken");
+                    setTimeout( connect , 1000 );
+                };
+                websocket.self = websocket;
+                websocket.subscribeType = websocket.subscribeCreateLab; // you need set the subscribe type
+                websocket.sendMessage = websocket.__sendLabFrontMessage;
+                websocket.connect();
+
+            };
+            ajax.self = ajax;
+            ajax.sendAjax(itemId);
+
+        }
+
+        var websocket;
+        var itemId ;   // this is lab id
+
+        var middleBox;
+        var leftCardsBox;
+        var assistantBox;
+        var equipOpBox;
+
+        var labOpSections;
+        var sendProtocal = {};
+        var receiveProtocal = {};
+        var introductionOp;
+        var settingOp;
+        var stepOp;
+
+        var labData;
+        var configuration;
+        var imageStorage;
+
+
+        function onLoad() {
+
+            imageStorage = new ImageStorage();
+            var pathName = window.location.pathname;
+            var Arr = pathName.split("/");
+            itemId = Arr[2];
+
+            middleBox = new Box( "equipmentPanel" );
+            leftCardsBox = new Box("equipmentList");
+            assistantBox = new Box("operationList");
+            equipOpBox = new Box("equipmentOperationSection");
+            folderContentBox = new Box("folderContent");
+            onResize();
+
+            configuration = new Configuration();
+
+            labOpSections = new EquipmentOperationSection();
+            labOpSections.activeAllButton(labOpSections);
+            labOpSections.setIndexActive(0);
+
+            introductionOp = new ImageOp();
+            introductionOp.self = introductionOp;
+            introductionOp.activeAll();
+
+            settingOp = new SetOp();
+            settingOp.self = settingOp;
+            settingOp.activeAll();
+
+            stepOp = new StepOp();
+            stepOp.activeAll();
+
+            labData = new LabData();
+
+            connect();
+
+
+            //settingOp.setLikeBaseBoolean( true );
+            //settingOp.setShareBaseBoolean( true );
+
+
+
+
+        }
+
+        function createNewLab() {
+
+            var sendData = {};
+            sendData["type"] = "666";
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "/ajax/createNewLab",
+                    data: JSON.stringify(sendData),
+                    dataType: 'json',
+                    cache: false,
+                    timeout: 600000,
+                    success: function (data) {
+
+                        //console.log(data);
+                        window.open("/editmylab/"+data["labId"] , "_blank");
+
+                    },
+                    error: function (e) {
+
+
+
+                    }
+                });
+        }
+
+
+    </script>
+
+
+
+</head>
+
+<body onload="onLoad()" onresize="onResize()" >
+
+
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0 ">
+    <div class="container">
+        <a href="/" class="navbar-brand font-italic text-capitalize">
+            <i class='fas fa-leaf'></i>
+            Green Lab</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown mr-3">
+                <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" >
+                    <i class="fas fa-user"></i> Welcome Green User
+                </a>
+                <div class="dropdown-menu">
+
+                    <a href="/equipment" class="dropdown-item">
+                        <i class="fas fa-cog"></i> lab
+                    </a>
+
+                </div>
+
+            </li>
+
+        </ul>
+    </div>
+</nav>
+<nav class="navbar navbar-expand-sm navbar-dark bg-info  text-white p-0 ">
+    <div class="container">
+        <a href="" class="navbar-brand font-italic text-capitalize">
+            <i class='fa fa-flask'></i>
+
+            lab
+        </a>
+
+
+        </ul>
+    </div>
+</nav>
+
+
+<div id="equipmentBody">
+
+
+    <div id="operationList">
+        <!--        <button class="btn btn-outline-primary" type="button">Primary Outline</button>-->
+        <!--        <h1 style="writing-mode: vertical-lr;"> 7797</h1>-->
+
+        <div class="btn btn-warning mb-1 w-100  operationListButton">
+            <i class="fas fa-search fa-rotate-90"></i>&nbsp;&nbsp;Find
+        </div>
+
+        <div class="btn btn-success mb-1 w-100  operationListButton" id="createNew" onclick="createNewLab()">
+            <i class="fas fa-plus-square fa-rotate-90"></i>&nbsp;&nbsp;New Lab
+        </div>
+
+        <div class="btn btn-primary mb-1 w-100  operationListButton">
+            <i class="fas fa-share-alt-square fa-rotate-90"></i>&nbsp;&nbsp;Share
+        </div>
+
+        <div class="btn btn-info  mb-1 w-100  operationListButton">
+            <i class="fas fa-concierge-bell fa-rotate-90"></i>&nbsp;&nbsp;Tutorial
+        </div>
+
+
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+
+    <div id="equipmentList" style="width:200px;">
+
+
+        <nav class="navbar navbar-dark bg-dark p-0 sticky-top">
+
+            <!--                <a href="/" class="navbar-brand font-italic text-capitalize" > chemistry lab simulator <span id="year"></span></a>-->
+
+
+            <!--            <div class="btn btn-primary w-100 ">My Equipments &nbsp;<i class="fa fa-caret-down"></i></div>-->
+
+            <div class="btn-group d-block w-100 ">
+
+                <button class="btn btn-primary w-100" type="button" >
+                    <span>Equipment For this lab </span>
+                </button>
+
+            </div>
+
+        </nav>
+
+        <div class="card-rows" id="folderContent">
+
+
+
+<!--            <div class="card mb-1 grid-square"  >-->
+<!--                <img class="card-img-top d-inline-block grid-photo img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="">-->
+<!--                <div class="card-body">-->
+<!--                    <p class="card-title h4 pr-1 small font-weight-bold"><span><i class="fas fa-trash"></i> </span> Holder</p>-->
+<!--                    <p class="card-text h5 small">Author: Homelander </p>-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+
+
+
+
+
+
+            <!--            <div class="card mb-1 grid-square">-->
+<!--                <img class="card-img-top img-fluid grid-photo" src="https://ml4141715.github.io/water/cdn/image/Measure.png" alt="" draggable="false">-->
+<!--                <div class="card-body" >-->
+<!--                    <p class="card-title h4 small font-weight-bold"><span><i class="fas fa-trash"></i> </span> Measure</p>-->
+<!--                    <p class="card-text h5 small">Author: Tony Stark </p>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="card mb-1 grid-square"  >-->
+
+<!--                <img class="card-img-top grid-photo img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="">-->
+
+<!--                <div class="card-body">-->
+
+<!--                    <p class="card-title h4 pr-1 small font-weight-bold d-inline-block w-75">Holder</p>-->
+<!--                    <p class="card-text h5 small">Author: Homelander </p>-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+
+        </div>
+
+
+
+
+    </div>
+
+</div>
+
+<div id="equipmentPanel"  >
+
+
+    <div id="equipList" class="w-100 h-100 border border-primary rounded " style="overflow: auto;" >
+
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top justify-content-between">
+            <a class="navbar-brand pr-4" ><i class="fas fa-folder-open"></i> All My Equipment</a>
+
+            <button class="navbar-toggler d-none" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+
+                </ul>
+                <li class="navbar-text">
+                    <a class="nav-link" ><i class="fas fa-campground"></i> tip: click to add equipment to the lab</a>
+                </li>
+            </div>
+        </nav>
+
+
+            <div class="card-rows hideTrashBin" id="middleBoard">
+
+
+<!--                <div class="card mb-1 grid-square"  >-->
+
+<!--                    <img class="card-img-top d-inline-block grid-photo img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="">-->
+
+<!--                    <div class="card-body">-->
+<!--                        <p class="card-title h4 pr-1 small font-weight-bold">Holder</p>-->
+<!--                        <p class="card-text h5 small">Author: Homelander </p>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="card mb-1 grid-square"  >-->
+
+<!--                    <img class="card-img-top d-inline-block grid-photo img-fluid" src="https://ml4141715.github.io/water/cdn/image/Holder.png" alt="">-->
+
+<!--                    <div class="card-body">-->
+<!--                        <p class="card-title h4 pr-1 small font-weight-bold"><span><i class="fas fa-trash"></i> </span>Holder </p>-->
+
+<!--                        <p class="card-text h5 small">Author: Homelander </p>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+
+
+            </div>
+
+
+
+    </div>
+
+
+<!--    <iframe class="w-100 h-100 border border-primary rounded d-none"  src="/editlabboard/5de1e3d65c9835c587c68dc9" id="drawing">-->
+<!--    </iframe>-->
+
+    <iframe class="w-100 h-100 border border-primary rounded d-none"  th:src="${boardAdress}" id="drawing">
+    </iframe>
+
+    <script>
+
+        //<div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+        //<div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+
+
+
+    </script>
+
+
+</div>
+
+
+
+<!--    <iframe  style="width: 100%;height:100%; border: 1px solid mediumseagreen; " th:src="${iframeAdress}" ></iframe>-->
+
+<div id="equipmentOperationSection" style="width: 380px;">
+
+
+    <div class="card h-100 border-bottom-0 ">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" >
+                <li class="nav-item ">
+                    <a class="nav-link text-muted" id="operationImageSection" ><i class='fas fa-file-image'> Introduction</i></a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-muted active" id="operationEditSection"  ><i class="fas fa-shoe-prints"></i> Steps</a>
+
+                </li>
+
+
+                <li class="nav-item d-none">
+                    <a class="nav-link text-muted " id="operationAreaSection" ><i class="fas fa-puzzle-piece"></i> Add</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-muted" id="operationAddSection" ><i class="fas fa-cog"></i> Setting</a>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="card-body d-none" id="ImageSection">
+            <h4 class="card-title">Upload Image</h4>
+            <!--                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, perspiciatis.</p>-->
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Name</span>
+                </div>
+                <input class="form-control" type="text" placeholder="Enter Lab Name" id="equipmentNameInput">
+            </div>
+
+            <div class="form-group mb-3">
+                <label >Description</label>
+                <textarea class="form-control" id="equipmentDescription"></textarea>
+            </div>
+            <!--       id="equipmentNameInput"  id="equipmentAngle" id="equipmentSize"   id="equipmentDescription"-->
+
+            <div id="coverImageId" >
+                <img src="" class="grid-photo-center" style="background-color: aquamarine" alt="">
+            </div>
+
+            <br>
+
+            <!--            <div ><form action="/upload" class="dropzone needsclick" id="demo-upload">-->
+
+
+            <!--            <input type="file" class="my-pond" name="filepond"/>-->
+
+
+
+            <div class="custom-file mb-3">
+                <input type="file" id="myfile" class="custom-file-input" >
+                <label class="custom-file-label" for="myfile"><i class="fas fa-upload"></i> Choose Your Cover Image</label>
+            </div>
+            <!--                <div class="custom-file mb-2">-->
+            <!--                    <input type="file" id="myfile" class="custom-file-input">-->
+            <!--                    <label class="custom-file-label" for="myfile">Choose file</label>-->
+            <!--            the thing below sholud be a list of images    </div>-->
+            <!--           -->
+
+            <!--            <ul  id="sortable2" class="list-group col mb-5 " >-->
+            <!--                <li class="list-group-item bg-success " id="image1_test">Image 1</li>-->
+            <!--                <li class="list-group-item bg-primary">Image 2</li>-->
+            <!--                <li class="list-group-item bg-warning">Image 3</li>-->
+            <!--                <li class="list-group-item ">Item 4</li>-->
+            <!--            </ul>-->
+
+
+            <a class="btn btn-primary d-none" >Next Step</a>
+        </div>
+
+        <div class="card-body" id="EditSection">
+
+            <div class="btn btn-group w-100">
+
+                <div class="btn btn-success mb-1 mr-2 disabled w-30" id="newStep">
+
+                    <i class="fas fa-plus"></i> New Step
+
+                </div>
+
+                <div class="btn btn-danger mb-1 disabled w-70" id="removeLastStep">
+
+                          <i class="fas fa-minus"></i> Remove Last Step
+
+<!--                    <i class="fas fa-vials"></i> Test the Lab-->
+
+                </div>
+
+            </div>
+
+
+            <div class="accordion" id="accordionExample">
+
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Step 1
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">info:</span>
+                                </div>
+                                <input class="form-control" type="text" placeholder="step description">
+                            </div>
+
+<!--                            <div class="btn btn-info">-->
+<!--                                <i class="far fa-save"></i> Save this step-->
+<!--                            </div>-->
+
+                            <div class="btn btn-group w-100">
+                                <div class="btn btn-warning mr-2 w-50">
+                                    <i class="far fa-save"></i> Before
+                                </div>
+
+                                <div class="btn btn-danger w-50">
+                                    <i class="far fa-save"></i> End
+                                </div>
+                            </div>
+
+                            <div class="btn btn-group w-100">
+                                <div class="btn btn-success mr-2 w-50">
+                                    <i class="fas fa-tv"></i> Before
+                                </div>
+
+                                <div class="btn btn-primary w-50">
+                                    <i class="fas fa-tv"></i> The End
+                                </div>
+                            </div>
+
+                            <div class="btn btn-group w-100">
+                                <div class="btn btn-info mr-2 w-90">
+                                    <i class="fas fa-plus"></i> Insert Step Below
+                                </div>
+
+                                <div class="btn btn-dark w-10">
+                                    <i class="fas fa-dumpster-fire"></i>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+<!--                <div class="card">-->
+<!--                    <div class="card-header" id="headingTwo">-->
+<!--                        <h2 class="mb-0">-->
+<!--                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">-->
+<!--&lt;!&ndash;                               <span class="pr-1" > Step 2:</span> <span class="text-info" > 22222 </span>&ndash;&gt;-->
+<!--                                Step 2-->
+<!--                            </button>-->
+<!--                        </h2>-->
+<!--                    </div>-->
+<!--                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">-->
+<!--                        <div class="card-body">-->
+<!--                            777-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="card">-->
+<!--                    <div class="card-header" id="headingThree">-->
+<!--                        <h2 class="mb-0">-->
+<!--                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">-->
+<!--                                Step 3-->
+<!--                            </button>-->
+<!--                        </h2>-->
+<!--                    </div>-->
+<!--                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">-->
+<!--                        <div class="card-body">-->
+<!--                            888-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+            </div>
+
+
+        </div>
+
+        <div class="card-body d-none" id="AreaSection">
+
+        </div>
+
+        <div class="card-body" id="AddSection">
+
+            <div id="likeEquipment" class="btn btn-lg h2 d-block btn-outline-danger text-capitalize" ><i class='fas fa-heart'></i> Like Lab</div>
+
+            <br>
+
+            <div id="shareEquipment" class="btn btn-lg h2 d-block btn-outline-success text-capitalize" ><i class="fas fa-share-alt"></i> Share Lab</div>
+
+            <br>
+            <div id="createDuplicate" class="btn btn-lg text-white h2 d-block btn-warning text-capitalize" ><i class="fas fa-copy"></i> Create Duplicate Lab </div>
+
+            <br>
+
+            <div id="deleteEquipment" class="btn btn-lg text-white h2 d-block btn-info text-capitalize" ><i class='far fa-trash-alt'></i> Delete Lab </div>
+
+            <br>
+
+
+            <div id="generateDoLab" class="btn btn-lg h2 d-block btn-primary text-capitalize" ><i class="fas fa-vial"></i> Generate do Lab</div>
+
+            <br>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<style>
+
+    /*.overlay2 {*/
+    /*    position: absolute;*/
+    /*    top: 0;*/
+    /*    bottom: 0;*/
+    /*    left: 0;*/
+    /*    right: 0;*/
+    /*    height: 100%;*/
+    /*    width: 100%;*/
+    /*    opacity: 0;*/
+    /*    transition: .5s ease;*/
+    /*    background-color: #008CBA;*/
+    /*}*/
+
+    #folderContent > .grid-square {
+        width: 190px;
+        height: 73px;
+        display: inline-block;
+        background-color: #ffece3;
+    }
+
+    #middleBoard .btn-op {
+        display: none;
+    }
+
+    #folderContent .btn-op {
+        display: inline-block;
+    }
+
+    #middleBoard > .grid-square {
+        width: 190px;
+        height: 250px;
+        display: inline-block;
+        background-color: #ffece3;
+        margin: 10px;
+    }
+
+    #folderContent .card-body{
+        display: inline-block;
+    }
+
+    #folderContent .card-text{
+        display: none;
+    }
+
+    .hideTrashBin span{
+        display: none;
+    }
+
+    .grid-photo-center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        /*width: 50%;*/
+        width: 247px;
+        height: 221px;
+        position: relative;
+        clip: rect(0px,190px,170px,0px);
+    }
+
+    #folderContent .grid-photo {
+        width: 76px;
+        height: 68px;
+        position: relative;
+        clip: rect(0px,190px,170px,0px);
+        display: inline-block;
+    }
+
+    #middleBoard .grid-photo {
+        width: 190px;
+        height: 170px;
+        position: relative;
+        display: block;
+        clip: rect(0px,190px,170px,0px);
+    }
+
+
+
+    /*#feedback { font-size: 1.4em; }*/
+    /*#selectable .ui-selecting { background: #FECA40; }*/
+    /*#selectable .ui-selected { background: #F39814; color: white; }*/
+    /*#selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }*/
+    /*#selectable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }*/
+
+
+    .operationListButton{
+        writing-mode: vertical-lr;
+        font-size: 20px;
+        color: #fefefe;
+        display: inline-block;
+        height: 170px   ;
+    }
+    #operationList{
+        position: fixed;
+        /*position: absolute;*/
+        display: block;
+        left: 0px;
+        width: 50px;
+        height: 100%;
+        /*border: 3px solid #b31e2d;*/
+        /*padding: 0px;*/
+        margin: 0px;
+        float: left;
+        overflow: auto;
+        padding: 5px;
+    }
+    #equipmentList {
+        /*position: absolute;*/
+        display: block;
+        position: fixed;
+        left: 50px;
+        width: 130px;
+        height: 100%;
+        /*border: 3px solid mediumseagreen;*/
+        float: left;
+        overflow: auto;
+        padding: 5px;
+    }
+    #equipmentPanel{
+        /*overflow: auto;*/
+        /*display: block;*/
+        /*position: fixed;*/
+        /*padding-left: 380px;*/
+        /*padding-right: 200px;*/
+        /*margin-left: 380px;*/
+        margin-left: 250px;
+        /*margin-right: 200px;*/
+        /*margin-right: 200px;*/
+        /*width: 100%;*/
+        /*width:100%;*/
+        /*height: 100%;*/
+        /*left: 250px;*/
+        /*right:340px;*/
+        /*width: 80%;*/
+        /*border: none;*/
+        /*padding-right: 340px;*/
+        /*margin-right: 340px;*/
+        /*background-color: #f44336;*/
+        /*border: 3px solid #2e28b3;*/
+        padding: 5px;
+        /*margin: 5px;*/
+        float: left;
+
+    }
+    #equipmentOperationSection{
+        position: fixed;
+        /*position: absolute;*/
+        display: block;
+        right: 0px;
+        width: 340px;
+        height: 100%;
+        /*border: 3px solid mediumseagreen;*/
+        float: left;
+        padding: 5px;
+        overflow: auto;
+    }
+    textarea {
+        height:150px;
+    }
+</style>
+
+<script>
+
+    // new Sortable( document.getElementById("folderContent") , {
+    //     animation: 150,
+    //     ghostClass: 'blue-background-class'
+    // });
+
+
+
+</script>
+
+
+</body>
+
+</html>
