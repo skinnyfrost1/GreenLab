@@ -46,7 +46,7 @@ public class LabController {
         String doLoadId = jsonObject.getString( "dolabId" );
 
         ObjectMapper jsonMapper = new ObjectMapper();
-        DoLab doLab =  doLabRepository.getById( doLoadId );
+        DoLab doLab =  doLabRepository.getBy_id( doLoadId );
         Map<String,Object> sendData = new HashMap<>();
         //sendData.put("success",true);
         sendData.put("doLabData", jsonMapper.writeValueAsString( doLab ) );

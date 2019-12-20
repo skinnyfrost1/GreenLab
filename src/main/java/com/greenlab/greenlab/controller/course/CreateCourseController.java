@@ -19,11 +19,9 @@ import com.greenlab.greenlab.dto.SingleStringRequestBody;
 import com.greenlab.greenlab.labEquip.laboratory.labData.DoLab;
 import com.greenlab.greenlab.labEquip.laboratory.labData.DoLabRepository;
 import com.greenlab.greenlab.model.Course;
-import com.greenlab.greenlab.model.Lab;
 import com.greenlab.greenlab.model.StuCourse;
 import com.greenlab.greenlab.model.User;
 import com.greenlab.greenlab.repository.CourseRepository;
-import com.greenlab.greenlab.repository.LabRepository;
 import com.greenlab.greenlab.repository.StuCourseRepository;
 import com.greenlab.greenlab.repository.UserRepository;
 
@@ -47,8 +45,8 @@ public class CreateCourseController {
     private StuCourseRepository stuCourseRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private LabRepository labRepository;
+    // @Autowired
+    // private LabRepository labRepository;
     @Autowired
     private DoLabRepository doLabRepository;
 
@@ -57,7 +55,7 @@ public class CreateCourseController {
         String role = (String) request.getSession().getAttribute("role");
         if (role == null)
             return "redirect:/index";
-        if (!role.equals("professor")){
+        if (!role.equals("professor")) {
             model.addAttribute("errormsg", "Only professors can create new courses");
             return "error";
         }
@@ -66,74 +64,61 @@ public class CreateCourseController {
 
     @PostMapping(value = "/course/create")
     public String postCreateCourse(@RequestParam(value = "courseId", required = false) String courseId,
-                                   @RequestParam(value = "courseName", required = false) String courseName,
-                                   @RequestParam(value = "semester", required = false) String semester,
-                                   @RequestParam(value = "courseDescription", required = false) String courseDescription,
-                                   @RequestParam(value = "select", required = false) List<String> labNameList,
-//                                   @RequestParam(value = "select", required = false) List<String> lab_IdList,
-                                   @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model,
-                                   HttpServletRequest request) {
+            @RequestParam(value = "courseName", required = false) String courseName,
+            @RequestParam(value = "semester", required = false) String semester,
+            @RequestParam(value = "courseDescription", required = false) String courseDescription,
+            @RequestParam(value = "select", required = false) List<String> lab_idList,
+            // @RequestParam(value = "select", required = false) List<String> lab_IdList,
+            @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model,
+            HttpServletRequest request) {
         String role = (String) request.getSession().getAttribute("role");
         if (role == null)
             return "redirect:/index";
-        if (!role.equals("professor")){
+        if (!role.equals("professor")) {
             model.addAttribute("errormsg", "Only professors can create new courses");
             return "error";
         }
 
-        // List<Lab> labs = new ArrayList<>();
-
-        // List<Lab> tempLab = (List<Lab>) request.getSession().getAttribute("labs");
-        // for(Lab l : tempLab){
-        //     for(String name : labNameList){
-        //         if (l.getLabName().equals(name)){
-        //             labs.add(l);
-        //         }
-        //     }
-        // }
-
         List<DoLab> doLabs = new ArrayList<>();
-        List<Lab> tempLab = 
-        
-
-
-
-        request.getSession().removeAttribute("labs");
-
-
+        for (String _id : lab_idList) {
+            doLabs.add(doLabRepository.getBy_id(_id));
+        }
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date date = new Date();
         String createDate = dateFormat.format(date);
         String creator = (String) request.getSession().getAttribute("email");
-        courseId = courseId.replaceAll(" ","");
+        courseId = courseId.replaceAll(" ", "");
         courseId = courseId.toUpperCase();
-//        String id = createDate+courseId;
+        // String id = createDate+courseId;
         List<User> students = new ArrayList<>();
-        Course course = new Course(courseId, courseName, semester, courseDescription,createDate,creator,students,labs);
+        Course course = new Course(courseId, courseName, semester, courseDescription, createDate, creator, students,
+                doLabs);
         System.out.println(course.toString());
         courseRepository.save(course);
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
                 ByteArrayInputStream inputFilestream = new ByteArrayInputStream(bytes);
-                BufferedReader br = new BufferedReader(new InputStreamReader(inputFilestream ));
+                BufferedReader br = new BufferedReader(new InputStreamReader(inputFilestream));
                 String line = "";
                 int count = 0;
                 while ((line = br.readLine()) != null) {
-                    if(count==0){
-                        //First Line
-                    }else {
+                    if (count == 0) {
+                        // First Line
+                    } else {
                         String[] columns = line.split(",");
                         System.out.println(columns[2]);
                         String stuID = columns[2];
-                        if(userRepository.findByUid(stuID)!=null){
+                        if (userRepository.findByUid(stuID) != null) {
                             User student = userRepository.findByUid(stuID);
                             String courseObjectId = course.get_id();
-                            if(stuCourseRepository.findByCourseObjectIdAndStudentEmail(courseObjectId,student.getEmail()) != null){
+                            if (stuCourseRepository.findByCourseObjectIdAndStudentEmail(courseObjectId,
+                                    student.getEmail()) != null) {
                                 continue;
                             }
-                            StuCourse stuCourse = new StuCourse(course.get_id(),student.getEmail(),course.getCourseId());
-                            stuCourse.set_id(course.get_id()+student.getEmail());
+                            StuCourse stuCourse = new StuCourse(course.get_id(), student.getEmail(),
+                                    course.getCourseId());
+                            stuCourse.set_id(course.get_id() + student.getEmail());
                             System.out.println(stuCourse.toString());
                             stuCourseRepository.save(stuCourse);
                             students.add(student);
@@ -145,12 +130,12 @@ public class CreateCourseController {
 
                 }
                 br.close();
-//                String completeData = new String(bytes);
-//                String[] rows = completeData.split("#");
-//                for (int i = 0; i < rows.length; i++) {
-//                    String[] columns = rows[i].split(",");
-//                    System.out.println(columns[0] + " " + columns[1] + " " + columns[2]);
-//                }
+                // String completeData = new String(bytes);
+                // String[] rows = completeData.split("#");
+                // for (int i = 0; i < rows.length; i++) {
+                // String[] columns = rows[i].split(",");
+                // System.out.println(columns[0] + " " + columns[1] + " " + columns[2]);
+                // }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -163,7 +148,8 @@ public class CreateCourseController {
     }
 
     @PostMapping(value = "/course/create/requestlabmenu")
-    public ResponseEntity<?> postRequestLabMenu(@Valid @RequestBody SingleStringRequestBody reqBody, Errors errors, HttpServletRequest request){
+    public ResponseEntity<?> postRequestLabMenu(@Valid @RequestBody SingleStringRequestBody reqBody, Errors errors,
+            HttpServletRequest request) {
         System.out.println(reqBody.getStr());
         RequestLabMenuResponseBody result = new RequestLabMenuResponseBody();
         if (errors.hasErrors()) {
@@ -173,33 +159,31 @@ public class CreateCourseController {
         }
         String email = (String) request.getSession().getAttribute("email");
         List<String> labNameList = new ArrayList<>();
-//        List<String> lab_IdList = new ArrayList<>();
+        List<String> lab_idList = new ArrayList<>();
+
         String courseId = reqBody.getStr();
-        courseId = courseId.replaceAll(" ","");
+        courseId = courseId.replaceAll(" ", "");
         courseId = courseId.toUpperCase();
 
+        // List<Lab> labs = labRepository.findByCourseId(courseId);
+        // for (Lab l : labs) {
+        // if (l.getCreator().equals(email)) {
+        // labNameList.add(l.getLabName());
+        // // lab_IdList.add(l.get_id());
+        // } else {
+        // labs.remove(l);
+        // }
+        // }
 
-
-        List<Lab> labs = labRepository.findByCourseId(courseId);
-        for (Lab l : labs){
-            if (l.getCreator().equals(email)){
-                labNameList.add(l.getLabName());
-//                lab_IdList.add(l.get_id());
-            }
-            else{
-                labs.remove(l);
-            }
+        List<DoLab> doLabs = doLabRepository.getAllByCreator(email);
+        for (DoLab d : doLabs) {
+            labNameList.add(d.getLabName());
+            lab_idList.add(d.get_id());
         }
 
-
-
-
-
-
-        
-        request.getSession().setAttribute("labs", labs);
+        // request.getSession().setAttribute("labs", labs);
         result.setLabNameList(labNameList);
-//        result.setLab_IdList(lab_IdList);
+        result.setLab_IdList(lab_idList);
         result.setMessage("Success!");
         return ResponseEntity.ok(result);
     }

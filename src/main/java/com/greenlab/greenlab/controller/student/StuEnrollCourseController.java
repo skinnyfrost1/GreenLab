@@ -5,13 +5,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.greenlab.greenlab.model.Course;
-import com.greenlab.greenlab.model.Lab;
+// import com.greenlab.greenlab.model.Lab;
 import com.greenlab.greenlab.model.StuCourse;
-import com.greenlab.greenlab.model.StuLab;
+// import com.greenlab.greenlab.model.StuLab;
 import com.greenlab.greenlab.model.User;
 import com.greenlab.greenlab.repository.CourseRepository;
 import com.greenlab.greenlab.repository.StuCourseRepository;
-import com.greenlab.greenlab.repository.StuLabRepository;
+// import com.greenlab.greenlab.repository.StuLabRepository;
 import com.greenlab.greenlab.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +29,8 @@ public class StuEnrollCourseController{
     private StuCourseRepository stuCourseRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private StuLabRepository stuLabRepo;
+    // @Autowired
+    // private StuLabRepository stuLabRepo;
 
     @GetMapping(value="/course/enroll")
     public String getEnrollCourses(ModelMap model, HttpServletRequest request) {
@@ -63,12 +63,12 @@ public class StuEnrollCourseController{
         stuCourse.set_id(courseSelected+email);
         stuCourseRepository.save(stuCourse);
         courseRepository.save(course);
-        List<Lab> labs = course.getLabs();
-        StuLab sl = stuLabRepo.findByStudentEmail(email);
-        for (Lab l :labs){
-            sl.getEnrolledLabs().add(l);
-        }
-        stuLabRepo.save(sl);
+        // List<Lab> labs = course.getLabs();
+        // StuLab sl = stuLabRepo.findByStudentEmail(email);
+        // for (Lab l :labs){
+        //     sl.getEnrolledLabs().add(l);
+        // }
+        // stuLabRepo.save(sl);
 
         return "redirect:/courses";
     }
