@@ -19,4 +19,7 @@ public interface EquipmentDataRepository extends MongoRepository<EquipmentData, 
     public List<EquipmentData>  findAllByOwnerIdAndShared(String ownerId, Boolean shared);
 
     public void deleteById(String id);
+
+   // public List<EquipmentData>
+
 }

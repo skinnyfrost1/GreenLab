@@ -1021,6 +1021,8 @@ public class EquipmentController {
 
                 DoLab doLab = new DoLab();
                 doLab.setLabData( labData );
+                doLab.setCreator( userId );
+                doLab.setLabName( labData.getName() );
                 doLab = doLabRepository.save( doLab );
                 String id =  doLab.getId();
 
@@ -1028,6 +1030,8 @@ public class EquipmentController {
                 JSONObject sendData = new JSONObject();
                 sendData.put("type", "generateDoLab" );
                 sendData.put( "data", id );
+
+
 
                 sendUnique( userId , sessionId , sendData.toString()  );
 
