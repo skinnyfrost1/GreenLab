@@ -81,35 +81,35 @@
 <!-- List of Courses-->
 
 <form th:action="@{/lab/delete}" id="deleteForm" method = "post" enctype="multipart/form-data">
-<div class="bigContainer webfont">
+    <div class="bigContainer webfont">
   <!-- one course -->
   <!-- loop -->
-    <div class="labsToDelete" value="default"></div>
-    <div th:each="lab:${labs}" class="notVeryBigContainer" >
+        <div class="labsToDelete" value="default"></div>
+            <div th:each="lab:${labs}" class="notVeryBigContainer" >
 <!--        <div th:if="${role=='professor'}"><a th:href="'/course/edit?id=' +${course.get_id()}">-->
-            <table class="courseContainer" >
-                <col width="40%"/>
-<!--                <col width="25%"/>-->
-                <col width="60%"/>
-                <!-- <col width="20%"/> -->
-                <!-- <tbody style="padding: 0; margin: 0;"> -->
-                <tr >
-                    <td class="courseCellPadding">
-                        <div class="webfont" th:text="${lab.getCourseId()}"></div>
-                    </td>
-                    <td class="courseCellPadding">
-                        <div class="courseCellPadding" th:text="${lab.getLabName()}">  </div>
-                    </td>
-<!--                    <td class="courseCellPadding" th:text="" />-->
-                    <td class="courseCellPadding">
-                        <input class="webfont" name="labsToDelete" type="checkbox"
-                               th:value="${lab.get_id()}" style="width:20px;height:20px">
-                    </td>
-                </tr>
+                <table class="courseContainer" >
+                    <col width="40%"/>
+    <!--                <col width="25%"/>-->
+                    <col width="60%"/>
+                    <!-- <col width="20%"/> -->
+                    <!-- <tbody style="padding: 0; margin: 0;"> -->
+                    <tr >
+                        <td class="courseCellPadding">
+                            <div class="webfont" th:text="${lab.getCourseId()}"></div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="courseCellPadding" th:text="${lab.getLabName()}">  </div>
+                        </td>
+    <!--                    <td class="courseCellPadding" th:text="" />-->
+                        <td class="courseCellPadding">
+                            <input class="webfont" name="labsToDelete" type="checkbox"
+                                   th:value="${lab.get_id()}" style="width:20px;height:20px">
+                        </td>
+                    </tr>
 
-            </table>
+                </table>
 <!--        </a>-->
-    </div>
+            </div>
   <!-- Loop ends here -->
   <!-- one course -->
 <!--    <div class="show">-->
@@ -141,11 +141,13 @@
 <!--      &lt;!&ndash; </tbody> &ndash;&gt;-->
 <!--    </table>-->
 <!--  </div>-->
-    <div></div>
-</div>
-    <div id="deleteLabsBtnContainer" class="show">
-        <input type="button" class="show delete-button" id="labDelete" value="Delete" style="margin:0em 0em 0em 10%;float:left;">
-    </div>
+        </div>
+        <div id="deleteLabsBtnContainer" class="show">
+            <input type="button" class="show delete-button" id="labDelete" value="Delete" style="margin:0em 0em 0em 10%;float:left;">
+        </div>
+
+
+    </form>
 </form>
 
 </body>

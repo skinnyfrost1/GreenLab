@@ -87,6 +87,7 @@
   <!-- Title -->
 
   <form th:action="@{/equipment/delete}" id="deleteForm" method = "post" enctype="multipart/form-data">
+    <form th:action="@{/equipment/createAlbum}" id="createAlbumForm" method = "post" enctype="multipart/form-data">
 
   <div style="text-align: center;">
 <!--  <div class="labMenuContainer webfont">-->
@@ -145,13 +146,18 @@
 
     </div>
     </div>
-  <div id="deleteCourseBtnContainer" class="show">
-<!--    <input id="equipDeleteButton" form="deleteForm" type="submit" value="Delete" class="delete-button webfont" style="float:left;margin:0.5em 8% 2em 8%;">-->
-<!--    <a href="" class="headerUnselected" id="equipDeleteIcon" style="margin:0em 5em 0em 20em;"><i class='fas fa-trash-alt headerIcon'></i></a>-->
-    <input type="button" class="show delete-button" id="equipDelete" value="Delete" style="margin:0em 0em 0em 10%;float:left;"></input>
-<!--    <input id="delete_button" class="floatright" type="button" value="Delete" />-->
-  </div>
+      <div id="deleteCourseBtnContainer" class="show">
+    <!--    <input id="equipDeleteButton" form="deleteForm" type="submit" value="Delete" class="delete-button webfont" style="float:left;margin:0.5em 8% 2em 8%;">-->
+    <!--    <a href="" class="headerUnselected" id="equipDeleteIcon" style="margin:0em 5em 0em 20em;"><i class='fas fa-trash-alt headerIcon'></i></a>-->
+        <input type="button" class="show delete-button" id="equipDelete" value="Delete" style="margin:0em 0em 0em 10%;float:left;">
+    <!--    <input id="delete_button" class="floatright" type="button" value="Delete" />-->
+      </div>
+      <div id="createAlbumBtnContainer" class="show">
+        <input type="button" class="show delete-button" id="createAlbum" value="Save" style="margin:0em 0em 0em 10%;float:right;">
+      </div>
+    </form>
   </form>
+
 <!--  </div>-->
 <!--  <form id='deleteForm' th:action="@{/course/delete}" method = "post"></form>-->
 </body>
