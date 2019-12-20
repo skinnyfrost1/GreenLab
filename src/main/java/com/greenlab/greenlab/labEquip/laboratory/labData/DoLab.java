@@ -17,6 +17,8 @@ public class DoLab {
 
     private String courseId  ;   //cse308
 
+    private String labName ;
+
     public DoLab(){
 
     }
