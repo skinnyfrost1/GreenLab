@@ -1,0 +1,1072 @@
+
+
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="googlebot" content="noindex">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="icon" href="https://ml4141715.github.io/water/cdn/image/leaf.png">
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-1.12.4.js"></script>
+    <script src='https://ml4141715.github.io/water/cdn/api/a076d05399.js'></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-ui.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery-3.3.1.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/popper.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/bootstrap.min.js"></script>
+
+    <script src="https://ml4141715.github.io/water/cdn/api/jquery.cookie.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/sockjs.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/stomp.min.js"></script>
+    <script src="https://ml4141715.github.io/water/cdn/api/Sortable.js"></script>
+
+    <!--    <script src="https://ml4141715.github.io/water/cdn/api/react.development.js"></script>-->
+    <!--    <script src="https://ml4141715.github.io/water/cdn/api/react-dom.development.js"></script>-->
+    <!--    <script src="https://ml4141715.github.io/water/cdn/api/babel.min.js"></script>-->
+    <!--    <script src="https://ml4141715.github.io/water/cdn/api/dropzone.js"></script>-->
+
+<!--    <script src="https://ml4141715.github.io/water/cdn/myjs/Websocket.js"></script>-->
+
+    <!--    websocket structure code    -->
+    <script>
+        // src="/equipmentJS/Websocket.js"
+
+        class Websocket{
+
+            constructor(){
+
+                this.userId = null;      // need set from outside
+                this.itemId = null; // need set from outside
+
+                this.websocketId = null; // ok
+
+                this.receiveMessage = null;  // need set from outside
+                this.socket = null;
+                this.stompClient = null;
+
+                this.sendMessage = null;
+
+                this.subscribeType = null
+
+                this.connectBroken = null; // this is function handle connection broken
+                //this.websocket = new Websocket();
+                this.self = null;
+
+                this.loadBoolean = false;
+            }
+
+
+            setWebsocketId( ){
+                var websocket = this.self;
+                var url = websocket.stompClient.ws._transport.url;
+                var urlArr = url.split("/");
+                var webSessionId =  urlArr[urlArr.length-2 ];
+                websocket.websocketId = webSessionId;
+            }
+
+
+            __subscribeUnique(){
+
+                // this is combination of userid and websocketid
+
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/image/"
+                    +websocket.userId
+                    +"/"
+                    +websocket.websocketId , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeEquipmentFolder(){
+
+                // this is userId only
+
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/equipment/folder/"
+                    +websocket.userId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeEquipmentPad(){  // the item here is equipment id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/equipment/pad/"
+                    +websocket.itemId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeEquipmentBoard(){  // the item here is equipment id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/equipment/board/"
+                    +websocket.itemId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeEquipFind(){  // the item here is lab id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/equipment/find"
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeLabFolder(){
+
+                // this is userId only
+
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/lab/folder/"
+                    +websocket.userId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeLabPad(){  // the item here is lab id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/lab/pad/"
+                    +websocket.itemId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeLabBoard(){  // the item here is lab id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/lab/board/"
+                    +websocket.itemId
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            __subscribeLabFind(){  // the item here is lab id
+
+                // this is equipmentId only
+                // once it broadcast
+                // other user who work on this equipment can do operation on it
+                var websocket = this.self;
+                websocket.stompClient.subscribe(
+                    "/topic/lab/find"
+                    , function (message) {
+                        websocket.receiveMessage(message.body);
+                    }
+                );
+            }
+
+            subscribeCreateEquipment(){
+
+                var websocket = this.self;
+                websocket.__subscribeEquipmentFolder();
+                websocket.__subscribeEquipmentPad();
+                websocket.__subscribeUnique();
+
+            }
+
+            subscribeShareEquipment(){
+
+                var websocket = this.self;
+                websocket.__subscribeEquipmentFolder();
+                websocket.__subscribeUnique();
+
+            }
+
+            subscribeFindEquipment(){
+
+                var websocket = this.self;
+                websocket.__subscribeEquipFind();
+                websocket.__subscribeUnique();
+                websocket.__subscribeEquipmentFolder();
+
+            }
+
+            subscribeBoardEquipment(){
+                var websocket = this.self;
+                websocket.__subscribeEquipmentBoard();
+                websocket.__subscribeUnique();
+            }
+
+
+            //_______________________________________
+            subscribeMyLab(){
+                var websocket = this.self;
+                websocket.__subscribeLabFolder();
+                websocket.__subscribeUnique();
+            }
+
+            subscribeCreateLab(){
+                var websocket = this.self;
+                websocket.__subscribeLabFolder();
+                websocket.__subscribeLabPad();
+                websocket.__subscribeUnique();
+            }
+
+            subscribeFindLab(){
+                var websocket = this.self;
+                websocket.__subscribeLabFind();
+                websocket.__subscribeUnique();
+                websocket.__subscribeLabFolder();
+            }
+
+            subscribeBoardLab(){
+                var websocket = this.self;
+                websocket.__subscribeLabBoard();
+                websocket.__subscribeUnique();
+            }
+            //_______________________________________
+
+            __sendEquipmentFrontMessage( message ){
+                var websocket = this.self;
+                websocket.stompClient.send( "/app/equipment/front/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+            }
+
+            __sendEquipmentBackMessage( message ){
+                var websocket = this.self;
+                websocket.stompClient.send( "/app/equipment/back/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+            }
+
+            __sendLabFrontMessage( message ){
+                var websocket = this.self;
+                websocket.stompClient.send( "/app/lab/front/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+            }
+
+            __sendLabBackMessage( message ){
+                var websocket = this.self;
+                websocket.stompClient.send( "/app/lab/back/"+websocket.userId+"/"+websocket.websocketId , {}, message);
+            }
+
+            // sendMessage( message ){
+            //
+            //     var websocket = this.self;
+            //     websocket.sendMessage( message );
+            //
+            // }
+
+            connect(  ){
+                //var websocket = new Websocket();
+                //websocket.
+                var websocket = this.self;
+                websocket.socket = new SockJS('/landon-stomp-chat');
+                websocket.stompClient = Stomp.over(websocket.socket);
+                websocket.stompClient.debug = null;
+                websocket.stompClient.connect({}, function (frame) {
+                    websocket.setWebsocketId();
+                    websocket.subscribeType();
+                    var sendData = {"type":"connectSuccess"}
+                    websocket.sendMessage(JSON.stringify(sendData));
+                }, function (message) {
+                    websocket.connectBroken();
+                } );
+
+            }
+
+
+        }
+
+        function quickPrepare( type, data ) {
+            var sendData = {};
+            sendData["type"] = type;
+            if( itemId != null ){
+                sendData["itemId"] = itemId;
+            }
+            if(data!=null){
+                sendData["data"] = data;
+            }
+            return  JSON.stringify(sendData);
+        }
+
+        //var BooleanVar = false;
+        //_______________________ the code below teach you how to use the api ______________
+        //when you send information don't forget include itemId inside the message
+        //
+
+        // websocket = new Websocket();
+        // websocket.userId = "666";
+        // websocket.itemId=  "777";
+        // websocket.receiveMessage = function (message){
+        //     console.log(message);
+        // } ;
+        // websocket.connectBroken = function ( ){
+        //
+        //     console.log("connection broken");
+        //
+        // };
+        // websocket.self = websocket;
+        // websocket.subscribeType = websocket.subscribeCreateEquipment; // you need set the subscribe type
+        // websocket.sendMessage = websocket.__sendEquipmentFrontMessage;
+        // websocket.connect();
+
+        // @MessageMapping("/equipment/front/{userId}/{sessionId}")
+        // public void handleEquipmentFront( @DestinationVariable String userId ,  @DestinationVariable String sessionId , String message) throws JSONException {
+        //
+        //
+        //     System.out.println( message+"__"+ userId +"__"+ sessionId);
+        //
+        //
+        // }
+
+        // @Configuration
+        // @EnableWebSocketMessageBroker
+        // public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+        //
+        //     @Override
+        //     public void registerStompEndpoints(StompEndpointRegistry registry) {
+        //     registry.addEndpoint("/landon-stomp-chat").withSockJS();
+        // }
+        //
+        // @Override
+        // public void configureMessageBroker(MessageBrokerRegistry config) {
+        //     config.enableSimpleBroker("/topic","/user", "/queue");
+        //     //config.enableSimpleBroker("/user/queue/specific-user");
+        //     config.setApplicationDestinationPrefixes("/app");
+        //     config.setUserDestinationPrefix("/user/");
+        //     //config.enableSimpleBroker("/queue");
+        //     //config.enableSimpleBroker("/queue","/topic");
+        // }
+        //
+        // }
+
+
+        class Ajax{
+
+            constructor(){
+
+                this.sendAddress = null;
+                this.handle = null;
+                this.self = null;
+            }
+
+            sendAjax( message ){
+                var ajax = this.self;
+                $.post(
+                    ajax.sendAddress,
+                    {"data": message },
+                    function(response){
+                        if(response.success){
+                            ajax.handle( response.data );
+                        }
+                    },
+                    "json"
+                );
+            }
+        }
+        // @RequestMapping(value="/ajax/ImageData" , method = RequestMethod.POST)
+        // @ResponseBody
+        // public Object UploadImage(@Valid @RequestBody String reqBody, HttpServletRequest request) throws JSONException {
+        //
+        //     // String dataStr = request.getParameter("data");
+        //
+        //     System.out.println( reqBody );
+        //
+        //     Map<String,Object> sendData = new HashMap<>();
+        //     sendData.put("success",true);
+        //     sendData.put("data", "weixin.tang@stonybrook.edu" );
+        //     return sendData;
+        // }
+
+
+        // $.ajax({
+        //     type: "POST",
+        //     contentType: "application/json",
+        //     url: "/ajax/ImageData",
+        //     data: JSON.stringify(sendData),
+        //     dataType: 'json',
+        //     cache: false,
+        //     timeout: 600000,
+        //     success: function (data) {
+        //
+        //         console.log(data);
+        //
+        //     },
+        //     error: function (e) {
+        //
+        //
+        //
+        //     }
+        // });
+
+        //ajax/requestId
+        //_______________________    ajax use tutorial      ____________________
+
+
+        // var ajax = new Ajax();
+        // ajax.sendAddress ="ajax/requestId";
+        // ajax.handle = function ( message ) {
+        //     console.log( message );
+        // }
+        // ajax.self = ajax;
+        // ajax.sendAjax("666");
+
+
+
+        // @RequestMapping(value="/ajax/requestId" , method = RequestMethod.POST)
+        // @ResponseBody
+        // public Object SignupSumbit(HttpServletRequest request) throws JSONException {
+        //
+        //     String dataStr = request.getParameter("data");
+        //
+        //     System.out.println( dataStr );
+        //
+        //     Map<String,Object> sendData = new HashMap<>();
+        //     sendData.put("success",true);
+        //     sendData.put("data", "weixin.tang@stonybrook.edu" );
+        //     return sendData;
+        // }
+
+
+
+
+
+    </script>
+
+
+    <script>
+
+
+        var websocket;
+
+        var itemId = "5ddb472fdee1436d3c99f321";
+
+        var sendProtocal = {};
+
+        var receiveProtocal = {};
+
+        var boardData ;// = new BoardData() ;
+
+        class Pos{
+            constructor(){
+                this.x =0 ;
+                this.y =0 ;
+            }
+            setX(x){
+                this.x = x;
+            }
+            setY(y){
+                this.y = y;
+            }
+            getX(){
+                return this.x;
+            }
+            getY(){
+                return this.y;
+            }
+            setXY( Arr , NotArr ){ // so this function can put either array or two paramter
+                if( NotArr == null ){
+                    // this mean is arr
+                    this.x = Arr[0];
+                    this.y = Arr[1];
+                }else{
+                    // this mean is not arr
+                    this.x = Arr;
+                    this.y = NotArr;
+                }
+            }
+            getXY(){
+                return [this.x,this.y];
+            }
+        }
+
+        function convertVirPos( mouseX , mouseY   ) {
+            var relativeX =  mouseX - boardData.originalDot.getX();
+            var relativeY = mouseY - boardData.originalDot.getY();
+            var pos = new Pos();
+            pos.setX( relativeX );
+            pos.setY( relativeY );
+            return pos;
+        }
+
+        function convertRelPos( x , y ) {
+            var pos = new Pos();
+            pos.setX( boardData.originalDot.getX() + x );
+            pos.setY( boardData.originalDot.getY() + y );
+            return pos;
+        }
+
+        class Main{
+
+            constructor(){
+
+            }
+
+            activeAll(){
+                document.getElementById('mouseCursor').setAttribute('draggable', false);
+                document.getElementById('centerDot').setAttribute('draggable', false);
+                document.getElementsByTagName("body")[0].addEventListener("mousemove", function (evt) {
+
+                    var pos = convertVirPos( evt.clientX , evt.clientY );
+
+                    sendProtocal["mousemove"] ( pos.getX() , pos.getY() );
+                });
+
+                document.getElementsByTagName("body")[0].addEventListener("mousedown", function (evt) {
+
+                    var pos = convertVirPos( evt.clientX , evt.clientY );
+                    sendProtocal["mousedown"] ( pos.getX() , pos.getY() );
+                });
+
+                document.getElementsByTagName("body")[0].addEventListener("mouseup", function (evt) {
+
+                    var pos = convertVirPos( evt.clientX , evt.clientY );
+                    sendProtocal["mouseup"] ( pos.getX() , pos.getY() );
+                });
+
+                document.getElementsByTagName("body")[0].addEventListener("mouseleave", function (evt) {
+
+                    var pos = convertVirPos( evt.clientX , evt.clientY );
+                    sendProtocal["mouseleave"] ( pos.getX() , pos.getY() );
+                });
+            }
+
+        }
+
+        class ImageStorage{
+
+            constructor(){
+                this.imageBlob = {};
+            }
+
+            getItem( key ){
+                return this.imageBlob[key];
+            }
+
+            setItem( key , value ){
+                this.imageBlob[key] = value;
+            }
+
+        }
+
+        class BoardData{
+
+            constructor(){
+                this.originalDot = new Pos();
+                this.imageData ;
+            }
+
+            setImageData( imageData ){
+                this.imageData = imageData;
+            }
+            getImageData(){
+                return this.imageData;
+            }
+
+
+            displayImageData(  ){
+
+                //console.log(this.imageData);
+                //var imageblobStr = imageStorage.getItem( imageData.blobId );
+                // so we will look at the inner html id
+                // if it has such a stuff
+
+                if( this.imageData!= null ){
+
+                    var x = this.imageData.position.x;
+                    var y = this.imageData.position.y;
+
+                    this.setImageHTML(  x, y );
+
+                }else{
+
+
+
+                }
+
+                //this.setImageHTML( this.imageData.size , this.imageData.position.x  , this.imageData.position.y   );
+
+            }
+
+            createImageHTML(  ){
+
+                var imageBlobStr = imageStorage.getItem( boardData.imageData.blobId );
+                var imageBlob = (JSON.parse(imageBlobStr)).blob;
+                var id = boardData.imageData.blobId;
+
+                //console.log(id);
+                //var imageblob
+                //"<img src='"+value+"' class='grid-photo-center' style='background-color: aquamarine' alt=''>";
+                //return "<img src='"+imageBlob.blob+"' id='"+boardData.imageData.blobId+"' style='position: fixed;'>";
+                return "<img src='"+imageBlob+"' id='"+id+"' class='' style='position: fixed;' alt=''>";
+            }
+
+            activeImage(  ){
+                var id = boardData.imageData.blobId;
+
+
+                dragElement(document.getElementById(id));
+
+            }
+
+            setImageHTML(  x, y   ){
+
+
+                var htmlImageDataSec =  document.getElementById("ImageData");
+                var realX = x+boardData.originalDot.getX();
+                var realY = y+boardData.originalDot.getY();
+
+                if( htmlImageDataSec.innerHTML == "" ){
+                    htmlImageDataSec.innerHTML = this.createImageHTML();
+                    this.activeImage( );
+                }else{
+                    // if the two image is not equal
+
+                    if(document.getElementById("ImageData").children[0].id != boardData.imageData.blobId ){
+                        htmlImageDataSec.innerHTML = this.createImageHTML();
+                        this.activeImage( );
+                    }
+                }
+
+                var imageSec = document.getElementById( boardData.imageData.blobId );
+
+                if( imageSec!= null ){
+                    imageSec.style.left = realX+"px";
+                    imageSec.style.top = realY+"px";
+                    //imageSec.style.width = setWidth+"px";
+                    //imageSec.style.height = setHeight+"px";
+
+                }else{
+
+                }
+
+
+                // console.log( imageSec.parentNode  );
+                // console.log( imageSec.style.top  );
+                // console.log( imageSec.style.width  );
+                // console.log( imageSec.style.height  );
+
+
+            }
+
+        }
+
+        var dragBoolean = false;
+        function whetherSelected( x, y ) {
+
+            var mouseX ;
+            var mouseY ;
+
+            // we will calculate if the
+            //boardData.getImageData().blobId
+            var imageSec = document.getElementById( boardData.imageData.blobId );
+
+            var realX =  imageSec.style.left ;
+            var realY = imageSec.style.top ;
+            var setWidth =  imageSec.style.width ;
+            var setHeight = imageSec.style.height ;
+
+            if( mouseX <= realX+setWidth && realX <= mouseX ){
+
+                if( mouseY <= realY+setHeight && realY <= mouseY ){
+
+                    return true;
+
+                }
+
+            }
+
+            return false;
+
+        }
+
+        class Configuration{
+
+
+            constructor(){
+                this.mouseListen();
+                this.mouseReceiveListen();
+                this.boardListen();
+            }
+
+            mouseListen(){
+
+                sendProtocal["mousemove"] = function ( xpos, ypos ) {
+
+
+                    //console.log("666");
+                    var sendData = {}; sendData["xpos"] = xpos; sendData["ypos"] = ypos;
+
+                    websocket.sendMessage( quickPrepare( "mousemove" , sendData  ) );
+
+                };
+
+                sendProtocal["mousedown"] = function ( xpos, ypos ) {
+
+
+                    var sendData = {}; sendData["xpos"] = xpos; sendData["ypos"] = ypos;
+                    websocket.sendMessage( quickPrepare( "mousedown" , sendData  ) );
+
+                };
+
+                sendProtocal["mouseup"] = function ( xpos, ypos ) {
+
+                    var sendData = {}; sendData["xpos"] = xpos; sendData["ypos"] = ypos;
+                    websocket.sendMessage( quickPrepare( "mousedown" , sendData  ) );
+
+                };
+
+                sendProtocal["mouseleave"] = function ( xpos, ypos ) {
+
+                    var sendData = {}; sendData["xpos"] = xpos; sendData["ypos"] = ypos;
+                    websocket.sendMessage( quickPrepare( "mouseleave" , sendData  ) );
+
+                };
+
+            }
+
+
+
+            mouseReceiveListen(){
+
+                receiveProtocal["connectSuccess"] = function ( data ) {
+
+                    //console.log("connectSuccess");
+                    sendProtocal["updateBoard"]();
+                };
+
+                sendProtocal["updateBoard"] = function(){
+                    websocket.sendMessage( quickPrepare( "updateBoard"  ) ) ;
+                };
+
+                receiveProtocal["mousemove"] = function ( data ) {
+
+                    var xpos = data["xpos"];
+                    var ypos = data["ypos"];
+                    var pos = convertRelPos( xpos , ypos );
+                    //console.log(data);
+                    document.getElementById("mouseCursor").style.display="";
+                    document.getElementById("mouseCursor").style.left = pos.getX()-7.5+"px";
+                    document.getElementById("mouseCursor").style.top = pos.getY()-4+"px";
+
+                };
+
+                receiveProtocal["mouseleave"] = function (data) {
+
+                    document.getElementById("mouseCursor").style.display="none";
+
+                };
+
+
+            }
+
+            boardListen(){
+
+
+
+                receiveProtocal["updateBoard"] = function(data){
+
+                    //console.log("updateBoard 66");
+                    //console.log(data);
+                    //console.log(JSON.parse( data) );
+
+
+
+                    if( data == null ){
+
+                        // we will hide the image data
+
+                        document.getElementById("ImageData").innerHTML = "";
+
+
+
+                    }else{
+                        var imageData = JSON.parse(data);
+
+                        var testItem = imageStorage.getItem( imageData.blobId );
+
+                        boardData.setImageData( imageData );
+
+                        if( testItem != null ){
+
+
+                            boardData.displayImageData();
+                        }else{
+                            // now we need request the image
+                            sendProtocal["requestImage"]( imageData.blobId );
+                        }
+
+                    }
+
+                };
+
+                receiveProtocal["requestImage"] = function (data) {
+
+                    //boardData.setImageData(  )
+
+                    // if didn't get we need
+
+                    //console.log(data);
+                    var imageBlobStr = data;
+                    var imageBlob = JSON.parse( data );
+                    imageStorage.setItem( imageBlob.id, imageBlobStr );
+
+                    boardData.displayImageData();
+
+                };
+
+                sendProtocal["requestImage"] = function ( imageBlobId  ) {
+
+
+                    websocket.sendMessage( quickPrepare("requestImage", imageBlobId  ) );
+                    //websocket.sendMessage( quickPrepare(  ) )
+
+
+                }
+
+            }
+
+        }
+
+
+        function connect(){
+
+            var ajax = new Ajax();
+            ajax.sendAddress ="/ajax/requestId";
+            ajax.handle = function ( message ) {
+                //console.log( message );
+                websocket = new Websocket();
+                websocket.userId = message;
+                websocket.itemId=  itemId;
+                websocket.receiveMessage = function (message){
+                    var obj = JSON.parse(message);
+                    //console.log(message);
+                    receiveProtocal[obj.type]( obj.data );
+                } ;
+                websocket.connectBroken = function ( ){
+
+                    //console.log("connection broken");
+                    setTimeout( connect , 1000 );
+                };
+                websocket.self = websocket;
+                websocket.subscribeType = websocket.subscribeBoardEquipment; // you need set the subscribe type
+                websocket.sendMessage = websocket.__sendEquipmentBackMessage;
+                websocket.connect();
+
+            };
+            ajax.self = ajax;
+            ajax.sendAjax(itemId);
+
+        }
+
+
+        // function imagePositionChange( imageBlobId ) {
+        //
+        //     var x= document.getElementById(imageBlobId).style.left - boardData.originalDot.getX()
+        //     var y = document.getElementById(imageBlobId).style.top -boardData.originalDot.getY()
+        //
+        //
+        //
+        // }
+
+
+        function dragElement(elmnt) {
+            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            if (document.getElementById(elmnt.id + "header")) {
+                // if present, the header is where you move the DIV from:
+                document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+            } else {
+                // otherwise, move the DIV from anywhere inside the DIV:
+                elmnt.onmousedown = dragMouseDown;
+            }
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // call a function whenever the cursor moves:
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // set the element's new position:
+
+
+                // so here we will calculate the relative position to the center dot
+                //console.log( pos3 +"___"+pos4);
+                //console.log( boardData.originalDot.getX()-pos3  +"___"+boardData.originalDot.getY()-pos4);
+
+
+                //console.log(sendData);
+
+                //boardData.imageData.blobId
+                //document.getElementById(boardData.imageData.blobId).style.left
+
+
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                // stop moving when mouse button is released:
+
+                var cdX =   boardData.originalDot.getX()  ;
+                var cdY =   boardData.originalDot.getY() ;
+                // // console.log(( pos3 - cdX ) +"___"+(pos4 - cdY));
+                var sendData  = {};
+                var x=  elmnt.offsetLeft - pos1 - cdX ;
+                sendData["x"] = x;
+                var y = elmnt.offsetTop - pos2 - cdY;
+                sendData["y"] = y;
+                sendData["imageData"] = boardData.imageData.id;
+                websocket.sendMessage( quickPrepare( "ImageDataMove", sendData  ) );
+
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+        var imageStorage;
+
+        function onLoad() {
+
+            imageStorage = new ImageStorage();
+
+            //console.log( window.location.pathname );
+            var pathName = window.location.pathname;
+            var Arr = pathName.split("/");
+            //console.log(Arr[2]);
+            itemId = Arr[2];
+
+            document.getElementById('mouseCursor').setAttribute('draggable', false);
+            document.getElementById('centerDot').setAttribute('draggable', false);
+
+
+
+            // here we some configuration
+            connect();
+            //var main = new Main();
+            var configuration = new Configuration();
+            //main.activeAll();
+            boardData = new BoardData();
+            onResize();
+
+
+            // var htmlImageDataSec =  document.getElementById("ImageData");
+            //
+            // console.log(htmlImageDataSec.innerHTML);
+            //
+            // if( htmlImageDataSec.innerHTML == "" ){
+            //
+            //         console.log("yhn");
+            // }
+
+            // console.log("678");
+            //    console.log( document.getElementById("ImageData").children[0].id );
+            //     console.log("678");
+        }
+
+
+
+        function onResize() {
+
+            var width =  window.innerWidth;
+            var height = window.innerHeight;
+
+            boardData.originalDot.setX( width/2 );
+            boardData.originalDot.setY( height/2 );
+
+            //console.log(boardData.originalDot);
+
+            document.getElementById( "centerDot" ).style.left = width/2-20;
+            document.getElementById( "centerDot" ).style.top = height/2-20;
+
+            boardData.displayImageData(  );
+
+        }
+
+    </script>
+
+</head>
+
+<body onload="onLoad()" onresize="onResize()" style="background-image: url('https://ml4141715.github.io/water/cdn/image/dot-grid.png')">
+
+
+
+<div id="mouseDiv"  >
+
+
+
+
+
+    <img id="centerDot" src="https://img.icons8.com/windows/32/000000/plus-math.png" style=" position: fixed; width: 40px; left: 9999px;" >
+
+    <img id="mouseCursor" src="https://img.icons8.com/ios/100/000000/cursor.png" style="position: fixed; width: 22px; left: 9999px;"  >
+
+    <div id="ImageData" style="width: 100%; height: 100%; position: fixed;"></div>
+
+</div>
+
+
+<!--    <img src='https://ml4141715.github.io/water/cdn/image/leaf.png' id='78u'>-->
+
+
+
+<div id="drawing">
+
+</div>
+
+
+<script>
+
+</script>
+
+</body>
+
+</html>
+

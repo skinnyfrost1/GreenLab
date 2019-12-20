@@ -1,0 +1,112 @@
+
+<html>
+
+<head>
+
+
+
+</head>
+
+
+<body>
+
+
+
+</body>
+
+<!--  only ajax used  -->
+
+<script src="https://ml4141715.github.io/water/cdn/myjs/Websocket.js"></script>
+<script src="https://ml4141715.github.io/water/cdn/api/jquery-1.12.4.js"></script>
+<script>
+
+    // here will send
+    // go back find the code from
+    // many images
+
+
+    // var sendData = {};
+    // sendData["labId"] = itemId;
+    // sendData["blobIds"] = labDataOp.getEquipCoverBlobIds();
+    // $.ajax({
+    //     type: "POST",
+    //     contentType: "application/json",
+    //     url: "/ajax/downloadImages",
+    //     data: JSON.stringify(sendData),
+    //     dataType: 'json',
+    //     cache: false,
+    //     timeout: 600000,
+    //     success: function (info) {
+    //         var imageBlobArr =  JSON.parse( info.data );
+    //         for( var i = 0 ; i< imageBlobArr.length ;i++ ){
+    //             var imageBlobStr = imageBlobArr[i];
+    //             var imageBlob = JSON.parse(imageBlobStr);
+    //             var imageBlobId = imageBlob.id;
+    //             imageStorage.setItem( imageBlobId , imageBlobStr );
+    //         }
+    //
+    //         labData.displayLabBoard();
+    //
+    //         //console.log(info);
+    //     },
+    //     error: function (e) {
+    //
+    //     }
+    // });
+
+    $(function () {
+
+        // var ajax = new Ajax();
+        // ajax.sendAddress ="/ajax/requestNewEquipment";
+        // ajax.handle = function ( message ) {
+        //     //console.log( message );
+        //     //window.location = message;
+        //     //window.open("/equipment/"+message, "_blank");  //"_blank"  // '_top'
+        //
+        //
+        //     window.location = "/equipment/"+message;
+        //
+        //
+        // };
+        //
+        // ajax.self = ajax;
+        // ajax.sendAjax("666");
+
+        var sendData = {};
+        sendData["type"] = "666";
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/ajax/createNewLab",
+            data: JSON.stringify(sendData),
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+
+                //console.log(data);
+               // window.open("/editmylab/"+data["labId"] , "_blank");
+
+                window.location = "/editmylab/"+data["labId"] ;
+            },
+            error: function (e) {
+
+
+
+            }
+        });
+
+    });
+
+
+
+
+
+
+
+</script>
+
+
+</html>
+
