@@ -2581,7 +2581,7 @@
 
 <body onload="onLoad()" onresize="onResize()" >
 
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0 d-none">
     <div class="container">
         <a href="/" class="navbar-brand font-italic text-capitalize">
             <i class='fas fa-leaf'></i>
@@ -2613,7 +2613,7 @@
 
     </div>
 </nav>
-<nav class="navbar navbar-expand-sm navbar-dark bg-info  text-white p-0">
+<nav class="navbar navbar-expand-sm navbar-dark bg-info  text-white p-0 d-none">
     <div class="container">
         <a href="/lab/listItem/ListLabItem.html" class="navbar-brand font-italic text-capitalize">
             <i class="fas fa-vials"></i>
@@ -2641,7 +2641,81 @@
 </nav>
 
 
+<!-- Header Banner -->
+<table class="header webfont semibold" style="height: 54px">
+    <tbody style="padding: 0; margin: 0;">
+    <tr>
+        <!-- Left Part -->
+        <td>
+            <table style="padding: 0; margin: 0;">
+                <tr>
+                    <td class="headerCellPadding">
+                        <div class="logo"  ></div>
+                    </td>
+                    <td class="headerCellPadding">
+                        <!--                        <a href="/index" class="headerSelected">Courses</a>-->
+                        <div class="dropdown" style="cursor: pointer;">
+                            <span style="color:#eeeeee">Courses</span>
+                            <div class="dropdown_container" style="padding-top: 0.8em;">
 
+                                <div class="dropdown-content" ><a href="/courses">View Courses</a></div>
+                                <div class="dropdown-content"><a href="/course/create">Create Course</a></div>
+
+                            </div>
+                        </div>
+                    </td>
+                    <td class="headerCellPadding">
+                        <div class="dropdown" style="cursor: pointer;">
+                            <span style="color:#eeeeee">Labs</span>
+                            <div class="dropdown_container" style="padding-top: 0.8em;">
+
+
+                                <div class="dropdown-content"><a href="/lab/listItem/ListLabItem.html">View Labs</a></div>
+                                <div class="dropdown-content"><a href="/lab/createJump/labCreateJump.html">Create Lab</a></div>
+
+
+
+                            </div>
+                        </div>
+                    </td>
+                    <td class="headerCellPadding">
+                        <div class="dropdown" style="cursor: pointer;">
+                            <span style="color:#eeeeee">Equipments</span>
+                            <div class="dropdown_container" style="padding-top: 0.8em;">
+
+
+                                <div class="dropdown-content"><a href="/lab/listItem/listEquipItem.html">View Equipment</a></div>
+                                <!-- <div class="dropdown-content"><a>Search Equipment</a></div> -->
+                                <div class="dropdown-content"><a href="/lab/createJump/equipmentCreateJump.html">Add Equipment</a></div>
+
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <!-- Right Part -->
+        <td style="width: 5em;">
+            <table style="padding: 0; margin: 0; align: right;">
+                <tr style="align: right;">
+                    <td class="headerCellPadding">
+                        <a href="" class="headerUnselected"><i class='fas fa-user-circle headerIcon'></i></a>
+                    </td>
+                    <td class="headerCellPadding">
+                        <a href="" class="headerUnselected"><i class='fas fa-cog headerIcon'></i></a>
+                    </td>
+                    <td class="headerCellPadding">
+                        <a href="/logout" class="headerUnselected"><i class='fas fa-sign-out-alt headerIcon'></i></a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<!--  End of tool bar -->
+<div style="padding: 2em;"></div>
 
 <div id="equipmentBody">
 
