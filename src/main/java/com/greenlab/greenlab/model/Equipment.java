@@ -1,7 +1,7 @@
 package com.greenlab.greenlab.model;
 
 import java.util.Base64;
-import java.util.List;
+import java.util.List; 
 
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
