@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import com.greenlab.greenlab.dto.RequestLabMenuResponseBody;
 import com.greenlab.greenlab.dto.SingleStringRequestBody;
 import com.greenlab.greenlab.labEquip.laboratory.labData.DoLab;
+import com.greenlab.greenlab.labEquip.laboratory.labData.DoLabRepository;
 import com.greenlab.greenlab.model.Course;
 import com.greenlab.greenlab.model.Lab;
 import com.greenlab.greenlab.model.StuCourse;
@@ -48,6 +49,8 @@ public class CreateCourseController {
     private UserRepository userRepository;
     @Autowired
     private LabRepository labRepository;
+    @Autowired
+    private DoLabRepository doLabRepository;
 
     @GetMapping(value = "/course/create")
     public String getCreateCourse(ModelMap model, HttpServletRequest request) {
@@ -174,6 +177,9 @@ public class CreateCourseController {
         String courseId = reqBody.getStr();
         courseId = courseId.replaceAll(" ","");
         courseId = courseId.toUpperCase();
+
+
+
         List<Lab> labs = labRepository.findByCourseId(courseId);
         for (Lab l : labs){
             if (l.getCreator().equals(email)){
@@ -184,6 +190,13 @@ public class CreateCourseController {
                 labs.remove(l);
             }
         }
+
+
+
+
+
+
+        
         request.getSession().setAttribute("labs", labs);
         result.setLabNameList(labNameList);
 //        result.setLab_IdList(lab_IdList);
