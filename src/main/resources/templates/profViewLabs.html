@@ -20,7 +20,7 @@
         <!-- Left Part -->
         <td>
             <table style="padding: 0; margin: 0;">
-                <tr>
+                <tr> 
                     <td class="headerCellPadding">
                         <div class="logo"></div>
                     </td>
@@ -84,7 +84,6 @@
     <div class="bigContainer webfont">
   <!-- one course -->
   <!-- loop -->
-<<<<<<< HEAD
         <div class="labsToDelete" value="default"></div>
             <div th:each="lab:${labs}" class="notVeryBigContainer" >
 <!--        <div th:if="${role=='professor'}"><a th:href="'/course/edit?id=' +${course.get_id()}">-->
@@ -107,33 +106,10 @@
                                    th:value="${lab.get_id()}" style="width:20px;height:20px">
                         </td>
                     </tr>
-=======
-    <div th:each="lab:${labs}" class="notVeryBigContainer" >
-        <div ><a th:href="'/lab/create/workspace/' +${lab.get_id()}">
-            <table class="courseContainer" >
-                <col width="40%"/>
-<!--                <col width="25%"/>-->
-                <col width="60%"/>
-                <!-- <col width="20%"/> -->
-                <!-- <tbody style="padding: 0; margin: 0;"> -->
-                <tr >
-                    <td class="courseCellPadding">
-                        <div class="webfont" th:text="${lab.getCourseId()}"></div>
-                    </td>
-                    <td class="courseCellPadding" th:text="${lab.getLabName()}" />
-<!--                    <td class="courseCellPadding" th:text="" />-->
-                </tr>
->>>>>>> origin/ann
 
                 </table>
 <!--        </a>-->
-<<<<<<< HEAD
             </div>
-=======
-        </a>
-        </div>
-    </div>
->>>>>>> origin/ann
   <!-- Loop ends here -->
   <!-- one course -->
 <!--    <div class="show">-->

@@ -16,6 +16,7 @@ import javax.validation.Valid;
 
 import com.greenlab.greenlab.dto.RequestLabMenuResponseBody;
 import com.greenlab.greenlab.dto.SingleStringRequestBody;
+import com.greenlab.greenlab.labEquip.laboratory.labData.DoLab;
 import com.greenlab.greenlab.model.Course;
 import com.greenlab.greenlab.model.Lab;
 import com.greenlab.greenlab.model.StuCourse;
@@ -77,20 +78,23 @@ public class CreateCourseController {
             return "error";
         }
 
-        List<Lab> labs = new ArrayList<>();
-//        Lab tempLab;
-//        for (String _id : lab_IdList){
-//            tempLab = labRepository.findBy_id(_id);
-//            labs.add(tempLab);
-//        }
-        List<Lab> tempLab = (List<Lab>) request.getSession().getAttribute("labs");
-        for(Lab l : tempLab){
-            for(String name : labNameList){
-                if (l.getLabName().equals(name)){
-                    labs.add(l);
-                }
-            }
-        }
+        // List<Lab> labs = new ArrayList<>();
+
+        // List<Lab> tempLab = (List<Lab>) request.getSession().getAttribute("labs");
+        // for(Lab l : tempLab){
+        //     for(String name : labNameList){
+        //         if (l.getLabName().equals(name)){
+        //             labs.add(l);
+        //         }
+        //     }
+        // }
+
+        List<DoLab> doLabs = new ArrayList<>();
+        List<Lab> tempLab = 
+        
+
+
+
         request.getSession().removeAttribute("labs");
 
 

@@ -7,21 +7,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.greenlab.greenlab.dto.ResponseEquipment;
 import com.greenlab.greenlab.model.Equipment;
-import com.greenlab.greenlab.model.Lab;
 import com.greenlab.greenlab.repository.EquipmentRepository;
 
 import com.greenlab.greenlab.repository.LabRepository;
-import org.bson.BsonBinarySubType;
-import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class DeleteEquipmentController {
@@ -79,7 +72,7 @@ public class DeleteEquipmentController {
         if (!request.getSession().getAttribute("role").equals("professor"))
             return "redirect:/login";
 
-        System.out.println("fkyou1");
+        System.out.println("fffff");
 
         //
         List<Equipment> equipments = new ArrayList<>();
