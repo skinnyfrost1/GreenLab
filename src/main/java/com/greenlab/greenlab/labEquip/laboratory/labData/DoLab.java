@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 public class DoLab {
 
     @Id
-    private String id;
+    private String _id;
 
     private LabData labData = null;
 
