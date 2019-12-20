@@ -33,7 +33,10 @@ public class EditLabController{
             String creator = (String) request.getSession().getAttribute("email");
             List<Lab> labs = labRepository.findByCreator(creator);
             String role = (String) request.getSession().getAttribute("role");
-
+            System.out.println("big test  -------------------------------------------------------------------------");
+            for(Lab l : labs){
+                System.out.println("lab_id = "+l.get_id());
+            }
             model.addAttribute("labs", labs);
             model.addAttribute("role", role);
             return "profViewLabs";

@@ -75,4 +75,9 @@ $(document).ready(function () {
     }
   });
 
+  $("#createAlbum").click(function(){
+    if (confirm("Do you really want to use these items to create an album?")){
+      $('form#createAlbumForm').submit();
+    }
+  });
 });

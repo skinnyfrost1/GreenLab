@@ -6,8 +6,10 @@
     <link th:href="@{/stylesheet/font.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/dropdown_menu.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/stylesheet/index.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/stylesheet/profCreateCourse.css}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>profViewCourse</title>
 </head>
 <body>
@@ -77,60 +79,77 @@
 <!-- Title -->
 <div class="title webfont">Your Labs</div>
 <!-- List of Courses-->
-<div class="bigContainer webfont">
+
+<form th:action="@{/lab/delete}" id="deleteForm" method = "post" enctype="multipart/form-data">
+    <div class="bigContainer webfont">
   <!-- one course -->
   <!-- loop -->
-    <div th:each="lab:${labs}" class="notVeryBigContainer" >
+        <div class="labsToDelete" value="default"></div>
+            <div th:each="lab:${labs}" class="notVeryBigContainer" >
 <!--        <div th:if="${role=='professor'}"><a th:href="'/course/edit?id=' +${course.get_id()}">-->
-            <table class="courseContainer" >
-                <col width="40%"/>
-<!--                <col width="25%"/>-->
-                <col width="60%"/>
-                <!-- <col width="20%"/> -->
-                <!-- <tbody style="padding: 0; margin: 0;"> -->
-                <tr >
-                    <td class="courseCellPadding">
-                        <div class="webfont" th:text="${lab.getCourseId()}"></div>
-                    </td>
-                    <td class="courseCellPadding" th:text="${lab.getLabName()}" />
-<!--                    <td class="courseCellPadding" th:text="" />-->
-                </tr>
+                <table class="courseContainer" >
+                    <col width="40%"/>
+    <!--                <col width="25%"/>-->
+                    <col width="60%"/>
+                    <!-- <col width="20%"/> -->
+                    <!-- <tbody style="padding: 0; margin: 0;"> -->
+                    <tr >
+                        <td class="courseCellPadding">
+                            <div class="webfont" th:text="${lab.getCourseId()}"></div>
+                        </td>
+                        <td class="courseCellPadding">
+                            <div class="courseCellPadding" th:text="${lab.getLabName()}">  </div>
+                        </td>
+    <!--                    <td class="courseCellPadding" th:text="" />-->
+                        <td class="courseCellPadding">
+                            <input class="webfont" name="labsToDelete" type="checkbox"
+                                   th:value="${lab.get_id()}" style="width:20px;height:20px">
+                        </td>
+                    </tr>
 
-            </table>
+                </table>
 <!--        </a>-->
-    </div>
+            </div>
   <!-- Loop ends here -->
   <!-- one course -->
-    <div class="show">
-    </div>
+<!--    <div class="show">-->
+<!--    </div>-->
 
-    <div class="notVeryBigContainer" onclick="window.location.href = 'index.html';">
-    <table class="courseContainer">
-      <col width="15%"/>
-      <col width="25%"/>
-      <col width="60%"/>
-        <!-- <col width="20%"/> -->
-      <!-- <tbody style="padding: 0; margin: 0;"> -->
-        <tr>
-          <td class="courseCellPadding">
-              <div>CHE 133</div>
-          </td>
-          <td class="courseCellPadding">
-            <div class="webfont">Lab 01</div>
-          </td>
-          <td class="courseCellPadding">
-            <div class="webfont">General chemistry laboratory I</div>
-          </td>
-          <!-- <td class="courseCellPadding" style="text-align: right;">
-            <a href="" class=""><i class='fas fa-pen headerIcon'></i></a>
-            &nbsp;&nbsp;&nbsp;
-            <a href="" class=""><i class='fas fa-trash headerIcon'></i></a>
-          </td> -->
-        </tr>
-      <!-- </tbody> -->
-    </table>
-  </div>
-    <div></div>
-</div>
+<!--    <div class="notVeryBigContainer" onclick="window.location.href = 'index.html';">-->
+<!--    <table class="courseContainer">-->
+<!--      <col width="15%"/>-->
+<!--      <col width="25%"/>-->
+<!--      <col width="60%"/>-->
+<!--        &lt;!&ndash; <col width="20%"/> &ndash;&gt;-->
+<!--      &lt;!&ndash; <tbody style="padding: 0; margin: 0;"> &ndash;&gt;-->
+<!--        <tr>-->
+<!--          <td class="courseCellPadding">-->
+<!--              <div>CHE 133</div>-->
+<!--          </td>-->
+<!--          <td class="courseCellPadding">-->
+<!--            <div class="webfont">Lab 01</div>-->
+<!--          </td>-->
+<!--          <td class="courseCellPadding">-->
+<!--            <div class="webfont">General chemistry laboratory I</div>-->
+<!--          </td>-->
+<!--          &lt;!&ndash; <td class="courseCellPadding" style="text-align: right;">-->
+<!--            <a href="" class=""><i class='fas fa-pen headerIcon'></i></a>-->
+<!--            &nbsp;&nbsp;&nbsp;-->
+<!--            <a href="" class=""><i class='fas fa-trash headerIcon'></i></a>-->
+<!--          </td> &ndash;&gt;-->
+<!--        </tr>-->
+<!--      &lt;!&ndash; </tbody> &ndash;&gt;-->
+<!--    </table>-->
+<!--  </div>-->
+        </div>
+        <div id="deleteLabsBtnContainer" class="show">
+            <input type="button" class="show delete-button" id="labDelete" value="Delete" style="margin:0em 0em 0em 10%;float:left;">
+        </div>
+
+
+    </form>
+</form>
+
 </body>
+<script type="text/javascript" th:src="@{/js/ProfViewLabs.js}"></script>
 </html>
